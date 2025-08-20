@@ -1,9 +1,9 @@
 <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-stone-900/20 dark:bg-stone-900/80 dark:border-white/20" role="banner">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
-      <div class="flex items-center justify-start">
-        <a href="/" class="text-lg textle font-semibold font-display text-stone-900 dark:text-white hover:text-saints-500 dark:hover:text-saints-500 transition-colors focus:outline-none focus:ring-2 focus:ring-saints-500 focus:ring-offset-2 rounded-md" aria-label="{{ site.data.content.navigation.site_name_aria }}">
-          <svg class="h-8"  viewBox="0 0 740 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div class="flex items-center justify-start flex-shrink min-w-0">
+        <a href="/" class="text-lg font-semibold font-display text-stone-900 dark:text-white hover:text-saints-500 dark:hover:text-saints-500 transition-colors focus:outline-none focus:ring-2 focus:ring-saints-500 focus:ring-offset-2 rounded-md" aria-label="{{ site.data.content.navigation.site_name_aria }}">
+          <svg class=" h-6  sm:h-8"  viewBox="0 0 740 89" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M692.151 76.874C692.151 79.314 692.843 81.022 694.225 81.998C695.689 82.974 697.885 83.7467 700.813 84.316V87H673.119V84.316C676.129 83.7467 678.325 82.974 679.707 81.998C681.171 81.022 681.903 79.314 681.903 76.874V15.02C681.903 12.824 681.375 11.1973 680.317 10.14C679.26 9.08267 677.552 8.432 675.193 8.188L673.119 7.944V5.504L689.955 0.624001H692.151V76.874ZM720.577 45.154C720.577 40.5993 719.52 37.224 717.405 35.028C715.291 32.7507 712.363 31.612 708.621 31.612C705.612 31.612 702.725 32.466 699.959 34.174C697.194 35.882 694.388 38.6067 691.541 42.348L690.321 40.64C693.981 34.8653 697.601 30.6767 701.179 28.074C704.758 25.39 708.621 24.048 712.769 24.048C716.185 24.048 719.235 24.8207 721.919 26.366C724.685 27.9113 726.881 30.2293 728.507 33.32C730.134 36.3293 730.947 40.03 730.947 44.422V76.874C730.947 79.314 731.639 81.022 733.021 81.998C734.485 82.974 736.681 83.7467 739.609 84.316V87H712.159V84.316C715.006 83.7467 717.121 82.974 718.503 81.998C719.886 81.022 720.577 79.314 720.577 76.874V45.154Z" fill="currentColor"/>
             <path d="M646.026 88.708C640.251 88.708 635.249 87.366 631.02 84.682C626.791 81.9167 623.578 78.1347 621.382 73.336C619.186 68.5373 618.088 63.1693 618.088 57.232C618.088 51.2133 619.267 45.6827 621.626 40.64C624.066 35.5973 627.482 31.5713 631.874 28.562C636.266 25.5527 641.268 24.048 646.88 24.048C650.621 24.048 653.997 24.6987 657.006 26C660.097 27.3013 662.577 29.05 664.448 31.246C666.319 33.442 667.539 35.76 668.108 38.2L658.348 42.958C657.453 38.566 655.908 35.0687 653.712 32.466C651.516 29.8633 648.71 28.562 645.294 28.562C640.089 28.562 635.941 30.8393 632.85 35.394C629.841 39.9487 628.336 45.7233 628.336 52.718C628.336 61.014 630.207 67.6833 633.948 72.726C637.771 77.7687 643.179 80.29 650.174 80.29C653.59 80.29 656.965 79.192 660.3 76.996C663.635 74.7187 666.237 71.75 668.108 68.09L670.304 69.066C668.271 75.2473 665.058 80.0867 660.666 83.584C656.355 87 651.475 88.708 646.026 88.708Z" fill="currentColor"/>
             <path d="M589.438 44.3C591.553 37.5493 594.196 32.5067 597.368 29.172C600.54 25.8373 604.078 24.0887 607.982 23.926C609.121 23.8447 610.341 23.8853 611.642 24.048C613.025 24.2107 614.082 24.414 614.814 24.658L613.35 35.882C612.211 34.9873 610.869 34.3367 609.324 33.93C607.86 33.5233 606.477 33.3607 605.176 33.442C601.923 33.6047 598.913 34.906 596.148 37.346C593.383 39.786 591.227 43.1207 589.682 47.35L589.438 44.3ZM571.016 84.316C574.432 83.7467 576.75 82.8927 577.97 81.754C579.19 80.6153 579.8 78.826 579.8 76.386V39.298C579.8 36.7767 579.271 34.906 578.214 33.686C577.157 32.466 575.205 31.7747 572.358 31.612L571.016 31.49V28.928L587.852 24.048H590.048V76.386C590.048 78.826 590.902 80.6153 592.61 81.754C594.318 82.8113 597.449 83.6653 602.004 84.316V87H571.016V84.316Z" fill="currentColor"/>
@@ -25,7 +25,9 @@
       <nav class="flex items-center gap-3" aria-label="Main navigation">
         {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" icon="location" %}
         
-        {% include button.html text="Reach Out" href="mailto:contact@saintschurchknox.com" variant="secondary" icon="email" %}
+        <div class="hidden sm:block">
+          {% include button.html text="Reach Out" href="mailto:contact@saintschurchknox.com" variant="secondary" icon="email" %}
+        </div>
       </nav>
     </div>
   </div>
