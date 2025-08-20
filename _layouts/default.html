@@ -1,0 +1,85 @@
+---
+layout: compress
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="keywords" content="{{ site.keywords }}">
+    <meta name="author" content="{{ site.church.name }}">
+    <meta name="article:author" content="{{ site.church.name }}">
+    <meta name="article:published_time" content="{{ site.time | date_to_xmlschema }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:site_name" content="{{ site.church.name }}">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:author" content="{{ site.church.name }}">
+    <meta property="article:section" content="Church Information">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ page.url | absolute_url }}">
+    <meta property="twitter:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <!-- Church Schema JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Church",
+      "name": "{{ site.church.name }}",
+      "description": "{{ site.description }}",
+      "url": "{{ site.url }}",
+      "telephone": "{{ site.church.phone }}",
+      "email": "{{ site.email }}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ site.church.address.street }}",
+        "addressLocality": "{{ site.church.address.city }}",
+        "addressRegion": "{{ site.church.address.state }}",
+        "postalCode": "{{ site.church.address.zip }}",
+        "addressCountry": "{{ site.church.address.country }}"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "35.9373",
+        "longitude": "-84.0742"
+      },
+      "denomination": "{{ site.church.denomination }}",
+      "hasCredential": "{{ site.church.confession }}",
+      "serviceType": "Sunday Worship Service",
+      "serviceTime": "{{ site.church.service_times.sunday }}",
+      "sameAs": [
+        "{{ site.url }}"
+      ]
+    }
+    </script>
+    
+    <link href="{{ '/css/output.css' | relative_url }}" rel="stylesheet">
+</head>
+<body class="antialiased">
+    {% include nav.html %}
+    {{ content }}
+    {% include visit-modal.html %}
+    
+    <!-- Bundled JS with Tailwind Elements and animations -->
+    <script src="{{ '/js/site.min.js' | relative_url }}"></script>
+</body>
+</html>

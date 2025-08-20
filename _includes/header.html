@@ -1,0 +1,76 @@
+<div class="relative isolate">
+  <svg aria-hidden="true" class="absolute inset-x-0 top-0 w-full transform-gpu -z-10 h-[64rem] stroke-stone-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)] dark:stroke-white/10">
+    <defs>
+      <pattern id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+        <path d="M.5 200V.5H200" fill="none" />
+      </pattern>
+    </defs>
+    <svg x="50%" y="-1" class="overflow-visible fill-stone-50 dark:fill-stone-800">
+      <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" stroke-width="0" />
+    </svg>
+    <rect width="100%" height="100%" fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" stroke-width="0" />
+  </svg>
+  <div aria-hidden="true" class="overflow-hidden absolute top-0 right-0 left-1/2 -ml-24 transform-gpu lg:ml-24 xl:ml-48 -z-10 blur-3xl">
+    <div style="clip-path: polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)" class="bg-gradient-to-tr opacity-25 aspect-[801/1036] w-[50.0625rem] from-saints-400 to-saints-700"></div>
+  </div>
+  <div class="overflow-hidden relative z-20">
+    <div class="px-6 pt-24 pb-32 mx-auto max-w-7xl sm:pt-40 lg:px-8 lg:pt-32 animate-children">
+      <div class="gap-x-14 mx-auto max-w-2xl lg:flex lg:items-center lg:mx-0 lg:max-w-none">
+        <div class="relative w-full lg:max-w-xl xl:max-w-2xl lg:shrink-0">
+          <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl xl:text-6xl child [&_span]:![--delay:.1s] [&_span]:![--translate-y:-0.5rem] ![--translate-y:0.25rem] dark:text-white font-display text-pretty text-stone-950 [&_span]:text-2xl [&_span]:sm:text-3xl [&_span]:md:text-4xl [&_span]:lg:text-5xl [&_span]:xl:text-4xl [&_span]:text-stone-600 grid gap-1">{{ site.data.content.header.title }}</h1>
+          <div class="flex flex-col gap-y-3 mt-6 sm:flex-row sm:gap-y-0 sm:gap-x-6 child ![--delay:0.15s] ![--translate-y:0.25rem]">
+            <div class="flex gap-x-2 items-center text-sm text-stone-700 dark:text-stone-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 w-4 h-4 text-saints-500 dark:text-stone-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1 1 15 0Z" />
+              </svg>
+              <a href="https://maps.google.com/?q={{ site.data.content.header.address | replace: ' ', '+' | replace: ',', '%2C' }}" class="transition-colors duration-200 ease-out dark:hover:text-white hover:text-stone-900" target="_blank" rel="noopener">
+                {{ site.data.content.header.address }}
+              </a>
+            </div>
+            <div class="flex gap-x-2 items-center text-sm text-stone-700 dark:text-stone-300">
+              <svg class="flex-shrink-0 w-4 h-4 text-saints-500 dark:text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>{{ site.data.content.header.service_time }}</span>
+            </div>
+          </div>
+          <p class="mt-6 text-lg text-stone-600 text-balance sm:text-xl/8 dark:text-stone-300 child ![--translate-y:0.25rem] ![--delay:0.25s]">{{ site.data.content.header.description }}</p>
+          
+          <div class="grid grid-cols-2 gap-3 mt-8 sm:flex child ![--delay:0.35s]">
+            {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" icon="location" %}
+            {% include button.html text="Reach Out" href="mailto:contact@saintschurchknox.com" variant="secondary" icon="email" %}
+          </div>
+        </div>
+        <div class="flex gap-8 justify-end mt-14 sm:justify-start sm:pl-20 sm:-mt-44 lg:flex-shrink-0 lg:pl-0 lg:mt-0">
+          <div class="flex-none pt-32 ml-auto space-y-8 w-44 sm:pt-80 sm:ml-0 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
+            <div class="relative child ![--delay:0.35s]">
+              <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80" alt="People worshipping together" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
+              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
+            </div>
+          </div>
+          <div class="flex-none mr-auto space-y-8 w-44 sm:pt-52 sm:mr-0 lg:pt-36">
+            <div class="relative child ![--translate-y:-1rem] ![--delay:0.25s]">
+              <img src="https://images.unsplash.com/photo-1485217988980-11786ced9454?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80" alt="Community gathering in prayer" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
+              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
+            </div>
+            <div class="relative child ![--delay:0.45s]">
+              <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=396&h=528&q=80" alt="Church family reading scripture together" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
+              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
+            </div>
+          </div>
+          <div class="flex-none pt-32 space-y-8 w-44 sm:pt-0">
+            <div class="relative child ![--delay:0.40s]">
+              <img src="https://images.unsplash.com/photo-1670272504528-790c24957dda?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=left&w=400&h=528&q=80" alt="Breaking bread together in communion" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
+              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
+            </div>
+            <div class="relative child ![--delay:0.75s]">
+              <img src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80" alt="Saints Church community fellowship" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
+              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

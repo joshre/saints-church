@@ -1,0 +1,21 @@
+{
+  "name": "saints-church",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Josh Reeder-Esparza <joshre@me.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "./build.js",
+    "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\""
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.16",
+    "concurrently": "^9.2.0",
+    "estrella": "^1.4.1",
+    "tailwindcss": "^4.1.12"
+  },
+  "dependencies": {
+    "@tailwindplus/elements": "^1.0.9"
+  }
+}

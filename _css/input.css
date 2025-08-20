@@ -1,0 +1,277 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@font-face {
+  font-family: 'PP Formula';
+  src: url('../assets/fonts/pp-formula-semiextendedbold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/InterVariable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  font-feature-settings: "cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", "cv10", "cv11";
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/InterVariable-Italic.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+  font-feature-settings: "cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", "cv10", "cv11";
+}
+
+@theme {
+  --font-display: "PP Formula", sans-serif;
+  --font-sans: "Inter", sans-serif;
+  --color-saints-black: #231f20;
+  --color-saints-white: #f7f6f3;
+  
+  /* Saints Accent Color Scale (OKLCH) - Calibrated to Tailwind patterns */
+  --color-saints-50: oklch(97.8% 0.008 128.2);
+  --color-saints-100: oklch(95.1% 0.018 128.4);
+  --color-saints-200: oklch(90.2% 0.032 128.6);
+  --color-saints-300: oklch(83.1% 0.048 128.8);
+  --color-saints-400: oklch(73.8% 0.062 129.0);
+  --color-saints-500: oklch(58.2% 0.054 129.1); /* Base saints accent */
+  --color-saints-600: oklch(47.9% 0.047 129.2);
+  --color-saints-700: oklch(39.4% 0.041 129.0);
+  --color-saints-800: oklch(32.1% 0.035 128.8);
+  --color-saints-900: oklch(26.8% 0.028 128.6);
+  --color-saints-950: oklch(16.2% 0.018 128.4);
+  
+  --smooth-bezier: cubic-bezier(0.4, 0.01, 0.165, 0.99);
+  --ease-smooth: cubic-bezier(0.4, 0.01, 0.165, 0.99);
+  
+  /* Standard spacing unit for consistent button sizing */
+  --spacing: 0.25rem;
+}
+
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, var(--translate-y), 0);
+  }
+  65% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--translate-x), 0, 0);
+  }
+  65% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInUpHero {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInHero {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-reveal {
+  --delay: 0s;
+  --duration: 0.9s;
+  --translate-y: 1rem;
+  animation-name: fadeInUp;
+  animation-duration: var(--duration);
+  animation-timing-function: var(--smooth-bezier);
+  animation-delay: var(--delay);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+  opacity: 0;
+}
+
+.animate-reveal.run {
+  animation-play-state: running;
+}
+
+.animate-children .child,.animate-children .child-x {
+  --delay: 0s;
+  --duration: 0.9s;
+  --translate-y: 1rem;
+  animation-name: fadeInUp;
+  animation-duration: var(--duration);
+  animation-timing-function: var(--smooth-bezier);
+  animation-delay: var(--delay);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+  opacity: 0;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.animate-children .child-x {
+
+  --translate-x: 1rem;
+  animation-name: fadeInRight;
+  animation-timing-function: var(--smooth-bezier);
+}
+
+.animate-children.run .child, .animate-children.run .child-x {
+  animation-play-state: running;
+}
+
+.animate-fade-in {
+  --delay: 0s;
+  --duration: 0.9s;
+  animation-name: fadeIn;
+  animation-duration: var(--duration);
+  animation-timing-function: var(--smooth-bezier);
+  animation-delay: var(--delay);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+  opacity: 0;
+}
+
+.animate-fade-in.run {
+  animation-play-state: running;
+}
+
+.animate-hero-fade {
+  --delay: 0s;
+  --duration: 0.9s;
+  animation-name: fadeInHero;
+  animation-duration: var(--duration);
+  animation-timing-function: var(--smooth-bezier);
+  animation-delay: var(--delay);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  opacity: 0;
+}
+
+.animate-hero-up {
+  --delay: 0s;
+  --duration: 0.9s;
+  animation-name: fadeInUpHero;
+  animation-duration: var(--duration);
+  animation-timing-function: var(--smooth-bezier);
+  animation-delay: var(--delay);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  opacity: 0;
+}
+
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.6);
+  transition: box-shadow 0.2s var(--smooth-bezier);
+}
+
+@media (prefers-color-scheme: dark) {
+  .enhanced-contrast {
+    --text-primary: #ffffff;
+    --text-secondary: #e5e7eb;
+    --text-muted: #9ca3af;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  :root {
+    --animation-fast: 0.15s;
+    --animation-normal: 0.25s;
+    --animation-reveal: 0.35s;
+    --animation-hero: 0.28s;
+  }
+  
+  .hover-lift:active,
+  .hover-scale:active,
+  button:active,
+  [role="button"]:active {
+    transform: scale(0.98);
+    transition: transform 0.1s var(--smooth-bezier);
+  }
+  
+  .hover-lift:hover,
+  .hover-scale:hover,
+  .text-hover-lift:hover {
+    transform: none;
+  }
+  
+  .animate-reveal,
+  .animate-fade-in,
+  .animate-hero-fade,
+  .animate-hero-up {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .will-animate,
+  .hover-lift,
+  .hover-scale,
+  .smooth-focus,
+  .animate-reveal,
+  .animate-fade-in,
+  .modal-backdrop,
+  .modal-content,
+  .focus-ring,
+  .text-hover-lift {
+    animation: none;
+    transition: none;
+  }
+  
+  .hover-lift:hover,
+  .hover-scale:hover,
+  .text-hover-lift:hover {
+    transform: none;
+  }
+  
+  .modal-content {
+    transform: none;
+    opacity: 1;
+  }
+}
+

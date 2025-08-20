@@ -1,0 +1,15 @@
+<div class="px-6 mx-auto mt-20 max-w-7xl sm:mt-48 lg:px-8 animate-children">
+  <div class="mx-auto max-w-2xl lg:mx-0 child">
+    <h2 class="text-4xl font-semibold tracking-tight sm:text-5xl dark:text-white font-display text-pretty text-stone-900">{{ site.data.content.values.title }}</h2>
+    <p class="mt-6 text-lg/8 text-stone-700 dark:text-stone-300">{{ site.data.content.values.subtitle }}</p>
+  </div>
+  <dl class="grid grid-cols-1 gap-8 sm:gap-y-16 mx-auto mt-8 sm:mt-16 max-w-2xl sm:grid-cols-2 lg:grid-cols-3 lg:mx-0 lg:max-w-none text-base/7 child ![--delay:0.15s]">
+    {% for item in site.data.content.values.items %}
+      {% assign delay = forloop.index0 | times: 0.1 | plus: 0.25 %}
+      <div class="">
+        <dt class="child font-semibold dark:text-white text-stone-900" style="--delay: {{ delay }}s">{{ item.title }}</dt>
+        <dd class="child mt-1 text-stone-600 dark:text-stone-400" style="--delay: {{ delay | plus: 0.05 }}s">{{ item.description }}</dd>
+      </div>
+    {% endfor %}
+  </dl>
+</div>

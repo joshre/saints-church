@@ -1,0 +1,15 @@
+{% assign current_page = page.path | remove: ".md" %}
+<div class="relative isolate">
+  <div class="px-6 pt-6 mx-auto max-w-7xl lg:px-8">
+    <nav class="flex justify-center" aria-label="Section Navigation">
+      <div class="inline-flex p-1 bg-stone-100 rounded-full dark:bg-stone-800">
+        <a href="/beliefs" class="px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 {% if current_page == 'beliefs' %} bg-white text-stone-900 shadow-sm dark:bg-stone-700 dark:text-white{% else %} text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white{% endif %}">
+          Our Beliefs
+        </a>
+        <a href="/pastor-letter" class="px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200{% if current_page == 'pastor-letter' %} bg-white text-stone-900 shadow-sm dark:bg-stone-700 dark:text-white{% else %} text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white{% endif %}">
+          Letter from the Pastor
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
