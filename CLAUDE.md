@@ -123,7 +123,8 @@ Saints Church is a Reformed Baptist church website built with Jekyll, featuring 
 │       ├── pastor.webp        # 13KB
 │       └── pastor.jpg         # 41KB fallback
 ├── js/
-│   └── animations.js          # IntersectionObserver implementation
+│   ├── site.js                # Main JavaScript (gets bundled)
+│   └── site.min.js            # Bundled JavaScript output
 ├── index.md                   # Homepage
 ├── beliefs.md                 # Beliefs page
 ├── pastor-letter.md           # Pastor letter
@@ -134,25 +135,12 @@ Saints Church is a Reformed Baptist church website built with Jekyll, featuring 
 
 ## Animation Implementation
 
-### JavaScript (animations.js)
-```javascript
-function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('run');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.3,
-    rootMargin: '0px 0px -100px 0px'
-  });
-
-  const animatedElements = document.querySelectorAll('.animate-reveal, .animate-fade-in, .animate-children');
-  animatedElements.forEach(el => observer.observe(el));
-}
-```
+### JavaScript (js/site.js - bundled into site.min.js)
+Main JavaScript file that gets bundled with Estrella build tool. Contains:
+- Tailwind Elements import
+- IntersectionObserver-based animations
+- Mobile-optimized thresholds for reliable animation triggering
+- Multiple threshold values `[0, 0.01, 0.05]` for long content containers
 
 ### CSS Custom Properties
 Uses Tailwind arbitrary properties for overrides:

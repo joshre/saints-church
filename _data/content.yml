@@ -15,11 +15,11 @@ header:
   title: '<span class="child">Where Jesus followers</span> Gather and Go'
   address: "11213 Outlet Dr, Knoxville, TN"
   service_time: "Sundays 9:30 AM"
-  description: "We are a local Church in Knoxville, Tennessee. Every Sunday at 9:30 AM, we gather for Church, the Lords Supper, and faithful teaching from God's Word. Then we live as disciples in our homes, workplaces, and communities."
+  description: "We are a local Church in Knoxville, Tennessee. Every Sunday at 9:30 AM, we gather for Church, the Lord's Supper, and faithful teaching from God's Word. Then we live as disciples in our homes, workplaces, and communities."
 
 mission:
   title: "Acts 2"
-  passage_html: "<strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">42</strong>&nbsp;And they devoted themselves to the apostles' <span>teaching</span> and the <span>fellowship</span>, to the <span>breaking of bread</span> and the <span>prayers</span>. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">43</strong>&nbsp;And awe came upon every soul, and many wonders and signs were being done through the apostles. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">44</strong>&nbsp;And all who believed are together and had all things in common. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">45</strong>&nbsp;And they were selling their possessions and belongings and distributing the proceeds to all, as any had need. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">46</strong>&nbsp;And day by day, attending the temple together and breaking bread in their homes, they received their food with glad and generous hearts, <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">47</strong>&nbsp;praising God and having favor with all the people. And the Lord added to their number day by day those who were being saved."
+  passage_html: "<strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">42</strong>&nbsp;And they devoted themselves to the apostles' <span>teaching</span> and the <span>fellowship</span>, to the <span>breaking of bread</span> and the <span>prayers</span>. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">43</strong>&nbsp;And awe came upon every soul, and many wonders and signs were being done through the apostles. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">44</strong>&nbsp;And all who believed were together and had all things in common. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">45</strong>&nbsp;And they were selling their possessions and belongings and distributing the proceeds to all, as any had need. <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">46</strong>&nbsp;And day by day, attending the temple together and breaking bread in their homes, they received their food with glad and generous hearts, <strong class=\"text-sm sm:text-xs font-display text-stone-700 dark:text-stone-300\">47</strong>&nbsp;praising God and having favor with all the people. And the Lord added to their number day by day those who were being saved."
 
 teaching:
   title: "Teaching"
@@ -41,7 +41,7 @@ breaking_bread:
     practice: "Practically, we partake of the Lord's Supper weekly. And any Christian who is not under discipline from another church may participate."
   meals:
     title: "Meals together"
-    description: "Eating with fellow believers as well as neighbors. All throughout the scriptures we see Jesus having meals with people. From the tax collector to the prostitute Jesus would welcome all to his table. We try our best to welcome our neighbors and our friends into our homes or our favorite restaurants, and even your buddy who works for the IRS."
+    description: "Eating with fellow believers as well as neighbors. Throughout the scriptures we see Jesus having meals with people. From the tax collector to the prostitute Jesus would welcome all to his table. We try our best to welcome our neighbors and our friends into our homes or our favorite restaurants, and even your buddy who works for the IRS."
 
 prayer:
   title: "Prayer"
@@ -92,7 +92,7 @@ about_us:
   growth: "We thought and prayed about doing the home church thing and starting another house church, but we felt like the community of people that God was leading us to was not ready for that kind of split. So one of our elders opened up his business office for us to meet in. We still meet there weekly, and guess what? There's room for you."
   family_church:
     title: "Family Church"
-    description: "In family church we gather all of our church together to review our weekly catechism, a teaching on that catechism at an age appropriate level, then spend some time worshipping all together as a community."
+    description: "In family church we gather our whole church together to review our weekly catechism, a teaching on that catechism at an age appropriate level, then spend some time worshipping all together as a community."
     children: "Our Sunday children's program is for babies to about 10. We believe that our children can handle \"adult church\" and we encourage you as a parent to make the decision when your child is ready to sit in service with you."
 
 visit_modal:

@@ -5,7 +5,7 @@ description: "Our Reformed Baptist beliefs and doctrinal distinctives based on t
 ---
 
 <!-- Article Layout -->
-<div class="min-h-screen bg-saints-white dark:bg-stone-900">
+<div class="min-h-screen bg-saints-white dark:bg-saints-black">
   {% include subnav.html %}
 
   <!-- Article Content -->

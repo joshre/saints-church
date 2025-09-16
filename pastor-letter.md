@@ -5,7 +5,7 @@ description: "A personal welcome from the pastoral team at Saints Church, a Refo
 ---
 
 <!-- Article Layout -->
-<div class="min-h-screen bg-saints-white dark:bg-stone-900">
+<div class="min-h-screen bg-saints-white dark:bg-saints-black">
   {% include subnav.html %}
 
   <!-- Article Content -->

@@ -4,7 +4,7 @@ title: Home
 description: "Saints Church, Knoxville TN—Bible-centered, Reformed Baptist. Expository preaching, 1689 Confession, Acts 2:42–47 fellowship. Sundays 9:30 AM at 11213 Outlet Dr."
 ---
 
-<div class="bg-saints-white dark:bg-stone-900">
+<div class="bg-saints-white dark:bg-saints-black">
 
   <main class="isolate">
     {% include header.html %}
