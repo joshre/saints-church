@@ -276,10 +276,10 @@ seo:
 
 images:
   placeholders:
-    church_building: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+    church_building: "/assets/images/building.webp"
     church_community: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80"
   alt_text:
-    church_building: "Saints Church building"
+    church_building: "Beige industrial building with black trim, MxU HQ sign, glass door under a black awning, bushes out front, cloudy sky above"
     church_community: "Church community gathered together in worship and fellowship"
     pastor: "Pastor Nate Ellis, Saints Church"
     fellowship:
