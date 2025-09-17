@@ -262,16 +262,37 @@ a:focus-visible,
     animation: none;
     transition: none;
   }
-  
+
   .hover-lift:hover,
   .hover-scale:hover,
   .text-hover-lift:hover {
     transform: none;
   }
-  
+
   .modal-content {
     transform: none;
     opacity: 1;
   }
+}
+
+/* Custom utility classes for common patterns */
+.heading-xl {
+  @apply font-display font-semibold tracking-tight text-stone-900 dark:text-white text-4xl sm:text-5xl lg:text-6xl;
+}
+
+.heading-lg {
+  @apply font-display font-semibold tracking-tight text-stone-900 dark:text-white text-3xl sm:text-4xl lg:text-5xl;
+}
+
+.heading-md {
+  @apply font-display font-semibold tracking-tight text-stone-900 dark:text-white text-xl sm:text-2xl;
+}
+
+.body-text {
+  @apply text-stone-600 dark:text-stone-300;
+}
+
+.body-text-muted {
+  @apply text-stone-700 dark:text-stone-400;
 }
 

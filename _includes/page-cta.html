@@ -1,16 +1,16 @@
 <!-- Footer CTA -->
 <div class="pt-12 mx-auto mt-16 max-w-2xl text-center border-t animate-reveal border-stone-200 dark:border-stone-800">
   {% if page.path == 'beliefs.md' %}
-    <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">Want to learn more about our church family?</p>
+    <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.page_cta.beliefs.message }}</p>
     <div class="flex flex-col gap-3 justify-center items-stretch mx-auto max-w-sm sm:flex-row sm:items-center sm:max-w-none">
-      {% include button.html href="/pastor-letter" text="Letter from the Pastor" class="w-full sm:w-auto" %}
-      {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
+      {% include button.html href="/pastor-letter" text=site.data.content.page_cta.beliefs.buttons.pastor_letter class="w-full sm:w-auto" %}
+      {% include button.html text=site.data.content.page_cta.beliefs.buttons.visit_us command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
     </div>
   {% else %}
-    <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">Ready to learn more about our church?</p>
+    <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.page_cta.default.message }}</p>
     <div class="flex flex-col gap-3 justify-center items-stretch mx-auto max-w-sm sm:flex-row sm:items-center sm:max-w-none">
-      {% include button.html href="/beliefs" text="Our Beliefs" class="w-full sm:w-auto" %}
-      {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
+      {% include button.html href="/beliefs" text=site.data.content.page_cta.default.buttons.beliefs class="w-full sm:w-auto" %}
+      {% include button.html text=site.data.content.page_cta.default.buttons.visit_us command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
     </div>
   {% endif %}
 </div>

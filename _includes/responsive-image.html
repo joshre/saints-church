@@ -1,0 +1,42 @@
+{% comment %}
+Responsive Image Component
+Parameters:
+- name: image filename without extension (required)
+- alt_key: key for alt text in site.data.content.images.alt_text (required)
+- class: CSS classes for the img element (optional)
+- container_class: CSS classes for the container div (optional)
+- delay: animation delay value (optional)
+- child_class: additional child animation classes (optional)
+- loading: loading attribute value (optional, defaults to lazy)
+- ring: whether to add ring overlay (optional, defaults to true)
+- ring_class: border radius class for ring (optional, defaults to rounded-xl)
+{% endcomment %}
+
+{% assign delay_class = '' %}
+{% if include.delay %}
+  {% assign delay_class = 'child ![--delay:' | append: include.delay | append: 's]' %}
+{% endif %}
+
+{% if include.child_class %}
+  {% assign delay_class = delay_class | append: ' ' | append: include.child_class %}
+{% endif %}
+
+{% assign loading_attr = include.loading | default: 'lazy' %}
+{% assign show_ring = include.ring | default: true %}
+{% assign ring_radius = include.ring_class | default: 'rounded-xl' %}
+
+<div class="{{ include.container_class }} {{ delay_class }}">
+  <picture>
+    <source srcset="{{ '/assets/images/' | append: include.name | append: '.avif' | relative_url }}" type="image/avif">
+    <source srcset="{{ '/assets/images/' | append: include.name | append: '.webp' | relative_url }}" type="image/webp">
+    <img
+      src="{{ '/assets/images/' | append: include.name | append: '.jpg' | relative_url }}"
+      alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+      class="{{ include.class }}"
+      loading="{{ loading_attr }}"
+    />
+  </picture>
+  {% if show_ring %}
+    <div class="absolute inset-0 {{ ring_radius }} ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
+  {% endif %}
+</div>

@@ -9,7 +9,17 @@ church:
   service_time: "Sundays 9:30 AM"
 
 navigation:
-  visit_us: "Visit Us"
+  site_name_aria: "Saints Church homepage"
+  buttons:
+    visit_us: "Visit Us"
+    reach_out: "Reach Out"
+  links:
+    beliefs: "Our Beliefs"
+    pastor_letter: "Letter from the Pastor"
+  email: "contact@saintschurchknox.com"
+  announcement:
+    text: "Letter from the pastor"
+    href: "/pastor-letter"
 
 header:
   title: '<span class="child">Where Jesus followers</span> Gather and Go'
@@ -26,6 +36,7 @@ teaching:
   subtitle: "Expository Preaching"
   description: "We believe God speaks through his Word. Each Sunday we work through books of the Bible verse by verse, allowing Scripture to set the agenda rather than current trends or topical preferences."
   details: "Our preaching aims to be faithful to the text, clear in explanation, and relevant to daily life. We trust that God's Word is sufficient for teaching, reproof, correction, and training in righteousness."
+  confession: "We are a confessional church, holding to the London Baptist Confession of Faith (1689) as a standard of doctrine."
 
 fellowship:
   title: "Fellowship"
@@ -185,13 +196,6 @@ footer:
     beliefs: "Our Beliefs"
     pastor_letter: "Letter from the Pastor"
 
-navigation:
-  site_name: "Saints Church"
-  site_name_aria: "Saints Church homepage"
-  buttons:
-    visit_us: "Visit Us"
-    reach_out: "Reach Out"
-  email: "contact@saintschurchknox.com"
 
 modal:
   visit:
@@ -205,3 +209,91 @@ modal:
     google_maps: "Google Maps"
     apple_maps: "Apple Maps"
     close_button: "Close"
+
+cta:
+  title: "Come Worship with Us"
+  description: "We meet each Sunday to hear God's Word, pray, and share the Lord's Supper. You'll find a warm welcome and clear teaching."
+  buttons:
+    visit_us: "Visit Us"
+    contact_us: "Questions? Contact Us"
+
+page_cta:
+  beliefs:
+    message: "Want to learn more about our church family?"
+    buttons:
+      pastor_letter: "Letter from the Pastor"
+      visit_us: "Visit Us"
+  default:
+    message: "Ready to learn more about our church?"
+    buttons:
+      beliefs: "Our Beliefs"
+      visit_us: "Visit Us"
+
+subnav:
+  beliefs: "Our Beliefs"
+  pastor_letter: "Letter from the Pastor"
+
+ui:
+  labels:
+    close_modal: "Close modal"
+    open_main_menu: "Open main menu"
+    section_navigation: "Section Navigation"
+    mobile_menu_title: "Menu"
+
+error_pages:
+  not_found:
+    title: "Page Not Found"
+    heading: "404"
+    subtitle: "Page not found"
+    description: "The requested page could not be found."
+    button_text: "Return Home"
+    button_href: "/"
+
+seo:
+  coordinates:
+    lat: "35.9373"
+    lng: "-84.0742"
+  service_type: "Sunday Worship Service"
+  meta:
+    theme_color: "#231f20"
+    tile_color: "#231f20"
+    og_locale: "en_US"
+    twitter_card: "summary_large_image"
+    article_section: "Church Information"
+    social_image: "/assets/icons/social-share.webp"
+    social_image_width: "1920"
+    social_image_height: "1080"
+  pages:
+    home:
+      title: "Home"
+      description: "Saints Church, Knoxville TN—Bible-centered, Reformed Baptist. Expository preaching, 1689 Confession, Acts 2:42–47 fellowship. Sundays 9:30 AM at 11213 Outlet Dr."
+    beliefs:
+      title: "Our Beliefs"
+      description: "Our Reformed Baptist beliefs and doctrinal distinctives based on the London Baptist Confession of 1689. Learn what Saints Church in Knoxville, TN believes about Scripture, salvation, baptism, and church life."
+    pastor_letter:
+      title: "Letter from the Pastor"
+      description: "A personal welcome from the pastoral team at Saints Church, a Reformed Baptist church in Knoxville, TN. Learn about our heart for expository preaching, biblical community, and gospel-centered church life."
+
+images:
+  placeholders:
+    church_building: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+    church_community: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80"
+  alt_text:
+    church_building: "Saints Church building"
+    church_community: "Church community gathered together in worship and fellowship"
+    pastor: "Pastor Nate Ellis, Saints Church"
+    fellowship:
+      conversation: "Man and woman engaged in warm conversation during church fellowship time"
+      joyful: "Joyful woman smiling while in fellowship with church community"
+      women_chat: "Women gathering and chatting in warm fellowship during church time"
+      redhead_baby: "Loving mother holding baby while enjoying fellowship with church family"
+      mothers: "Church mothers with their babies sharing warm fellowship moments"
+      hug: "Women embracing in genuine Christian fellowship and community"
+      kitchen: "Men gathering in the church kitchen for fellowship and conversation"
+      mother_baby: "Joyful mother holding her baby during church fellowship time"
+      men: "Men from Saints Church enjoying fellowship and brotherly conversation"
+    prayer:
+      family_1: "Church family engaged in prayer together"
+      family_2: "Saints Church members in communal prayer gathering"
+      communal_1: "Mother and child participating in family prayer time"
+      communal_2: "Church community gathered together for worship and prayer"

@@ -11,44 +11,16 @@
         </div>
       </div>
       <div class="flex flex-wrap gap-6 justify-end items-start sm:gap-8 lg:contents">
-        <div class="relative flex-auto w-0 lg:flex-none lg:self-end lg:ml-auto lg:w-auto child ![--delay:0.25s]">
-          <picture>
-            <source srcset="{{ '/assets/images/fellowship-conversation.avif' | relative_url }}" type="image/avif">
-            <source srcset="{{ '/assets/images/fellowship-conversation.webp' | relative_url }}" type="image/webp">
-            <img src="{{ '/assets/images/fellowship-conversation.jpg' | relative_url }}" alt="Man and woman engaged in warm conversation during church fellowship time" class="object-cover max-w-none rounded-2xl aspect-[7/5] w-[37rem] bg-stone-50 max-sm:w-[30rem] dark:bg-stone-800" />
-          </picture>
-          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-        </div>
+        {% include responsive-image.html name="fellowship-conversation" alt_key="fellowship.conversation" class="object-cover max-w-none rounded-2xl aspect-[7/5] w-[37rem] bg-stone-50 max-sm:w-[30rem] dark:bg-stone-800" container_class="relative flex-auto w-0 lg:flex-none lg:self-end lg:ml-auto lg:w-auto" delay="0.25" ring="true" ring_class="rounded-2xl" %}
         <div class="contents lg:flex lg:col-span-2 lg:col-end-2 lg:gap-x-8 lg:justify-end lg:items-start lg:ml-auto lg:w-[37rem]">
-          <div class="flex flex-none order-first justify-end self-end w-64 lg:w-auto max-sm:w-40 child ![--delay:0.25s]">
-            <div class="relative">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-joyful.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-joyful.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-joyful.jpg' | relative_url }}" alt="Joyful woman smiling while in fellowship with church community" class="object-cover flex-none max-w-none rounded-2xl aspect-[4/3] w-[24rem] bg-stone-50 dark:bg-stone-800" />
-              </picture>
-              <div class="absolute inset-0 rounded-2xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
+          <div class="flex flex-none order-first justify-end self-end w-64 lg:w-auto max-sm:w-40">
+            {% include responsive-image.html name="fellowship-joyful" alt_key="fellowship.joyful" class="object-cover flex-none max-w-none rounded-2xl aspect-[4/3] w-[24rem] bg-stone-50 dark:bg-stone-800" container_class="relative" delay="0.25" ring="true" ring_class="rounded-2xl" %}
           </div>
-          <div class="flex flex-auto justify-end w-96 lg:flex-none lg:w-auto child ![--delay:0.35s]">
-            <div class="relative">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-women-chat.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-women-chat.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-women-chat.jpg' | relative_url }}" alt="Women gathering and chatting in warm fellowship during church time" class="object-cover flex-none max-w-none rounded-2xl aspect-[7/5] w-[37rem] bg-stone-50 max-sm:w-[30rem] dark:bg-stone-800" />
-              </picture>
-              <div class="absolute inset-0 rounded-2xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
+          <div class="flex flex-auto justify-end w-96 lg:flex-none lg:w-auto">
+            {% include responsive-image.html name="fellowship-women-chat" alt_key="fellowship.women_chat" class="object-cover flex-none max-w-none rounded-2xl aspect-[7/5] w-[37rem] bg-stone-50 max-sm:w-[30rem] dark:bg-stone-800" container_class="relative" delay="0.35" ring="true" ring_class="rounded-2xl" %}
           </div>
-          <div class="hidden sm:block sm:flex-auto sm:w-0 lg:flex-none lg:w-auto child ![--delay:0.45s]">
-            <div class="relative">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-redhead-baby.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-redhead-baby.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-redhead-baby.jpg' | relative_url }}" alt="Loving mother holding baby while enjoying fellowship with church family" class="object-cover max-w-none rounded-2xl aspect-[4/3] w-[24rem] bg-stone-50 dark:bg-stone-800" />
-              </picture>
-              <div class="absolute inset-0 rounded-2xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
+          <div class="hidden sm:block sm:flex-auto sm:w-0 lg:flex-none lg:w-auto">
+            {% include responsive-image.html name="fellowship-redhead-baby" alt_key="fellowship.redhead_baby" class="object-cover max-w-none rounded-2xl aspect-[4/3] w-[24rem] bg-stone-50 dark:bg-stone-800" container_class="relative" delay="0.45" ring="true" ring_class="rounded-2xl" %}
           </div>
         </div>
       </div>

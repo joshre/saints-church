@@ -37,57 +37,19 @@
           </div>
           <p class="mt-6 text-lg text-stone-600 text-balance sm:text-xl/8 dark:text-stone-300 child ![--translate-y:0.25rem] ![--delay:0.25s]">{{ site.data.content.header.description }}</p>
           
-          <div class="grid grid-cols-2 gap-3 mt-8 sm:flex child ![--delay:0.35s]">
-            {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" icon="location" %}
-            {% include button.html text="Reach Out" href="mailto:contact@saintschurchknox.com" variant="secondary" icon="email" %}
-          </div>
+          {% include button-group.html type="visit_contact" container_class="grid grid-cols-2 gap-3 mt-8 sm:flex child ![--delay:0.35s]" %}
         </div>
         <div class="flex gap-8 justify-end mt-14 sm:justify-start sm:pl-20 sm:-mt-44 lg:flex-shrink-0 lg:pl-0 lg:mt-0">
           <div class="flex-none pt-32 ml-auto space-y-8 w-44 sm:pt-80 sm:ml-0 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
-            <div class="relative child ![--delay:0.35s]">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-mothers.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-mothers.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-mothers.jpg' | relative_url }}" alt="Church mothers with their babies sharing warm fellowship moments" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
-              </picture>
-              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
+            {% include responsive-image.html name="fellowship-mothers" alt_key="fellowship.mothers" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" container_class="relative" delay="0.35" %}
           </div>
           <div class="flex-none mr-auto space-y-8 w-44 sm:pt-52 sm:mr-0 lg:pt-36">
-            <div class="relative child ![--translate-y:-1rem] ![--delay:0.25s]">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-hug.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-hug.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-hug.jpg' | relative_url }}" alt="Women embracing in genuine Christian fellowship and community" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
-              </picture>
-              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
-            <div class="relative child ![--delay:0.45s]">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-kitchen.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-kitchen.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-kitchen.jpg' | relative_url }}" alt="Men gathering in the church kitchen for fellowship and conversation" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
-              </picture>
-              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
+            {% include responsive-image.html name="fellowship-hug" alt_key="fellowship.hug" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" container_class="relative" delay="0.25" child_class="![--translate-y:-1rem]" %}
+            {% include responsive-image.html name="fellowship-kitchen" alt_key="fellowship.kitchen" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" container_class="relative" delay="0.45" %}
           </div>
           <div class="flex-none pt-32 space-y-8 w-44 sm:pt-0">
-            <div class="relative child ![--delay:0.40s]">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-mother-baby.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-mother-baby.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-mother-baby.jpg' | relative_url }}" alt="Joyful mother holding her baby during church fellowship time" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
-              </picture>
-              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
-            <div class="relative child ![--delay:0.75s]">
-              <picture>
-                <source srcset="{{ '/assets/images/fellowship-men.avif' | relative_url }}" type="image/avif">
-                <source srcset="{{ '/assets/images/fellowship-men.webp' | relative_url }}" type="image/webp">
-                <img src="{{ '/assets/images/fellowship-men.jpg' | relative_url }}" alt="Men from Saints Church enjoying fellowship and brotherly conversation" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" />
-              </picture>
-              <div class="absolute inset-0 rounded-xl ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
-            </div>
+            {% include responsive-image.html name="fellowship-mother-baby" alt_key="fellowship.mother_baby" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" container_class="relative" delay="0.40" %}
+            {% include responsive-image.html name="fellowship-men" alt_key="fellowship.men" class="object-cover w-full rounded-xl shadow-lg aspect-[2/3] bg-stone-900/5 dark:bg-stone-700/5" container_class="relative" delay="0.75" %}
           </div>
         </div>
       </div>

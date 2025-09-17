@@ -5,26 +5,13 @@
     
     <div class="mt-6 border-t border-saints-500/30 border-dotted dark:border-white/10 child ![--delay:0.15s]">
       <dl class="divide-y divide-dotted divide-saints-500/30 dark:divide-white/10">
-        <div class="py-6 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 child ![--delay:0.25s]">
-          <dt class="font-medium text-sm/6 text-stone-900 dark:text-stone-100">9:30 AM</dt>
-          <dd class="mt-1 max-w-prose sm:col-span-2 sm:mt-0 text-sm/6 text-stone-700 dark:text-stone-400">Fellowship - We show up to church "early" to catch up, meet new friends, enjoy a quality cup of coffee and have some light snacks</dd>
-        </div>
-        <div class="py-6 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 child ![--delay:0.35s]">
-          <dt class="font-medium text-sm/6 text-stone-900 dark:text-stone-100">10:00 AM</dt>
-          <dd class="mt-1 max-w-prose sm:col-span-2 sm:mt-0 text-sm/6 text-stone-700 dark:text-stone-400">Family Church - All ages gather to review weekly catechism and worship together as a community</dd>
-        </div>
-        <div class="py-6 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 child ![--delay:0.45s]">
-          <dt class="font-medium text-sm/6 text-stone-900 dark:text-stone-100">10:30 AM</dt>
-          <dd class="mt-1 max-w-prose sm:col-span-2 sm:mt-0 text-sm/6 text-stone-700 dark:text-stone-400">Dismiss Kiddos - Children's program begins for babies to about 10 years old</dd>
-        </div>
-        <div class="py-6 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 child ![--delay:0.55s]">
-          <dt class="font-medium text-sm/6 text-stone-900 dark:text-stone-100">10:35 AM</dt>
-          <dd class="mt-1 max-w-prose sm:col-span-2 sm:mt-0 text-sm/6 text-stone-700 dark:text-stone-400">Prayer, Communion, Worship & Teaching - Main service for teens and adults</dd>
-        </div>
-        <div class="py-6 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 child ![--delay:0.65s]">
-          <dt class="font-medium text-sm/6 text-stone-900 dark:text-stone-100">11:30 AM</dt>
-          <dd class="mt-1 max-w-prose sm:col-span-2 sm:mt-0 text-sm/6 text-stone-700 dark:text-stone-400">Service concludes - "Where we goin for lunch?"</dd>
-        </div>
+        {% for item in site.data.content.schedule.items %}
+          {% assign delay = forloop.index0 | times: 0.1 | plus: 0.25 %}
+          <div class="py-6 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 child" style="--delay: {{ delay }}s">
+            <dt class="font-medium text-sm/6 text-stone-900 dark:text-stone-100">{{ item.time }}</dt>
+            <dd class="mt-1 max-w-prose sm:col-span-2 sm:mt-0 text-sm/6 text-stone-700 dark:text-stone-400">{{ item.activity }}</dd>
+          </div>
+        {% endfor %}
       </dl>
     </div>
   </div>

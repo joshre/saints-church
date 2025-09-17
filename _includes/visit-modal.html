@@ -7,10 +7,10 @@
         
         <div class="flex justify-between items-start">
           <div>
-            <h3 id="visit-modal-title" class="text-lg font-semibold dark:text-white text-stone-900">Visit Us</h3>
-            <p class="mt-1 text-sm text-stone-600 dark:text-stone-400">Join us for Sunday worship</p>
+            <h3 id="visit-modal-title" class="text-lg font-semibold dark:text-white text-stone-900">{{ site.data.content.modal.visit.title }}</h3>
+            <p class="mt-1 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.modal.visit.subtitle }}</p>
           </div>
-          <button type="button" command="close" commandfor="visit-modal" class="p-1 rounded-md transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none text-stone-400 ease-smooth dark:hover:bg-saints-500/20 dark:hover:text-saints-500 hover:bg-saints-500/10 hover:text-saints-500 focus-visible:ring-saints-500/50" aria-label="Close modal">
+          <button type="button" command="close" commandfor="visit-modal" class="p-1 rounded-md transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none text-stone-400 ease-smooth dark:hover:bg-saints-500/20 dark:hover:text-saints-500 hover:bg-saints-500/10 hover:text-saints-500 focus-visible:ring-saints-500/50" aria-label="{{ site.data.content.ui.labels.close_modal }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
@@ -19,7 +19,7 @@
 
         <div class="mt-6">
           <div class="overflow-hidden rounded-lg aspect-[3/2] bg-stone-100 dark:bg-stone-800">
-            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" alt="Saints Church building" class="object-cover w-full h-full" />
+            <img src="{{ site.data.content.images.placeholders.church_building }}" alt="{{ site.data.content.images.alt_text.church_building }}" class="object-cover w-full h-full" />
           </div>
         </div>
 
@@ -31,8 +31,8 @@
               </svg>
             </div>
             <div>
-              <p class="text-sm font-medium text-stone-900 dark:text-stone-100">Sunday Service</p>
-              <p class="text-sm text-stone-600 dark:text-stone-400">9:30 AM</p>
+              <p class="text-sm font-medium text-stone-900 dark:text-stone-100">{{ site.data.content.modal.visit.service_label }}</p>
+              <p class="text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.modal.visit.service_time }}</p>
             </div>
           </div>
         </div>
@@ -46,18 +46,15 @@
               </svg>
             </div>
             <div>
-              <p class="font-medium dark:text-white text-stone-900">{{ site.data.content.visit_modal.address }}</p>
-              <p class="text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.visit_modal.city_state }}</p>
+              <p class="font-medium dark:text-white text-stone-900">{{ site.data.content.modal.visit.address_full }}</p>
+              <p class="text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.modal.visit.city_state }}</p>
             </div>
           </div>
         </div>
 
         <div class="mt-8 space-y-3">
-          <div class="grid grid-cols-2 gap-3">
-            {% include button.html text="Google Maps" href="https://maps.google.com/?q=11213+Outlet+Dr+Knoxville+TN+37932" icon="map" class="justify-center w-full" %}
-            {% include button.html text="Apple Maps" href="https://maps.apple.com/?q=11213+Outlet+Dr+Knoxville+TN+37932" icon="location" class="justify-center w-full" %}
-          </div>
-          {% include button.html text="Close" command="close" commandfor="visit-modal" variant="secondary" class="w-full" %}
+          {% include button-group.html type="maps" container_class="grid grid-cols-2 gap-3" button_class="justify-center w-full" %}
+          {% include button.html text=site.data.content.modal.visit.close_button command="close" commandfor="visit-modal" variant="secondary" class="w-full" %}
         </div>
 
       </el-dialog-panel>

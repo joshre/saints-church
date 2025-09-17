@@ -1,0 +1,47 @@
+{% comment %}
+Button Group Component
+Parameters:
+- type: button group type (visit_contact, beliefs_letter, visit_beliefs, maps) (required)
+- container_class: CSS classes for the container div (optional)
+- button_class: CSS classes applied to both buttons (optional)
+- first_button_class: CSS classes for the first button only (optional)
+- second_button_class: CSS classes for the second button only (optional)
+{% endcomment %}
+
+{% if include.type == 'visit_contact' %}
+  <div class="{{ include.container_class }}">
+    {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
+    {% include button.html text=site.data.content.navigation.buttons.visit_us command="show-modal" commandfor="visit-modal" icon="location" %}
+    {% include button.html text=site.data.content.navigation.buttons.reach_out href=email_link variant="secondary" icon="email" %}
+  </div>
+
+{% elsif include.type == 'beliefs_letter' %}
+  <div class="{{ include.container_class }}">
+    {% include button.html href="/beliefs" text=site.data.content.footer.links.beliefs class=include.button_class %}
+    {% include button.html href="/pastor-letter" text=site.data.content.footer.links.pastor_letter class=include.button_class %}
+  </div>
+
+{% elsif include.type == 'visit_beliefs' %}
+  <div class="{{ include.container_class }}">
+    {% assign first_class = include.button_class %}
+    {% if include.first_button_class %}
+      {% assign first_class = first_class | append: ' ' | append: include.first_button_class %}
+    {% endif %}
+    {% assign second_class = include.button_class %}
+    {% if include.second_button_class %}
+      {% assign second_class = second_class | append: ' ' | append: include.second_button_class %}
+    {% endif %}
+    {% include button.html text=site.data.content.page_cta.default.buttons.visit_us command="show-modal" commandfor="visit-modal" class=first_class %}
+    {% include button.html href="/beliefs" text=site.data.content.page_cta.default.buttons.beliefs class=second_class %}
+  </div>
+
+{% elsif include.type == 'maps' %}
+  <div class="{{ include.container_class }}">
+    {% assign address_query = site.data.content.modal.visit.address_full | append: ' ' | append: site.data.content.modal.visit.city_state | replace: ' ', '+' | replace: ',', '%2C' %}
+    {% assign google_maps_url = 'https://maps.google.com/?q=' | append: address_query %}
+    {% assign apple_maps_url = 'https://maps.apple.com/?q=' | append: address_query %}
+    {% include button.html text=site.data.content.modal.visit.google_maps href=google_maps_url icon="map" class=include.button_class %}
+    {% include button.html text=site.data.content.modal.visit.apple_maps href=apple_maps_url icon="location" class=include.button_class %}
+  </div>
+
+{% endif %}

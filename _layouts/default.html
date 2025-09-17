@@ -22,29 +22,29 @@ layout: compress
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     <meta property="og:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
     <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-    <meta property="og:image" content="{{ '/social-share.webp' | absolute_url }}">
-    <meta property="og:image:width" content="1920">
-    <meta property="og:image:height" content="1080">
+    <meta property="og:image" content="{{ site.data.content.seo.meta.social_image | absolute_url }}">
+    <meta property="og:image:width" content="{{ site.data.content.seo.meta.social_image_width }}">
+    <meta property="og:image:height" content="{{ site.data.content.seo.meta.social_image_height }}">
     <meta property="og:site_name" content="{{ site.church.name }}">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="{{ site.data.content.seo.meta.og_locale }}">
     <meta property="article:author" content="{{ site.church.name }}">
-    <meta property="article:section" content="Church Information">
+    <meta property="article:section" content="{{ site.data.content.seo.meta.article_section }}">
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:card" content="{{ site.data.content.seo.meta.twitter_card }}">
     <meta property="twitter:url" content="{{ page.url | absolute_url }}">
     <meta property="twitter:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
     <meta property="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-    <meta property="twitter:image" content="{{ '/social-share.webp' | absolute_url }}">
+    <meta property="twitter:image" content="{{ site.data.content.seo.meta.social_image | absolute_url }}">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#231f20">
-    <meta name="msapplication-TileColor" content="#231f20">
-    <meta name="theme-color" content="#231f20">
+    <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#231f20">
+    <meta name="msapplication-TileColor" content="{{ site.data.content.seo.meta.tile_color }}">
+    <meta name="theme-color" content="{{ site.data.content.seo.meta.theme_color }}">
     
     <!-- Church Schema JSON-LD -->
     <script type="application/ld+json">
@@ -66,12 +66,12 @@ layout: compress
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": "35.9373",
-        "longitude": "-84.0742"
+        "latitude": "{{ site.data.content.seo.coordinates.lat }}",
+        "longitude": "{{ site.data.content.seo.coordinates.lng }}"
       },
       "denomination": "{{ site.church.denomination }}",
       "hasCredential": "{{ site.church.confession }}",
-      "serviceType": "Sunday Worship Service",
+      "serviceType": "{{ site.data.content.seo.service_type }}",
       "serviceTime": "{{ site.church.service_times.sunday }}",
       "sameAs": [
         "{{ site.url }}"
