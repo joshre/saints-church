@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "build": "./build.js",
-    "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\""
+    "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\"",
+    "generate-icons": "node scripts/generate-icons.js",
+    "update-icons": "git submodule update --remote assets/heroicons && yarn generate-icons"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.12",
@@ -17,5 +19,16 @@
   },
   "dependencies": {
     "@tailwindplus/elements": "^1.0.9"
-  }
+  },
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshre/saints-church.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/joshre/saints-church/issues"
+  },
+  "homepage": "https://github.com/joshre/saints-church#readme"
 }

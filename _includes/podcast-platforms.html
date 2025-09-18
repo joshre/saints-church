@@ -1,0 +1,50 @@
+{% comment %}
+Podcast platform links component using the button component system
+Editorial layout with sophisticated spacing and typography
+{% endcomment %}
+
+<div class="podcast-platforms animate-children">
+  <div class="text-center mb-12">
+    <div class="flex flex-col items-center gap-6 mb-8 child">
+      <div class="relative group">
+        <div class="absolute inset-0 bg-gradient-to-br from-saints-500/15 via-saints-600/10 to-saints-500/15 dark:from-saints-400/20 dark:via-saints-500/15 dark:to-saints-400/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-white/50 to-stone-100/30 dark:from-stone-800/50 dark:to-stone-900/30 rounded-2xl group-hover:scale-105 transition-transform duration-500 ease-out"></div>
+        <img src="/assets/images/podcast-logo.svg" alt="Saints Church Podcast Logo" class="relative size-20 rounded-2xl shadow-xl shadow-stone-900/10 dark:shadow-stone-900/25 border border-stone-200/60 dark:border-stone-700/60 group-hover:shadow-2xl group-hover:shadow-saints-500/20 transition-all duration-500 ease-out">
+      </div>
+      <div>
+        <h3 id="podcast-platforms" class="text-2xl font-bold font-display text-stone-900 dark:text-white mb-3 hover:text-saints-600 dark:hover:text-saints-400 transition-colors duration-300 cursor-default">{{ site.data.content.podcast.platforms.listen_title }}</h3>
+        <p class="text-base text-stone-600 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 transition-colors duration-300 cursor-default">Available on all major podcast platforms</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto child [--delay:0.15s]">
+    {% include button.html
+       href=site.podcast.platforms.overcast
+       text="Overcast"
+       icon="overcast"
+       variant="secondary"
+       class="h-16 text-base font-semibold platform-btn" %}
+
+    {% include button.html
+       href=site.podcast.platforms.spotify
+       text="Spotify"
+       icon="spotify"
+       variant="secondary"
+       class="h-16 text-base font-semibold platform-btn" %}
+
+    {% include button.html
+       href=site.podcast.platforms.apple
+       text="Apple Podcasts"
+       icon="apple-podcasts"
+       variant="secondary"
+       class="h-16 text-base font-semibold platform-btn" %}
+
+    {% include button.html
+       href=site.podcast.rss_url
+       text=site.data.content.podcast.platforms.rss_label
+       icon="rss"
+       variant="secondary"
+       class="h-16 text-base font-semibold platform-btn" %}
+  </div>
+</div>

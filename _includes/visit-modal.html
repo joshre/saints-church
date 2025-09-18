@@ -1,9 +1,9 @@
 <el-dialog>
   <dialog id="visit-modal" aria-labelledby="visit-modal-title" class="overflow-y-auto fixed inset-0 p-0 m-0 max-w-none bg-transparent size-auto max-h-none backdrop:bg-transparent">
-    <el-dialog-backdrop class="fixed inset-0 transition-opacity bg-black/50 backdrop-blur-sm data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"></el-dialog-backdrop>
+    <el-dialog-backdrop class="fixed inset-0 transition-opacity bg-black/50 backdrop-blur-sm data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"></el-dialog-backdrop>
 
     <div tabindex="0" class="flex justify-center items-end p-4 min-h-full text-center sm:items-center sm:p-0 focus:outline focus:outline-0">
-      <el-dialog-panel class="overflow-hidden relative p-6 text-left bg-white rounded-xl ring-1 shadow-2xl transition-all transform sm:my-8 sm:w-full sm:max-w-lg ring-saints-500/20 data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95 dark:bg-stone-900 dark:ring-saints-500/30">
+      <el-dialog-panel class="overflow-hidden relative h-full w-full rounded-xl bg-white p-6 text-left transition-all transform sm:my-8 sm:w-full sm:max-w-lg shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-stone-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_0px_rgba(255,255,255,0.06)_inset] data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
         
         <div class="flex justify-between items-start">
           <div>
@@ -11,7 +11,7 @@
             <p class="mt-1 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.modal.visit.subtitle }}</p>
           </div>
           <button type="button" command="close" commandfor="visit-modal" class="p-1 rounded-md transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none text-stone-400 ease-smooth dark:hover:bg-saints-500/20 dark:hover:text-saints-500 hover:bg-saints-500/10 hover:text-saints-500 focus-visible:ring-saints-500/50" aria-label="{{ site.data.content.ui.labels.close_modal }}">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
@@ -25,8 +25,8 @@
 
         <div class="p-4 mt-6 rounded-lg ring-1 bg-saints-500/8 ring-saints-500/20 dark:bg-saints-500/10">
           <div class="flex gap-3 items-center">
-            <div class="flex justify-center items-center w-8 h-8 rounded-full bg-saints-500/20 dark:bg-saints-500/30">
-              <svg class="w-4 h-4 text-saints-500 dark:text-saints-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex justify-center items-center size-8 rounded-full bg-saints-500/20 dark:bg-saints-500/30">
+              <svg class="size-4 text-saints-500 dark:text-saints-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
             </div>
@@ -39,8 +39,8 @@
 
         <div class="mt-6">
           <div class="flex gap-3 items-start">
-            <div class="flex justify-center items-center w-8 h-8 rounded-full bg-saints-500/10 dark:bg-saints-500/20">
-              <svg class="w-4 h-4 text-saints-500 dark:text-saints-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex justify-center items-center size-8 rounded-full bg-saints-500/10 dark:bg-saints-500/20">
+              <svg class="size-4 text-saints-500 dark:text-saints-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <div class="mt-8 space-y-3">
+        <div class="mt-8 flex flex-col gap-3">
           {% include button-group.html type="maps" container_class="grid grid-cols-2 gap-3" button_class="justify-center w-full" %}
           {% include button.html text=site.data.content.modal.visit.close_button command="close" commandfor="visit-modal" variant="secondary" class="w-full" %}
         </div>

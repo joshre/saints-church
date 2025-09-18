@@ -1,0 +1,33 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AudioObject",
+  "name": {{ page.title | jsonify }},
+  "description": {{ page.description | default: page.excerpt | strip_html | jsonify }},
+  "creator": {
+    "@type": "Person",
+    "name": {{ page.pastor | default: site.podcast.author | jsonify }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.church.name | jsonify }},
+    "url": {{ site.url | jsonify }}
+  },
+  {% if page.audio_url -%}
+  "contentUrl": {{ page.audio_url | jsonify }},
+  {%- endif %}
+  {% if page.duration -%}
+  "duration": {{ page.duration | jsonify }},
+  {%- endif %}
+  "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+  "about": {
+    "@type": "Thing",
+    "name": {{ page.scripture | default: 'Biblical Teaching' | jsonify }}
+  },
+  "isPartOf": {
+    "@type": "PodcastSeries",
+    "name": {{ site.podcast.title | jsonify }},
+    "url": "{{ site.url }}/sermons/"
+  }
+}
+</script>

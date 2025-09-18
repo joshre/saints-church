@@ -68,14 +68,306 @@ function initMobileNav() {
   });
 }
 
+// Audio Player functionality
+function initAudioPlayers() {
+  class SermonPlayer {
+    constructor(container) {
+      this.container = container;
+      this.playerId = container.dataset.playerId;
+      this.audio = container.querySelector('audio');
+      this.playPauseBtn = container.querySelector('.play-pause-btn');
+      this.progressBar = container.querySelector('.progress-bar');
+      this.progressFill = container.querySelector('.progress-fill');
+      this.progressHandle = container.querySelector('.progress-handle');
+      this.currentTimeEl = container.querySelector('.current-time');
+      this.durationEl = container.querySelector('.duration');
+      this.skipBackBtn = container.querySelector('.skip-back');
+      this.skipForwardBtn = container.querySelector('.skip-forward');
+      this.speedBtn = container.querySelector('.speed-toggle');
+      this.speedText = container.querySelector('.speed-text');
+      this.loadingState = container.querySelector('.loading-state');
+      this.errorState = container.querySelector('.error-state');
+      this.playerControls = container.querySelector('.player-controls');
+
+      this.speeds = [1, 1.25, 1.5, 2];
+      this.currentSpeedIndex = 0;
+      this.isLoaded = false;
+
+      this.init();
+    }
+
+    init() {
+      this.setupEventListeners();
+      this.loadState();
+    }
+
+    setupEventListeners() {
+      if (!this.playPauseBtn) return;
+
+      this.playPauseBtn.addEventListener('click', () => this.togglePlayPause());
+
+      if (this.progressBar) {
+        this.progressBar.addEventListener('click', (e) => this.seek(e));
+        this.progressBar.addEventListener('mouseenter', () => this.showHandle());
+        this.progressBar.addEventListener('mouseleave', () => this.hideHandle());
+      }
+
+      if (this.skipBackBtn) this.skipBackBtn.addEventListener('click', () => this.skip(-15));
+      if (this.skipForwardBtn) this.skipForwardBtn.addEventListener('click', () => this.skip(15));
+      if (this.speedBtn) this.speedBtn.addEventListener('click', () => this.toggleSpeed());
+
+      if (this.audio) {
+        this.audio.addEventListener('loadedmetadata', () => this.onLoadedMetadata());
+        this.audio.addEventListener('timeupdate', () => this.onTimeUpdate());
+        this.audio.addEventListener('ended', () => this.onEnded());
+        this.audio.addEventListener('error', () => this.onError());
+        this.audio.addEventListener('loadstart', () => this.onLoadStart());
+      }
+
+      this.container.addEventListener('keydown', (e) => this.handleKeyboard(e));
+
+      if ('mediaSession' in navigator) {
+        this.setupMediaSession();
+      }
+    }
+
+    loadAudio() {
+      if (!this.isLoaded && this.audio && this.audio.dataset.src) {
+        this.audio.src = this.audio.dataset.src;
+        this.audio.load();
+        this.isLoaded = true;
+      }
+    }
+
+    togglePlayPause() {
+      this.loadAudio();
+      if (this.audio.paused) {
+        this.play();
+      } else {
+        this.pause();
+      }
+    }
+
+    async play() {
+      try {
+        await this.audio.play();
+        this.updatePlayPauseButton('playing');
+        this.saveState();
+      } catch (error) {
+        console.error('Error playing audio:', error);
+        this.onError();
+      }
+    }
+
+    pause() {
+      this.audio.pause();
+      this.updatePlayPauseButton('paused');
+      this.saveState();
+    }
+
+    seek(event) {
+      const rect = this.progressBar.getBoundingClientRect();
+      const percent = (event.clientX - rect.left) / rect.width;
+      const time = percent * this.audio.duration;
+      if (isFinite(time)) {
+        this.audio.currentTime = time;
+        this.saveState();
+      }
+    }
+
+    skip(seconds) {
+      if (this.audio.duration) {
+        const newTime = Math.max(0, Math.min(this.audio.currentTime + seconds, this.audio.duration));
+        this.audio.currentTime = newTime;
+        this.saveState();
+      }
+    }
+
+    toggleSpeed() {
+      this.currentSpeedIndex = (this.currentSpeedIndex + 1) % this.speeds.length;
+      const speed = this.speeds[this.currentSpeedIndex];
+      this.audio.playbackRate = speed;
+      if (this.speedText) {
+        this.speedText.textContent = speed === 1 ? '1×' : `${speed}×`;
+      }
+      this.saveState();
+    }
+
+    updatePlayPauseButton(state) {
+      const playIcon = this.playPauseBtn.querySelector('.play-icon');
+      const pauseIcon = this.playPauseBtn.querySelector('.pause-icon');
+
+      if (state === 'playing') {
+        if (playIcon) playIcon.classList.add('hidden');
+        if (pauseIcon) pauseIcon.classList.remove('hidden');
+        this.playPauseBtn.setAttribute('aria-label', 'Pause sermon');
+        this.playPauseBtn.dataset.state = 'playing';
+      } else {
+        if (playIcon) playIcon.classList.remove('hidden');
+        if (pauseIcon) pauseIcon.classList.add('hidden');
+        this.playPauseBtn.setAttribute('aria-label', 'Play sermon');
+        this.playPauseBtn.dataset.state = 'paused';
+      }
+    }
+
+    updateProgress() {
+      if (this.audio.duration && this.progressFill && this.progressHandle) {
+        const percent = (this.audio.currentTime / this.audio.duration) * 100;
+        this.progressFill.style.width = `${percent}%`;
+        this.progressHandle.style.left = `${percent}%`;
+        if (this.progressBar) {
+          this.progressBar.setAttribute('aria-valuenow', Math.round(percent));
+        }
+      }
+    }
+
+    updateTime() {
+      if (this.currentTimeEl) {
+        this.currentTimeEl.textContent = this.formatTime(this.audio.currentTime);
+      }
+      if (this.audio.duration && this.durationEl) {
+        this.durationEl.textContent = this.formatTime(this.audio.duration);
+      }
+    }
+
+    formatTime(seconds) {
+      if (!isFinite(seconds)) return '--:--';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    showHandle() {
+      if (this.progressHandle) {
+        this.progressHandle.style.opacity = '1';
+      }
+    }
+
+    hideHandle() {
+      if (this.progressHandle) {
+        this.progressHandle.style.opacity = '0';
+      }
+    }
+
+    onLoadStart() {
+      if (this.loadingState) this.loadingState.classList.remove('hidden');
+      if (this.playerControls) this.playerControls.style.opacity = '0.5';
+    }
+
+    onLoadedMetadata() {
+      if (this.loadingState) this.loadingState.classList.add('hidden');
+      if (this.errorState) this.errorState.classList.add('hidden');
+      if (this.playerControls) this.playerControls.style.opacity = '1';
+      this.updateTime();
+      this.restoreState();
+    }
+
+    onTimeUpdate() {
+      this.updateProgress();
+      this.updateTime();
+    }
+
+    onEnded() {
+      this.updatePlayPauseButton('paused');
+      this.audio.currentTime = 0;
+      this.updateProgress();
+    }
+
+    onError() {
+      if (this.loadingState) this.loadingState.classList.add('hidden');
+      if (this.errorState) this.errorState.classList.remove('hidden');
+      if (this.playerControls) this.playerControls.style.opacity = '0.5';
+    }
+
+    saveState() {
+      const state = {
+        currentTime: this.audio.currentTime,
+        playbackRate: this.audio.playbackRate,
+        speedIndex: this.currentSpeedIndex,
+        lastPlayed: Date.now()
+      };
+      localStorage.setItem(`sermon-${this.playerId}`, JSON.stringify(state));
+    }
+
+    loadState() {
+      const saved = localStorage.getItem(`sermon-${this.playerId}`);
+      if (saved) {
+        this.savedState = JSON.parse(saved);
+      }
+    }
+
+    restoreState() {
+      if (this.savedState) {
+        if (this.savedState.playbackRate) {
+          this.audio.playbackRate = this.savedState.playbackRate;
+          this.currentSpeedIndex = this.savedState.speedIndex || 0;
+          const speed = this.speeds[this.currentSpeedIndex];
+          if (this.speedText) {
+            this.speedText.textContent = speed === 1 ? '1×' : `${speed}×`;
+          }
+        }
+
+        if (this.savedState.lastPlayed && (Date.now() - this.savedState.lastPlayed) < 7 * 24 * 60 * 60 * 1000) {
+          if (this.savedState.currentTime && this.savedState.currentTime > 5) {
+            this.audio.currentTime = this.savedState.currentTime;
+          }
+        }
+      }
+    }
+
+    handleKeyboard(event) {
+      if (!this.container.contains(document.activeElement)) return;
+
+      switch(event.key) {
+        case ' ':
+          event.preventDefault();
+          this.togglePlayPause();
+          break;
+        case 'ArrowLeft':
+          event.preventDefault();
+          this.skip(event.shiftKey ? -30 : -15);
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          this.skip(event.shiftKey ? 30 : 15);
+          break;
+      }
+    }
+
+    setupMediaSession() {
+      const title = this.container.querySelector('.player-header h3')?.textContent || 'Sermon';
+      const scripture = this.container.querySelector('.player-header p')?.textContent || '';
+
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: title,
+        artist: 'Saints Church',
+        album: scripture,
+        artwork: [
+          { src: '/assets/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+        ]
+      });
+
+      navigator.mediaSession.setActionHandler('play', () => this.play());
+      navigator.mediaSession.setActionHandler('pause', () => this.pause());
+      navigator.mediaSession.setActionHandler('seekbackward', () => this.skip(-15));
+      navigator.mediaSession.setActionHandler('seekforward', () => this.skip(15));
+    }
+  }
+
+  const players = document.querySelectorAll('.sermon-player');
+  players.forEach(player => new SermonPlayer(player));
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initMobileNav();
+    initAudioPlayers();
   });
 } else {
   initScrollAnimations();
   initMobileNav();
+  initAudioPlayers();
 }
 

@@ -15,6 +15,7 @@ navigation:
     reach_out: "Reach Out"
   links:
     beliefs: "Our Beliefs"
+    sermons: "Sermons"
     pastor_letter: "Letter from the Pastor"
   email: "contact@saintschurchknox.com"
   announcement:
@@ -122,7 +123,7 @@ beliefs:
 
     <p>When we say we are "confessional" we mean that we gladly and publicly confess what we believe the Bible teaches about God, salvation, the church, and Christian living. We find great wisdom in learning from those who have gone before us.</p>
 
-    <p><strong>What makes us different from other baptists?</strong></p>
+    <h3>What makes us "baptists"?</h3>
 
     <p>We believe in the sovereignty of God in salvation. We believe that God chooses who will be saved, and that salvation is entirely by grace through faith - not by human decision or effort.</p>
 
@@ -130,7 +131,7 @@ beliefs:
 
     <p>We celebrate the Lord's Supper weekly as a church family, believing it to be a means of grace and a foretaste of the great wedding feast to come.</p>
 
-    <p><strong>Our approach to ministry:</strong></p>
+    <h3>Our approach to ministry</h3>
 
     <p>We are committed to expository preaching - working through books of the Bible verse by verse rather than topical sermons.</p>
 
@@ -138,7 +139,7 @@ beliefs:
 
     <p>We practice church discipline with love and gentleness, always with the goal of restoration and the purity of the church.</p>
 
-    <p><strong>Family integrated worship:</strong></p>
+    <h3>Family integrated worship</h3>
 
     <p>We believe children are a blessing and should be included in worship. We don't have separate children's church during the main service, though we do provide nursery for the very young.</p>
 
@@ -148,39 +149,27 @@ pastor_letter:
   title: "A Letter from Our Pastor"
   pastor_name: "Pastor Nate Ellis"
   content_html: |
-    <p>Grace and peace to you from God our Father and the Lord Jesus Christ.</p>
+    <p>Hey there! My name is Nate Ellis and I serve as lead pastor here at Saints Church. If you've found yourself on our website and this letter, chances are you're probably looking for a new church or you're curious about who we are and what we're about. So let me share some of that with you!</p>
 
-    <p>If you've found your way to our website, chances are you're looking for a church home, or at least curious about what we're about. Let me save you some time - we're not trying to be the biggest, the flashiest, or the most entertaining church in Knoxville.</p>
+    <h2>Who we are</h2>
 
-    <p>What we are trying to be is faithful.</p>
+    <p>We are a church that is trying to be as intentional with what God has given us. That starts with the way we treat the Word of God and goes all the way down to the facility we meet at. We started meeting as a congregation in September of 2022 in a home and moved to the facility we meet at now in June of 2024.</p>
 
-    <p>Faithful to God's Word. Faithful to the gospel. Faithful to one another as a church family.</p>
+    <p>We are a smaller congregation with a heavy emphasis on the Word and Work of Jesus Christ. As well as community, family, service to one another and the community around us. We're not perfect - we're sinners saved by grace, learning to love God and each other better. But we're committed to growing together in Christ.</p>
 
-    <p><strong>Who we are:</strong></p>
+    <h2>What we're about</h2>
 
-    <p>We're a small congregation that started meeting in 2022. Most of us are young families with kids who make noise during the service (and we're okay with that). We meet in an elder's business office because that's what we can afford, and honestly, it suits us just fine.</p>
+    <p>Our mission as a church is to be Jesus followers who gather and go. Gathering was incredibly important to the early church and we find it to be incredibly important now. That's why we make time every Sunday to fellowship. That's why we make time in the week to gather (in many different ways) to stay connected. We also want to go into the world and make disciples, just as Jesus commands us, and we believe that starts in your home. Go wherever God has placed you. And God has placed you in an apartment with roommates, as a husband or wife, father, mother, or grandparent. Wherever God has placed you, that's where God wants you to make disciples.</p>
 
-    <p>We're Reformed Baptists, which means we believe in the sovereignty of God in salvation and the authority of Scripture in all matters of faith and practice. We use the London Baptist Confession of Faith (1689) as our doctrinal standard.</p>
+    <p>Our church is made up of a lot of young families, so our Sunday morning rhythm reflects that. We make time to worship together as a church family with our kiddos. It's kind of crazy, but we're alright with that because our children need to see the people of God worship the God of all creation. We also have a separate space for kids during Sunday morning to be cared for by a team of church members, continue to learn our catechism and Bible story for the week, and of course have fun! This ministry is provided for infants to about age 10. We really leave that up to the parent to decide, but we believe older children can participate and bring value to our church body.</p>
 
-    <p><strong>What to expect:</strong></p>
+    <p>Worship through song on Sunday mornings is simple on purpose. We sing songs of worship that direct us to our Lord, Jesus Christ. Usually with an acoustic guitar and keyboard.</p>
 
-    <p>Our worship is simple and Word-centered. We sing psalms, hymns, and some modern worship songs (with an acoustic guitar and keyboard), we pray together, we celebrate the Lord's Supper weekly, and we preach through books of the Bible verse by verse.</p>
+    <p>On Sunday mornings, we teach verse by verse each week through a book of the Bible. We also pray scripture, usually the Psalms. So bring your Bible and get ready to use it. Feel free to check out our Sunday sermon archive to get a taste of the weekly preaching.</p>
 
-    <p>Don't expect a show - expect to meet with God through His Word and with His people in genuine fellowship.</p>
+    <p>Whether it be our church or another, we pray that God would lead you to a church that preaches the word of God and continually preaches the Gospel of Jesus Christ. That is the only message that saves.</p>
 
-    <p><strong>Our heart:</strong></p>
-
-    <p>We believe the local church should be a family. We know each other's names, we eat in each other's homes, we bear each other's burdens, and we celebrate each other's joys.</p>
-
-    <p>We're not perfect - we're sinners saved by grace, learning to love God and each other better. But we're committed to growing together in Christ.</p>
-
-    <p>If you're looking for a church that takes God's Word seriously, values authentic community, and isn't afraid to be small in order to be faithful, we'd love to have you visit.</p>
-
-    <p><strong>Come as you are:</strong></p>
-
-    <p>Whether you're a longtime believer or just curious about Christianity, whether you're single or married, young or old, we'd be honored to have you join us on Sunday morning.</p>
-
-    <p>In Christ,<br>Pastor Nate Ellis</p>
+    <p>God bless!<br>Nate Ellis</p>
 
 footer:
   address: "11213 Outlet Dr, Knoxville, TN 37932"
@@ -195,7 +184,6 @@ footer:
   links:
     beliefs: "Our Beliefs"
     pastor_letter: "Letter from the Pastor"
-
 
 modal:
   visit:
@@ -228,6 +216,29 @@ page_cta:
     buttons:
       beliefs: "Our Beliefs"
       visit_us: "Visit Us"
+
+sermons:
+  title: "Sermons"
+  subtitle: "Expository Preaching from God's Word"
+  description: ""
+  details: "Our sermons are available as audio recordings and can be listened to on your favorite podcast platform. We believe that hearing God's Word preached faithfully is essential for spiritual growth and discipleship."
+  latest_title: "Latest Sermons"
+  listen_text: "Listen on your favorite platform"
+  archive_text: "View All Sermons"
+  archive_subtitle: "Our church's Sunday morning sermon archive"
+  back_to_sermons: "Back to All Sermons"
+  cta:
+    sermons_page:
+      title: "Come Worship with Us"
+      description: "Join us every Sunday at 9:30 AM for expository preaching, the Lord's Supper, and fellowship in Christ."
+    episode_page:
+      title: "Join Us This Sunday"
+      description: "Experience expository preaching, the Lord's Supper, and genuine fellowship at Saints Church."
+
+podcast:
+  platforms:
+    listen_title: "Listen on your favorite platform"
+    rss_label: "RSS Feed"
 
 subnav:
   beliefs: "Our Beliefs"
@@ -273,6 +284,9 @@ seo:
     pastor_letter:
       title: "Letter from the Pastor"
       description: "A personal welcome from the pastoral team at Saints Church, a Reformed Baptist church in Knoxville, TN. Learn about our heart for expository preaching, biblical community, and gospel-centered church life."
+    sermons:
+      title: "Sermons"
+      description: "Listen to expository sermons from Saints Church in Knoxville, TN. Reformed Baptist preaching through books of the Bible verse-by-verse, available on Apple Podcasts, Spotify, and Overcast."
 
 images:
   placeholders:

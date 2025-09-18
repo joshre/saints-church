@@ -1,0 +1,76 @@
+name: Update Heroicons
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+
+  # Run weekly to check for Heroicons updates
+  schedule:
+    - cron: '0 2 * * 1' # Every Monday at 2 AM UTC
+
+  # Trigger when the workflow file is changed
+  push:
+    paths:
+      - '.github/workflows/update-icons.yml'
+      - 'scripts/generate-icons.js'
+
+jobs:
+  update-icons:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Update Heroicons submodule
+        run: |
+          git submodule update --remote assets/heroicons
+
+      - name: Check for Heroicons changes
+        id: check-changes
+        run: |
+          if git diff --quiet HEAD -- assets/heroicons; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "No Heroicons updates found"
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "Heroicons updates detected"
+          fi
+
+      - name: Generate icon template
+        if: steps.check-changes.outputs.changes == 'true'
+        run: |
+          node scripts/generate-icons.js
+
+      - name: Check for icon template changes
+        if: steps.check-changes.outputs.changes == 'true'
+        id: check-template
+        run: |
+          if git diff --quiet HEAD -- _includes/icon.html; then
+            echo "template-changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "template-changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changes == 'true' && steps.check-template.outputs.template-changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add assets/heroicons _includes/icon.html
+          git commit -m "Update Heroicons and regenerate icon template
+
+          🤖 Automated update via GitHub Actions
+
+          - Updated Heroicons submodule to latest version
+          - Regenerated _includes/icon.html with new icons
+          - All icons site-wide will now use latest versions"
+          git push

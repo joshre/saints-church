@@ -1,0 +1,412 @@
+# Saints Church Podcast Sync Workflow
+#
+# This workflow automatically syncs sermon episodes from the Saints Church RSS feed
+# (https://anchor.fm/s/f5d78a70/podcast/rss) to Jekyll posts in the _posts/ directory.
+#
+# Key Features:
+# - 🎯 Parses RSS feed for episode metadata (title, description, audio URL, duration, GUID)
+# - 📝 Creates Jekyll posts with proper frontmatter (layout: sermon, scripture references, series detection)
+# - 🔄 Prevents duplicates using GUID tracking in _data/processed_episodes.json
+# - 📅 Scheduled to run weekly on Sundays at 9:00 AM UTC (after sermon uploads)
+# - ⛪ Optimized for Reformed Baptist context with enhanced scripture reference extraction
+# - 🤖 Automated commits with descriptive messages including episode titles
+#
+# Reformed Baptist Context:
+# - Automatically detects biblical book series for expository preaching (John, Galatians, etc.)
+# - Enhanced scripture reference patterns for confessional Baptist sermons
+# - Pastor Nate Ellis attribution with fallback to RSS feed author
+#
+# File Structure:
+# - Posts: _posts/YYYY-MM-DD-scripture-reference.md
+# - Tracking: _data/processed_episodes.json (GUID duplicate prevention)
+# - Layout: Uses "sermon" layout with comprehensive frontmatter
+#
+# Manual Trigger: Can be triggered manually via GitHub Actions "workflow_dispatch"
+
+name: Sync Podcast Episodes
+
+on:
+  schedule:
+    # Run weekly on Sundays at 9:00 AM UTC (4:00 AM EST / 5:00 AM EDT)
+    # This timing allows for sermon uploads after Sunday service
+    - cron: '0 9 * * 0'
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  contents: write
+
+jobs:
+  sync-podcast:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Create package.json for dependencies
+        run: |
+          cat > package.json << 'EOF'
+          {
+            "name": "podcast-sync",
+            "version": "1.0.0",
+            "dependencies": {
+              "rss-parser": "^3.13.0",
+              "front-matter": "^4.0.2"
+            }
+          }
+          EOF
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create processed episodes tracking file
+        run: |
+          mkdir -p _data
+          if [ ! -f "_data/processed_episodes.json" ]; then
+            echo "[]" > _data/processed_episodes.json
+          fi
+
+      - name: Create posts directory
+        run: mkdir -p _posts
+
+      - name: Sync podcast episodes
+        run: |
+          cat > sync-episodes.js << 'EOF'
+          const Parser = require('rss-parser');
+          const fs = require('fs');
+          const path = require('path');
+
+          const parser = new Parser({
+            customFields: {
+              item: [
+                'guid',
+                'enclosure',
+                'itunes:duration',
+                'itunes:author',
+                'itunes:explicit',
+                'itunes:subtitle',
+                'itunes:summary',
+                'itunes:keywords',
+                'itunes:season',
+                'itunes:episode'
+              ]
+            }
+          });
+
+          const RSS_URL = 'https://anchor.fm/s/f5d78a70/podcast/rss';
+          const PROCESSED_FILE = '_data/processed_episodes.json';
+          const POSTS_DIR = '_posts';
+
+          // Load processed episodes
+          function loadProcessedEpisodes() {
+            try {
+              if (fs.existsSync(PROCESSED_FILE)) {
+                const data = fs.readFileSync(PROCESSED_FILE, 'utf8');
+                return JSON.parse(data);
+              }
+            } catch (error) {
+              console.log('Error loading processed episodes:', error.message);
+            }
+            return [];
+          }
+
+          // Save processed episodes
+          function saveProcessedEpisodes(episodes) {
+            try {
+              fs.writeFileSync(PROCESSED_FILE, JSON.stringify(episodes, null, 2));
+              console.log(`Saved ${episodes.length} processed episodes to tracking file`);
+            } catch (error) {
+              console.error('Error saving processed episodes:', error.message);
+            }
+          }
+
+          // Extract scripture references from title or description
+          function extractScripture(text) {
+            if (!text) return null;
+
+            // Common Bible book patterns - enhanced for Reformed Baptist context
+            const patterns = [
+              // Full book names with comprehensive verse patterns
+              /\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|1 Samuel|2 Samuel|1 Kings|2 Kings|1 Chronicles|2 Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song of Songs|Song of Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|1 Corinthians|2 Corinthians|Galatians|Ephesians|Philippians|Colossians|1 Thessalonians|2 Thessalonians|1 Timothy|2 Timothy|Titus|Philemon|Hebrews|James|1 Peter|2 Peter|1 John|2 John|3 John|Jude|Revelation)\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/gi,
+
+              // Abbreviated forms (common in Reformed circles)
+              /\b(?:Gen|Ex|Exod|Lev|Num|Deut|Josh|Judg|1Sam|2Sam|1Kgs|2Kgs|1Chr|2Chr|Ezr|Neh|Est|Ps|Prov|Eccl|Song|Isa|Jer|Lam|Ezek|Dan|Hos|Joel|Amos|Obad|Jonah|Mic|Nah|Hab|Zeph|Hag|Zech|Mal|Matt|Mk|Lk|Jn|Acts|Rom|1Cor|2Cor|Gal|Eph|Phil|Col|1Thess|2Thess|1Tim|2Tim|Tit|Phlm|Heb|Jas|1Pet|2Pet|1Jn|2Jn|3Jn|Jude|Rev)\.?\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/gi,
+
+              // Roman numeral books
+              /\b(?:I|II|III|IV)\s+(?:Samuel|Kings|Chronicles|Corinthians|Thessalonians|Timothy|Peter|John)\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/gi,
+
+              // Single chapter books
+              /\b(?:Obadiah|Philemon|2 John|3 John|Jude)\s*(?:v\.?\s*\d+(?:[-–]\d+)?)?\b/gi
+            ];
+
+            for (const pattern of patterns) {
+              const match = text.match(pattern);
+              if (match) {
+                // Clean up the reference
+                let reference = match[0].trim();
+                // Standardize em-dashes and en-dashes to hyphens
+                reference = reference.replace(/[–—]/g, '-');
+                return reference;
+              }
+            }
+
+            return null;
+          }
+
+          // Parse duration from various formats
+          function parseDuration(duration) {
+            if (!duration) return null;
+
+            // Handle MM:SS or HH:MM:SS format
+            const parts = duration.split(':').map(p => parseInt(p, 10));
+
+            if (parts.length === 2) {
+              // MM:SS
+              const [minutes, seconds] = parts;
+              return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            } else if (parts.length === 3) {
+              // HH:MM:SS
+              const [hours, minutes, seconds] = parts;
+              if (hours > 0) {
+                return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+              } else {
+                return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+              }
+            }
+
+            return duration;
+          }
+
+          // Generate Jekyll filename from date and title
+          function generateFilename(date, title) {
+            const dateStr = date.toISOString().split('T')[0];
+            const slug = title
+              .toLowerCase()
+              .replace(/[^\w\s-]/g, '') // Remove special characters
+              .replace(/\s+/g, '-') // Replace spaces with hyphens
+              .replace(/-+/g, '-') // Replace multiple hyphens with single
+              .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+
+            return `${dateStr}-${slug}.md`;
+          }
+
+          // Generate frontmatter and content for Jekyll post
+          function generatePost(episode) {
+            const pubDate = new Date(episode.pubDate);
+            const scripture = extractScripture(episode.title) || extractScripture(episode.description);
+            const duration = parseDuration(episode['itunes:duration']);
+
+            // Extract series from title with Reformed Baptist context
+            let series = null;
+
+            // Method 1: Look for patterns like "Series Name: Episode Title"
+            const seriesMatch = episode.title.match(/^([^:]+):\s*(.+)$/);
+            if (seriesMatch) {
+              const potentialSeries = seriesMatch[1].trim();
+              // Only treat as series if it's not a scripture reference
+              if (!extractScripture(potentialSeries)) {
+                series = potentialSeries;
+              }
+            }
+
+            // Method 2: Detect common biblical book series for expository preaching
+            if (!series && scripture) {
+              const bookMatch = scripture.match(/^(.*?)\s+\d+/);
+              if (bookMatch) {
+                const book = bookMatch[1].trim();
+                // Common series names for expository preaching through books
+                if (['John', 'Galatians', 'Romans', 'Ephesians', 'Matthew', 'Mark', 'Luke', 'Acts', 'Genesis', 'Exodus'].includes(book)) {
+                  series = book;
+                }
+              }
+            }
+
+            const frontmatter = {
+              layout: 'sermon',
+              title: episode.title,
+              date: pubDate.toISOString(),
+              category: 'sermon',
+              audio_url: episode.enclosure?.url || null,
+              duration: duration,
+              scripture: scripture,
+              series: series,
+              pastor: episode['itunes:author'] || 'Pastor Nate Ellis',
+              description: episode.description || episode['itunes:summary'] || null,
+              guid: episode.guid
+            };
+
+            // Remove null values
+            Object.keys(frontmatter).forEach(key => {
+              if (frontmatter[key] === null) {
+                delete frontmatter[key];
+              }
+            });
+
+            let content = '---\n';
+            Object.entries(frontmatter).forEach(([key, value]) => {
+              if (typeof value === 'string' && (value.includes('\n') || value.includes('"'))) {
+                // Use YAML literal block for multiline strings
+                content += `${key}: |\n  ${value.replace(/\n/g, '\n  ')}\n`;
+              } else if (typeof value === 'string') {
+                content += `${key}: "${value}"\n`;
+              } else {
+                content += `${key}: ${value}\n`;
+              }
+            });
+            content += '---\n\n';
+
+            // Add episode content
+            if (episode.content || episode['itunes:summary']) {
+              const episodeContent = episode.content || episode['itunes:summary'];
+              if (episodeContent !== episode.description) {
+                content += `${episodeContent}\n`;
+              }
+            }
+
+            return content;
+          }
+
+          async function syncEpisodes() {
+            try {
+              console.log(`Fetching RSS feed from: ${RSS_URL}`);
+              const feed = await parser.parseURL(RSS_URL);
+              console.log(`Found ${feed.items.length} episodes in RSS feed`);
+
+              const processedEpisodes = loadProcessedEpisodes();
+              const processedGuids = new Set(processedEpisodes.map(ep => ep.guid));
+
+              let newEpisodes = 0;
+              const newProcessedEpisodes = [...processedEpisodes];
+
+              for (const item of feed.items) {
+                const guid = item.guid || item.link;
+
+                if (processedGuids.has(guid)) {
+                  console.log(`Skipping already processed episode: ${item.title}`);
+                  continue;
+                }
+
+                console.log(`Processing new episode: ${item.title}`);
+
+                try {
+                  const pubDate = new Date(item.pubDate);
+                  const filename = generateFilename(pubDate, item.title);
+                  const filepath = path.join(POSTS_DIR, filename);
+
+                  // Check if file already exists (additional safety check)
+                  if (fs.existsSync(filepath)) {
+                    console.log(`File already exists, skipping: ${filename}`);
+                    continue;
+                  }
+
+                  const postContent = generatePost(item);
+                  fs.writeFileSync(filepath, postContent);
+
+                  console.log(`Created post: ${filename}`);
+
+                  // Add to processed episodes
+                  newProcessedEpisodes.push({
+                    guid: guid,
+                    title: item.title,
+                    filename: filename,
+                    processed_at: new Date().toISOString()
+                  });
+
+                  newEpisodes++;
+                } catch (error) {
+                  console.error(`Error processing episode "${item.title}":`, error.message);
+                }
+              }
+
+              // Save updated processed episodes list
+              saveProcessedEpisodes(newProcessedEpisodes);
+
+              console.log(`\n🎯 Sync complete: ${newEpisodes} new episodes processed`);
+              console.log(`📊 Total episodes in feed: ${feed.items.length}`);
+              console.log(`✅ Total processed episodes: ${newProcessedEpisodes.length}`);
+
+              // Set output for GitHub Actions
+              if (process.env.GITHUB_OUTPUT) {
+                fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_episodes=${newEpisodes}\n`);
+                fs.appendFileSync(process.env.GITHUB_OUTPUT, `total_episodes=${feed.items.length}\n`);
+              }
+
+              return newEpisodes;
+
+            } catch (error) {
+              console.error('Error syncing episodes:', error.message);
+              process.exit(1);
+            }
+          }
+
+          // Run the sync
+          syncEpisodes();
+          EOF
+
+          node sync-episodes.js
+
+      - name: Commit new episodes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Check if there are any changes
+          if [ -n "$(git status --porcelain)" ]; then
+            git add _posts/ _data/processed_episodes.json
+
+            # Count new files
+            NEW_FILES=$(git diff --cached --name-status | grep "^A" | grep "_posts/" | wc -l)
+
+            if [ "$NEW_FILES" -gt 0 ]; then
+              # Get the titles of new episodes for commit message
+              NEW_EPISODE_TITLES=$(git diff --cached --name-only | grep "_posts/" | head -3 | xargs -I {} basename {} .md | sed 's/^[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-//' | sed 's/-/ /g')
+
+              if [ "$NEW_FILES" -eq 1 ]; then
+                FIRST_TITLE=$(echo "$NEW_EPISODE_TITLES" | head -1)
+                COMMIT_MSG="Add new sermon: $FIRST_TITLE
+
+🎯 Automated podcast sync from Saints Church RSS feed
+📅 Weekly sync for Reformed Baptist sermon series
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+              else
+                COMMIT_MSG="Add $NEW_FILES new sermon episodes
+
+🎯 Automated podcast sync from Saints Church RSS feed
+📅 Weekly sync for Reformed Baptist sermon series
+
+Recent episodes:
+$(echo "$NEW_EPISODE_TITLES" | sed 's/^/- /')
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+              fi
+
+              git commit -m "$COMMIT_MSG"
+              echo "✅ Committed $NEW_FILES new episode(s)"
+            else
+              echo "ℹ️ No new episodes to commit"
+            fi
+          else
+            echo "ℹ️ No changes detected"
+          fi
+
+      - name: Push changes
+        run: |
+          if [ -n "$(git log @{u}.. --oneline 2>/dev/null)" ]; then
+            git push
+            echo "✅ Pushed changes to repository"
+          else
+            echo "ℹ️ No changes to push"
+          fi

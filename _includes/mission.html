@@ -4,10 +4,10 @@
   </div>
   
   <div class="relative mx-auto max-w-2xl lg:mx-0 lg:max-w-none animate-children">
-    <h2 class="text-3xl child ![--delay:.15s] font-semibold tracking-tight sm:text-4xl lg:text-5xl dark:text-white font-display text-pretty text-stone-900">{{ site.data.content.mission.title }}</h2>
+    <h2 id="mission-heading" class="text-3xl child ![--delay:.15s] font-semibold tracking-tight sm:text-4xl lg:text-5xl dark:text-white font-display text-pretty text-stone-900">{{ site.data.content.mission.title }}</h2>
     <div class="flex flex-col gap-x-8 gap-y-20 mt-6 lg:flex-row">
       <div class="lg:flex-auto child ![--delay:.3s] lg:w-full lg:max-w-2xl">
-        <p class="text-lg text-stone-600 sm:text-xl/8 dark:text-stone-300 [&_span]:font-medium [&_span]:underline [&_span]:text-saints-600 dark:[&_span]:text-saints-400 ">{{ site.data.content.mission.passage_html }}</p>
+        <blockquote cite="Acts 2:42-47" class="text-lg text-stone-600 sm:text-xl/8 dark:text-stone-300 [&_span]:font-medium [&_span]:underline [&_span]:text-saints-600 dark:[&_span]:text-saints-400 ">{{ site.data.content.mission.passage_html }}</blockquote>
       </div>
       <div class="lg:flex lg:flex-auto child ![--delay:.35s] child lg:justify-end">
         {% include visit-modal.html %}

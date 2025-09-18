@@ -1,0 +1,278 @@
+{% comment %}
+Simplified HTML5-native audio player with minimal JavaScript
+Uses native HTML5 audio features where possible
+{% endcomment %}
+
+{% assign audio_id = include.audio_url | split: '/' | last | split: '.' | first | append: '-player' %}
+
+<div class="audio-player max-w-4xl mx-auto" data-audio-url="{{ include.audio_url }}">
+  <!-- Native HTML5 Audio Element -->
+  <audio
+    id="{{ audio_id }}"
+    preload="metadata"
+    src="{{ include.audio_url }}"
+    class="sr-only">
+    <source src="{{ include.audio_url }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Player Interface -->
+  <div class="player-controls relative h-full w-full rounded-2xl bg-white p-6 shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-stone-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-2xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_0px_rgba(255,255,255,0.06)_inset]">
+    <!-- Track Title -->
+    {% if include.title %}
+    <div class="mb-4">
+      <h3 class="text-lg font-semibold text-stone-900 dark:text-white">{{ include.title }}</h3>
+    </div>
+    {% endif %}
+
+    <div class="flex items-center gap-6">
+
+      <!-- Large Play Button -->
+      <button type="button"
+              class="play-pause-btn flex-shrink-0 bg-stone-900 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100 transition-colors duration-200 rounded-full size-14 flex items-center justify-center cursor-pointer"
+              aria-label="Play sermon"
+              onclick="togglePlay(this)">
+        <!-- Play Icon -->
+        {% include icon.html name="play" type="solid" size="24" class="play-icon size-6 text-white dark:text-stone-900 ml-0.5" %}
+        <!-- Pause Icon -->
+        {% include icon.html name="pause" type="solid" size="24" class="pause-icon size-6 text-white dark:text-stone-900 hidden" %}
+      </button>
+
+      <!-- Current Time -->
+      <div class="flex-shrink-0 text-stone-600 dark:text-stone-300 font-mono text-base font-medium current-time">
+        0:00
+      </div>
+
+      <!-- HTML5 Range Slider (Scrubber) -->
+      <div class="flex-1 relative">
+        <!-- Background track -->
+        <div class="absolute inset-y-0 left-0 right-0 flex items-center z-0">
+          <div class="w-full h-1.5 bg-stone-200 dark:bg-stone-700 rounded-full">
+            <div class="progress-bg h-full bg-saints-500 rounded-full w-0 [transition:width_0.35s_cubic-bezier(0.4,0.01,0.165,0.99)]"></div>
+          </div>
+        </div>
+        <!-- Range input overlay -->
+        <input
+          type="range"
+          class="audio-scrubber relative z-20 w-full h-1.5 cursor-pointer bg-transparent"
+          min="0"
+          max="100"
+          value="0"
+          step="0.1"
+          oninput="scrubTo(this)"
+          aria-label="Sermon progress - drag to seek">
+      </div>
+
+      <!-- Total Time -->
+      <div class="flex-shrink-0 text-stone-600 dark:text-stone-300 font-mono text-base font-medium duration">
+        --:--
+      </div>
+
+      <!-- Control Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Skip Backward -->
+        <button type="button"
+                class="relative rounded-lg h-10 px-4 border border-zinc-950/10 hover:border-zinc-950/20 dark:border-white/10 dark:hover:border-white/20 bg-transparent hover:bg-zinc-50 dark:bg-white/5 dark:hover:bg-white/10 text-stone-700 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-300 transition-colors duration-200 flex items-center justify-center gap-1.5 cursor-pointer focus:outline-hidden"
+                aria-label="Skip back 15 seconds"
+                onclick="skipTime(-15)">
+          {% include icon.html name="arrow-uturn-left" type="mini" class="size-4 flex-shrink-0" %}
+          <span class="text-sm font-medium leading-none flex-shrink-0 font-mono">15</span>
+        </button>
+
+        <!-- Skip Forward -->
+        <button type="button"
+                class="relative rounded-lg h-10 px-4 border border-zinc-950/10 hover:border-zinc-950/20 dark:border-white/10 dark:hover:border-white/20 bg-transparent hover:bg-zinc-50 dark:bg-white/5 dark:hover:bg-white/10 text-stone-700 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-300 transition-colors duration-200 flex items-center justify-center gap-1.5 cursor-pointer focus:outline-hidden"
+                aria-label="Skip forward 15 seconds"
+                onclick="skipTime(15)">
+          <span class="text-sm font-medium leading-none flex-shrink-0 font-mono">15</span>
+          {% include icon.html name="arrow-uturn-right" type="mini" class="size-4 flex-shrink-0" %}
+        </button>
+
+        <!-- Speed Control -->
+        <button type="button"
+                class="speed-btn flex-shrink-0 relative rounded-lg h-10 px-4 border border-zinc-950/10 hover:border-zinc-950/20 dark:border-white/10 dark:hover:border-white/20 bg-transparent hover:bg-zinc-50 dark:bg-white/5 dark:hover:bg-white/10 text-stone-700 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-300 font-medium text-sm transition-colors duration-200 flex items-center justify-center cursor-pointer focus:outline-hidden"
+                aria-label="Change playback speed"
+                onclick="cycleSpeed(this)">
+          <span class="speed-text">1×</span>
+        </button>
+
+        <!-- Download Button -->
+        <a href="{{ include.audio_url }}"
+           download
+           class="download-btn relative size-10 border border-zinc-950/10 hover:border-zinc-950/20 dark:border-white/10 dark:hover:border-white/20 bg-transparent hover:bg-zinc-50 dark:bg-white/5 dark:hover:bg-white/10 text-stone-700 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-300 transition-colors duration-200 rounded-lg flex items-center justify-center cursor-pointer focus:outline-hidden"
+           aria-label="Download sermon">
+          {% include icon.html name="arrow-down-tray" type="mini" class="size-4" %}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// Minimal JavaScript for custom features only
+function getAudio(element) {
+  return element.closest('.audio-player').querySelector('audio');
+}
+
+function formatTime(seconds) {
+  if (!isFinite(seconds)) return '--:--';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+function togglePlay(button) {
+  const audio = getAudio(button);
+  const playIcon = button.querySelector('.play-icon');
+  const pauseIcon = button.querySelector('.pause-icon');
+
+  if (audio.paused) {
+    audio.play();
+    playIcon.classList.add('hidden');
+    pauseIcon.classList.remove('hidden');
+    button.setAttribute('aria-label', 'Pause sermon');
+    saveState(audio);
+  } else {
+    audio.pause();
+    playIcon.classList.remove('hidden');
+    pauseIcon.classList.add('hidden');
+    button.setAttribute('aria-label', 'Play sermon');
+    saveState(audio);
+  }
+}
+
+function skipTime(seconds) {
+  const audio = document.querySelector('.audio-player audio');
+  if (audio && audio.duration) {
+    audio.currentTime = Math.max(0, Math.min(audio.currentTime + seconds, audio.duration));
+    saveState(audio);
+  }
+}
+
+function scrubTo(scrubber) {
+  const audio = getAudio(scrubber);
+  if (!audio.duration) return;
+
+  const percent = scrubber.value / 100;
+  audio.currentTime = percent * audio.duration;
+  saveState(audio);
+}
+
+function cycleSpeed(button) {
+  const audio = getAudio(button);
+  const speeds = [1, 1.25, 1.5, 2];
+  const currentSpeed = audio.playbackRate;
+  const currentIndex = speeds.indexOf(currentSpeed);
+  const nextIndex = (currentIndex + 1) % speeds.length;
+  const newSpeed = speeds[nextIndex];
+
+  audio.playbackRate = newSpeed;
+  button.querySelector('.speed-text').textContent = newSpeed === 1 ? '1×' : `${newSpeed}×`;
+  saveState(audio);
+}
+
+// LocalStorage functions for state persistence
+function saveState(audio) {
+  const player = audio.closest('.audio-player');
+  const playerId = getPlayerId(audio);
+  const speedBtn = player.querySelector('.speed-btn');
+  const speeds = [1, 1.25, 1.5, 2];
+  const currentSpeedIndex = speeds.indexOf(audio.playbackRate);
+
+  const state = {
+    currentTime: audio.currentTime,
+    playbackRate: audio.playbackRate,
+    speedIndex: currentSpeedIndex,
+    lastPlayed: Date.now()
+  };
+  localStorage.setItem(`sermon-${playerId}`, JSON.stringify(state));
+}
+
+function loadState(audio) {
+  const playerId = getPlayerId(audio);
+  const saved = localStorage.getItem(`sermon-${playerId}`);
+  if (saved) {
+    return JSON.parse(saved);
+  }
+  return null;
+}
+
+function restoreState(audio) {
+  const savedState = loadState(audio);
+  const player = audio.closest('.audio-player');
+
+  if (savedState) {
+    // Restore playback speed
+    if (savedState.playbackRate) {
+      audio.playbackRate = savedState.playbackRate;
+      const speedBtn = player.querySelector('.speed-btn');
+      if (speedBtn) {
+        const speedText = speedBtn.querySelector('.speed-text');
+        const speed = savedState.playbackRate;
+        speedText.textContent = speed === 1 ? '1×' : `${speed}×`;
+      }
+    }
+
+    // Restore playback position (only if within 7 days and more than 5 seconds)
+    if (savedState.lastPlayed && (Date.now() - savedState.lastPlayed) < 7 * 24 * 60 * 60 * 1000) {
+      if (savedState.currentTime && savedState.currentTime > 5) {
+        audio.currentTime = savedState.currentTime;
+      }
+    }
+  }
+}
+
+function getPlayerId(audio) {
+  const player = audio.closest('.audio-player');
+  const audioUrl = player.dataset.audioUrl || audio.src;
+  // Extract filename from URL to use as ID
+  return audioUrl.split('/').pop().split('.')[0];
+}
+
+// Set up native HTML5 event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  const players = document.querySelectorAll('.audio-player');
+
+  players.forEach(player => {
+    const audio = player.querySelector('audio');
+    const currentTime = player.querySelector('.current-time');
+    const duration = player.querySelector('.duration');
+    const scrubber = player.querySelector('.audio-scrubber');
+    const progressBg = player.querySelector('.progress-bg');
+
+    // Update time displays and scrubber position
+    audio.addEventListener('timeupdate', function() {
+      currentTime.textContent = formatTime(audio.currentTime);
+      if (audio.duration) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        scrubber.value = percent;
+        // Update the visual progress background
+        progressBg.style.width = percent + '%';
+      }
+    });
+
+    // Set duration when metadata loads
+    audio.addEventListener('loadedmetadata', function() {
+      duration.textContent = formatTime(audio.duration);
+      scrubber.max = 100;
+      // Initialize progress background
+      progressBg.style.width = '0%';
+      // Restore saved state (position, speed, etc.)
+      restoreState(audio);
+    });
+
+    // Reset play button when audio ends
+    audio.addEventListener('ended', function() {
+      const button = player.querySelector('.play-pause-btn');
+      const playIcon = button.querySelector('.play-icon');
+      const pauseIcon = button.querySelector('.pause-icon');
+
+      playIcon.classList.remove('hidden');
+      pauseIcon.classList.add('hidden');
+      button.setAttribute('aria-label', 'Play sermon');
+    });
+  });
+});
+</script>
+

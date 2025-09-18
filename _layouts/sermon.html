@@ -1,0 +1,133 @@
+---
+layout: default
+---
+
+<main tabindex="-1" id="main-content">
+  <nav aria-label="Breadcrumb">
+    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/sermons/" itemprop="item" rel="up"><span itemprop="name">{{ site.data.content.sermons.back_to_sermons }}</span></a>
+        <meta itemprop="position" content="1">
+      </li>
+    </ol>
+  </nav>
+
+  <article itemscope itemtype="https://schema.org/Article">
+    <header>
+      {% if page.series %}
+        <p role="doc-subtitle" itemprop="isPartOf" itemscope itemtype="https://schema.org/CreativeWorkSeries">
+          <span itemprop="name">{{ page.series }}</span> Series
+        </p>
+      {% endif %}
+
+      <h1 itemprop="headline name">{{ page.title }}</h1>
+
+      {% if page.scripture %}
+        <p><cite itemprop="about citation">{{ page.scripture }}</cite></p>
+      {% endif %}
+
+      <dl role="contentinfo">
+        <dt>Published</dt>
+        <dd>
+          <time datetime="{{ page.date | date_to_xmlschema }}" pubdate itemprop="datePublished">
+            {{ page.date | date: "%B %d, %Y" }}
+          </time>
+        </dd>
+        {% if page.pastor %}
+          <dt>Preacher</dt>
+          <dd>
+            <address itemscope itemtype="https://schema.org/Person">
+              <span itemprop="name">{{ page.pastor }}</span>
+            </address>
+          </dd>
+        {% endif %}
+        {% if page.duration %}
+          <dt>Duration</dt>
+          <dd><data value="{{ page.duration }}" itemprop="duration">{{ page.duration }}</data></dd>
+        {% endif %}
+        {% if page.series %}
+          <dt>Series</dt>
+          <dd><span itemscope itemtype="https://schema.org/CreativeWorkSeries"><span itemprop="name">{{ page.series }}</span></span></dd>
+        {% endif %}
+      </dl>
+    </header>
+
+    {% if page.audio_url %}
+      <figure aria-labelledby="sermon-audio-caption" itemscope itemtype="https://schema.org/AudioObject">
+        <audio controls preload="metadata" itemprop="contentUrl">
+          <source src="{{ page.audio_url }}" type="audio/mpeg" itemprop="encodingFormat">
+          <source src="{{ page.audio_url | replace: '.m4a', '.ogg' }}" type="audio/ogg">
+          <track kind="captions" src="{{ page.url | replace: '.html', '.vtt' }}" srclang="en" label="English captions" default>
+          <track kind="descriptions" src="{{ page.url | replace: '.html', '-desc.vtt' }}" srclang="en" label="Audio descriptions">
+          Your browser does not support the audio element.
+          <a href="{{ page.audio_url }}" download itemprop="url">Download the sermon audio file</a>.
+        </audio>
+        <figcaption id="sermon-audio-caption">
+          <strong itemprop="name">{{ page.title }}</strong> sermon audio
+          {% if page.duration %}<data value="{{ page.duration }}" itemprop="duration"> ({{ page.duration }})</data>{% endif %}
+        </figcaption>
+      </figure>
+    {% endif %}
+
+    {% if content and content != "" %}
+      <div itemprop="articleBody">
+        {{ content }}
+      </div>
+    {% endif %}
+
+    <section aria-labelledby="listen-elsewhere">
+      <h2 id="listen-elsewhere">{{ site.data.content.podcast.platforms.listen_title }}</h2>
+      <nav aria-label="Podcast platforms">
+        <ul>
+          <li><a href="{{ site.podcast.platforms.apple }}" target="_blank" rel="noopener noreferrer external">Apple Podcasts</a></li>
+          <li><a href="{{ site.podcast.platforms.spotify }}" target="_blank" rel="noopener noreferrer external">Spotify</a></li>
+          <li><a href="{{ site.podcast.platforms.overcast }}" target="_blank" rel="noopener noreferrer external">Overcast</a></li>
+          <li><a href="{{ site.podcast.rss_url }}" target="_blank" rel="noopener noreferrer external" type="application/rss+xml">{{ site.data.content.podcast.platforms.rss_label }}</a></li>
+        </ul>
+      </nav>
+    </section>
+
+    {% if page.series %}
+      {% assign series_posts = site.posts | where: "category", "sermon" | where: "series", page.series | sort: "date" | reverse %}
+      {% assign related_sermons = series_posts | where_exp: "item", "item.url != page.url" | limit: 3 %}
+      {% if related_sermons.size > 0 %}
+        <aside aria-labelledby="related-sermons">
+          <h2 id="related-sermons">More from {{ page.series }}</h2>
+          {% for sermon in related_sermons %}
+            <article itemscope itemtype="https://schema.org/Article">
+              <header>
+                <h3><a href="{{ sermon.url }}" rel="bookmark" itemprop="url headline">{{ sermon.title }}</a></h3>
+                {% if sermon.scripture %}
+                  <p><cite itemprop="about citation">{{ sermon.scripture }}</cite></p>
+                {% endif %}
+              </header>
+              <dl role="contentinfo">
+                <dt>Published</dt>
+                <dd>
+                  <time datetime="{{ sermon.date | date_to_xmlschema }}" pubdate>
+                    {{ sermon.date | date: "%B %d, %Y" }}
+                  </time>
+                </dd>
+                {% if sermon.duration %}
+                  <dt>Duration</dt>
+                  <dd><data value="{{ sermon.duration }}">{{ sermon.duration }}</data></dd>
+                {% endif %}
+              </dl>
+            </article>
+          {% endfor %}
+        </aside>
+      {% endif %}
+    {% endif %}
+
+    <aside aria-labelledby="cta-section">
+      <h2 id="cta-section">{{ site.data.content.sermons.cta.episode_page.title }}</h2>
+      <p>{{ site.data.content.sermons.cta.episode_page.description }}</p>
+      <nav aria-label="Church information">
+        <ul>
+          <li><a href="/beliefs/" rel="related">Our Beliefs</a></li>
+          <li><button type="button" aria-controls="visit-modal" aria-expanded="false" onclick="document.getElementById('visit-modal').classList.remove('hidden'); this.setAttribute('aria-expanded', 'true')">Visit Us</button></li>
+        </ul>
+      </nav>
+    </aside>
+  </article>
+</main>

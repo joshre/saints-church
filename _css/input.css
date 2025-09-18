@@ -48,6 +48,9 @@
   
   --smooth-bezier: cubic-bezier(0.4, 0.01, 0.165, 0.99);
   --ease-smooth: cubic-bezier(0.4, 0.01, 0.165, 0.99);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   
   /* Standard spacing unit for consistent button sizing */
   --spacing: 0.25rem;
@@ -65,6 +68,48 @@
   100% {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-gentle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
   }
 }
 
@@ -115,6 +160,7 @@
   --delay: 0s;
   --duration: 0.9s;
   --translate-y: 1rem;
+  @apply opacity-0;
   animation-name: fadeInUp;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
@@ -122,7 +168,6 @@
   animation-iteration-count: 1;
   animation-fill-mode: both;
   animation-play-state: paused;
-  opacity: 0;
 }
 
 .animate-reveal.run {
@@ -133,6 +178,7 @@
   --delay: 0s;
   --duration: 0.9s;
   --translate-y: 1rem;
+  @apply opacity-0;
   animation-name: fadeInUp;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
@@ -140,7 +186,6 @@
   animation-iteration-count: 1;
   animation-fill-mode: both;
   animation-play-state: paused;
-  opacity: 0;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -160,6 +205,7 @@
 .animate-fade-in {
   --delay: 0s;
   --duration: 0.9s;
+  @apply opacity-0;
   animation-name: fadeIn;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
@@ -167,7 +213,6 @@
   animation-iteration-count: 1;
   animation-fill-mode: both;
   animation-play-state: paused;
-  opacity: 0;
 }
 
 .animate-fade-in.run {
@@ -177,35 +222,34 @@
 .animate-hero-fade {
   --delay: 0s;
   --duration: 0.9s;
+  @apply opacity-0;
   animation-name: fadeInHero;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
   animation-delay: var(--delay);
   animation-iteration-count: 1;
   animation-fill-mode: both;
-  opacity: 0;
 }
 
 .animate-hero-up {
   --delay: 0s;
   --duration: 0.9s;
+  @apply opacity-0;
   animation-name: fadeInUpHero;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
   animation-delay: var(--delay);
   animation-iteration-count: 1;
   animation-fill-mode: both;
-  opacity: 0;
 }
 
 
 button:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
+  @apply outline-2 outline-transparent outline-offset-2 transition-shadow duration-200;
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.6);
-  transition: box-shadow 0.2s var(--smooth-bezier);
+  transition-timing-function: var(--smooth-bezier);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -223,28 +267,69 @@ a:focus-visible,
     --animation-reveal: 0.35s;
     --animation-hero: 0.28s;
   }
-  
+
+  /* Enhanced touch interactions */
   .hover-lift:active,
   .hover-scale:active,
+  .interactive-element:active,
+  .audio-control-btn:active,
+  .platform-btn:active,
   button:active,
   [role="button"]:active {
-    transform: scale(0.98);
-    transition: transform 0.1s var(--smooth-bezier);
+    @apply scale-95 transition-transform duration-150;
+    transition-timing-function: var(--smooth-bezier);
   }
-  
+
+  .sermon-card:active {
+    @apply scale-98 transition-transform duration-150;
+    transition-timing-function: var(--smooth-bezier);
+  }
+
+  /* Disable hover effects on touch devices */
   .hover-lift:hover,
   .hover-scale:hover,
-  .text-hover-lift:hover {
-    transform: none;
+  .text-hover-lift:hover,
+  .hover-shimmer:hover,
+  .interactive-element:hover,
+  .audio-control-btn:hover,
+  .platform-btn:hover {
+    @apply transform-none;
   }
-  
+
+  .hover-shimmer:hover::before {
+    @apply -translate-x-full;
+  }
+
+  /* Optimize animations for mobile */
   .animate-reveal,
   .animate-fade-in,
   .animate-hero-fade,
-  .animate-hero-up {
-    transform: translate3d(0, 0, 0);
+  .animate-hero-up,
+  .animate-slide-up,
+  .animate-scale-in {
+    @apply transform-gpu;
     backface-visibility: hidden;
     perspective: 1000px;
+  }
+
+  /* Enhanced touch targets */
+  .audio-control-btn,
+  .platform-btn {
+    @apply min-h-11 min-w-11;
+  }
+
+  /* Improved spacing for touch */
+  .sermon-card {
+    @apply p-6 mb-2;
+  }
+
+  /* Better progress bar for touch */
+  .progress-bar {
+    @apply h-4 rounded-lg;
+  }
+
+  .progress-handle {
+    @apply size-5;
   }
 }
 
@@ -270,29 +355,302 @@ a:focus-visible,
   }
 
   .modal-content {
-    transform: none;
-    opacity: 1;
+    @apply transform-none opacity-100;
   }
 }
 
-/* Custom utility classes for common patterns */
-.heading-xl {
-  @apply font-display font-semibold tracking-tight text-stone-900 dark:text-white text-4xl sm:text-5xl lg:text-6xl;
+/* Clean Typography - Simple, elegant hierarchy */
+
+/* Refined sermon card styles with perfect proportions and enhanced interactions */
+.sermon-card {
+  @apply relative h-full w-full rounded-xl bg-white p-7 transition-all duration-300 ease-out dark:bg-stone-900;
+  shadow: 0px 0px 0px 1px rgba(9,9,11,0.07), 0px 2px 2px 0px rgba(9,9,11,0.05);
 }
 
-.heading-lg {
-  @apply font-display font-semibold tracking-tight text-stone-900 dark:text-white text-3xl sm:text-4xl lg:text-5xl;
+.sermon-card::before {
+  @apply dark:pointer-events-none dark:absolute dark:rounded-xl dark:content-[''];
+  inset: -1px;
+  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
 }
 
-.heading-md {
-  @apply font-display font-semibold tracking-tight text-stone-900 dark:text-white text-xl sm:text-2xl;
+@media (prefers-color-scheme: dark) {
+  .sermon-card {
+    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+  }
 }
+
+
+.sermon-card:hover {
+  @apply border-saints-500/30 dark:border-saints-400/30;
+}
+
+.sermon-card-content {
+  @apply flex flex-col h-full;
+}
+
+.sermon-card-title {
+  @apply font-display font-bold text-stone-900 dark:text-white text-lg leading-tight mb-5 line-clamp-3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.sermon-scripture {
+  @apply text-sm font-bold text-saints-600 dark:text-saints-400 mb-6 tracking-wide;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.sermon-meta {
+  @apply text-xs text-stone-500 dark:text-stone-400 font-semibold mt-auto;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Featured sermon styles with enhanced visual depth */
+.featured-sermon {
+  @apply relative;
+}
+
 
 .body-text {
   @apply text-stone-600 dark:text-stone-300;
 }
 
+/* Editorial spacing and typography classes for consistent hierarchy */
+.editorial-spacing {
+  @apply flex flex-col gap-6;
+}
+
+.editorial-section {
+  @apply text-lg font-semibold font-display text-stone-900 dark:text-white leading-tight;
+}
+
+.editorial-scripture-small {
+  @apply text-sm font-medium text-saints-600 dark:text-saints-400;
+}
+
+.editorial-meta-small {
+  @apply text-sm text-stone-600 dark:text-stone-400 font-medium;
+}
+
+.editorial-separator {
+  @apply mx-1 text-stone-400 dark:text-stone-500;
+}
+
 .body-text-muted {
   @apply text-stone-700 dark:text-stone-400;
+}
+
+/* Enhanced animation classes for refined interactions */
+.animate-slide-up {
+  --delay: 0s;
+  --duration: 0.6s;
+  @apply opacity-0;
+  animation-name: slideUp;
+  animation-duration: var(--duration);
+  animation-timing-function: var(--ease-gentle);
+  animation-delay: var(--delay);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+
+.animate-slide-up.run {
+  animation-play-state: running;
+}
+
+.animate-scale-in {
+  --delay: 0s;
+  --duration: 0.5s;
+  @apply opacity-0;
+  animation-name: scaleIn;
+  animation-duration: var(--duration);
+  animation-timing-function: var(--ease-spring);
+  animation-delay: var(--delay);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+
+.animate-scale-in.run {
+  animation-play-state: running;
+}
+
+/* Interactive hover effects with micro-animations */
+.hover-lift-gentle {
+  @apply transition-all duration-300 ease-out;
+}
+
+.hover-lift-gentle:hover {
+  @apply -translate-y-1;
+}
+
+.hover-shimmer {
+  @apply relative overflow-hidden;
+}
+
+.hover-shimmer::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10 -translate-x-full transition-transform duration-[600ms] ease-out;
+  background-size: 200% 100%;
+}
+
+.hover-shimmer:hover::before {
+  @apply translate-x-full;
+}
+
+/* Enhanced button and link interactions */
+.interactive-element {
+  @apply transition-all duration-300 ease-out;
+}
+
+.interactive-element:hover {
+
+}
+
+.interactive-element:active {
+
+}
+
+/* Audio player specific animations */
+.audio-control-btn {
+  @apply transition-all duration-300 ease-out;
+}
+
+.audio-control-btn:hover {
+
+}
+
+.audio-control-btn:active {
+
+}
+
+/* Progress bar enhancements */
+.progress-enhance {
+  @apply relative overflow-hidden;
+}
+
+.progress-enhance::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition-opacity duration-300 ease-out;
+  animation: shimmer 2s infinite;
+}
+
+.progress-enhance.loading::before {
+  @apply opacity-100;
+}
+
+/* Podcast platform button enhancements */
+.platform-btn {
+  @apply transition-all duration-300 ease-out;
+}
+
+
+.platform-btn:hover {
+  @apply border-saints-500/40 dark:border-saints-400/40;
+}
+
+/* Sermon page specific styles */
+.sermon-page-bg {
+  @apply bg-saints-100 dark:bg-stone-900 min-h-screen max-w-4xl mx-auto px-6 py-12 sm:py-16;
+}
+
+.sermon-content {
+  @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-8 dark:bg-stone-900;
+  box-shadow: 0px 0px 0px 1px rgba(9,9,11,0.07), 0px 2px 2px 0px rgba(9,9,11,0.05);
+}
+
+.sermon-content::before {
+  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+  inset: -1px;
+  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sermon-content {
+    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+  }
+}
+
+.sermon-description {
+  @apply prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-headings:text-saints-black dark:prose-headings:text-white prose-p:text-stone-700 dark:prose-p:text-stone-300 prose-a:text-saints-600 dark:prose-a:text-saints-400 prose-strong:text-saints-700 dark:prose-strong:text-saints-300;
+}
+
+.sermons-index-bg {
+  @apply bg-saints-100 dark:bg-stone-900 min-h-screen;
+}
+
+.sermons-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12;
+}
+
+.featured-sermon-container {
+  @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-16 dark:bg-stone-900;
+  box-shadow: 0px 0px 0px 1px rgba(9,9,11,0.07), 0px 2px 2px 0px rgba(9,9,11,0.05);
+}
+
+.featured-sermon-container::before {
+  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+  inset: -1px;
+  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
+}
+
+@media (prefers-color-scheme: dark) {
+  .featured-sermon-container {
+    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+  }
+}
+
+/* Audio Player Styles */
+input.audio-scrubber {
+  @apply bg-transparent cursor-pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Hide the default track - we use custom background */
+input.audio-scrubber::-webkit-slider-track {
+  @apply bg-transparent border-none h-1.5;
+}
+
+input.audio-scrubber::-moz-range-track {
+  @apply bg-transparent border-none h-1.5;
+}
+
+input.audio-scrubber::-moz-range-progress {
+  @apply bg-transparent;
+}
+
+/* Thumb/handle styling - always visible and properly centered */
+input.audio-scrubber::-webkit-slider-thumb {
+  @apply size-4 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
+  appearance: none;
+  -webkit-appearance: none;
+  background: oklch(58.2% 0.054 129.1); /* saints-500 */
+  margin-top: -5px; /* Center vertically relative to track */
+}
+
+input.audio-scrubber::-moz-range-thumb {
+  @apply size-4 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
+  background: oklch(58.2% 0.054 129.1); /* saints-500 */
+}
+
+/* Hover effects */
+input.audio-scrubber:hover::-webkit-slider-thumb {
+  @apply scale-110;
+}
+
+input.audio-scrubber:hover::-moz-range-thumb {
+  @apply scale-110;
+}
+
+/* Active/focused effects */
+input.audio-scrubber:active::-webkit-slider-thumb {
+  @apply scale-125;
+}
+
+input.audio-scrubber:active::-moz-range-thumb {
+  @apply scale-125;
 }
 

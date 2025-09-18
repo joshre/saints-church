@@ -1,40 +1,76 @@
-<footer class="relative bg-saints-600 dark:bg-saints-800">
-  <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0); background-size: 20px 20px;"></div>
-  
+<footer class="relative bg-gradient-to-br from-saints-500 via-saints-600 to-saints-700 dark:from-saints-600 dark:via-saints-700 dark:to-saints-800 overflow-hidden">
+  <!-- Large Saints Church Logo Watermark -->
+  <div class="absolute inset-x-0 bottom-0 flex justify-center opacity-10 dark:opacity-5 select-none pointer-events-none translate-y-1/4">
+    {% include logo.html class="h-48 lg:h-64 overflow-visible" %}
+  </div>
+
   <div class="relative px-6 mx-auto max-w-7xl lg:px-8">
-    <div class="grid grid-cols-1 gap-8 py-16 lg:grid-cols-4 lg:py-20">
-      
-      <div class="lg:col-span-1">
-        <div class="mb-3 font-mono text-xs tracking-wider uppercase text-saints-white/80">{{ site.data.content.footer.sections.local_church }}</div>
-        <div class="space-y-1 text-sm text-saints-white">
-          <div>{{ site.data.content.footer.address | split: ', ' | first }}</div>
-          <div>{{ site.data.content.footer.address | split: ', ' | slice: 1, 2 | join: ', ' }}</div>
-          <div class="mt-2 text-xs text-saints-white/75">{{ site.data.content.footer.service_time }}</div>
+    <div class="py-16 lg:py-24">
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+
+        <!-- Left Section - Church Info -->
+        <div class="flex flex-col gap-8">
+          <div>
+            <h3 class="mb-4 text-xs tracking-widest uppercase text-white/60 font-display">Gather with Us</h3>
+            <div class="flex flex-col gap-3">
+              <div class="text-lg font-medium text-white">{{ site.data.content.footer.address | split: ', ' | first }}</div>
+              <div class="text-lg text-white/90">{{ site.data.content.footer.address | split: ', ' | slice: 1, 2 | join: ', ' }}</div>
+              <div class="text-base text-white/75">{{ site.data.content.footer.service_time }}</div>
+            </div>
+          </div>
+
+          <div>
+            {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" icon="location" %}
+          </div>
+        </div>
+
+        <!-- Right Section - Navigation -->
+        <div class="flex flex-col gap-8">
+          <div>
+            <h3 class="mb-4 text-xs tracking-widest uppercase text-white/60 font-display">Explore</h3>
+            <div class="flex flex-col gap-3">
+              <div>
+                <a href="/beliefs" class="text-lg font-medium transition-all duration-200 text-white hover:text-white/75 hover:translate-x-1 inline-block">
+                  {{ site.data.content.footer.links.beliefs }}
+                </a>
+              </div>
+              <div>
+                <a href="/sermons" class="text-lg font-medium transition-all duration-200 text-white hover:text-white/75 hover:translate-x-1 inline-block">
+                  Sermons
+                </a>
+              </div>
+              <div>
+                <a href="/pastor-letter" class="text-lg font-medium transition-all duration-200 text-white hover:text-white/75 hover:translate-x-1 inline-block">
+                  {{ site.data.content.footer.links.pastor_letter }}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            {% include button.html href="mailto:" text="Reach Out" icon="email" %}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Section -->
+      <div class="pt-12 mt-12 border-t border-dotted border-white/20">
+        <div class="flex flex-col items-center gap-4 text-center lg:flex-row lg:justify-between lg:gap-0">
+          <!-- Scripture Quote -->
+          <div class="text-sm text-white/75 lg:text-base">
+            {{ site.data.content.footer.sections.acts_text }}
+          </div>
+
+          <!-- Copyright & Sola Deo Gloria -->
+          <div class="flex flex-col items-center gap-1 text-xs text-white/60 lg:items-end">
+            <div>&copy; <script>document.write(new Date().getFullYear())</script> {{ site.data.content.footer.sections.copyright }}</div>
+            <div class="font-display tracking-wider">{{ site.data.content.footer.sections.sola_deo_gloria }}</div>
+          </div>
         </div>
       </div>
-      
-      <div class="lg:col-span-1">
-        <div class="mb-3 font-mono text-xs tracking-wider uppercase text-saints-white/80">{{ site.data.content.footer.sections.learn_more }}</div>
-        <div class="space-y-2 text-sm">
-          <div><a href="/beliefs" class="transition-colors text-saints-white hover:text-saints-200">{{ site.data.content.footer.links.beliefs }}</a></div>
-          <div><a href="/pastor-letter" class="transition-colors text-saints-white hover:text-saints-200">{{ site.data.content.footer.links.pastor_letter }}</a></div>
-        </div>
-      </div>
-      
-      <div class="lg:col-span-1">
-        <div class="mb-3 font-mono text-xs tracking-wider uppercase text-saints-white/80">{{ site.data.content.footer.sections.acts_title }}</div>
-        <div class="lg:mx-auto max-w-xs text-sm leading-relaxed text-saints-white">
-          {{ site.data.content.footer.sections.acts_text }}
-        </div>
-      </div>
-      
-      <div class="lg:ml-auto lg:col-span-1">
-        <div class="mb-3 font-mono text-xs tracking-wider uppercase text-saints-white/80">{{ site.data.content.footer.sections.sola_deo_gloria }}</div>
-        <div class="text-xs text-saints-white/75">
-          &copy; <script>document.write(new Date().getFullYear())</script> {{ site.data.content.footer.sections.copyright }}
-        </div>
-      </div>
-      
+
     </div>
   </div>
 </footer>

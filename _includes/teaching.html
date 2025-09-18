@@ -1,15 +1,15 @@
 <div class="px-6 mx-auto max-w-7xl sm:mt-40 lg:px-8">
-  <div class="relative py-16 px-4 text-center rounded-3xl border sm:py-20 sm:px-8 lg:py-24 lg:px-16 animate-children bg-saints-700/5 border-saints-900/20 dark:bg-saints-300/15 dark:border-saints-50/15">
-    <h2 class="mx-auto max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl dark:text-white font-display child ![--delay:0.1s] text-stone-900">{{ site.data.content.teaching.title }}</h2>
+  <div class="relative h-full w-full rounded-3xl bg-white py-16 px-4 text-center sm:py-20 sm:px-8 lg:py-24 lg:px-16 animate-children dark:bg-stone-900 shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-3xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_0px_rgba(255,255,255,0.06)_inset]">
+    <h2 id="teaching-heading" class="mx-auto max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl dark:text-white font-display child ![--delay:0.1s] text-stone-900">{{ site.data.content.teaching.title }}</h2>
     <p class="mx-auto mt-2 text-base font-medium tracking-wide uppercase child ![--delay:0.125s] text-stone-600 dark:text-stone-400">{{ site.data.content.teaching.subtitle }}</p>
     <p class="mx-auto mt-6 max-w-2xl text-lg text-stone-700 sm:text-xl/8 dark:text-stone-300 child ![--delay:0.15s]">{{ site.data.content.teaching.description }}</p>
     <p class="mx-auto mt-6 max-w-xl text-sm text-stone-600 sm:text-base/7 dark:text-stone-400 child ![--delay:0.2s]">{{ site.data.content.teaching.details }}</p>
     
     
-    <div class="flex flex-col gap-3 justify-center items-stretch mx-auto mt-8 max-w-sm sm:flex-row sm:items-center sm:max-w-none">
+    <nav aria-label="Learn more about our beliefs and pastor" class="flex flex-col gap-3 justify-center items-stretch mx-auto mt-8 max-w-sm sm:flex-row sm:items-center sm:max-w-none">
       {% include button.html href="/beliefs" text=site.data.content.footer.links.beliefs class="w-full sm:w-auto sm:min-w-[140px] child ![--delay:0.25s]" %}
       {% include button.html href="/pastor-letter" text=site.data.content.footer.links.pastor_letter class="w-full sm:w-auto sm:min-w-[180px] child ![--delay:0.3s]" %}
-    </div>
+    </nav>
     
     <p class="mx-auto mt-8 max-w-xl font-mono tracking-wider uppercase text-xs/5 text-stone-500 dark:text-stone-500 child ![--delay:0.35s]">
       {{ site.data.content.teaching.confession }}

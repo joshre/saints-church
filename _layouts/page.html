@@ -1,0 +1,37 @@
+---
+layout: default
+---
+
+{% assign content_data = site.data.content[page.data_key] %}
+
+<!-- Article Layout -->
+<div class="min-h-screen">
+  {% include subnav.html %}
+
+  <!-- Article Content -->
+  <main itemscope itemtype="https://schema.org/WebPage" tabindex="-1" id="main-content">
+    <article class="pt-8 pb-16 px-6 mx-auto max-w-4xl lg:px-8" itemscope itemtype="https://schema.org/Article">
+    <!-- Header -->
+    <header class="mx-auto max-w-2xl text-center animate-reveal">
+      {% if page.header_image %}
+        <div class="mb-6 animate-reveal">
+          {% include {{ page.header_image }} %}
+        </div>
+      {% endif %}
+      <h1 class="{% if page.header_image %}text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% else %}mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% endif %} dark:text-white animate-reveal font-display text-pretty text-stone-900 [text-wrap:balance]" itemprop="headline name">{{ content_data.title }}</h1>
+      <p class="mx-auto mt-6 max-w-xl animate-reveal text-lg/8 text-stone-600 dark:text-stone-400" itemprop="description">{{ content_data.intro | default: page.description }}</p>
+    </header>
+
+    <!-- Content -->
+    <div class="mx-auto mt-16 {% if page.content_width == 'wide' %}max-w-3xl{% else %}max-w-2xl{% endif %} animate-reveal">
+      <div class="{{ page.prose_class | default: 'prose prose-lg prose-zinc dark:prose-invert max-w-none' }}" itemprop="articleBody">
+        {{ content_data.content_html }}
+      </div>
+    </div>
+
+    {% include page-cta.html %}
+    </article>
+  </main>
+</div>
+
+{% include footer.html %}

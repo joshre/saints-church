@@ -22,3 +22,29 @@ church:
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+
+# Podcast/Sermon configuration
+podcast:
+  title: "Saints Church Sermon Feed"
+  description: "Expository preaching from Saints Church in Knoxville, TN. Reformed Baptist sermons verse-by-verse through Scripture."
+  language: "en-us"
+  author: "Pastor Nate Ellis"
+  email: "contact@saintschurchknox.com"
+  copyright: "© Saints Church"
+  categories: ["Religion & Spirituality", "Christianity"]
+  explicit: "no"
+  rss_url: "https://anchor.fm/s/f5d78a70/podcast/rss"
+  platforms:
+    apple: "https://podcasts.apple.com/us/podcast/saints-church-sermon-feed/id1744952518"
+    spotify: "https://open.spotify.com/show/56Dd1OdPxjZ6FfkjJhHQG9"
+    overcast: "https://overcast.fm/itunes1744952518/saints-church-sermon-feed"
+
+# Post defaults for sermons
+defaults:
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      layout: "sermon"
+      category: "sermon"
+      permalink: "/sermons/:title/"
