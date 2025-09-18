@@ -3,7 +3,7 @@ layout: default
 ---
 
 <div class="bg-saints-100">
-  <main tabindex="-1" id="main-content" class="py-4 px-6 pt-20 pb-16 mx-auto max-w-7xl lg:px-8">
+  <main tabindex="-1" id="main-content" class="py-4 px-6 pt-6 pb-16 mx-auto max-w-7xl lg:px-8 lg:pt-20">
     <!-- Breadcrumb -->
     <nav aria-label="Breadcrumb" class="mb-8 animate-reveal">
       <a href="/sermons/" class="transition-colors duration-200 text-stone-600 dark:text-stone-400 dark:hover:text-white hover:text-stone-900">
@@ -112,24 +112,53 @@ layout: default
               </div>
             {% endif %}
 
-            {% assign transcription_content = content | strip %}
-            {% if transcription_content and transcription_content != "" and transcription_content != page.description %}
-              <!-- Collapsible transcription content -->
-              <details class="transcript-details group" open>
-                <summary class="cursor-pointer list-none flex items-center gap-3 p-4 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors duration-200 mb-6">
-                  <svg class="size-5 text-saints-600 dark:text-saints-400 transition-transform duration-200 group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                  <div class="flex-1">
-                    <h3 class="font-medium text-stone-900 dark:text-white font-display">Complete Sermon Transcription</h3>
-                    <p class="text-sm text-stone-600 dark:text-stone-400 mt-1">Read the full sermon text with enhanced formatting and navigation</p>
-                  </div>
-                </summary>
+            {% comment %}Check for transcription content - try multiple approaches{% endcomment %}
+            {% assign has_transcription = false %}
+            {% assign transcription_content = "" %}
 
-                <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mt-6" itemprop="articleBody" id="sermon-transcription">
-                  {{ content }}
-                </div>
-              </details>
+            {% comment %}Method 1: Try markdown header{% endcomment %}
+            {% assign md_parts = content | split: "## Transcription" %}
+            {% if md_parts.size > 1 %}
+              {% assign transcription_content = md_parts[1] | strip %}
+              {% assign has_transcription = true %}
+            {% endif %}
+
+            {% comment %}Method 2: Try HTML header if markdown didn't work{% endcomment %}
+            {% unless has_transcription %}
+              {% if content contains "<h2" and content contains "Transcription" %}
+                {% assign html_parts = content | split: "Transcription</h2>" %}
+                {% if html_parts.size > 1 %}
+                  {% assign transcription_content = html_parts[1] | strip %}
+                  {% assign has_transcription = true %}
+                {% endif %}
+              {% endif %}
+            {% endunless %}
+
+            {% comment %}Method 3: Simple contains check{% endcomment %}
+            {% unless has_transcription %}
+              {% if content contains "Transcription" %}
+                {% assign transcription_content = content %}
+                {% assign has_transcription = true %}
+              {% endif %}
+            {% endunless %}
+
+            {% if has_transcription and transcription_content != "" %}
+                    <!-- Collapsible transcription content -->
+                    <!-- DEBUG: Transcription found! Method worked. Content length: {{ transcription_content | size }} -->
+                  <details class="transcript-details group" open>
+                    <summary class="cursor-pointer list-none flex items-center gap-3 p-4 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors duration-200 mb-6">
+                      <svg class="size-5 text-saints-600 dark:text-saints-400 transition-transform duration-200 group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                      <div class="flex-1">
+                        <h3 class="font-medium text-stone-900 dark:text-white font-display">Full Transcription</h3>
+                      </div>
+                    </summary>
+
+                    <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mt-6" itemprop="articleBody" id="sermon-transcription">
+                      {{ transcription_content }}
+                    </div>
+                  </details>
             {% elsif page.description == nil or page.description == "" %}
               <!-- Fallback if neither content nor description exists -->
               <div class="prose prose-base prose-stone dark:prose-invert max-w-none text-center py-8">
@@ -153,5 +182,3 @@ layout: default
     </article>
   </main>
 </div>
-
-{% include footer.html %}

@@ -4,9 +4,9 @@
   <img
     src="/assets/images/pastor.jpg"
     alt="{{ site.data.content.images.alt_text.pastor }}"
-    class="object-cover mx-auto {% if include.class %}{{ include.class }}{% else %}size-16{% endif %} ring-4 transition-transform hover:scale-105 ring-saints-400/20 will-animate var(--animation-fast) var(--smooth-bezier) dark:ring-saints-700/20"
-    width="64"
-    height="64"
+    class="object-cover mx-auto {% if include.class %}{{ include.class }}{% else %}size-32 rounded-full{% endif %} ring-4 transition-transform hover:scale-105 ring-saints-400/20 will-animate var(--animation-fast) var(--smooth-bezier) dark:ring-saints-700/20"
+    width="{% if include.class %}64{% else %}128{% endif %}"
+    height="{% if include.class %}64{% else %}128{% endif %}"
     loading="lazy"
   />
 </picture>

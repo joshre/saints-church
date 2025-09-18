@@ -29,25 +29,39 @@ function initScrollAnimations() {
 function initMobileNav() {
   const mobileMenuButton = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuPanel = document.getElementById('mobile-menu-panel');
   const mobileMenuClose = document.getElementById('mobile-menu-close');
   const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
   const menuIcon = document.getElementById('menu-icon');
   const closeIcon = document.getElementById('close-icon');
 
-  if (!mobileMenuButton || !mobileMenu) return;
+  if (!mobileMenuButton || !mobileMenu || !mobileMenuPanel) return;
 
   function showMenu() {
     mobileMenu.classList.remove('hidden');
     menuIcon.classList.add('hidden');
     closeIcon.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
+
+    // Trigger the slide-in animation
+    requestAnimationFrame(() => {
+      mobileMenuPanel.classList.remove('translate-x-full');
+      mobileMenuPanel.classList.add('translate-x-0');
+    });
   }
 
   function hideMenu() {
-    mobileMenu.classList.add('hidden');
-    menuIcon.classList.remove('hidden');
-    closeIcon.classList.add('hidden');
-    document.body.style.overflow = '';
+    // Start slide-out animation
+    mobileMenuPanel.classList.remove('translate-x-0');
+    mobileMenuPanel.classList.add('translate-x-full');
+
+    // Hide the menu after animation completes
+    setTimeout(() => {
+      mobileMenu.classList.add('hidden');
+      menuIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+      document.body.style.overflow = '';
+    }, 300); // Match the transition duration
   }
 
   mobileMenuButton.addEventListener('click', showMenu);

@@ -194,8 +194,8 @@ modal:
     service_time: "9:30 AM"
     address_full: "11213 Outlet Dr"
     city_state: "Knoxville, TN 37932"
-    google_maps: "Google Maps"
-    apple_maps: "Apple Maps"
+    google_maps: "Google"
+    apple_maps: "Apple"
     close_button: "Close"
 
 cta:
