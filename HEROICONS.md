@@ -27,7 +27,7 @@ Use any Heroicon anywhere in your Jekyll site:
 {% include icon.html name="user" size="20" class="size-5" %}
 
 {% comment %}Custom classes{% endcomment %}
-{% include icon.html name="heart" class="size-6 text-red-500" %}
+{% include icon.html name="heart" class="text-red-500 size-6" %}
 ```
 
 ### Parameters

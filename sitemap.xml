@@ -3,22 +3,47 @@ layout: null
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
   <url>
     <loc>{{ site.url }}/</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
+
+  <!-- Main Pages -->
+  {% for page in site.pages %}
+    {% unless page.url contains '/assets/' or page.url contains '/css/' or page.url contains '/js/' or page.url contains '/.git' %}
+      {% if page.title and page.url != '/' %}
   <url>
-    <loc>{{ site.url }}/beliefs/</loc>
+    <loc>{{ site.url }}{{ page.url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-    <priority>0.8</priority>
+    {% if page.url contains '/beliefs' %}
+    <priority>0.9</priority>
     <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>{{ site.url }}/pastor-letter/</loc>
-    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    {% elsif page.url contains '/sermons' %}
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+    {% elsif page.url contains '/pastor-letter' %}
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    {% else %}
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
+    {% endif %}
   </url>
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
+
+  <!-- Sermon Posts -->
+  {% assign sermon_posts = site.posts | where: "category", "sermon" | sort: "date" | reverse %}
+  {% for post in sermon_posts %}
+  <url>
+    <loc>{{ site.url }}{{ post.url }}</loc>
+    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+    <priority>0.8</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  {% endfor %}
 </urlset>

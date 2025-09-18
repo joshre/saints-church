@@ -1,33 +1,118 @@
+<!-- Sermon JSON-LD Schema -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "AudioObject",
-  "name": {{ page.title | jsonify }},
-  "description": {{ page.description | default: page.excerpt | strip_html | jsonify }},
-  "creator": {
+  "@type": "Article",
+  "@id": {{ page.url | absolute_url | jsonify }},
+  "headline": {{ page.title | jsonify }},
+  "description": {{ page.description | default: page.title | strip_html | truncate: 200 | jsonify }},
+  "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+  "dateModified": {{ page.date | date_to_xmlschema | jsonify }},
+  "author": {
     "@type": "Person",
-    "name": {{ page.pastor | default: site.podcast.author | jsonify }}
+    "name": {{ page.pastor | default: 'Pastor Nate Ellis' | jsonify }},
+    "jobTitle": "Pastor",
+    "worksFor": {
+      "@type": "Church",
+      "name": {{ site.church.name | jsonify }},
+      "url": {{ site.url | jsonify }}
+    }
   },
   "publisher": {
-    "@type": "Organization",
+    "@type": "Church",
     "name": {{ site.church.name | jsonify }},
-    "url": {{ site.url | jsonify }}
+    "url": {{ site.url | jsonify }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ site.data.content.seo.meta.social_image | absolute_url | jsonify }}
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": {{ site.church.address.street | jsonify }},
+      "addressLocality": {{ site.church.address.city | jsonify }},
+      "addressRegion": {{ site.church.address.state | jsonify }},
+      "postalCode": {{ site.church.address.zip | jsonify }},
+      "addressCountry": {{ site.church.address.country | jsonify }}
+    }
   },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ page.url | absolute_url | jsonify }}
+  },
+  "url": {{ page.url | absolute_url | jsonify }},
+  "image": {{ site.data.content.seo.meta.social_image | absolute_url | jsonify }},
   {% if page.audio_url -%}
-  "contentUrl": {{ page.audio_url | jsonify }},
-  {%- endif %}
-  {% if page.duration -%}
-  "duration": {{ page.duration | jsonify }},
-  {%- endif %}
-  "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
-  "about": {
-    "@type": "Thing",
-    "name": {{ page.scripture | default: 'Biblical Teaching' | jsonify }}
+  "associatedMedia": {
+    "@type": "AudioObject",
+    "contentUrl": {{ page.audio_url | jsonify }},
+    "encodingFormat": "audio/mpeg",
+    "name": {{ page.title | append: ' - Audio' | jsonify }},
+    "description": {{ 'Audio recording of the sermon: ' | append: page.title | jsonify }},
+    {% if page.duration -%}"duration": {{ page.duration | prepend: 'PT' | replace: ':', 'M' | append: 'S' | jsonify }},{%- endif %}
+    "creator": {
+      "@type": "Person",
+      "name": {{ page.pastor | default: 'Pastor Nate Ellis' | jsonify }}
+    }
   },
+  {%- endif %}
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "Reformed Baptist Theology"
+    },
+    {
+      "@type": "Thing",
+      "name": "Expository Preaching"
+    }
+    {%- if page.scripture -%},
+    {
+      "@type": "Thing",
+      "name": {{ page.scripture | jsonify }}
+    }
+    {%- endif -%}
+    {%- if page.series -%},
+    {
+      "@type": "CreativeWorkSeries",
+      "name": {{ page.series | jsonify }}
+    }
+    {%- endif %}
+  ],
   "isPartOf": {
     "@type": "PodcastSeries",
     "name": {{ site.podcast.title | jsonify }},
-    "url": "{{ site.url }}/sermons/"
-  }
+    "url": {{ site.podcast.rss_url | jsonify }},
+    "description": {{ site.podcast.description | jsonify }}
+  },
+  "genre": "Religious",
+  "keywords": {{ 'Reformed Baptist, Expository Preaching, ' | append: page.scripture | default: '' | append: ', ' | append: page.series | default: '' | append: ', Knoxville Church' | jsonify }},
+  "inLanguage": "en-US"
+}
+</script>
+
+<!-- Breadcrumb JSON-LD for sermon pages -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ site.url | jsonify }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Sermons",
+      "item": {{ site.url | append: '/sermons/' | jsonify }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ page.title | jsonify }},
+      "item": {{ page.url | absolute_url | jsonify }}
+    }
+  ]
 }
 </script>

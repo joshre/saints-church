@@ -4,12 +4,12 @@
 # (https://anchor.fm/s/f5d78a70/podcast/rss) to Jekyll posts in the _posts/ directory.
 #
 # Key Features:
-# - 🎯 Parses RSS feed for episode metadata (title, description, audio URL, duration, GUID)
-# - 📝 Creates Jekyll posts with proper frontmatter (layout: sermon, scripture references, series detection)
-# - 🔄 Prevents duplicates using GUID tracking in _data/processed_episodes.json
-# - 📅 Scheduled to run weekly on Sundays at 9:00 AM UTC (after sermon uploads)
-# - ⛪ Optimized for Reformed Baptist context with enhanced scripture reference extraction
-# - 🤖 Automated commits with descriptive messages including episode titles
+# - Parses RSS feed for episode metadata (title, description, audio URL, duration, GUID)
+# - Creates Jekyll posts with proper frontmatter (layout: sermon, scripture references, series detection)
+# - Prevents duplicates using GUID tracking in _data/processed_episodes.json
+# - Scheduled to run weekly on Sundays at 9:00 AM UTC (after sermon uploads)
+# - Optimized for Reformed Baptist context with enhanced scripture reference extraction
+# - Automated commits with descriptive messages including episode titles
 #
 # Reformed Baptist Context:
 # - Automatically detects biblical book series for expository preaching (John, Galatians, etc.)
@@ -49,7 +49,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Create package.json for dependencies
         run: |
@@ -58,8 +57,7 @@ jobs:
             "name": "podcast-sync",
             "version": "1.0.0",
             "dependencies": {
-              "rss-parser": "^3.13.0",
-              "front-matter": "^4.0.2"
+              "rss-parser": "^3.13.0"
             }
           }
           EOF
@@ -83,6 +81,7 @@ jobs:
           const Parser = require('rss-parser');
           const fs = require('fs');
           const path = require('path');
+          const crypto = require('crypto');
 
           const parser = new Parser({
             customFields: {
@@ -91,12 +90,7 @@ jobs:
                 'enclosure',
                 'itunes:duration',
                 'itunes:author',
-                'itunes:explicit',
-                'itunes:subtitle',
-                'itunes:summary',
-                'itunes:keywords',
-                'itunes:season',
-                'itunes:episode'
+                'itunes:summary'
               ]
             }
           });
@@ -104,6 +98,13 @@ jobs:
           const RSS_URL = 'https://anchor.fm/s/f5d78a70/podcast/rss';
           const PROCESSED_FILE = '_data/processed_episodes.json';
           const POSTS_DIR = '_posts';
+
+          // Constants
+          const NETWORK_TIMEOUT = 30000;
+          const CONTENT_HASH_LENGTH = 16;
+          const EPISODE_HASH_LENGTH = 8;
+          const DEFAULT_PASTOR = 'Pastor Nate Ellis';
+          const MAX_FILENAME_LENGTH = 100;
 
           // Load processed episodes
           function loadProcessedEpisodes() {
@@ -126,6 +127,18 @@ jobs:
             } catch (error) {
               console.error('Error saving processed episodes:', error.message);
             }
+          }
+
+          // Generate content hash for change detection
+          function generateContentHash(episode) {
+            const contentToHash = [
+              episode.title,
+              episode.description || episode['itunes:summary'] || '',
+              episode.enclosure?.url || '',
+              episode['itunes:duration'] || '',
+              episode['itunes:author'] || ''
+            ].join('|');
+            return crypto.createHash('sha256').update(contentToHash).digest('hex').substring(0, CONTENT_HASH_LENGTH);
           }
 
           // Extract scripture references from title or description
@@ -161,12 +174,31 @@ jobs:
             return null;
           }
 
+          // Calculate the Sunday on or before the given date (sermon date)
+          function getSermonSunday(date) {
+            const day = new Date(date);
+            const dayOfWeek = day.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+            // If it's already Sunday (0), use that date
+            // Otherwise, go back to the previous Sunday
+            const daysToSubtract = dayOfWeek;
+            const sermonDate = new Date(day);
+            sermonDate.setDate(day.getDate() - daysToSubtract);
+
+            return sermonDate;
+          }
+
           // Parse duration from various formats
           function parseDuration(duration) {
-            if (!duration) return null;
+            if (!duration || typeof duration !== 'string') return null;
 
             // Handle MM:SS or HH:MM:SS format
             const parts = duration.split(':').map(p => parseInt(p, 10));
+
+            // Validate that all parts are valid numbers
+            if (parts.some(p => isNaN(p))) {
+              return null;
+            }
 
             if (parts.length === 2) {
               // MM:SS
@@ -188,19 +220,27 @@ jobs:
           // Generate Jekyll filename from date and title
           function generateFilename(date, title) {
             const dateStr = date.toISOString().split('T')[0];
-            const slug = title
+            let slug = title
               .toLowerCase()
               .replace(/[^\w\s-]/g, '') // Remove special characters
               .replace(/\s+/g, '-') // Replace spaces with hyphens
               .replace(/-+/g, '-') // Replace multiple hyphens with single
-              .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+              .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+              .substring(0, MAX_FILENAME_LENGTH); // Limit length to prevent filesystem issues
+
+            // Ensure slug is not empty
+            if (!slug) {
+              slug = 'untitled-sermon';
+            }
 
             return `${dateStr}-${slug}.md`;
           }
 
+
           // Generate frontmatter and content for Jekyll post
           function generatePost(episode) {
             const pubDate = new Date(episode.pubDate);
+            const sermonDate = getSermonSunday(pubDate); // Use sermon Sunday instead of publish date
             const scripture = extractScripture(episode.title) || extractScripture(episode.description);
             const duration = parseDuration(episode['itunes:duration']);
 
@@ -229,18 +269,22 @@ jobs:
               }
             }
 
+            // Generate unique hash for audio player progress tracking
+            const episodeHash = crypto.createHash('sha256').update(episode.guid || episode.link || episode.title).digest('hex').substring(0, EPISODE_HASH_LENGTH);
+
             const frontmatter = {
               layout: 'sermon',
               title: episode.title,
-              date: pubDate.toISOString(),
+              date: sermonDate.toISOString(),
               category: 'sermon',
               audio_url: episode.enclosure?.url || null,
               duration: duration,
               scripture: scripture,
               series: series,
-              pastor: episode['itunes:author'] || 'Pastor Nate Ellis',
+              pastor: DEFAULT_PASTOR,
               description: episode.description || episode['itunes:summary'] || null,
-              guid: episode.guid
+              guid: episode.guid,
+              episode_id: episodeHash
             };
 
             // Remove null values
@@ -252,22 +296,27 @@ jobs:
 
             let content = '---\n';
             Object.entries(frontmatter).forEach(([key, value]) => {
-              if (typeof value === 'string' && (value.includes('\n') || value.includes('"'))) {
-                // Use YAML literal block for multiline strings
-                content += `${key}: |\n  ${value.replace(/\n/g, '\n  ')}\n`;
-              } else if (typeof value === 'string') {
-                content += `${key}: "${value}"\n`;
+              if (typeof value === 'string') {
+                // Escape YAML special characters and wrap in quotes
+                const escapedValue = value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n');
+                content += `${key}: "${escapedValue}"\n`;
               } else {
                 content += `${key}: ${value}\n`;
               }
             });
             content += '---\n\n';
 
-            // Add episode content
+            // Add episode content (avoid duplication)
             if (episode.content || episode['itunes:summary']) {
               const episodeContent = episode.content || episode['itunes:summary'];
-              if (episodeContent !== episode.description) {
-                content += `${episodeContent}\n`;
+              const description = episode.description || '';
+
+              // Only add if content is meaningfully different (not just whitespace/formatting)
+              const normalizeText = (text) => text.replace(/\s+/g, ' ').trim().toLowerCase();
+              if (normalizeText(episodeContent) !== normalizeText(description) && episodeContent.length > 50) {
+                // Escape YAML content properly
+                const escapedContent = episodeContent.replace(/\\/g, '\\\\').replace(/---/g, '\\-\\-\\-');
+                content += `${escapedContent}\n`;
               }
             }
 
@@ -277,70 +326,130 @@ jobs:
           async function syncEpisodes() {
             try {
               console.log(`Fetching RSS feed from: ${RSS_URL}`);
-              const feed = await parser.parseURL(RSS_URL);
+
+              // Create parser with timeout
+              const feedPromise = parser.parseURL(RSS_URL);
+              const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error(`RSS feed fetch timeout after ${NETWORK_TIMEOUT / 1000} seconds`)), NETWORK_TIMEOUT)
+              );
+
+              const feed = await Promise.race([feedPromise, timeoutPromise]);
               console.log(`Found ${feed.items.length} episodes in RSS feed`);
 
               const processedEpisodes = loadProcessedEpisodes();
-              const processedGuids = new Set(processedEpisodes.map(ep => ep.guid));
+              // Build map efficiently without intermediate array
+              const processedMap = processedEpisodes.reduce((map, ep) => {
+                map.set(ep.guid, ep);
+                return map;
+              }, new Map());
 
               let newEpisodes = 0;
-              const newProcessedEpisodes = [...processedEpisodes];
+              let updatedEpisodes = 0;
 
               for (const item of feed.items) {
-                const guid = item.guid || item.link;
-
-                if (processedGuids.has(guid)) {
-                  console.log(`Skipping already processed episode: ${item.title}`);
+                // Validate required fields
+                if (!item.title || typeof item.title !== 'string' || !item.title.trim()) {
+                  console.log('Skipping episode with missing or invalid title');
                   continue;
                 }
 
-                console.log(`Processing new episode: ${item.title}`);
+                const guid = item.guid || item.link;
+                if (!guid) {
+                  console.log(`Skipping episode "${item.title}" with missing GUID and link`);
+                  continue;
+                }
+
+                const currentContentHash = generateContentHash(item);
+                const existingEpisode = processedMap.get(guid);
+
+                if (existingEpisode) {
+                  // Check if content has changed
+                  if (existingEpisode.content_hash && existingEpisode.content_hash === currentContentHash) {
+                    console.log(`No changes for episode: ${item.title}`);
+                    continue;
+                  } else {
+                    console.log(`Content updated for episode: ${item.title}`);
+                  }
+                } else {
+                  console.log(`Processing new episode: ${item.title}`);
+                }
 
                 try {
                   const pubDate = new Date(item.pubDate);
-                  const filename = generateFilename(pubDate, item.title);
-                  const filepath = path.join(POSTS_DIR, filename);
-
-                  // Check if file already exists (additional safety check)
-                  if (fs.existsSync(filepath)) {
-                    console.log(`File already exists, skipping: ${filename}`);
-                    continue;
+                  if (isNaN(pubDate.getTime())) {
+                    throw new Error(`Invalid publication date: ${item.pubDate}`);
                   }
 
+                  const sermonDate = getSermonSunday(pubDate);
+                  const filename = generateFilename(sermonDate, item.title);
+
+                  // Log date adjustment if sermon date differs from publish date
+                  if (sermonDate.toDateString() !== pubDate.toDateString()) {
+                    console.log(`Adjusted sermon date: ${item.title} - Published: ${pubDate.toDateString()}, Sermon: ${sermonDate.toDateString()}`);
+                  }
+                  if (!filename || filename.endsWith('-.md')) {
+                    throw new Error(`Invalid filename generated from title: ${item.title}`);
+                  }
+
+                  // Prevent path traversal attacks
+                  if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+                    throw new Error(`Unsafe filename detected: ${filename}`);
+                  }
+
+                  const filepath = path.join(POSTS_DIR, filename);
+
                   const postContent = generatePost(item);
-                  fs.writeFileSync(filepath, postContent);
 
-                  console.log(`Created post: ${filename}`);
+                  // Atomic operation: write new file first, then delete old if needed
+                  fs.writeFileSync(filepath, postContent, { mode: 0o644 });
 
-                  // Add to processed episodes
-                  newProcessedEpisodes.push({
+                  // If this is an update and filename has changed, delete the old file after successful write
+                  if (existingEpisode && existingEpisode.filename && existingEpisode.filename !== filename) {
+                    const oldFilepath = path.join(POSTS_DIR, existingEpisode.filename);
+                    if (fs.existsSync(oldFilepath)) {
+                      fs.unlinkSync(oldFilepath);
+                      console.log(`Deleted old file: ${existingEpisode.filename}`);
+                    }
+                  }
+
+                  console.log(`${existingEpisode ? 'Updated' : 'Created'} post: ${filename}`);
+
+                  // Increment counters only after successful processing
+                  if (existingEpisode) {
+                    updatedEpisodes++;
+                  } else {
+                    newEpisodes++;
+                  }
+
+                  // Update or add to processed episodes
+                  const episodeRecord = {
                     guid: guid,
                     title: item.title,
                     filename: filename,
+                    content_hash: currentContentHash,
                     processed_at: new Date().toISOString()
-                  });
+                  };
 
-                  newEpisodes++;
+                  // Update the map for future lookups
+                  processedMap.set(guid, episodeRecord);
                 } catch (error) {
                   console.error(`Error processing episode "${item.title}":`, error.message);
                 }
               }
 
-              // Save updated processed episodes list
-              saveProcessedEpisodes(newProcessedEpisodes);
+              // Rebuild array from map for saving (maintains all episodes)
+              const finalProcessedEpisodes = Array.from(processedMap.values());
+              saveProcessedEpisodes(finalProcessedEpisodes);
 
-              console.log(`\n🎯 Sync complete: ${newEpisodes} new episodes processed`);
-              console.log(`📊 Total episodes in feed: ${feed.items.length}`);
-              console.log(`✅ Total processed episodes: ${newProcessedEpisodes.length}`);
+              console.log(`\nSync complete: ${newEpisodes} new episodes, ${updatedEpisodes} updated episodes processed`);
+              console.log(`Total episodes in feed: ${feed.items.length}`);
+              console.log(`Total processed episodes: ${finalProcessedEpisodes.length}`);
 
               // Set output for GitHub Actions
               if (process.env.GITHUB_OUTPUT) {
                 fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_episodes=${newEpisodes}\n`);
                 fs.appendFileSync(process.env.GITHUB_OUTPUT, `total_episodes=${feed.items.length}\n`);
               }
-
-              return newEpisodes;
-
             } catch (error) {
               console.error('Error syncing episodes:', error.message);
               process.exit(1);
@@ -353,7 +462,7 @@ jobs:
 
           node sync-episodes.js
 
-      - name: Commit new episodes
+      - name: Commit episode changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -362,51 +471,102 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add _posts/ _data/processed_episodes.json
 
-            # Count new files
+            # Count new, modified, and deleted files
             NEW_FILES=$(git diff --cached --name-status | grep "^A" | grep "_posts/" | wc -l)
+            MODIFIED_FILES=$(git diff --cached --name-status | grep "^M" | grep "_posts/" | wc -l)
+            DELETED_FILES=$(git diff --cached --name-status | grep "^D" | grep "_posts/" | wc -l)
 
-            if [ "$NEW_FILES" -gt 0 ]; then
-              # Get the titles of new episodes for commit message
-              NEW_EPISODE_TITLES=$(git diff --cached --name-only | grep "_posts/" | head -3 | xargs -I {} basename {} .md | sed 's/^[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-//' | sed 's/-/ /g')
+            # Adjust counts: if we have equal deletions and additions, treat as updates
+            if [ "$DELETED_FILES" -gt 0 ] && [ "$NEW_FILES" -gt 0 ]; then
+              RENAMES=$((NEW_FILES < DELETED_FILES ? NEW_FILES : DELETED_FILES))
+              NEW_FILES=$((NEW_FILES - RENAMES))
+              MODIFIED_FILES=$((MODIFIED_FILES + RENAMES))
+            fi
 
-              if [ "$NEW_FILES" -eq 1 ]; then
-                FIRST_TITLE=$(echo "$NEW_EPISODE_TITLES" | head -1)
-                COMMIT_MSG="Add new sermon: $FIRST_TITLE
+            if [ "$NEW_FILES" -gt 0 ] || [ "$MODIFIED_FILES" -gt 0 ]; then
+              # Get the titles for commit message (safely)
+              CHANGED_TITLES=$(git diff --cached --name-only | grep "_posts/" | head -5 | while read file; do basename "$file" .md | sed 's/^[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-//' | sed 's/-/ /g' | sed 's/[^a-zA-Z0-9 :.-]//g'; done | tr '\n' '|')
 
-🎯 Automated podcast sync from Saints Church RSS feed
-📅 Weekly sync for Reformed Baptist sermon series
+              # Build commit message based on changes
+              if [ "$NEW_FILES" -gt 0 ] && [ "$MODIFIED_FILES" -eq 0 ]; then
+                # Only new episodes
+                if [ "$NEW_FILES" -eq 1 ]; then
+                  FIRST_TITLE=$(echo "$CHANGED_TITLES" | cut -d'|' -f1)
+                  COMMIT_MSG="Add new sermon: $FIRST_TITLE
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
+Automated podcast sync from Saints Church RSS feed
+Weekly sync for Reformed Baptist sermon series
+
+Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-              else
-                COMMIT_MSG="Add $NEW_FILES new sermon episodes
+                else
+                  COMMIT_MSG="Add $NEW_FILES new sermon episodes
 
-🎯 Automated podcast sync from Saints Church RSS feed
-📅 Weekly sync for Reformed Baptist sermon series
+Automated podcast sync from Saints Church RSS feed
+Weekly sync for Reformed Baptist sermon series
 
 Recent episodes:
-$(echo "$NEW_EPISODE_TITLES" | sed 's/^/- /')
+$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
+Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+                fi
+              elif [ "$NEW_FILES" -eq 0 ] && [ "$MODIFIED_FILES" -gt 0 ]; then
+                # Only updated episodes
+                if [ "$MODIFIED_FILES" -eq 1 ]; then
+                  FIRST_TITLE=$(echo "$CHANGED_TITLES" | cut -d'|' -f1)
+                  COMMIT_MSG="Update sermon: $FIRST_TITLE
+
+Automated podcast sync from Saints Church RSS feed
+Weekly sync for Reformed Baptist sermon series
+
+Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+                else
+                  COMMIT_MSG="Update $MODIFIED_FILES sermon episodes
+
+Automated podcast sync from Saints Church RSS feed
+Weekly sync for Reformed Baptist sermon series
+
+Updated episodes:
+$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
+
+Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+                fi
+              else
+                # Both new and updated episodes
+                COMMIT_MSG="Sync sermons: $NEW_FILES new, $MODIFIED_FILES updated
+
+Automated podcast sync from Saints Church RSS feed
+Weekly sync for Reformed Baptist sermon series
+
+Recent changes:
+$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
+
+Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
               fi
 
               git commit -m "$COMMIT_MSG"
-              echo "✅ Committed $NEW_FILES new episode(s)"
+              echo "Committed $NEW_FILES new episode(s) and $MODIFIED_FILES updated episode(s)"
             else
-              echo "ℹ️ No new episodes to commit"
+              echo "No episodes to commit"
             fi
           else
-            echo "ℹ️ No changes detected"
+            echo "No changes detected"
           fi
 
       - name: Push changes
         run: |
           if [ -n "$(git log @{u}.. --oneline 2>/dev/null)" ]; then
             git push
-            echo "✅ Pushed changes to repository"
+            echo "Pushed changes to repository"
           else
-            echo "ℹ️ No changes to push"
+            echo "No changes to push"
           fi

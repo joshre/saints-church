@@ -1,39 +1,39 @@
 <header class="pt-12 sm:pt-16 bg-saints-white dark:bg-saints-black">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="relative flex justify-between group/row relative isolate pt-[calc(theme(spacing.2)+1px)] last:pb-[calc(theme(spacing.2)+1px)]">
+  <div class="px-6 mx-auto max-w-7xl lg:px-8">
+    <div class="relative flex justify-between group/row relative isolate pt-[calc(theme(spacing.2)+1px)] pb-[calc(theme(spacing.2)+1px)]">
       <!-- Decorative borders -->
-      <div aria-hidden="true" class="absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2">
+      <div aria-hidden="true" class="absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 -z-10">
         <div class="absolute inset-x-0 top-0 border-t border-stone-900/10 dark:border-white/10"></div>
         <div class="absolute inset-x-0 top-2 border-t border-stone-900/10 dark:border-white/10"></div>
-        <div class="absolute inset-x-0 bottom-0 hidden border-b border-stone-900/10 dark:border-white/10 group-last/row:block"></div>
-        <div class="absolute inset-x-0 bottom-2 hidden border-b border-stone-900/10 dark:border-white/10 group-last/row:block"></div>
+        <div class="absolute inset-x-0 bottom-0 border-b border-stone-900/10 dark:border-white/10"></div>
+        <div class="absolute inset-x-0 bottom-2 border-b border-stone-900/10 dark:border-white/10"></div>
       </div>
 
-      <div class="relative flex gap-6">
+      <div class="flex relative gap-6">
         <!-- Logo -->
-        <div class="py-3 group/item relative">
+        <div class="relative py-3 group/item">
           <!-- Corner crosses -->
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -top-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -top-2 -right-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -bottom-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -right-2 -bottom-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
 
           <a href="/" class="text-lg font-semibold rounded-md transition-colors dark:text-white focus:ring-2 focus:ring-offset-2 focus:outline-none font-display text-stone-900 dark:hover:text-saints-500 hover:text-saints-500 focus:ring-saints-500" aria-label="{{ site.data.content.navigation.site_name_aria }}">
-            {% include logo.html class="h-8 overflow-visible" %}
+            {% include logo.html class="overflow-visible h-8" %}
           </a>
         </div>
 
         <!-- Announcement banner -->
-        <div class="relative hidden items-center py-3 lg:flex">
-          <a class="flex items-center gap-1 rounded-full bg-saints-500/10 dark:bg-saints-500/20 px-3 py-0.5 text-sm/6 font-medium text-saints-600 dark:text-saints-400 hover:bg-saints-500/15 dark:hover:bg-saints-500/25 transition-colors" href="{{ site.data.content.navigation.announcement.href }}">
+        <div class="hidden relative items-center py-3 lg:flex">
+          <a class="flex gap-1 items-center py-0.5 px-3 font-medium rounded-full transition-colors bg-saints-500/10 text-sm/6 text-saints-600 dark:bg-saints-500/20 dark:text-saints-400 dark:hover:bg-saints-500/25 hover:bg-saints-500/15" href="{{ site.data.content.navigation.announcement.href }}">
             {{ site.data.content.navigation.announcement.text }}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="size-4">
               <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
@@ -43,113 +43,113 @@
       </div>
 
       <!-- Navigation links -->
-      <nav class="relative hidden lg:flex">
-        <div class="relative flex group/item relative">
+      <nav class="hidden relative lg:flex">
+        <div class="flex relative group/item">
           <!-- Corner crosses -->
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -top-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -top-2 -right-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -bottom-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -right-2 -bottom-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
 
-          <a class="flex items-center px-4 py-3 text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors" href="/beliefs">
+          <a class="flex items-center py-3 px-4 text-base font-medium transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-white/5 hover:bg-stone-900/5" href="/beliefs">
             {{ site.data.content.navigation.links.beliefs }}
           </a>
         </div>
 
-        <div class="relative flex group/item relative">
+        <div class="flex relative group/item">
           <!-- Corner crosses -->
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -top-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -top-2 -right-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -bottom-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -right-2 -bottom-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
 
-          <a class="flex items-center px-4 py-3 text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors" href="/sermons">
+          <a class="flex items-center py-3 px-4 text-base font-medium transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-white/5 hover:bg-stone-900/5" href="/sermons">
             {{ site.data.content.navigation.links.sermons }}
           </a>
         </div>
 
-        <div class="relative flex group/item relative">
+        <div class="flex relative group/item">
           <!-- Corner crosses -->
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -top-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -top-2 -right-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -bottom-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -right-2 -bottom-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
 
           {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-          <a class="flex items-center px-4 py-3 text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors" href="{{ email_link }}">
+          <a class="flex items-center py-3 px-4 text-base font-medium transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-white/5 hover:bg-stone-900/5" href="{{ email_link }}">
             {{ site.data.content.navigation.buttons.reach_out }}
           </a>
         </div>
 
-        <div class="relative flex group/item relative">
+        <div class="flex relative group/item">
           <!-- Corner crosses -->
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -top-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -top-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -top-2 -right-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-first/item:group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -left-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden absolute -bottom-2 -left-2 group-first/item:block size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
-          <svg viewBox="0 0 15 15" aria-hidden="true" class="hidden group-last/row:block absolute size-[15px] fill-stone-900/10 dark:fill-white/10 -bottom-2 -right-2">
+          <svg viewBox="0 0 15 15" aria-hidden="true" class="absolute -right-2 -bottom-2 size-[15px] fill-stone-900/10 dark:fill-white/10">
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
 
-          <button class="flex items-center px-4 py-3 text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-900/5 dark:hover:bg-white/5 transition-colors" command="show-modal" commandfor="visit-modal">
+          <button class="flex items-center py-3 px-4 text-base font-medium transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-white/5 hover:bg-stone-900/5" command="show-modal" commandfor="visit-modal">
             {{ site.data.content.navigation.buttons.visit_us }}
           </button>
         </div>
       </nav>
 
       <!-- Mobile menu button -->
-      <button class="flex size-12 items-center justify-center self-center rounded-lg hover:bg-stone-900/5 dark:hover:bg-white/5 lg:hidden transition-colors" aria-label="{{ site.data.content.ui.labels.open_main_menu }}" type="button" id="mobile-menu-button">
+      <button class="flex justify-center items-center self-center rounded-lg transition-colors lg:hidden size-12 dark:hover:bg-white/5 hover:bg-stone-900/5" aria-label="{{ site.data.content.ui.labels.open_main_menu }}" type="button" id="mobile-menu-button">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-6" id="menu-icon">
           <path fill-rule="evenodd" d="M3 9a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 9Zm0 6.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd"></path>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-6 hidden" id="close-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="hidden size-6" id="close-icon">
           <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
         </svg>
       </button>
     </div>
 
     <!-- Mobile menu overlay -->
-    <div class="lg:hidden hidden" id="mobile-menu">
+    <div class="hidden lg:hidden" id="mobile-menu">
       <div class="fixed inset-0 z-50">
         <!-- Backdrop -->
         <div class="fixed inset-0 bg-black/20 backdrop-blur-sm" id="mobile-menu-backdrop"></div>
 
         <!-- Menu panel -->
-        <div class="fixed top-0 right-0 w-full max-w-sm h-full bg-white dark:bg-stone-900 shadow-xl">
+        <div class="fixed top-0 right-0 w-full max-w-sm h-full bg-white shadow-xl dark:bg-stone-900">
           <div class="flex flex-col h-full">
             <!-- Header -->
-            <div class="flex items-center justify-between p-6 border-b border-stone-200 dark:border-stone-700">
-              <span class="text-lg font-semibold font-display text-stone-900 dark:text-white">{{ site.data.content.ui.labels.mobile_menu_title }}</span>
-              <button class="p-2 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors" id="mobile-menu-close">
+            <div class="flex justify-between items-center p-6 border-b border-stone-200 dark:border-stone-700">
+              <span class="text-lg font-semibold dark:text-white font-display text-stone-900">{{ site.data.content.ui.labels.mobile_menu_title }}</span>
+              <button class="p-2 rounded-lg transition-colors dark:hover:bg-stone-800 hover:bg-stone-100" id="mobile-menu-close">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                   <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
                 </svg>
@@ -159,17 +159,17 @@
             <!-- Navigation links -->
             <nav class="flex-1 p-6">
               <div class="flex flex-col gap-1">
-                <a href="/beliefs" class="block px-3 py-2 rounded-lg text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                <a href="/beliefs" class="block py-2 px-3 text-base font-medium rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100">
                   {{ site.data.content.navigation.links.beliefs }}
                 </a>
-                <a href="/sermons" class="block px-3 py-2 rounded-lg text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                <a href="/sermons" class="block py-2 px-3 text-base font-medium rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100">
                   {{ site.data.content.navigation.links.sermons }}
                 </a>
                 {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-                <a href="{{ email_link }}" class="block px-3 py-2 rounded-lg text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                <a href="{{ email_link }}" class="block py-2 px-3 text-base font-medium rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100">
                   {{ site.data.content.navigation.buttons.reach_out }}
                 </a>
-                <button class="block w-full text-left px-3 py-2 rounded-lg text-base font-medium text-stone-900 dark:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors" command="show-modal" commandfor="visit-modal">
+                <button class="block py-2 px-3 w-full text-base font-medium text-left rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100" command="show-modal" commandfor="visit-modal">
                   {{ site.data.content.navigation.buttons.visit_us }}
                 </button>
               </div>
@@ -177,9 +177,9 @@
 
             <!-- Announcement banner -->
             <div class="p-6 border-t border-stone-200 dark:border-stone-700">
-              <a class="flex items-center gap-2 p-3 rounded-lg bg-saints-500/10 dark:bg-saints-500/20 text-saints-600 dark:text-saints-400 hover:bg-saints-500/15 dark:hover:bg-saints-500/25 transition-colors" href="{{ site.data.content.navigation.announcement.href }}">
+              <a class="flex gap-2 items-center p-3 rounded-lg transition-colors bg-saints-500/10 text-saints-600 dark:bg-saints-500/20 dark:text-saints-400 dark:hover:bg-saints-500/25 hover:bg-saints-500/15" href="{{ site.data.content.navigation.announcement.href }}">
                 <span class="text-sm font-medium">{{ site.data.content.navigation.announcement.text }}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="flex-shrink-0 size-4">
                   <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
                 </svg>
               </a>

@@ -219,13 +219,13 @@ page_cta:
 
 sermons:
   title: "Sermons"
-  subtitle: "Expository Preaching from God's Word"
+  subtitle: "Our church's Sunday morning sermon archive"
   description: ""
-  details: "Our sermons are available as audio recordings and can be listened to on your favorite podcast platform. We believe that hearing God's Word preached faithfully is essential for spiritual growth and discipleship."
+  details: ""
   latest_title: "Latest Sermons"
   listen_text: "Listen on your favorite platform"
   archive_text: "View All Sermons"
-  archive_subtitle: "Our church's Sunday morning sermon archive"
+  archive_subtitle: "Sermon Archive"
   back_to_sermons: "Back to All Sermons"
   cta:
     sermons_page:

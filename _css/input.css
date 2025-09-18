@@ -654,3 +654,66 @@ input.audio-scrubber:active::-moz-range-thumb {
   @apply scale-125;
 }
 
+/* Sermon Card Background Variations */
+/* Use nth-child on the parent containers to create different rotations */
+
+/* Card 1, 5, 9, etc. - subtle positive rotation */
+.group:nth-child(4n+1) .sermon-card-bg-1 {
+  @apply rotate-1 -translate-y-2;
+}
+.group:nth-child(4n+1):hover .sermon-card-bg-1 {
+  @apply rotate-2 -translate-y-3 -translate-x-1;
+}
+
+.group:nth-child(4n+1) .sermon-card-bg-2 {
+  @apply -rotate-2 translate-y-2;
+}
+.group:nth-child(4n+1):hover .sermon-card-bg-2 {
+  @apply -rotate-3 translate-y-1 -translate-x-1;
+}
+
+/* Card 2, 6, 10, etc. - larger positive rotation */
+.group:nth-child(4n+2) .sermon-card-bg-1 {
+  @apply rotate-2 -translate-y-2;
+}
+.group:nth-child(4n+2):hover .sermon-card-bg-1 {
+  @apply rotate-3 -translate-y-3 -translate-x-1;
+}
+
+.group:nth-child(4n+2) .sermon-card-bg-2 {
+  @apply -rotate-1 translate-y-2;
+}
+.group:nth-child(4n+2):hover .sermon-card-bg-2 {
+  @apply -rotate-2 translate-y-1 -translate-x-1;
+}
+
+/* Card 3, 7, 11, etc. - negative rotation */
+.group:nth-child(4n+3) .sermon-card-bg-1 {
+  @apply -rotate-1 -translate-y-2;
+}
+.group:nth-child(4n+3):hover .sermon-card-bg-1 {
+  @apply -rotate-2 -translate-y-3 -translate-x-1;
+}
+
+.group:nth-child(4n+3) .sermon-card-bg-2 {
+  @apply rotate-3 translate-y-2;
+}
+.group:nth-child(4n+3):hover .sermon-card-bg-2 {
+  @apply rotate-4 translate-y-1 -translate-x-1;
+}
+
+/* Card 4, 8, 12, etc. - mixed rotation */
+.group:nth-child(4n) .sermon-card-bg-1 {
+  @apply rotate-3 -translate-y-2;
+}
+.group:nth-child(4n):hover .sermon-card-bg-1 {
+  @apply rotate-4 -translate-y-3 -translate-x-1;
+}
+
+.group:nth-child(4n) .sermon-card-bg-2 {
+  @apply -rotate-3 translate-y-2;
+}
+.group:nth-child(4n):hover .sermon-card-bg-2 {
+  @apply -rotate-4 translate-y-1 -translate-x-1;
+}
+

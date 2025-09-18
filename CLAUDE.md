@@ -148,11 +148,19 @@ Uses Tailwind arbitrary properties for overrides:
 <div class="child [--delay:0.15s] [--translate-y:0.25rem]">
 ```
 
-## Content Strategy
+## Content Management
+
+### Content Data File
+**CRITICAL**: All content changes must be made in `_data/content.yml`, never hardcoded in templates.
+
+- Site content is centrally managed in `_data/content.yml`
+- Access content via `{{ site.data.content.section.field }}`
+- Never hardcode text directly in HTML/Liquid templates
+- Always update content.yml when changing any text or messaging
 
 ### Acts 2:42-47 Structure
 1. **Teaching** - Verse-by-verse expository preaching
-2. **Fellowship** - Community life and relationships  
+2. **Fellowship** - Community life and relationships
 3. **Breaking of Bread** - Lord's Supper weekly + meals together
 4. **Prayer** - Family prayer + communal prayer gatherings
 

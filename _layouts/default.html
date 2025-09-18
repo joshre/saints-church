@@ -17,7 +17,22 @@
     <link rel="canonical" href="{{ page.url | absolute_url }}" itemprop="url">
     
     <!-- Open Graph / Facebook -->
+    {% if page.layout == "sermon" %}
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+    <meta property="article:author" content="{{ page.pastor | default: 'Pastor Nate Ellis' }}">
+    <meta property="article:section" content="Sermons">
+    <meta property="article:tag" content="Reformed Baptist">
+    <meta property="article:tag" content="Expository Preaching">
+    {% if page.series %}<meta property="article:tag" content="{{ page.series }}">{% endif %}
+    {% if page.scripture %}<meta property="article:tag" content="{{ page.scripture }}">{% endif %}
+    {% if page.audio_url %}<meta property="og:audio" content="{{ page.audio_url }}">
+    <meta property="og:audio:type" content="audio/mpeg">{% endif %}
+    {% else %}
     <meta property="og:type" content="website">
+    <meta property="article:author" content="{{ site.church.name }}">
+    <meta property="article:section" content="{{ site.data.content.seo.meta.article_section }}">
+    {% endif %}
     <meta property="og:url" content="{{ page.url | absolute_url }}">
     <meta property="og:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
     <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
@@ -26,8 +41,6 @@
     <meta property="og:image:height" content="{{ site.data.content.seo.meta.social_image_height }}">
     <meta property="og:site_name" content="{{ site.church.name }}">
     <meta property="og:locale" content="{{ site.data.content.seo.meta.og_locale }}">
-    <meta property="article:author" content="{{ site.church.name }}">
-    <meta property="article:section" content="{{ site.data.content.seo.meta.article_section }}">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="{{ site.data.content.seo.meta.twitter_card }}">
@@ -85,7 +98,64 @@
       ]
     }
     </script>
-    
+
+    <!-- Include sermon-specific schema if it's a sermon page -->
+    {% if page.layout == "sermon" %}
+    {% include sermon-schema.html %}
+    {% endif %}
+
+    <!-- Include page-specific schema for static pages -->
+    {% if page.layout == "page" %}
+    {% include page-schema.html %}
+    {% endif %}
+
+    <!-- Enhanced schema for sermons listing page -->
+    {% if page.title == "Sermons" and page.layout == "default" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": {{ page.url | absolute_url | jsonify }},
+      "name": {{ page.title | jsonify }},
+      "description": {{ page.description | jsonify }},
+      "url": {{ page.url | absolute_url | jsonify }},
+      "mainEntity": {
+        "@type": "PodcastSeries",
+        "name": {{ site.podcast.title | jsonify }},
+        "description": {{ site.podcast.description | jsonify }},
+        "url": {{ site.podcast.rss_url | jsonify }},
+        "author": {
+          "@type": "Church",
+          "name": {{ site.church.name | jsonify }},
+          "url": {{ site.url | jsonify }}
+        }
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": {{ site.url | jsonify }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Sermons",
+            "item": {{ page.url | absolute_url | jsonify }}
+          }
+        ]
+      },
+      "publisher": {
+        "@type": "Church",
+        "name": {{ site.church.name | jsonify }},
+        "url": {{ site.url | jsonify }}
+      }
+    }
+    </script>
+    {% endif %}
+
     <link href="{{ '/css/output.css' | relative_url }}" rel="stylesheet">
 </head>
 <body class="antialiased bg-saints-white dark:bg-saints-black" itemscope itemtype="https://schema.org/WebPage">

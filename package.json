@@ -18,7 +18,8 @@
     "tailwindcss": "^4.1.12"
   },
   "dependencies": {
-    "@tailwindplus/elements": "^1.0.9"
+    "@tailwindplus/elements": "^1.0.9",
+    "rss-parser": "^3.13.0"
   },
   "description": "",
   "repository": {

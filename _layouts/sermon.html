@@ -2,132 +2,133 @@
 layout: default
 ---
 
-<main tabindex="-1" id="main-content">
-  <nav aria-label="Breadcrumb">
-    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
-      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a href="/sermons/" itemprop="item" rel="up"><span itemprop="name">{{ site.data.content.sermons.back_to_sermons }}</span></a>
-        <meta itemprop="position" content="1">
-      </li>
-    </ol>
-  </nav>
+<div class="bg-saints-100">
+  <main tabindex="-1" id="main-content" class="py-4 px-6 pt-20 pb-16 mx-auto max-w-7xl lg:px-8">
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-8 animate-reveal">
+      <a href="/sermons/" class="transition-colors duration-200 text-stone-600 dark:text-stone-400 dark:hover:text-white hover:text-stone-900">
+        ← Back to Sermons
+      </a>
+    </nav>
 
-  <article itemscope itemtype="https://schema.org/Article">
-    <header>
-      {% if page.series %}
-        <p role="doc-subtitle" itemprop="isPartOf" itemscope itemtype="https://schema.org/CreativeWorkSeries">
-          <span itemprop="name">{{ page.series }}</span> Series
-        </p>
-      {% endif %}
+    <article itemscope itemtype="https://schema.org/Article">
+      <!-- Title and Subscribe Section -->
+      <div class="flex flex-col gap-6 mb-6 lg:flex-row lg:justify-between lg:items-center animate-reveal">
+        <!-- Title Section -->
+        <div class="flex-1">
+          <h1 class="mb-4 text-4xl font-semibold tracking-tight sm:text-5xl dark:text-white font-display text-stone-900" itemprop="headline name">
+            {{ page.title }}
+          </h1>
+          {% if page.scripture != page.title %}
+            <p class="text-lg text-stone-600 dark:text-stone-400">
+              <cite itemprop="about citation">{{ page.scripture }}</cite>
+            </p>
+          {% endif %}
+        </div>
 
-      <h1 itemprop="headline name">{{ page.title }}</h1>
-
-      {% if page.scripture %}
-        <p><cite itemprop="about citation">{{ page.scripture }}</cite></p>
-      {% endif %}
-
-      <dl role="contentinfo">
-        <dt>Published</dt>
-        <dd>
-          <time datetime="{{ page.date | date_to_xmlschema }}" pubdate itemprop="datePublished">
-            {{ page.date | date: "%B %d, %Y" }}
-          </time>
-        </dd>
-        {% if page.pastor %}
-          <dt>Preacher</dt>
-          <dd>
-            <address itemscope itemtype="https://schema.org/Person">
-              <span itemprop="name">{{ page.pastor }}</span>
-            </address>
-          </dd>
-        {% endif %}
-        {% if page.duration %}
-          <dt>Duration</dt>
-          <dd><data value="{{ page.duration }}" itemprop="duration">{{ page.duration }}</data></dd>
-        {% endif %}
-        {% if page.series %}
-          <dt>Series</dt>
-          <dd><span itemscope itemtype="https://schema.org/CreativeWorkSeries"><span itemprop="name">{{ page.series }}</span></span></dd>
-        {% endif %}
-      </dl>
-    </header>
-
-    {% if page.audio_url %}
-      <figure aria-labelledby="sermon-audio-caption" itemscope itemtype="https://schema.org/AudioObject">
-        <audio controls preload="metadata" itemprop="contentUrl">
-          <source src="{{ page.audio_url }}" type="audio/mpeg" itemprop="encodingFormat">
-          <source src="{{ page.audio_url | replace: '.m4a', '.ogg' }}" type="audio/ogg">
-          <track kind="captions" src="{{ page.url | replace: '.html', '.vtt' }}" srclang="en" label="English captions" default>
-          <track kind="descriptions" src="{{ page.url | replace: '.html', '-desc.vtt' }}" srclang="en" label="Audio descriptions">
-          Your browser does not support the audio element.
-          <a href="{{ page.audio_url }}" download itemprop="url">Download the sermon audio file</a>.
-        </audio>
-        <figcaption id="sermon-audio-caption">
-          <strong itemprop="name">{{ page.title }}</strong> sermon audio
-          {% if page.duration %}<data value="{{ page.duration }}" itemprop="duration"> ({{ page.duration }})</data>{% endif %}
-        </figcaption>
-      </figure>
-    {% endif %}
-
-    {% if content and content != "" %}
-      <div itemprop="articleBody">
-        {{ content }}
+        <!-- Subscribe Buttons -->
+        <div class="flex flex-col gap-3 lg:min-w-[300px]">
+          {% include subscribe-buttons.html %}
+        </div>
       </div>
-    {% endif %}
 
-    <section aria-labelledby="listen-elsewhere">
-      <h2 id="listen-elsewhere">{{ site.data.content.podcast.platforms.listen_title }}</h2>
-      <nav aria-label="Podcast platforms">
-        <ul>
-          <li><a href="{{ site.podcast.platforms.apple }}" target="_blank" rel="noopener noreferrer external">Apple Podcasts</a></li>
-          <li><a href="{{ site.podcast.platforms.spotify }}" target="_blank" rel="noopener noreferrer external">Spotify</a></li>
-          <li><a href="{{ site.podcast.platforms.overcast }}" target="_blank" rel="noopener noreferrer external">Overcast</a></li>
-          <li><a href="{{ site.podcast.rss_url }}" target="_blank" rel="noopener noreferrer external" type="application/rss+xml">{{ site.data.content.podcast.platforms.rss_label }}</a></li>
-        </ul>
-      </nav>
-    </section>
+      <!-- Audio Player Section -->
+      {% if page.audio_url %}
+        <section aria-labelledby="sermon-audio-caption" class="mb-8 animate-reveal">
+          <h2 id="sermon-audio-caption" class="sr-only">{{ page.title }} Audio</h2>
+          {% include audio-player.html audio_url=page.audio_url title=page.title episode_id=page.episode_id %}
+        </section>
+      {% endif %}
 
-    {% if page.series %}
-      {% assign series_posts = site.posts | where: "category", "sermon" | where: "series", page.series | sort: "date" | reverse %}
-      {% assign related_sermons = series_posts | where_exp: "item", "item.url != page.url" | limit: 3 %}
-      {% if related_sermons.size > 0 %}
-        <aside aria-labelledby="related-sermons">
-          <h2 id="related-sermons">More from {{ page.series }}</h2>
-          {% for sermon in related_sermons %}
-            <article itemscope itemtype="https://schema.org/Article">
-              <header>
-                <h3><a href="{{ sermon.url }}" rel="bookmark" itemprop="url headline">{{ sermon.title }}</a></h3>
-                {% if sermon.scripture %}
-                  <p><cite itemprop="about citation">{{ sermon.scripture }}</cite></p>
-                {% endif %}
-              </header>
-              <dl role="contentinfo">
-                <dt>Published</dt>
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-4 animate-reveal">
+        <!-- Metadata Sidebar -->
+        <div class="order-1 lg:order-1 lg:col-span-1">
+          <div class="space-y-6">
+            <!-- Speaker Section -->
+            {% if page.pastor %}
+              <div>
+                <h3 class="mb-3 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Speaker</h3>
+                <div class="flex gap-3 items-center">
+                  {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" %}
+                  <address itemscope itemtype="https://schema.org/Person" class="not-italic">
+                    <div class="text-sm dark:text-white text-stone-900" itemprop="name">{{ page.pastor }}</div>
+                  </address>
+                </div>
+              </div>
+            {% endif %}
+
+            <!-- Metadata -->
+            <div class="space-y-4">
+              <div>
+                <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Published</dt>
                 <dd>
-                  <time datetime="{{ sermon.date | date_to_xmlschema }}" pubdate>
-                    {{ sermon.date | date: "%B %d, %Y" }}
+                  <time datetime="{{ page.date | date_to_xmlschema }}" pubdate itemprop="datePublished" class="text-sm dark:text-white text-stone-900">
+                    {{ page.date | date: "%B %d, %Y" }}
                   </time>
                 </dd>
-                {% if sermon.duration %}
-                  <dt>Duration</dt>
-                  <dd><data value="{{ sermon.duration }}">{{ sermon.duration }}</data></dd>
-                {% endif %}
-              </dl>
-            </article>
-          {% endfor %}
-        </aside>
-      {% endif %}
-    {% endif %}
+              </div>
 
-    <aside aria-labelledby="cta-section">
-      <h2 id="cta-section">{{ site.data.content.sermons.cta.episode_page.title }}</h2>
-      <p>{{ site.data.content.sermons.cta.episode_page.description }}</p>
-      <nav aria-label="Church information">
-        <ul>
-          <li><a href="/beliefs/" rel="related">Our Beliefs</a></li>
-          <li><button type="button" aria-controls="visit-modal" aria-expanded="false" onclick="document.getElementById('visit-modal').classList.remove('hidden'); this.setAttribute('aria-expanded', 'true')">Visit Us</button></li>
-        </ul>
-      </nav>
-    </aside>
-  </article>
-</main>
+              {% if page.duration %}
+                <div>
+                  <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Duration</dt>
+                  <dd>
+                    <data value="{{ page.duration }}" itemprop="duration" class="text-sm dark:text-white text-stone-900">{{ page.duration }}</data>
+                  </dd>
+                </div>
+              {% endif %}
+
+              {% if page.scripture %}
+                <div>
+                  <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Scripture</dt>
+                  <dd>
+                    <cite itemprop="about citation" class="text-sm not-italic dark:text-white text-stone-900">{{ page.scripture }}</cite>
+                  </dd>
+                </div>
+              {% endif %}
+
+              {% if page.series %}
+                <div>
+                  <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Series</dt>
+                  <dd>
+                    <span itemscope itemtype="https://schema.org/CreativeWorkSeries" class="text-sm dark:text-white text-stone-900">
+                      <span itemprop="name">{{ page.series }}</span>
+                    </span>
+                  </dd>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Description Content -->
+        <div class="order-2 lg:order-2 lg:col-span-3">
+          <div class="relative bg-saints- 50 ]">
+
+            {% if page.description %}
+              <div class="prose prose-base max-w-prose prose-stone dark:prose-invert  [&_p:has(br:only-child)]:hidden" itemprop="articleBody">
+                {{ page.description }}
+              </div>
+            {% elsif content and content != "" %}
+              <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden" itemprop="articleBody">
+                {{ content }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+
+      <!-- CTA Section -->
+      <div class="pt-8 mx-auto mt-8 max-w-2xl text-center border-t border-stone-200 animate-reveal dark:border-stone-800">
+        <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.sermons.cta.episode_page.description }}</p>
+        <div class="flex flex-col gap-3 justify-center items-stretch mx-auto max-w-sm sm:flex-row sm:items-center sm:max-w-none">
+          {% include button.html href="/beliefs/" text="Our Beliefs" class="w-full sm:w-auto" %}
+          {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
+        </div>
+      </div>
+    </article>
+  </main>
+</div>
+
+{% include footer.html %}
