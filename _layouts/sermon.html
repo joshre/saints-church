@@ -101,19 +101,42 @@ layout: default
           </div>
         </div>
 
-        <!-- Description Content -->
+        <!-- Sermon Content -->
         <div class="order-2 lg:order-2 lg:col-span-3">
-          <div class="relative bg-saints- 50 ]">
+          <div class="relative">
 
             {% if page.description %}
-              <div class="prose prose-base max-w-prose prose-stone dark:prose-invert  [&_p:has(br:only-child)]:hidden" itemprop="articleBody">
+              <!-- Always show description first for SEO and user experience -->
+              <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mb-8">
                 {{ page.description }}
               </div>
-            {% elsif content and content != "" %}
-              <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden" itemprop="articleBody">
-                {{ content }}
+            {% endif %}
+
+            {% assign transcription_content = content | strip %}
+            {% if transcription_content and transcription_content != "" and transcription_content != page.description %}
+              <!-- Collapsible transcription content -->
+              <details class="transcript-details group" open>
+                <summary class="cursor-pointer list-none flex items-center gap-3 p-4 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors duration-200 mb-6">
+                  <svg class="size-5 text-saints-600 dark:text-saints-400 transition-transform duration-200 group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                  <div class="flex-1">
+                    <h3 class="font-medium text-stone-900 dark:text-white font-display">Complete Sermon Transcription</h3>
+                    <p class="text-sm text-stone-600 dark:text-stone-400 mt-1">Read the full sermon text with enhanced formatting and navigation</p>
+                  </div>
+                </summary>
+
+                <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mt-6" itemprop="articleBody" id="sermon-transcription">
+                  {{ content }}
+                </div>
+              </details>
+            {% elsif page.description == nil or page.description == "" %}
+              <!-- Fallback if neither content nor description exists -->
+              <div class="prose prose-base prose-stone dark:prose-invert max-w-none text-center py-8">
+                <p class="text-stone-600 dark:text-stone-400">Transcription coming soon...</p>
               </div>
             {% endif %}
+
           </div>
         </div>
       </div>

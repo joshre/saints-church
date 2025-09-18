@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Letter from the Pastor"
-description: "A personal welcome from the pastoral team at Saints Church, a Reformed Baptist church in Knoxville, TN. Learn about our heart for expository preaching, biblical community, and gospel-centered church life."
+description: ""
 data_key: pastor_letter
 header_image: pastor-image.html
 content_width: narrow

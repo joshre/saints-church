@@ -39,6 +39,11 @@ jobs:
   sync-podcast:
     runs-on: ubuntu-latest
 
+    # Prevent concurrent workflow runs to avoid file conflicts
+    concurrency:
+      group: podcast-sync
+      cancel-in-progress: false
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -106,27 +111,188 @@ jobs:
           const DEFAULT_PASTOR = 'Pastor Nate Ellis';
           const MAX_FILENAME_LENGTH = 100;
 
-          // Load processed episodes
-          function loadProcessedEpisodes() {
-            try {
-              if (fs.existsSync(PROCESSED_FILE)) {
-                const data = fs.readFileSync(PROCESSED_FILE, 'utf8');
-                return JSON.parse(data);
+          // Memory optimization constants
+          const MAX_FEED_ITEMS = 1000; // Reasonable limit for RSS feeds
+          const MAX_CONTENT_LENGTH = 1024 * 1024; // 1MB per episode content
+          const MEMORY_CHECK_INTERVAL = 10; // Check memory every N episodes
+          const MAX_MEMORY_MB = 250; // Warning threshold in MB
+
+          // File operation safety utilities
+          function withFileLock(filepath, operation) {
+            const lockFile = `${filepath}.lock`;
+            const maxWaitTime = 30000; // 30 seconds
+            const checkInterval = 100; // 100ms
+            let waitTime = 0;
+
+            // Wait for any existing lock to be released
+            while (fs.existsSync(lockFile) && waitTime < maxWaitTime) {
+              const lockStat = fs.statSync(lockFile);
+              const lockAge = Date.now() - lockStat.mtime.getTime();
+
+              // Break stale locks older than 5 minutes
+              if (lockAge > 300000) {
+                console.warn(`Breaking stale lock file: ${lockFile}`);
+                fs.unlinkSync(lockFile);
+                break;
               }
-            } catch (error) {
-              console.log('Error loading processed episodes:', error.message);
+
+              // Wait and retry
+              const sleepMs = Math.min(checkInterval, maxWaitTime - waitTime);
+              const start = Date.now();
+              while (Date.now() - start < sleepMs) {
+                // Busy wait (simple sleep simulation)
+              }
+              waitTime += sleepMs;
             }
-            return [];
+
+            if (fs.existsSync(lockFile)) {
+              throw new Error(`Could not acquire lock for ${filepath} after ${maxWaitTime}ms`);
+            }
+
+            // Create lock
+            try {
+              fs.writeFileSync(lockFile, process.pid.toString(), { flag: 'wx' });
+            } catch (error) {
+              if (error.code === 'EEXIST') {
+                throw new Error(`Lock file ${lockFile} already exists`);
+              }
+              throw error;
+            }
+
+            try {
+              return operation();
+            } finally {
+              // Always remove lock
+              try {
+                fs.unlinkSync(lockFile);
+              } catch (error) {
+                console.warn(`Failed to remove lock file ${lockFile}:`, error.message);
+              }
+            }
           }
 
-          // Save processed episodes
-          function saveProcessedEpisodes(episodes) {
+          function writeFileAtomic(filepath, content, options = {}) {
+            const tempFile = `${filepath}.tmp.${Date.now()}.${Math.random().toString(36).substring(2)}`;
+
             try {
-              fs.writeFileSync(PROCESSED_FILE, JSON.stringify(episodes, null, 2));
-              console.log(`Saved ${episodes.length} processed episodes to tracking file`);
+              // Write to temporary file first
+              fs.writeFileSync(tempFile, content, { ...options, mode: options.mode || 0o644 });
+
+              // Atomic rename (this is the atomic operation)
+              fs.renameSync(tempFile, filepath);
+
+              console.log(`Atomically wrote file: ${path.basename(filepath)}`);
             } catch (error) {
-              console.error('Error saving processed episodes:', error.message);
+              // Clean up temp file if something went wrong
+              try {
+                if (fs.existsSync(tempFile)) {
+                  fs.unlinkSync(tempFile);
+                }
+              } catch (cleanupError) {
+                console.warn(`Failed to clean up temp file ${tempFile}:`, cleanupError.message);
+              }
+              throw error;
             }
+          }
+
+          function createBackup(filepath) {
+            if (!fs.existsSync(filepath)) return null;
+
+            const backupPath = `${filepath}.backup.${Date.now()}`;
+            try {
+              fs.copyFileSync(filepath, backupPath);
+              console.log(`Created backup: ${path.basename(backupPath)}`);
+              return backupPath;
+            } catch (error) {
+              console.warn(`Failed to create backup of ${filepath}:`, error.message);
+              return null;
+            }
+          }
+
+          // Load processed episodes with file locking
+          function loadProcessedEpisodes() {
+            return withFileLock(PROCESSED_FILE, () => {
+              try {
+                if (fs.existsSync(PROCESSED_FILE)) {
+                  const data = fs.readFileSync(PROCESSED_FILE, 'utf8');
+                  const parsed = JSON.parse(data);
+
+                  // Validate structure
+                  if (!Array.isArray(parsed)) {
+                    throw new Error('Processed episodes file does not contain valid array');
+                  }
+
+                  return parsed;
+                }
+              } catch (error) {
+                console.log('Error loading processed episodes:', error.message);
+
+                // Try to load from backup if main file is corrupted
+                const backupFiles = fs.readdirSync(path.dirname(PROCESSED_FILE) || '.')
+                  .filter(f => f.startsWith(path.basename(PROCESSED_FILE) + '.backup.'))
+                  .sort()
+                  .reverse(); // Most recent first
+
+                for (const backupFile of backupFiles.slice(0, 3)) { // Try last 3 backups
+                  try {
+                    const backupPath = path.join(path.dirname(PROCESSED_FILE) || '.', backupFile);
+                    console.log(`Attempting to restore from backup: ${backupFile}`);
+                    const backupData = fs.readFileSync(backupPath, 'utf8');
+                    const parsed = JSON.parse(backupData);
+
+                    if (Array.isArray(parsed)) {
+                      console.log(`Successfully restored from backup: ${backupFile}`);
+                      return parsed;
+                    }
+                  } catch (backupError) {
+                    console.warn(`Backup ${backupFile} also corrupted:`, backupError.message);
+                  }
+                }
+              }
+              return [];
+            });
+          }
+
+          // Save processed episodes with file locking and atomic operations
+          function saveProcessedEpisodes(episodes) {
+            return withFileLock(PROCESSED_FILE, () => {
+              try {
+                // Validate input
+                if (!Array.isArray(episodes)) {
+                  throw new Error('Episodes must be an array');
+                }
+
+                // Create backup before overwriting
+                const backupPath = createBackup(PROCESSED_FILE);
+
+                // Atomic write
+                const content = JSON.stringify(episodes, null, 2);
+                writeFileAtomic(PROCESSED_FILE, content);
+
+                console.log(`Saved ${episodes.length} processed episodes to tracking file`);
+
+                // Clean up old backups (keep last 5)
+                try {
+                  const backupFiles = fs.readdirSync(path.dirname(PROCESSED_FILE) || '.')
+                    .filter(f => f.startsWith(path.basename(PROCESSED_FILE) + '.backup.'))
+                    .sort()
+                    .reverse(); // Most recent first
+
+                  // Remove old backups beyond the last 5
+                  for (const oldBackup of backupFiles.slice(5)) {
+                    const oldBackupPath = path.join(path.dirname(PROCESSED_FILE) || '.', oldBackup);
+                    fs.unlinkSync(oldBackupPath);
+                    console.log(`Cleaned up old backup: ${oldBackup}`);
+                  }
+                } catch (cleanupError) {
+                  console.warn('Failed to clean up old backups:', cleanupError.message);
+                }
+
+              } catch (error) {
+                console.error('Error saving processed episodes:', error.message);
+                throw error; // Re-throw to trigger failure handling
+              }
+            });
           }
 
           // Generate content hash for change detection
@@ -141,36 +307,151 @@ jobs:
             return crypto.createHash('sha256').update(contentToHash).digest('hex').substring(0, CONTENT_HASH_LENGTH);
           }
 
-          // Extract scripture references from title or description
-          function extractScripture(text) {
-            if (!text) return null;
+          // Pre-compiled regex patterns for performance (avoid recompilation)
+          const SCRIPTURE_PATTERNS = (() => {
+            // Optimize patterns for performance - most specific first, case-insensitive but not global
+            return [
+              // Most common Reformed pattern: "Book Chapter" or "Book Chapter:Verse"
+              /\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|1\s*Samuel|2\s*Samuel|1\s*Kings|2\s*Kings|1\s*Chronicles|2\s*Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song\s+of\s+Songs|Song\s+of\s+Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|1\s*Corinthians|2\s*Corinthians|Galatians|Ephesians|Philippians|Colossians|1\s*Thessalonians|2\s*Thessalonians|1\s*Timothy|2\s*Timothy|Titus|Philemon|Hebrews|James|1\s*Peter|2\s*Peter|1\s*John|2\s*John|3\s*John|Jude|Revelation)\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/i,
 
-            // Common Bible book patterns - enhanced for Reformed Baptist context
-            const patterns = [
-              // Full book names with comprehensive verse patterns
-              /\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|1 Samuel|2 Samuel|1 Kings|2 Kings|1 Chronicles|2 Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song of Songs|Song of Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|1 Corinthians|2 Corinthians|Galatians|Ephesians|Philippians|Colossians|1 Thessalonians|2 Thessalonians|1 Timothy|2 Timothy|Titus|Philemon|Hebrews|James|1 Peter|2 Peter|1 John|2 John|3 John|Jude|Revelation)\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/gi,
+              // Abbreviated forms (common in sermon titles)
+              /\b(?:Gen|Ex|Exod|Lev|Num|Deut|Josh|Judg|1\s*Sam|2\s*Sam|1\s*Kgs|2\s*Kgs|1\s*Chr|2\s*Chr|Ezr|Neh|Est|Ps|Prov|Eccl|Song|Isa|Jer|Lam|Ezek|Dan|Hos|Joel|Amos|Obad|Jonah|Mic|Nah|Hab|Zeph|Hag|Zech|Mal|Matt|Mk|Lk|Jn|Acts|Rom|1\s*Cor|2\s*Cor|Gal|Eph|Phil|Col|1\s*Thess|2\s*Thess|1\s*Tim|2\s*Tim|Tit|Phlm|Heb|Jas|1\s*Pet|2\s*Pet|1\s*Jn|2\s*Jn|3\s*Jn|Jude|Rev)\.?\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/i,
 
-              // Abbreviated forms (common in Reformed circles)
-              /\b(?:Gen|Ex|Exod|Lev|Num|Deut|Josh|Judg|1Sam|2Sam|1Kgs|2Kgs|1Chr|2Chr|Ezr|Neh|Est|Ps|Prov|Eccl|Song|Isa|Jer|Lam|Ezek|Dan|Hos|Joel|Amos|Obad|Jonah|Mic|Nah|Hab|Zeph|Hag|Zech|Mal|Matt|Mk|Lk|Jn|Acts|Rom|1Cor|2Cor|Gal|Eph|Phil|Col|1Thess|2Thess|1Tim|2Tim|Tit|Phlm|Heb|Jas|1Pet|2Pet|1Jn|2Jn|3Jn|Jude|Rev)\.?\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/gi,
+              // Roman numeral books (less common, check after standard forms)
+              /\b(?:I|II|III|IV)\s+(?:Samuel|Kings|Chronicles|Corinthians|Thessalonians|Timothy|Peter|John)\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/i,
 
-              // Roman numeral books
-              /\b(?:I|II|III|IV)\s+(?:Samuel|Kings|Chronicles|Corinthians|Thessalonians|Timothy|Peter|John)\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/gi,
-
-              // Single chapter books
-              /\b(?:Obadiah|Philemon|2 John|3 John|Jude)\s*(?:v\.?\s*\d+(?:[-–]\d+)?)?\b/gi
+              // Single chapter books (least common, check last)
+              /\b(?:Obadiah|Philemon|2\s*John|3\s*John|Jude)\s*(?:v\.?\s*\d+(?:[-–]\d+)?)?\b/i
             ];
+          })();
 
-            for (const pattern of patterns) {
-              const match = text.match(pattern);
+          // Memory optimization utilities
+          function getMemoryUsage() {
+            const usage = process.memoryUsage();
+            return {
+              rss: Math.round(usage.rss / 1024 / 1024), // MB
+              heapUsed: Math.round(usage.heapUsed / 1024 / 1024), // MB
+              heapTotal: Math.round(usage.heapTotal / 1024 / 1024), // MB
+              external: Math.round(usage.external / 1024 / 1024) // MB
+            };
+          }
+
+          function checkMemoryUsage(context = '') {
+            const usage = getMemoryUsage();
+            const totalMemory = usage.rss;
+
+            if (totalMemory > MAX_MEMORY_MB) {
+              console.warn(`⚠️  High memory usage ${context}: ${totalMemory}MB (RSS), ${usage.heapUsed}MB (Heap)`);
+
+              if (totalMemory > MAX_MEMORY_MB * 1.5) {
+                console.error(`❌ Critical memory usage ${context}: ${totalMemory}MB - forcing garbage collection`);
+                if (global.gc) {
+                  global.gc();
+                  const afterGC = getMemoryUsage();
+                  console.log(`🧹 After GC: ${afterGC.rss}MB (RSS), ${afterGC.heapUsed}MB (Heap)`);
+                }
+              }
+            }
+
+            return totalMemory;
+          }
+
+          function sanitizeContentLength(content, maxLength = MAX_CONTENT_LENGTH) {
+            if (!content || typeof content !== 'string') return content;
+
+            if (content.length > maxLength) {
+              console.warn(`⚠️  Large content detected (${content.length} chars), truncating to ${maxLength} chars`);
+              return content.substring(0, maxLength) + '\n\n[Content truncated due to size limits]';
+            }
+
+            return content;
+          }
+
+          function optimizeFeedData(feed) {
+            if (!feed || !feed.items) return feed;
+
+            // Limit number of items to prevent memory issues
+            if (feed.items.length > MAX_FEED_ITEMS) {
+              console.warn(`⚠️  Large feed detected (${feed.items.length} items), limiting to ${MAX_FEED_ITEMS} most recent items`);
+              feed.items = feed.items.slice(0, MAX_FEED_ITEMS);
+            }
+
+            // Sanitize large content in feed items
+            let truncatedCount = 0;
+            feed.items.forEach(item => {
+              const originalLength = (item.content || '').length + (item.description || '').length + (item['itunes:summary'] || '').length;
+
+              item.content = sanitizeContentLength(item.content);
+              item.description = sanitizeContentLength(item.description);
+              item['itunes:summary'] = sanitizeContentLength(item['itunes:summary']);
+
+              const newLength = (item.content || '').length + (item.description || '').length + (item['itunes:summary'] || '').length;
+
+              if (newLength < originalLength) {
+                truncatedCount++;
+              }
+
+              // Remove unnecessary large fields to save memory
+              delete item.contentSnippet;
+              delete item.isoDate;
+              if (item.itunes) {
+                delete item.itunes.image;
+                delete item.itunes.owner;
+              }
+            });
+
+            if (truncatedCount > 0) {
+              console.log(`📏 Truncated content in ${truncatedCount} episodes to prevent memory issues`);
+            }
+
+            return feed;
+          }
+
+          // Memoization cache for scripture extraction (avoid repeated parsing)
+          const scriptureCache = new Map();
+          const MAX_CACHE_SIZE = 50; // Reduced cache size for memory optimization
+
+          // Extract scripture references from title or description - optimized version
+          function extractScripture(text) {
+            if (!text || typeof text !== 'string') return null;
+
+            // Normalize text for consistent caching (trim and limit length for cache key)
+            const cacheKey = text.trim().substring(0, 200);
+
+            // Check cache first
+            if (scriptureCache.has(cacheKey)) {
+              return scriptureCache.get(cacheKey);
+            }
+
+            // Quick pre-filter: if text doesn't contain digits, it's unlikely to be a scripture reference
+            if (!/\d/.test(text)) {
+              scriptureCache.set(cacheKey, null);
+              return null;
+            }
+
+            // Test patterns in order of likelihood (most common first)
+            for (const pattern of SCRIPTURE_PATTERNS) {
+              const match = pattern.exec(text);
               if (match) {
                 // Clean up the reference
                 let reference = match[0].trim();
-                // Standardize em-dashes and en-dashes to hyphens
-                reference = reference.replace(/[–—]/g, '-');
+                // Normalize whitespace and standardize dashes
+                reference = reference.replace(/\s+/g, ' ').replace(/[–—]/g, '-');
+
+                // Cache the result with size limit
+                if (scriptureCache.size >= MAX_CACHE_SIZE) {
+                  // Remove oldest entry (first in Map insertion order)
+                  const firstKey = scriptureCache.keys().next().value;
+                  scriptureCache.delete(firstKey);
+                }
+                scriptureCache.set(cacheKey, reference);
+
                 return reference;
               }
             }
 
+            // Cache negative results too to avoid repeated failed parsing
+            scriptureCache.set(cacheKey, null);
             return null;
           }
 
@@ -238,7 +519,7 @@ jobs:
 
 
           // Generate frontmatter and content for Jekyll post
-          function generatePost(episode) {
+          function generatePost(episode, existingContent = null) {
             const pubDate = new Date(episode.pubDate);
             const sermonDate = getSermonSunday(pubDate); // Use sermon Sunday instead of publish date
             const scripture = extractScripture(episode.title) || extractScripture(episode.description);
@@ -269,6 +550,24 @@ jobs:
               }
             }
 
+            // Clean RSS description content properly
+            function cleanDescription(text) {
+              if (!text || typeof text !== 'string') return null;
+
+              return text
+                .replace(/\\n/g, ' ')        // Remove literal \n characters first
+                .replace(/\\r/g, ' ')        // Remove literal \r characters
+                .replace(/\n/g, ' ')         // Then convert actual newlines to spaces
+                .replace(/\r/g, ' ')         // Convert actual carriage returns to spaces
+                .replace(/\s+/g, ' ')        // Normalize multiple spaces to single space
+                .replace(/&nbsp;/gi, ' ')    // Convert HTML non-breaking spaces
+                .replace(/&amp;/gi, '&')     // Convert HTML entities
+                .replace(/&lt;/gi, '<')
+                .replace(/&gt;/gi, '>')
+                .replace(/&quot;/gi, '"')
+                .trim() || null;
+            }
+
             // Generate unique hash for audio player progress tracking
             const episodeHash = crypto.createHash('sha256').update(episode.guid || episode.link || episode.title).digest('hex').substring(0, EPISODE_HASH_LENGTH);
 
@@ -282,7 +581,7 @@ jobs:
               scripture: scripture,
               series: series,
               pastor: DEFAULT_PASTOR,
-              description: episode.description || episode['itunes:summary'] || null,
+              description: cleanDescription(episode.description || episode['itunes:summary'] || ''),
               guid: episode.guid,
               episode_id: episodeHash
             };
@@ -294,19 +593,63 @@ jobs:
               }
             });
 
+            // Secure YAML escaping function
+            function escapeYAMLValue(value) {
+              if (typeof value !== 'string') return value;
+
+              return value
+                .replace(/\\/g, '\\\\')     // Escape backslashes first
+                .replace(/"/g, '\\"')       // Escape quotes
+                .replace(/\n/g, '\\n')      // Escape newlines
+                .replace(/\r/g, '\\r')      // Escape carriage returns
+                .replace(/\t/g, '\\t')      // Escape tabs
+                .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '') // Remove control characters
+                .replace(/[\u0080-\u009F]/g, '') // Remove C1 control characters
+                .trim(); // Remove leading/trailing whitespace
+            }
+
             let content = '---\n';
             Object.entries(frontmatter).forEach(([key, value]) => {
               if (typeof value === 'string') {
-                // Escape YAML special characters and wrap in quotes
-                const escapedValue = value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n');
-                content += `${key}: "${escapedValue}"\n`;
+                const escapedValue = escapeYAMLValue(value);
+                // Additional validation for key names
+                const safeKey = key.replace(/[^a-zA-Z0-9_-]/g, '');
+                content += `${safeKey}: "${escapedValue}"\n`;
               } else {
                 content += `${key}: ${value}\n`;
               }
             });
             content += '---\n\n';
 
-            // Add episode content (avoid duplication)
+            // Preserve existing transcription content if it exists
+            if (existingContent) {
+              // Robust content preservation with multiple fallback patterns
+              const preservationPatterns = [
+                // Standard frontmatter with double newline
+                /^---[\s\S]*?---\r?\n\r?\n([\s\S]*)$/,
+                // Frontmatter with single newline (malformed but common)
+                /^---[\s\S]*?---\r?\n([\s\S]*)$/,
+                // Frontmatter with extra whitespace
+                /^---[\s\S]*?---\s+([\s\S]*)$/
+              ];
+
+              for (const pattern of preservationPatterns) {
+                const existingBodyMatch = existingContent.match(pattern);
+                if (existingBodyMatch && existingBodyMatch[1].trim()) {
+                  // Keep existing body content (transcriptions)
+                  console.log(`Preserved ${existingBodyMatch[1].trim().length} characters of existing content`);
+                  content += existingBodyMatch[1];
+                  return content;
+                }
+              }
+
+              // If no pattern matches but content exists, log warning
+              if (existingContent.trim()) {
+                console.warn('Could not parse existing frontmatter to preserve content');
+              }
+            }
+
+            // Add episode content only for new files (avoid duplication)
             if (episode.content || episode['itunes:summary']) {
               const episodeContent = episode.content || episode['itunes:summary'];
               const description = episode.description || '';
@@ -323,9 +666,78 @@ jobs:
             return content;
           }
 
-          async function syncEpisodes() {
-            try {
+          // Enhanced error handling utilities
+          function isRetryableError(error) {
+            // Network errors, timeouts, and temporary file system issues
+            const retryableErrors = [
+              'ECONNRESET', 'ECONNREFUSED', 'ENOTFOUND', 'ETIMEDOUT',
+              'EHOSTUNREACH', 'ENETUNREACH', 'EAI_AGAIN', 'EBUSY', 'EMFILE', 'ENFILE'
+            ];
+
+            const retryableMessages = [
+              'timeout', 'network', 'fetch', 'connection', 'temporary'
+            ];
+
+            if (error.code && retryableErrors.includes(error.code)) {
+              return true;
+            }
+
+            if (error.message) {
+              const message = error.message.toLowerCase();
+              return retryableMessages.some(keyword => message.includes(keyword));
+            }
+
+            return false;
+          }
+
+          async function withRetry(operation, options = {}) {
+            const {
+              maxRetries = 3,
+              baseDelay = 1000,
+              maxDelay = 10000,
+              backoffMultiplier = 2,
+              operationName = 'operation'
+            } = options;
+
+            let lastError;
+            let delay = baseDelay;
+
+            for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
+              try {
+                const result = await operation();
+                if (attempt > 1) {
+                  console.log(`${operationName} succeeded on attempt ${attempt}`);
+                }
+                return result;
+              } catch (error) {
+                lastError = error;
+
+                if (attempt === maxRetries + 1) {
+                  console.error(`${operationName} failed after ${maxRetries} retries:`, error.message);
+                  break;
+                }
+
+                if (!isRetryableError(error)) {
+                  console.error(`${operationName} failed with non-retryable error:`, error.message);
+                  break;
+                }
+
+                console.warn(`${operationName} failed (attempt ${attempt}/${maxRetries + 1}): ${error.message}`);
+                console.log(`Retrying in ${delay}ms...`);
+
+                // Wait with exponential backoff
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay = Math.min(delay * backoffMultiplier, maxDelay);
+              }
+            }
+
+            throw lastError;
+          }
+
+          async function fetchRSSFeedWithRetry() {
+            return withRetry(async () => {
               console.log(`Fetching RSS feed from: ${RSS_URL}`);
+              const initialMemory = checkMemoryUsage('before RSS fetch');
 
               // Create parser with timeout
               const feedPromise = parser.parseURL(RSS_URL);
@@ -333,7 +745,43 @@ jobs:
                 setTimeout(() => reject(new Error(`RSS feed fetch timeout after ${NETWORK_TIMEOUT / 1000} seconds`)), NETWORK_TIMEOUT)
               );
 
-              const feed = await Promise.race([feedPromise, timeoutPromise]);
+              const rawFeed = await Promise.race([feedPromise, timeoutPromise]);
+
+              // Validate feed structure
+              if (!rawFeed || !rawFeed.items || !Array.isArray(rawFeed.items)) {
+                throw new Error('Invalid RSS feed structure: missing or invalid items array');
+              }
+
+              console.log(`Successfully fetched RSS feed with ${rawFeed.items.length} episodes`);
+              checkMemoryUsage('after RSS fetch');
+
+              // Optimize feed data for memory efficiency
+              const optimizedFeed = optimizeFeedData(rawFeed);
+
+              const finalMemory = checkMemoryUsage('after feed optimization');
+              const memoryDelta = finalMemory - initialMemory;
+
+              if (memoryDelta > 0) {
+                console.log(`💾 Feed processing used ${memoryDelta}MB of memory`);
+              }
+
+              return optimizedFeed;
+            }, {
+              maxRetries: 3,
+              baseDelay: 2000,
+              maxDelay: 15000,
+              operationName: 'RSS feed fetch'
+            });
+          }
+
+          async function syncEpisodes() {
+            const startTime = Date.now();
+            let processedCount = 0;
+            let errorCount = 0;
+            const errors = [];
+
+            try {
+              const feed = await fetchRSSFeedWithRetry();
               console.log(`Found ${feed.items.length} episodes in RSS feed`);
 
               const processedEpisodes = loadProcessedEpisodes();
@@ -346,112 +794,309 @@ jobs:
               let newEpisodes = 0;
               let updatedEpisodes = 0;
 
-              for (const item of feed.items) {
-                // Validate required fields
-                if (!item.title || typeof item.title !== 'string' || !item.title.trim()) {
-                  console.log('Skipping episode with missing or invalid title');
-                  continue;
-                }
+              // Process episodes with enhanced error handling and memory monitoring
+              const totalEpisodes = feed.items.length;
+              console.log(`📄 Processing ${totalEpisodes} episodes with memory monitoring...`);
 
-                const guid = item.guid || item.link;
-                if (!guid) {
-                  console.log(`Skipping episode "${item.title}" with missing GUID and link`);
-                  continue;
-                }
+              for (let index = 0; index < totalEpisodes; index++) {
+                const item = feed.items[index];
+                const episodeNumber = index + 1;
 
-                const currentContentHash = generateContentHash(item);
-                const existingEpisode = processedMap.get(guid);
+                // Periodic memory monitoring and cleanup
+                if (episodeNumber % MEMORY_CHECK_INTERVAL === 0) {
+                  checkMemoryUsage(`after processing ${episodeNumber}/${totalEpisodes} episodes`);
 
-                if (existingEpisode) {
-                  // Check if content has changed
-                  if (existingEpisode.content_hash && existingEpisode.content_hash === currentContentHash) {
-                    console.log(`No changes for episode: ${item.title}`);
-                    continue;
-                  } else {
-                    console.log(`Content updated for episode: ${item.title}`);
+                  // Clear caches periodically to free memory
+                  if (scriptureCache.size > MAX_CACHE_SIZE * 0.8) {
+                    const cacheSize = scriptureCache.size;
+                    scriptureCache.clear();
+                    console.log(`🧹 Cleared scripture cache (${cacheSize} entries) to free memory`);
                   }
-                } else {
-                  console.log(`Processing new episode: ${item.title}`);
+
+                  // Force garbage collection if available and memory is high
+                  const currentMemory = getMemoryUsage().rss;
+                  if (global.gc && currentMemory > MAX_MEMORY_MB) {
+                    global.gc();
+                    console.log(`🧹 Forced garbage collection at episode ${episodeNumber}`);
+                  }
                 }
 
                 try {
-                  const pubDate = new Date(item.pubDate);
-                  if (isNaN(pubDate.getTime())) {
-                    throw new Error(`Invalid publication date: ${item.pubDate}`);
+                  // Validate required fields with detailed error messages
+                  if (!item.title || typeof item.title !== 'string' || !item.title.trim()) {
+                    const error = new Error(`Episode ${episodeNumber}: Missing or invalid title`);
+                    errors.push(error);
+                    errorCount++;
+                    console.warn(`Skipping episode ${episodeNumber}/${totalEpisodes}: ${error.message}`);
+                    continue;
                   }
 
-                  const sermonDate = getSermonSunday(pubDate);
-                  const filename = generateFilename(sermonDate, item.title);
-
-                  // Log date adjustment if sermon date differs from publish date
-                  if (sermonDate.toDateString() !== pubDate.toDateString()) {
-                    console.log(`Adjusted sermon date: ${item.title} - Published: ${pubDate.toDateString()}, Sermon: ${sermonDate.toDateString()}`);
-                  }
-                  if (!filename || filename.endsWith('-.md')) {
-                    throw new Error(`Invalid filename generated from title: ${item.title}`);
+                  const guid = item.guid || item.link;
+                  if (!guid) {
+                    const error = new Error(`Episode "${item.title}": Missing GUID and link`);
+                    errors.push(error);
+                    errorCount++;
+                    console.warn(`Skipping episode ${episodeNumber}/${totalEpisodes}: ${error.message}`);
+                    continue;
                   }
 
-                  // Prevent path traversal attacks
-                  if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
-                    throw new Error(`Unsafe filename detected: ${filename}`);
-                  }
+                  const currentContentHash = generateContentHash(item);
+                  const existingEpisode = processedMap.get(guid);
 
-                  const filepath = path.join(POSTS_DIR, filename);
-
-                  const postContent = generatePost(item);
-
-                  // Atomic operation: write new file first, then delete old if needed
-                  fs.writeFileSync(filepath, postContent, { mode: 0o644 });
-
-                  // If this is an update and filename has changed, delete the old file after successful write
-                  if (existingEpisode && existingEpisode.filename && existingEpisode.filename !== filename) {
-                    const oldFilepath = path.join(POSTS_DIR, existingEpisode.filename);
-                    if (fs.existsSync(oldFilepath)) {
-                      fs.unlinkSync(oldFilepath);
-                      console.log(`Deleted old file: ${existingEpisode.filename}`);
-                    }
-                  }
-
-                  console.log(`${existingEpisode ? 'Updated' : 'Created'} post: ${filename}`);
-
-                  // Increment counters only after successful processing
                   if (existingEpisode) {
-                    updatedEpisodes++;
+                    // Check if content has changed
+                    if (existingEpisode.content_hash && existingEpisode.content_hash === currentContentHash) {
+                      console.log(`No changes for episode ${episodeNumber}/${totalEpisodes}: ${item.title}`);
+                      processedCount++;
+                      continue;
+                    } else {
+                      console.log(`Content updated for episode ${episodeNumber}/${totalEpisodes}: ${item.title}`);
+                    }
                   } else {
-                    newEpisodes++;
+                    console.log(`Processing new episode ${episodeNumber}/${totalEpisodes}: ${item.title}`);
                   }
 
-                  // Update or add to processed episodes
-                  const episodeRecord = {
-                    guid: guid,
-                    title: item.title,
-                    filename: filename,
-                    content_hash: currentContentHash,
-                    processed_at: new Date().toISOString()
-                  };
+                  // Process individual episode with retry logic for file operations
+                  await withRetry(async () => {
+                    const pubDate = new Date(item.pubDate);
+                    if (isNaN(pubDate.getTime())) {
+                      throw new Error(`Invalid publication date: ${item.pubDate}`);
+                    }
 
-                  // Update the map for future lookups
-                  processedMap.set(guid, episodeRecord);
+                    const sermonDate = getSermonSunday(pubDate);
+                    const filename = generateFilename(sermonDate, item.title);
+
+                    // Log date adjustment if sermon date differs from publish date
+                    if (sermonDate.toDateString() !== pubDate.toDateString()) {
+                      console.log(`Adjusted sermon date: ${item.title} - Published: ${pubDate.toDateString()}, Sermon: ${sermonDate.toDateString()}`);
+                    }
+
+                    // Validate filename
+                    if (!filename || filename.endsWith('-.md')) {
+                      throw new Error(`Invalid filename generated from title: ${item.title}`);
+                    }
+
+                    // Prevent path traversal attacks
+                    if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+                      throw new Error(`Unsafe filename detected: ${filename}`);
+                    }
+
+                    const filepath = path.join(POSTS_DIR, filename);
+
+                    // Read existing content to preserve transcriptions
+                    let existingContent = null;
+                    if (existingEpisode) {
+                      // Try to read from the existing file location (in case filename changed)
+                      const existingFilepath = existingEpisode.filename ?
+                        path.join(POSTS_DIR, existingEpisode.filename) :
+                        filepath;
+
+                      if (fs.existsSync(existingFilepath)) {
+                        try {
+                          existingContent = fs.readFileSync(existingFilepath, 'utf8');
+                          console.log(`Preserving content from: ${existingEpisode.filename || filename}`);
+                        } catch (error) {
+                          console.warn(`Could not read existing file ${existingFilepath}: ${error.message}`);
+                        }
+                      }
+                    }
+
+                    const postContent = generatePost(item, existingContent);
+
+                    // Create backup of existing file before overwriting
+                    let backupPath = null;
+                    if (fs.existsSync(filepath)) {
+                      backupPath = createBackup(filepath);
+                    }
+
+                    // Atomic file write operation
+                    try {
+                      writeFileAtomic(filepath, postContent);
+                    } catch (writeError) {
+                      // Restore from backup if write failed
+                      if (backupPath && fs.existsSync(backupPath)) {
+                        try {
+                          fs.copyFileSync(backupPath, filepath);
+                          console.log(`Restored file from backup after write failure: ${path.basename(filepath)}`);
+                        } catch (restoreError) {
+                          console.error(`Failed to restore from backup: ${restoreError.message}`);
+                        }
+                      }
+                      throw writeError;
+                    }
+
+                    // If this is an update and filename has changed, safely delete the old file
+                    if (existingEpisode && existingEpisode.filename && existingEpisode.filename !== filename) {
+                      const oldFilepath = path.join(POSTS_DIR, existingEpisode.filename);
+                      if (fs.existsSync(oldFilepath)) {
+                        try {
+                          // Create backup before deletion
+                          const oldBackupPath = createBackup(oldFilepath);
+                          fs.unlinkSync(oldFilepath);
+                          console.log(`Deleted old file: ${existingEpisode.filename}`);
+
+                          // Clean up backup after successful deletion (keep it for 1 minute just in case)
+                          if (oldBackupPath) {
+                            setTimeout(() => {
+                              try {
+                                if (fs.existsSync(oldBackupPath)) {
+                                  fs.unlinkSync(oldBackupPath);
+                                }
+                              } catch (cleanupError) {
+                                console.warn(`Failed to cleanup deletion backup: ${cleanupError.message}`);
+                              }
+                            }, 60000); // 1 minute
+                          }
+                        } catch (deleteError) {
+                          console.error(`Failed to delete old file ${existingEpisode.filename}: ${deleteError.message}`);
+                          // Don't fail the entire process for deletion errors
+                        }
+                      }
+                    }
+
+                    console.log(`${existingEpisode ? 'Updated' : 'Created'} post: ${filename}`);
+
+                    // Update or add to processed episodes
+                    const episodeRecord = {
+                      guid: guid,
+                      title: item.title,
+                      filename: filename,
+                      content_hash: currentContentHash,
+                      processed_at: new Date().toISOString()
+                    };
+
+                    // Update the map for future lookups
+                    processedMap.set(guid, episodeRecord);
+
+                    // Increment counters only after successful processing
+                    if (existingEpisode) {
+                      updatedEpisodes++;
+                    } else {
+                      newEpisodes++;
+                    }
+
+                    processedCount++;
+                  }, {
+                    maxRetries: 2,
+                    baseDelay: 1000,
+                    maxDelay: 5000,
+                    operationName: `processing episode "${item.title}"`
+                  });
+
                 } catch (error) {
-                  console.error(`Error processing episode "${item.title}":`, error.message);
+                  const detailedError = new Error(`Episode ${episodeNumber}/${totalEpisodes} "${item.title}": ${error.message}`);
+                  errors.push(detailedError);
+                  errorCount++;
+                  console.error(`Failed to process episode ${episodeNumber}/${totalEpisodes}:`, error.message);
+
+                  // Continue processing other episodes unless it's a critical error
+                  if (error.message.includes('ENOSPC') || error.message.includes('quota')) {
+                    console.error('Critical disk space error detected, stopping processing');
+                    break;
+                  }
                 }
               }
 
-              // Rebuild array from map for saving (maintains all episodes)
-              const finalProcessedEpisodes = Array.from(processedMap.values());
-              saveProcessedEpisodes(finalProcessedEpisodes);
+              // Save processed episodes with enhanced error handling
+              try {
+                const finalProcessedEpisodes = Array.from(processedMap.values());
+                await withRetry(async () => {
+                  saveProcessedEpisodes(finalProcessedEpisodes);
+                }, {
+                  maxRetries: 3,
+                  baseDelay: 1000,
+                  operationName: 'saving processed episodes'
+                });
 
-              console.log(`\nSync complete: ${newEpisodes} new episodes, ${updatedEpisodes} updated episodes processed`);
-              console.log(`Total episodes in feed: ${feed.items.length}`);
-              console.log(`Total processed episodes: ${finalProcessedEpisodes.length}`);
+                // Final cleanup and memory reporting
+                scriptureCache.clear();
+                if (global.gc) {
+                  global.gc();
+                }
 
-              // Set output for GitHub Actions
-              if (process.env.GITHUB_OUTPUT) {
-                fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_episodes=${newEpisodes}\n`);
-                fs.appendFileSync(process.env.GITHUB_OUTPUT, `total_episodes=${feed.items.length}\n`);
+                const finalMemory = getMemoryUsage();
+                const executionTime = ((Date.now() - startTime) / 1000).toFixed(1);
+
+                console.log(`\n📊 Sync Summary:`);
+                console.log(`⏱️  Execution time: ${executionTime}s`);
+                console.log(`📄 Total episodes in feed: ${feed.items.length}`);
+                console.log(`✅ Successfully processed: ${processedCount}`);
+                console.log(`🆕 New episodes created: ${newEpisodes}`);
+                console.log(`🔄 Updated episodes: ${updatedEpisodes}`);
+                console.log(`💾 Total tracked episodes: ${finalProcessedEpisodes.length}`);
+                console.log(`📊 Final memory usage: ${finalMemory.rss}MB (RSS), ${finalMemory.heapUsed}MB (Heap)`);
+
+                if (errorCount > 0) {
+                  console.log(`\n⚠️  Errors encountered: ${errorCount}`);
+                  console.log(`📝 Error details:`);
+                  errors.slice(0, 5).forEach((error, index) => {
+                    console.log(`   ${index + 1}. ${error.message}`);
+                  });
+                  if (errors.length > 5) {
+                    console.log(`   ... and ${errors.length - 5} more errors`);
+                  }
+                }
+
+                // Set output for GitHub Actions with comprehensive metrics
+                if (process.env.GITHUB_OUTPUT) {
+                  const outputLines = [
+                    `new_episodes=${newEpisodes}`,
+                    `updated_episodes=${updatedEpisodes}`,
+                    `total_episodes=${feed.items.length}`,
+                    `processed_count=${processedCount}`,
+                    `error_count=${errorCount}`,
+                    `execution_time=${((Date.now() - startTime) / 1000).toFixed(1)}`,
+                    `success=${errorCount === 0 ? 'true' : 'partial'}`
+                  ];
+
+                  for (const line of outputLines) {
+                    fs.appendFileSync(process.env.GITHUB_OUTPUT, `${line}\n`);
+                  }
+                }
+
+                // Determine exit status based on results
+                if (errorCount === 0) {
+                  console.log(`\n✅ Sync completed successfully!`);
+                } else if (processedCount > 0) {
+                  console.log(`\n⚠️  Sync completed with ${errorCount} errors (${processedCount} episodes processed successfully)`);
+                  // Exit with warning code but don't fail the workflow for partial success
+                  process.exit(0);
+                } else {
+                  console.log(`\n❌ Sync failed - no episodes were processed successfully`);
+                  process.exit(1);
+                }
+
+              } catch (saveError) {
+                console.error('❌ Critical error saving processed episodes:', saveError.message);
+                console.error('This may cause duplicate processing on next run');
+
+                // Still report what we accomplished
+                console.log(`\n📊 Partial Results (before save failure):`);
+                console.log(`⏱️  Execution time: ${((Date.now() - startTime) / 1000).toFixed(1)}s`);
+                console.log(`✅ Episodes processed: ${processedCount}`);
+                console.log(`🆕 New episodes: ${newEpisodes}`);
+                console.log(`🔄 Updated episodes: ${updatedEpisodes}`);
+
+                throw saveError;
               }
+
             } catch (error) {
-              console.error('Error syncing episodes:', error.message);
+              const executionTime = ((Date.now() - startTime) / 1000).toFixed(1);
+              console.error(`\n❌ Critical sync failure after ${executionTime}s:`, error.message);
+
+              // Provide context for debugging
+              if (error.stack) {
+                console.error('Stack trace:', error.stack);
+              }
+
+              // Report partial progress if any
+              if (processedCount > 0) {
+                console.log(`\n📊 Partial progress before failure:`);
+                console.log(`✅ Episodes processed: ${processedCount}`);
+                console.log(`🆕 New episodes: ${newEpisodes}`);
+                console.log(`🔄 Updated episodes: ${updatedEpisodes}`);
+              }
+
               process.exit(1);
             }
           }

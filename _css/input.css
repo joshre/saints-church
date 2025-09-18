@@ -717,3 +717,115 @@ input.audio-scrubber:active::-moz-range-thumb {
   @apply -rotate-4 translate-y-1 -translate-x-1;
 }
 
+/* Enhanced Sermon Transcription Styling - Zero Maintenance Implementation */
+
+/* Automatically enhance sermon content for long-form transcriptions */
+.prose.prose-stone[itemprop="articleBody"] {
+  /* Long-form reading optimizations */
+  @apply leading-relaxed;
+  line-height: 1.7;
+  font-size: 1.0625rem; /* 17px - optimal reading size */
+  max-width: none;
+}
+
+.prose.prose-stone[itemprop="articleBody"] p {
+  @apply mb-6; /* More breathing room between paragraphs */
+  text-align: left;
+  hanging-punctuation: first last;
+}
+
+.prose.prose-stone[itemprop="articleBody"] p:first-of-type {
+  @apply text-lg font-medium text-stone-800 dark:text-stone-200;
+  line-height: 1.6;
+}
+
+/* Auto-detect and style timestamp/speaker patterns like "[12:34]" or "Pastor:" */
+.prose.prose-stone[itemprop="articleBody"] strong:first-child:is(
+  [data-timestamp],
+  :has-text(":")
+) {
+  @apply text-saints-600 dark:text-saints-400 font-semibold block mb-2;
+  font-size: 0.9375rem;
+}
+
+/* Enhanced readability on mobile */
+@media (max-width: 640px) {
+  .prose.prose-stone[itemprop="articleBody"] {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .prose.prose-stone[itemprop="articleBody"] p {
+    @apply mb-5;
+  }
+}
+
+/* Improve focus for long-form reading */
+.prose.prose-stone[itemprop="articleBody"]:focus-within {
+  @apply outline-none;
+}
+
+/* Auto-style common transcription patterns */
+.prose.prose-stone[itemprop="articleBody"] em:first-child {
+  @apply text-saints-600 dark:text-saints-400 text-sm font-medium;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+/* Progressive enhancement for better reading experience */
+.prose.prose-stone[itemprop="articleBody"] {
+  position: relative;
+  /* Add subtle reading indicator */
+}
+
+.prose.prose-stone[itemprop="articleBody"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1rem;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom,
+    oklch(95.1% 0.018 128.4) 0%,
+    oklch(97.8% 0.008 128.2) 100%);
+  border-radius: 1px;
+  opacity: 0.3;
+}
+
+.dark .prose.prose-stone[itemprop="articleBody"]::before {
+  background: linear-gradient(to bottom,
+    oklch(26.8% 0.028 128.6) 0%,
+    oklch(32.1% 0.035 128.8) 100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .prose.prose-stone[itemprop="articleBody"] {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Auto-detect and improve quote formatting in transcriptions */
+.prose.prose-stone[itemprop="articleBody"] blockquote {
+  @apply border-l-4 border-saints-200 dark:border-saints-700 pl-6 my-6;
+  @apply text-saints-700 dark:text-saints-300;
+}
+
+/* Responsive text scaling for optimal reading */
+@media (min-width: 768px) {
+  .prose.prose-stone[itemprop="articleBody"] {
+    font-size: 1.125rem; /* 18px on larger screens */
+    line-height: 1.75;
+  }
+}
+
+/* Enhance paragraph breaks for transcription flow */
+.prose.prose-stone[itemprop="articleBody"] p + p {
+  margin-top: 1.5rem;
+}
+
+/* Auto-style biblical references and citations */
+.prose.prose-stone[itemprop="articleBody"] cite,
+.prose.prose-stone[itemprop="articleBody"] p:has(cite) {
+  @apply text-saints-600 dark:text-saints-400 font-medium;
+}
+

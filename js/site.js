@@ -358,16 +358,161 @@ function initAudioPlayers() {
   players.forEach(player => new SermonPlayer(player));
 }
 
+// Enhanced Transcription Reading Experience
+function initTranscriptionEnhancements() {
+  const transcription = document.getElementById('sermon-transcription');
+  const progressIndicator = document.getElementById('reading-progress');
+  const transcriptDetails = document.querySelector('.transcript-details');
+
+  // SEO optimization: Start open for crawlers, then close for UX
+  if (transcriptDetails && transcriptDetails.hasAttribute('open')) {
+    // Small delay to ensure crawlers see the open state
+    setTimeout(() => {
+      transcriptDetails.removeAttribute('open');
+    }, 100);
+  }
+
+  if (!transcription) return;
+
+  // Reading progress tracking (optional - only if indicator exists)
+  let lastScrollPosition = 0;
+  let ticking = false;
+
+  function updateReadingProgress() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = Math.min(Math.max(scrollTop / documentHeight, 0), 1);
+
+    // Update progress indicator if it exists
+    if (progressIndicator) {
+      const progressBar = progressIndicator.querySelector('div');
+      if (progressBar) {
+        progressBar.style.height = `${progress * 100}%`;
+      }
+    }
+
+    // Auto-save reading position (debounced)
+    if (Math.abs(scrollTop - lastScrollPosition) > 100) {
+      lastScrollPosition = scrollTop;
+      saveReadingPosition(progress);
+    }
+
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateReadingProgress);
+      ticking = true;
+    }
+  }
+
+  function saveReadingPosition(progress) {
+    const pageUrl = window.location.pathname;
+    localStorage.setItem(`reading-${pageUrl}`, JSON.stringify({
+      progress: progress,
+      timestamp: Date.now()
+    }));
+  }
+
+  function restoreReadingPosition() {
+    const pageUrl = window.location.pathname;
+    const saved = localStorage.getItem(`reading-${pageUrl}`);
+
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        // Only restore if less than 24 hours old and meaningful progress
+        if (data.timestamp > Date.now() - 24 * 60 * 60 * 1000 && data.progress > 0.05) {
+          const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const targetScroll = data.progress * documentHeight;
+
+          // Smooth scroll to saved position after a short delay
+          setTimeout(() => {
+            window.scrollTo({
+              top: targetScroll,
+              behavior: 'smooth'
+            });
+          }, 500);
+        }
+      } catch (e) {
+        // Silently ignore parsing errors
+      }
+    }
+  }
+
+  // Keyboard shortcuts for reading
+  function handleReadingShortcuts(event) {
+    // Only activate shortcuts when not in form inputs
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') return;
+
+    switch(event.key) {
+      case 'Home':
+        event.preventDefault();
+        transcription.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        break;
+      case 'End':
+        event.preventDefault();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        break;
+      case 'PageUp':
+        event.preventDefault();
+        window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
+        break;
+      case 'PageDown':
+        event.preventDefault();
+        window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+        break;
+    }
+  }
+
+  // Enable reading enhancements when transcription is long enough
+  const transcriptionHeight = transcription.scrollHeight;
+  const viewportHeight = window.innerHeight;
+
+  if (transcriptionHeight > viewportHeight * 2) {
+    // Show progress indicator if it exists
+    if (progressIndicator) {
+      progressIndicator.classList.remove('hidden');
+    }
+
+    // Always enable scroll tracking and keyboard shortcuts for long transcriptions
+    window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('keydown', handleReadingShortcuts);
+
+    // Restore reading position on page load
+    restoreReadingPosition();
+  }
+
+  // Audio-transcription sync (if both exist)
+  const audioPlayer = document.querySelector('.sermon-player audio');
+  if (audioPlayer) {
+    // Smooth scroll to audio when user starts playback
+    audioPlayer.addEventListener('play', () => {
+      const audioSection = audioPlayer.closest('section');
+      if (audioSection) {
+        audioSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
+      }
+    });
+  }
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initMobileNav();
     initAudioPlayers();
+    initTranscriptionEnhancements();
   });
 } else {
   initScrollAnimations();
   initMobileNav();
   initAudioPlayers();
+  initTranscriptionEnhancements();
 }
 
