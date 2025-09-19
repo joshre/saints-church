@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<div class="bg-saints-100">
+<div class="bg-saints-100 dark:bg-saints-black">
   <main tabindex="-1" id="main-content" class="py-4 px-6 pt-6 pb-16 mx-auto max-w-7xl lg:px-8 lg:pt-20">
     <!-- Breadcrumb -->
     <nav aria-label="Breadcrumb" class="mb-8 animate-reveal">
@@ -52,7 +52,7 @@ layout: default
                 <div class="flex gap-3 items-center">
                   {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" %}
                   <address itemscope itemtype="https://schema.org/Person" class="not-italic">
-                    <div class="text-sm dark:text-white text-stone-900" itemprop="name">{{ page.pastor }}</div>
+                    <div class="text-sm dark:text-white text-stone-900" itemprop="name">{{ page.pastor | remove: "Pastor " }}</div>
                   </address>
                 </div>
               </div>
@@ -108,7 +108,7 @@ layout: default
             {% if page.description %}
               <!-- Always show description first for SEO and user experience -->
               <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mb-8">
-                {{ page.description }}
+                {{ page.description | strip_newlines }}
               </div>
             {% endif %}
 
@@ -168,7 +168,6 @@ layout: default
           </div>
         </div>
       </div>
-
 
       <!-- CTA Section -->
       <div class="pt-8 mx-auto mt-8 max-w-2xl text-center border-t border-stone-200 animate-reveal dark:border-stone-800">

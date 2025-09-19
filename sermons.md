@@ -4,7 +4,7 @@ title: "Sermons"
 description: "Listen to expository sermons from Saints Church in Knoxville, TN. Reformed Baptist preaching through books of the Bible verse-by-verse, available on Apple Podcasts, Spotify, and Overcast."
 ---
 
-<div class="min-h-screen bg-saints-100">
+<div class="min-h-screen bg-saints-100 dark:bg-saints-black">
   <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content">
     <header role="banner" class="relative px-6 pt-24 pb-16 mx-auto max-w-7xl lg:px-8 animate-children">
     <div class="mx-auto max-w-4xl text-center">
@@ -38,7 +38,7 @@ description: "Listen to expository sermons from Saints Church in Knoxville, TN. 
       <section aria-labelledby="featured-sermon" class="pb-16 animate-children">
       <div class="px-6 mx-auto max-w-5xl lg:px-8">
 
-        <div class="relative p-8 bg-white rounded-3xl lg:p-12 shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] child [--delay:0.15s] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-3xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
+        <div class="relative p-8 bg-white dark:bg-stone-900 rounded-3xl lg:p-12 shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] child [--delay:0.15s] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-3xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
           <div class="grid grid-cols-1 gap-8 items-start lg:grid-cols-3">
             <!-- Content Column -->
             <div class="lg:col-span-2">
@@ -59,10 +59,9 @@ description: "Listen to expository sermons from Saints Church in Knoxville, TN. 
 
               {% if latest_sermon.description %}
                 <div class="mb-6 max-w-none prose prose-stone dark:prose-invert">
-                  <p>{{ latest_sermon.description | strip_html | truncate: 200 }}</p>
+                  <p>{{ latest_sermon.description | strip_html | strip_newlines | truncate: 200 }}</p>
                 </div>
               {% endif %}
-
 
               <div class="flex flex-wrap gap-4 items-center">
                 {% include button.html href=latest_sermon.url text="Listen to Sermon" class="text-sm" %}
@@ -79,7 +78,7 @@ description: "Listen to expository sermons from Saints Church in Knoxville, TN. 
                     <dd class="flex gap-3 items-center">
                       {% include pastor-image.html class="flex-shrink-0 w-12 h-12 rounded-full" %}
                       <div>
-                        <p class="text-sm font-medium dark:text-white text-stone-900">{{ latest_sermon.pastor }}</p>
+                        <p class="text-sm font-medium dark:text-white text-stone-900">{{ latest_sermon.pastor | remove: "Pastor " }}</p>
                         <p class="text-xs text-stone-500 dark:text-stone-400">Pastor</p>
                       </div>
                     </dd>
@@ -124,7 +123,7 @@ description: "Listen to expository sermons from Saints Church in Knoxville, TN. 
     {% else %}
       <section class="pb-16">
         <div class="px-6 mx-auto max-w-5xl text-center lg:px-8">
-          <div class="p-12 bg-white rounded-3xl border shadow-lg border-stone-900/5">
+          <div class="p-12 bg-white dark:bg-stone-900 rounded-3xl border shadow-lg border-stone-900/5 dark:border-white/10">
             <h2 class="mb-4 text-3xl font-semibold dark:text-white font-display text-stone-900">Sermons Coming Soon</h2>
             <p class="text-stone-600 dark:text-stone-400">We're preparing our sermon archive. In the meantime, you can listen to our latest teachings on your favorite podcast platform above.</p>
           </div>
@@ -135,7 +134,7 @@ description: "Listen to expository sermons from Saints Church in Knoxville, TN. 
     {% assign sorted_posts = site.posts | where: "category", "sermon" | sort: "date" | reverse %}
     {% assign archive_sermons = sorted_posts | offset: 1 %}
     {% if archive_sermons.size > 0 %}
-      <section aria-labelledby="sermon-archive" class="py-16 bg-gradient-to-b border-t from-saints-200 to-saints-100 border-saints-900/10">
+      <section aria-labelledby="sermon-archive" class="py-16 bg-gradient-to-b border-t from-saints-200 to-saints-100 dark:from-saints-900 dark:to-saints-black border-saints-900/10 dark:border-white/10">
       <div class="px-6 mx-auto max-w-7xl lg:px-8">
         <h2 id="sermon-archive" class="mb-12 text-3xl font-semibold text-center dark:text-white font-display text-stone-900">{{ site.data.content.sermons.archive_subtitle }}</h2>
 
@@ -211,7 +210,7 @@ description: "Listen to expository sermons from Saints Church in Knoxville, TN. 
 
     <aside aria-labelledby="cta-section" class="py-24 animate-children">
       <div class="px-6 mx-auto max-w-4xl text-center lg:px-8">
-        <div class="relative p-12 bg-white rounded-3xl shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-3xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
+        <div class="relative p-12 bg-white dark:bg-stone-900 rounded-3xl shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-3xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
           <div class="child">
             <h2 id="cta-section" class="mb-4 text-3xl font-semibold dark:text-white font-display text-stone-900">
               {{ site.data.content.sermons.cta.sermons_page.title }}
