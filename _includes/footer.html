@@ -49,7 +49,8 @@
           </div>
 
           <div>
-            {% include button.html href="mailto:" text="Reach Out" icon="email" %}
+            {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
+            {% include button.html href=email_link text="Reach Out" icon="email" %}
           </div>
         </div>
 
