@@ -158,7 +158,7 @@
 
 
           // Generate frontmatter and content for Jekyll post
-          function generatePost(episode) {
+          function generatePost(episode, existingContent = null) {
             const pubDate = new Date(episode.pubDate);
             const sermonDate = getSermonSunday(pubDate); // Use sermon Sunday instead of publish date
             const scripture = extractScripture(episode.title) || extractScripture(episode.description);
@@ -226,7 +226,35 @@
             });
             content += '---\n\n';
 
-            // Add episode content (avoid duplication)
+            // Preserve existing transcription content if it exists
+            if (existingContent) {
+              // Robust content preservation with multiple fallback patterns
+              const preservationPatterns = [
+                // Standard frontmatter with double newline
+                /^---[\s\S]*?---\r?\n\r?\n([\s\S]*)$/,
+                // Frontmatter with single newline (malformed but common)
+                /^---[\s\S]*?---\r?\n([\s\S]*)$/,
+                // Frontmatter with extra whitespace
+                /^---[\s\S]*?---\s+([\s\S]*)$/
+              ];
+
+              for (const pattern of preservationPatterns) {
+                const existingBodyMatch = existingContent.match(pattern);
+                if (existingBodyMatch && existingBodyMatch[1].trim()) {
+                  // Keep existing body content (transcriptions)
+                  console.log(`Preserved ${existingBodyMatch[1].trim().length} characters of existing content`);
+                  content += existingBodyMatch[1];
+                  return content;
+                }
+              }
+
+              // If no pattern matches but content exists, log warning
+              if (existingContent.trim()) {
+                console.warn('Could not parse existing frontmatter to preserve content');
+              }
+            }
+
+            // Add episode content only for new files (avoid duplication)
             if (episode.content || episode['itunes:summary']) {
               const episodeContent = episode.content || episode['itunes:summary'];
               const description = episode.description || '';
@@ -318,7 +346,25 @@
 
                   const filepath = path.join(POSTS_DIR, filename);
 
-                  const postContent = generatePost(item);
+                  // Read existing content to preserve transcriptions
+                  let existingContent = null;
+                  if (existingEpisode) {
+                    // Try to read from the existing file location (in case filename changed)
+                    const existingFilepath = existingEpisode.filename ?
+                      path.join(POSTS_DIR, existingEpisode.filename) :
+                      filepath;
+
+                    if (fs.existsSync(existingFilepath)) {
+                      try {
+                        existingContent = fs.readFileSync(existingFilepath, 'utf8');
+                        console.log(`Preserving content from: ${existingEpisode.filename || filename}`);
+                      } catch (error) {
+                        console.warn(`Could not read existing file ${existingFilepath}: ${error.message}`);
+                      }
+                    }
+                  }
+
+                  const postContent = generatePost(item, existingContent);
 
                   // Atomic operation: write new file first, then delete old if needed
                   fs.writeFileSync(filepath, postContent, { mode: 0o644 });

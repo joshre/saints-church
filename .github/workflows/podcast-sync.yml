@@ -1142,7 +1142,7 @@ jobs:
 Automated podcast sync from Saints Church RSS feed
 Weekly sync for Reformed Baptist sermon series
 
-Generated with [Claude Code](https://claude.ai/code)
+🤖 🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
                 else
@@ -1154,7 +1154,7 @@ Weekly sync for Reformed Baptist sermon series
 Recent episodes:
 $(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
 
-Generated with [Claude Code](https://claude.ai/code)
+🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
                 fi
@@ -1167,7 +1167,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 Automated podcast sync from Saints Church RSS feed
 Weekly sync for Reformed Baptist sermon series
 
-Generated with [Claude Code](https://claude.ai/code)
+🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
                 else
@@ -1179,7 +1179,7 @@ Weekly sync for Reformed Baptist sermon series
 Updated episodes:
 $(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
 
-Generated with [Claude Code](https://claude.ai/code)
+🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
                 fi
@@ -1193,7 +1193,7 @@ Weekly sync for Reformed Baptist sermon series
 Recent changes:
 $(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
 
-Generated with [Claude Code](https://claude.ai/code)
+🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
               fi
