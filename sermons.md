@@ -2,6 +2,7 @@
 layout: default
 title: "Sermons"
 description: "Listen to expository sermons from Saints Church in Knoxville, TN. Reformed Baptist preaching through books of the Bible verse-by-verse, available on Apple Podcasts, Spotify, and Overcast."
+permalink: /sermons/
 ---
 
 <div class="min-h-screen bg-saints-100 dark:bg-saints-black">

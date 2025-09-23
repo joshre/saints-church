@@ -19,9 +19,22 @@ church:
   denomination: "Reformed Baptist"
   confession: "London Baptist Confession (1689)"
 
+# Build settings
+strict_front_matter: true
+show_drafts: false
+future: false
+
+# Plugins (GitHub Pages compatible)
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+
+# URL structure
+permalink: pretty
+
+# Performance (GitHub Pages compatible)
+sass:
+  style: compressed
 
 # Podcast/Sermon configuration
 podcast:
