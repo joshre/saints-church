@@ -1,5 +1,19 @@
 # Saints Church Jekyll Site - Project Documentation
 
+## Master Claude Configuration System
+
+**Global Agents Available**: This project is part of the Master Claude Configuration System.
+- **Master Config**: `/Users/josh/web/_projects/cortex/claude-master/`
+- **Global Agents**: `analysis`, `blog-publisher`, `deployment`, `documentation`, `jira-issue`, `lesson-plan`, `seo-pages`, `testing`, `work-log`
+
+### Quick Work Logging
+```
+"Use work-log agent: Updated sermon transcription system"
+"Log work: Fixed responsive design issues on mobile"
+```
+
+---
+
 ## Project Overview
 Saints Church is a Reformed Baptist church website built with Jekyll, featuring sophisticated design, custom animations, and comprehensive SEO optimization for local church discovery in Knoxville, TN.
 
