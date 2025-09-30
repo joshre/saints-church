@@ -2,6 +2,7 @@
 layout: page
 title: "Letter from the Pastor"
 description: ""
+permalink: /pastor-letter/
 data_key: pastor_letter
 header_image: pastor-image.html
 content_width: narrow

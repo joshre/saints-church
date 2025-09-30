@@ -17,8 +17,8 @@ Parameters:
 
 {% elsif include.type == 'beliefs_letter' %}
   <div class="{{ include.container_class }}">
-    {% include button.html href="/beliefs" text=site.data.content.footer.links.beliefs class=include.button_class %}
-    {% include button.html href="/pastor-letter" text=site.data.content.footer.links.pastor_letter class=include.button_class %}
+    {% include button.html href="/beliefs/" text=site.data.content.footer.links.beliefs class=include.button_class %}
+    {% include button.html href="/pastor-letter/" text=site.data.content.footer.links.pastor_letter class=include.button_class %}
   </div>
 
 {% elsif include.type == 'visit_beliefs' %}
@@ -32,7 +32,7 @@ Parameters:
       {% assign second_class = second_class | append: ' ' | append: include.second_button_class %}
     {% endif %}
     {% include button.html text=site.data.content.page_cta.default.buttons.visit_us command="show-modal" commandfor="visit-modal" class=first_class %}
-    {% include button.html href="/beliefs" text=site.data.content.page_cta.default.buttons.beliefs class=second_class %}
+    {% include button.html href="/beliefs/" text=site.data.content.page_cta.default.buttons.beliefs class=second_class %}
   </div>
 
 {% elsif include.type == 'maps' %}
