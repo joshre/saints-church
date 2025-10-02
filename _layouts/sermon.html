@@ -108,7 +108,7 @@ layout: default
             {% if page.description %}
               <!-- Always show description first for SEO and user experience -->
               <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mb-8">
-                {{ page.description | strip_newlines }}
+                {{ page.description | markdownify }}
               </div>
             {% endif %}
 
