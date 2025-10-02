@@ -518,12 +518,38 @@ jobs:
           }
 
 
+          // Parse existing frontmatter to preserve custom fields
+          function parseExistingFrontmatter(content) {
+            if (!content) return {};
+
+            const frontmatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+            if (!frontmatterMatch) return {};
+
+            const frontmatterText = frontmatterMatch[1];
+            const parsed = {};
+
+            // Simple YAML parser for our use case
+            const lines = frontmatterText.split('\n');
+            for (const line of lines) {
+              const match = line.match(/^(\w+):\s*"?([^"]*)"?$/);
+              if (match) {
+                const [, key, value] = match;
+                parsed[key] = value.replace(/^"/, '').replace(/"$/, '');
+              }
+            }
+
+            return parsed;
+          }
+
           // Generate frontmatter and content for Jekyll post
           function generatePost(episode, existingContent = null) {
             const pubDate = new Date(episode.pubDate);
             const sermonDate = getSermonSunday(pubDate); // Use sermon Sunday instead of publish date
             const scripture = extractScripture(episode.title) || extractScripture(episode.description);
             const duration = parseDuration(episode['itunes:duration']);
+
+            // Parse existing frontmatter to preserve custom fields
+            const existingFrontmatter = parseExistingFrontmatter(existingContent);
 
             // Extract series from title with Reformed Baptist context
             let series = null;
@@ -550,27 +576,35 @@ jobs:
               }
             }
 
-            // Clean RSS description content properly
+            // Clean RSS description content and convert HTML to markdown
             function cleanDescription(text) {
               if (!text || typeof text !== 'string') return null;
 
               return text
-                .replace(/\\n/g, ' ')        // Remove literal \n characters first
-                .replace(/\\r/g, ' ')        // Remove literal \r characters
-                .replace(/\n/g, ' ')         // Then convert actual newlines to spaces
-                .replace(/\r/g, ' ')         // Convert actual carriage returns to spaces
-                .replace(/\s+/g, ' ')        // Normalize multiple spaces to single space
-                .replace(/&nbsp;/gi, ' ')    // Convert HTML non-breaking spaces
-                .replace(/&amp;/gi, '&')     // Convert HTML entities
+                // Convert HTML entities first
+                .replace(/&nbsp;/gi, ' ')
+                .replace(/&amp;/gi, '&')
                 .replace(/&lt;/gi, '<')
                 .replace(/&gt;/gi, '>')
                 .replace(/&quot;/gi, '"')
+                // Convert HTML to markdown
+                .replace(/<p>/gi, '\n\n')      // Paragraph start
+                .replace(/<\/p>/gi, '')        // Paragraph end
+                .replace(/<br\s*\/?>/gi, '\n') // Line breaks
+                .replace(/<[^>]+>/g, '')       // Remove any other HTML tags
+                // Convert bullets to markdown
+                .replace(/•/g, '-')            // Bullet to dash
+                .replace(/^\s*-/gm, '-')       // Normalize leading dashes
+                // Clean up whitespace
+                .replace(/\n{3,}/g, '\n\n')    // Max 2 newlines
+                .replace(/\n\s+/g, '\n')       // Remove leading spaces after newlines
                 .trim() || null;
             }
 
             // Generate unique hash for audio player progress tracking
             const episodeHash = crypto.createHash('sha256').update(episode.guid || episode.link || episode.title).digest('hex').substring(0, EPISODE_HASH_LENGTH);
 
+            // Build new frontmatter, preserving custom fields from existing content
             const frontmatter = {
               layout: 'sermon',
               title: episode.title,
@@ -583,7 +617,9 @@ jobs:
               pastor: DEFAULT_PASTOR,
               description: cleanDescription(episode.description || episode['itunes:summary'] || ''),
               guid: episode.guid,
-              episode_id: episodeHash
+              episode_id: episodeHash,
+              // Preserve custom fields that aren't from RSS
+              transcription_model: existingFrontmatter.transcription_model || null
             };
 
             // Remove null values
@@ -611,10 +647,21 @@ jobs:
             let content = '---\n';
             Object.entries(frontmatter).forEach(([key, value]) => {
               if (typeof value === 'string') {
-                const escapedValue = escapeYAMLValue(value);
-                // Additional validation for key names
                 const safeKey = key.replace(/[^a-zA-Z0-9_-]/g, '');
-                content += `${safeKey}: "${escapedValue}"\n`;
+
+                // Only use quotes if value contains special YAML characters
+                const needsQuotes = /[:\n\r"'@`#\[\]{}|>*&!%]/.test(value) ||
+                                   value.startsWith(' ') ||
+                                   value.endsWith(' ') ||
+                                   value === '' ||
+                                   /^\d+$/.test(value); // Numbers as strings
+
+                if (needsQuotes) {
+                  const escapedValue = escapeYAMLValue(value);
+                  content += `${safeKey}: "${escapedValue}"\n`;
+                } else {
+                  content += `${safeKey}: ${value}\n`;
+                }
               } else {
                 content += `${key}: ${value}\n`;
               }
