@@ -1137,68 +1137,22 @@ jobs:
                 # Only new episodes
                 if [ "$NEW_FILES" -eq 1 ]; then
                   FIRST_TITLE=$(echo "$CHANGED_TITLES" | cut -d'|' -f1)
-                  COMMIT_MSG="Add new sermon: $FIRST_TITLE
-
-Automated podcast sync from Saints Church RSS feed
-Weekly sync for Reformed Baptist sermon series
-
-🤖 🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
+                  git commit -m "Add new sermon: $FIRST_TITLE" -m "Automated podcast sync from Saints Church RSS feed"
                 else
-                  COMMIT_MSG="Add $NEW_FILES new sermon episodes
-
-Automated podcast sync from Saints Church RSS feed
-Weekly sync for Reformed Baptist sermon series
-
-Recent episodes:
-$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
+                  git commit -m "Add $NEW_FILES new sermon episodes" -m "$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)" -m "Automated podcast sync"
                 fi
               elif [ "$NEW_FILES" -eq 0 ] && [ "$MODIFIED_FILES" -gt 0 ]; then
                 # Only updated episodes
                 if [ "$MODIFIED_FILES" -eq 1 ]; then
                   FIRST_TITLE=$(echo "$CHANGED_TITLES" | cut -d'|' -f1)
-                  COMMIT_MSG="Update sermon: $FIRST_TITLE
-
-Automated podcast sync from Saints Church RSS feed
-Weekly sync for Reformed Baptist sermon series
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
+                  git commit -m "Update sermon: $FIRST_TITLE" -m "Automated podcast sync from Saints Church RSS feed"
                 else
-                  COMMIT_MSG="Update $MODIFIED_FILES sermon episodes
-
-Automated podcast sync from Saints Church RSS feed
-Weekly sync for Reformed Baptist sermon series
-
-Updated episodes:
-$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
+                  git commit -m "Update $MODIFIED_FILES sermon episodes" -m "$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)" -m "Automated podcast sync"
                 fi
               else
                 # Both new and updated episodes
-                COMMIT_MSG="Sync sermons: $NEW_FILES new, $MODIFIED_FILES updated
-
-Automated podcast sync from Saints Church RSS feed
-Weekly sync for Reformed Baptist sermon series
-
-Recent changes:
-$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
+                git commit -m "Sync sermons: $NEW_FILES new, $MODIFIED_FILES updated" -m "$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)" -m "Automated podcast sync"
               fi
-
-              git commit -m "$COMMIT_MSG"
               echo "Committed $NEW_FILES new episode(s) and $MODIFIED_FILES updated episode(s)"
             else
               echo "No episodes to commit"
