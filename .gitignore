@@ -57,6 +57,13 @@ assets/css/style.css.map
 *.backup.*
 *.tmp.*
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+
 # Whisper transcription
 whisper_env/
 sermon_audio_*/
