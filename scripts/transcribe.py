@@ -79,7 +79,7 @@ class WorkingTranscriptionProcessor:
 
     def get_all_sermons(self) -> List[SermonFile]:
         """Get ALL sermon files that need transcription"""
-        posts_dir = Path('_posts')
+        posts_dir = Path(__file__).parent.parent / '_posts'
         sermon_files = []
 
         md_files = sorted(posts_dir.glob('*.md'), reverse=True)
