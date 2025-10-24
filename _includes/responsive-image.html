@@ -27,14 +27,57 @@ Parameters:
 
 <div class="{{ include.container_class }} {{ delay_class }}">
   <picture>
-    <source srcset="{{ '/assets/images/' | append: include.name | append: '.avif' | relative_url }}" type="image/avif">
-    <source srcset="{{ '/assets/images/' | append: include.name | append: '.webp' | relative_url }}" type="image/webp">
-    <img
-      src="{{ '/assets/images/' | append: include.name | append: '.jpg' | relative_url }}"
-      alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
-      class="{{ include.class }}"
-      loading="{{ loading_attr }}"
-    />
+    <!-- AVIF sources with responsive widths -->
+    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-play' %}
+      <source srcset="
+        {{ '/assets/images/' | append: include.name | append: '-960w.avif' | relative_url }} 960w,
+        {{ '/assets/images/' | append: include.name | append: '-1184w.avif' | relative_url }} 1184w
+      " type="image/avif">
+    {% elsif include.name == 'prayer-communal-1' or include.name == 'prayer-family-1' or include.name == 'prayer-family-2' or include.name == 'prayer-teaching' %}
+      <source srcset="{{ '/assets/images/' | append: include.name | append: '-384w.avif' | relative_url }}" type="image/avif">
+    {% else %}
+      <source srcset="{{ '/assets/images/' | append: include.name | append: '-768w.avif' | relative_url }}" type="image/avif">
+    {% endif %}
+
+    <!-- WebP sources with responsive widths -->
+    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-play' %}
+      <source srcset="
+        {{ '/assets/images/' | append: include.name | append: '-960w.webp' | relative_url }} 960w,
+        {{ '/assets/images/' | append: include.name | append: '-1184w.webp' | relative_url }} 1184w
+      " type="image/webp">
+    {% elsif include.name == 'prayer-communal-1' or include.name == 'prayer-family-1' or include.name == 'prayer-family-2' or include.name == 'prayer-teaching' %}
+      <source srcset="{{ '/assets/images/' | append: include.name | append: '-384w.webp' | relative_url }}" type="image/webp">
+    {% else %}
+      <source srcset="{{ '/assets/images/' | append: include.name | append: '-768w.webp' | relative_url }}" type="image/webp">
+    {% endif %}
+
+    <!-- JPG fallback with responsive widths -->
+    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-play' %}
+      <img
+        srcset="
+          {{ '/assets/images/' | append: include.name | append: '-960w.jpg' | relative_url }} 960w,
+          {{ '/assets/images/' | append: include.name | append: '-1184w.jpg' | relative_url }} 1184w
+        "
+        src="{{ '/assets/images/' | append: include.name | append: '-1184w.jpg' | relative_url }}"
+        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        class="{{ include.class }}"
+        loading="{{ loading_attr }}"
+      />
+    {% elsif include.name == 'prayer-communal-1' or include.name == 'prayer-family-1' or include.name == 'prayer-family-2' or include.name == 'prayer-teaching' %}
+      <img
+        src="{{ '/assets/images/' | append: include.name | append: '-384w.jpg' | relative_url }}"
+        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        class="{{ include.class }}"
+        loading="{{ loading_attr }}"
+      />
+    {% else %}
+      <img
+        src="{{ '/assets/images/' | append: include.name | append: '-768w.jpg' | relative_url }}"
+        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        class="{{ include.class }}"
+        loading="{{ loading_attr }}"
+      />
+    {% endif %}
   </picture>
   {% if show_ring %}
     <div class="absolute inset-0 {{ ring_radius }} ring-1 ring-inset pointer-events-none ring-stone-900/10 dark:ring-white/10"></div>
