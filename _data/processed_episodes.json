@@ -518,31 +518,33 @@
     "processed_at": "2025-10-19T09:20:14.222Z"
   },
   {
-    "guid": "5215d9ff-3e91-4b53-b531-8cef01085b54",
-    "title": "Acts 2:14-41",
-    "filename": "2025-10-26-acts-214-41.md",
-    "content_hash": "bf3cbfcabd60b114",
-    "processed_at": "2025-11-02T09:19:52.421Z"
-  },
-  {
-    "guid": "ea335941-9889-4c44-8f94-7d72961deb8d",
-    "title": "Acts 2:42-47",
-    "filename": "2025-11-02-acts-242-47.md",
-    "content_hash": "2a1af9580490f47c",
-    "processed_at": "2025-11-09T09:20:42.713Z"
+    "guid": "cfb599e2-cc70-4989-b5bd-5068ab8d52c4",
+    "title": "Acts 4",
+    "filename": "2025-11-16-acts-4.md",
+    "processed_at": "2025-11-25T16:50:36.222Z"
   },
   {
     "guid": "cfbacaf7-88a8-405e-920f-aee41d711e76",
     "title": "Acts 3",
     "filename": "2025-11-09-acts-3.md",
-    "content_hash": "11a87bbefa502374",
-    "processed_at": "2025-11-16T09:21:43.981Z"
+    "processed_at": "2025-11-25T16:50:36.223Z"
   },
   {
-    "guid": "cfb599e2-cc70-4989-b5bd-5068ab8d52c4",
-    "title": "Acts 4",
-    "filename": "2025-11-16-acts-4.md",
-    "content_hash": "7716faad2bcbbfb0",
-    "processed_at": "2025-11-23T09:22:14.101Z"
+    "guid": "ea335941-9889-4c44-8f94-7d72961deb8d",
+    "title": "Acts 2:42-47",
+    "filename": "2025-11-02-acts-242-47.md",
+    "processed_at": "2025-11-25T16:50:36.223Z"
+  },
+  {
+    "guid": "5215d9ff-3e91-4b53-b531-8cef01085b54",
+    "title": "Acts 2:14-41",
+    "filename": "2025-10-26-acts-214-41.md",
+    "processed_at": "2025-11-25T16:50:36.223Z"
+  },
+  {
+    "guid": "042e22b9-5398-48c7-83f5-4d0fff97f8a0",
+    "title": "Acts 5",
+    "filename": "2025-11-23-acts-5.md",
+    "processed_at": "2025-11-25T18:02:58.219Z"
   }
 ]
