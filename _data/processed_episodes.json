@@ -570,18 +570,21 @@
     "guid": "6c13d4e1-c047-451d-9705-a9a3497ec165",
     "title": "Acts 8",
     "filename": "2025-12-14-acts-8.md",
-    "processed_at": "2025-12-15T14:59:41.026Z"
+    "content_hash": "26488bc45b05a0a6",
+    "processed_at": "2026-01-04T09:23:55.469Z"
   },
   {
     "guid": "159ab539-4873-471b-8baf-cd77b713dd24",
     "title": "Acts 9",
     "filename": "2025-12-28-acts-9.md",
-    "processed_at": "2025-12-29T16:10:40.156Z"
+    "content_hash": "e71c3bc343d3dbce",
+    "processed_at": "2026-01-04T09:23:55.465Z"
   },
   {
     "guid": "75a4ddca-c58e-4767-9a76-10f9ae637507",
     "title": "Luke 2:1-20 | Christmas 2025 ",
     "filename": "2025-12-21-luke-21-20-christmas-2025.md",
-    "processed_at": "2025-12-29T16:10:40.159Z"
+    "content_hash": "50311733093488ba",
+    "processed_at": "2026-01-04T09:23:55.468Z"
   }
 ]
