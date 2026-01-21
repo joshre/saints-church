@@ -1,1 +1,0 @@
-/Users/josh/web/_projects/cortex/claude-master/project-configs/saints-church.md

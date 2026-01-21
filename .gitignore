@@ -68,3 +68,4 @@ venv/
 whisper_env/
 sermon_audio_*/
 /tmp/
+CLAUDE.md
