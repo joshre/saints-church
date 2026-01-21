@@ -35,12 +35,14 @@ Saints Church is a Reformed Baptist church website built with Jekyll, featuring 
 
 ### Pages
 - **Homepage** (`index.md`) - Main landing page with Acts 2:42-47 sections
+- **Sermons** (`sermons.md`) - Sermon archive with audio player and transcriptions
 - **Beliefs** (`beliefs.md`) - Confessional Baptist identity and doctrine
 - **Pastor Letter** (`pastor-letter.md`) - Personal letter from Pastor Nate Ellis
 
 ### Include Components
+
+**Page Sections** (Homepage components):
 - `header.html` - Hero section with church info, animations (formerly `hero.html`)
-- `nav.html` - Navigation component
 - `mission.html` - Acts 2:42-47 passage with modal
 - `teaching.html` - Expository preaching section
 - `fellowship.html` - Community life (renamed from `people.html`)
@@ -49,9 +51,32 @@ Saints Church is a Reformed Baptist church website built with Jekyll, featuring 
 - `values.html` - How we gather (6 key areas)
 - `schedule.html` - Sunday morning timeline
 - `about-us.html` - Church history and family church
+
+**Navigation & Layout**:
+- `nav.html` - Main navigation
+- `subnav.html` - Secondary navigation
 - `footer.html` - Footer with contact info
+
+**Utility Components**:
+- `audio-player.html` - Sermon audio player with controls
+- `pastor-image.html` - Optimized pastor image with multiple formats
+- `responsive-image.html` - Multi-format image component
+- `button.html` / `button-group.html` - Button components
+- `icon.html` - SVG icon system
+- `logo.html` - Church logo component
 - `visit-modal.html` - Visit us modal with map/directions
-- `pastor-image.html` - Optimized pastor image component
+- `subscribe-buttons.html` - Podcast subscription buttons
+- `podcast-platforms.html` - Podcast platform links
+
+**Sermon Components**:
+- `sermon-card.html` - Sermon preview card
+- `sermon-schema.html` - Sermon structured data
+- `page-schema.html` - Page structured data
+
+**Utility Includes**:
+- `cta.html` / `page-cta.html` - Call-to-action sections
+- `section-break.html` - Visual section dividers
+- `image-section.html` - Image section layouts
 
 ## Design System
 
@@ -128,7 +153,13 @@ Saints Church is a Reformed Baptist church website built with Jekyll, featuring 
 │   ├── visit-modal.html       # Visit modal
 │   └── pastor-image.html      # Optimized pastor image
 ├── _layouts/
-│   └── default.html           # Base layout
+│   ├── compress.html          # HTML compression wrapper
+│   ├── default.html           # Base layout
+│   ├── page.html              # Page layout
+│   └── sermon.html            # Sermon post layout
+├── _data/
+│   ├── content.yml            # Site content (CRITICAL: all text here)
+│   └── processed_episodes.json # Podcast sync tracking
 ├── assets/
 │   ├── css/                   # Generated CSS
 │   ├── fonts/                 # PP Formula, Inter Variable
@@ -162,6 +193,14 @@ Uses Tailwind arbitrary properties for overrides:
 <div class="child [--delay:0.15s] [--translate-y:0.25rem]">
 ```
 
+### Sermon Transcription Display
+The sermon layout (`_layouts/sermon.html`) uses intelligent transcription detection:
+- Tries multiple methods to find transcriptions: markdown headers, HTML headers, simple contains
+- Displays transcriptions in collapsible `<details>` element
+- Shows "Full Transcription" toggle by default (open state)
+- Falls back to "Transcription coming soon..." if no content found
+- Hides empty `<p><br></p>` tags for clean rendering
+
 ## Content Management
 
 ### Content Data File
@@ -184,6 +223,38 @@ Uses Tailwind arbitrary properties for overrides:
 - **Family Integrated** - All ages worship together
 - **Community Focused** - Elder's business office, room for growth
 
+## Automation & Workflows
+
+### GitHub Actions
+The site uses automated workflows in `.github/workflows/`:
+
+**Podcast Sync** (`podcast-sync.yml`):
+- Runs weekly on Sundays at 9:00 AM UTC
+- Automatically syncs sermon episodes from RSS feed
+- Creates Jekyll posts with proper frontmatter
+- Prevents duplicates using GUID tracking in `_data/processed_episodes.json`
+- Detects biblical book series for expository preaching
+- Can be triggered manually via workflow_dispatch
+
+**Update Icons** (`update-icons.yml`):
+- Runs weekly on Mondays at 2:00 AM UTC
+- Checks for Heroicons updates and regenerates icon set
+- Can be triggered manually via workflow_dispatch
+- Uses script at `scripts/generate-icons.js`
+
+**Claude Code Review** (`claude-code-review.yml`):
+- Runs on pull request events (opened, synchronize)
+- Provides automated code review feedback
+
+### Sermon Transcription Workflow
+Sermons can be transcribed using Whisper large-v3 locally:
+1. Script location: `scripts/transcribe.py`
+2. Uses WhisperX for high-quality transcription
+3. Audio files downloaded and processed locally
+4. Transcriptions added to sermon markdown files under `## Transcription` heading
+5. Sermon layout automatically detects and displays transcriptions in collapsible section
+6. Python virtual environment in `whisper_env/` or `venv/`
+
 ## Development Notes
 
 ### Build Commands
@@ -194,12 +265,28 @@ yarn watch             # Watch mode
 bundle exec jekyll serve  # Serve locally
 ```
 
+### Available Scripts (`scripts/`)
+- `transcribe.py` - Whisper-based sermon transcription
+- `sync-feed.js` - Manual podcast feed sync
+- `generate-icons.js` - Regenerate Heroicons SVG set
+- `validate_descriptions.py` - Validate sermon descriptions
+- `clean_body_content.py` - Clean/format sermon content
+- `utils.py` - Shared utility functions
+
 ### Animation Debugging
 - Text jitter fixed with `text-rendering: geometricPrecision`
 - GPU acceleration with `translate3d()`
 - Consistent font smoothing properties
 
 ### Recent Changes
+
+**January 2026**:
+- Fixed GitHub Pages build failures caused by CLAUDE.md symlink
+- Added sermon transcriptions for Acts 10, 11, and 12
+- Added exclude list to `_config.yml` for build optimization
+- Converted CLAUDE.md from symlink to real file
+
+**Earlier**:
 - Renamed `hero.html` → `header.html`
 - Renamed `people.html` → `fellowship.html`
 - Applied animate-children pattern to all sections
