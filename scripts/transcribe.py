@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Saints Church Sermon Transcription
-Uses Whisper Large-V3-Turbo for fast, accurate transcription
+Uses whisper.cpp (Metal GPU acceleration) for fast, reliable transcription
 Automatically formats descriptions to markdown
 """
 
@@ -11,7 +11,7 @@ import sys
 import json
 import tempfile
 import requests
-import whisper
+import subprocess
 import time
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
@@ -22,7 +22,11 @@ from utils import format_description
 
 # ESV API configuration
 ESV_API_URL = "https://api.esv.org/v3/passage/text/"
-ESV_API_KEY = os.environ.get("ESV_API_KEY", "")  # Can be set in environment, or uses public API
+ESV_API_KEY = os.environ.get("ESV_API_KEY", "")
+
+# Whisper.cpp configuration
+WHISPER_CLI = "/opt/homebrew/bin/whisper-cli"
+WHISPER_MODEL = "/opt/homebrew/share/whisper-cpp/ggml-large-v3-q5_0.bin"
 
 @dataclass
 class SermonFile:
@@ -34,16 +38,15 @@ class SermonFile:
     content: str
     frontmatter: Dict
 
-class WorkingTranscriptionProcessor:
+class WhisperCppTranscriptionProcessor:
     def __init__(self):
-        self.temp_dir = Path(tempfile.mkdtemp(prefix="sermon_audio_working_"))
-        self.model = None
+        self.temp_dir = Path(tempfile.mkdtemp(prefix="sermon_audio_"))
         self.processed_count = 0
         self.total_count = 0
         self.errors = []
         self.completed_sermons = []
         self.start_time = time.time()
-        self.esv_cache = {}  # Cache ESV passages to avoid repeated API calls
+        self.esv_cache = {}
 
     def __enter__(self):
         return self
@@ -52,20 +55,11 @@ class WorkingTranscriptionProcessor:
         import shutil
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def load_whisper_model(self):
-        """Load Whisper LARGE-V3-TURBO model - distilled and stable"""
-        if self.model is None:
-            print("⚡ Loading Whisper LARGE-V3-TURBO model for fast, stable transcription...")
-            self.model = whisper.load_model("large-v3-turbo")
-            print("✅ Large-V3-Turbo model loaded successfully!")
-        return self.model
-
     def fetch_esv_scripture(self, scripture_ref: str) -> Optional[str]:
         """Fetch ESV scripture text for a given reference"""
         if not scripture_ref or not scripture_ref.strip():
             return None
 
-        # Check cache first
         if scripture_ref in self.esv_cache:
             return self.esv_cache[scripture_ref]
 
@@ -95,7 +89,6 @@ class WorkingTranscriptionProcessor:
                 passages = data.get("passages", [])
                 if passages:
                     text = passages[0].strip()
-                    # Cache the result
                     self.esv_cache[scripture_ref] = text
                     print(f"📖 Fetched ESV text for {scripture_ref} ({len(text)} chars)")
                     return text
@@ -202,11 +195,21 @@ class WorkingTranscriptionProcessor:
             return None
 
     def transcribe_audio(self, audio_file: Path, sermon: SermonFile) -> Optional[str]:
-        """Transcribe with contextual prompt from sermon description and scripture text"""
+        """Transcribe with whisper.cpp (Metal GPU acceleration)"""
         try:
             print(f"🎤 [{self.processed_count + 1}/{self.total_count}] Transcribing: {sermon.title}")
+            print(f"⚡ Using whisper.cpp with Metal GPU acceleration...")
 
-            model = self.load_whisper_model()
+            # Convert M4A to WAV for whisper.cpp compatibility
+            wav_file = audio_file.with_suffix('.wav')
+            if audio_file.suffix.lower() in ['.m4a', '.aac']:
+                print(f"🔄 Converting {audio_file.suffix} to WAV...")
+                convert_cmd = ["ffmpeg", "-i", str(audio_file), "-ar", "16000", "-ac", "1", "-y", str(wav_file)]
+                result = subprocess.run(convert_cmd, capture_output=True, text=True, timeout=300)
+                if result.returncode != 0:
+                    raise Exception(f"ffmpeg conversion failed: {result.stderr}")
+                audio_file.unlink()  # Remove original M4A
+                audio_file = wav_file
 
             # Build contextual prompt
             prompt_parts = [f"This is a sermon by Pastor Nate Ellis on {sermon.title}."]
@@ -216,45 +219,81 @@ class WorkingTranscriptionProcessor:
             if scripture_ref:
                 esv_text = self.fetch_esv_scripture(scripture_ref)
                 if esv_text:
-                    # Include first 1500 chars of scripture (Whisper prompt has limits)
-                    scripture_sample = esv_text[:1500]
+                    # Include first 500 chars of scripture
+                    scripture_sample = esv_text[:500]
                     prompt_parts.append(f"Scripture passage ({scripture_ref}): {scripture_sample}")
 
             # Add sermon description
             description = sermon.frontmatter.get('description', '')
             if description:
-                # Strip HTML tags from description for cleaner prompt
                 import html
                 clean_description = re.sub(r'<[^>]+>', '', html.unescape(description))
                 prompt_parts.append(clean_description[:200])
 
             initial_prompt = " ".join(prompt_parts)
 
-            # Better Whisper settings for sermon transcription
-            result = model.transcribe(
-                str(audio_file),
-                language="en",
-                verbose=False,
-                temperature=0.0,
-                beam_size=5,
-                best_of=5,
-                patience=1.0,
-                length_penalty=1.0,
-                suppress_tokens=[-1],
-                initial_prompt=initial_prompt,
-                condition_on_previous_text=True,
-                fp16=False
+            # Create output path for JSON
+            output_json = self.temp_dir / f"{sermon.date}_transcript.json"
+
+            # Call whisper-cli
+            cmd = [
+                WHISPER_CLI,
+                "-m", WHISPER_MODEL,
+                "-l", "en",
+                "--prompt", initial_prompt,
+                "-ojf",  # Output JSON full
+                "-of", str(output_json.with_suffix('')),  # Output file (without extension)
+                str(audio_file)
+            ]
+
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=3600  # 1 hour max
             )
 
-            transcription = result["text"].strip()
+            if result.returncode != 0:
+                raise Exception(f"whisper-cli failed: {result.stderr}")
 
-            # Basic cleanup - let Whisper handle most formatting
+            # Read JSON output
+            json_file = output_json
+            if not json_file.exists():
+                raise Exception(f"Expected output file not found: {json_file}")
+
+            with open(json_file, 'r', encoding='utf-8') as f:
+                whisper_output = json.load(f)
+
+            # Extract full transcript from segments
+            segments = whisper_output.get('transcription', [])
+            if not segments:
+                raise Exception("No transcription segments in output")
+
+            # Combine all segment texts
+            transcript_parts = []
+            for segment in segments:
+                text = segment.get('text', '').strip()
+                if text:
+                    transcript_parts.append(text)
+
+            transcription = ' '.join(transcript_parts)
+
+            # Basic cleanup - add paragraph breaks
             transcription = re.sub(r'\s+', ' ', transcription)
             transcription = re.sub(r'([.!?])\s*([A-Z])', r'\1\n\n\2', transcription)
 
             print(f"✅ Transcribed: {len(transcription):,} characters")
+
+            # Cleanup JSON file
+            json_file.unlink(missing_ok=True)
+
             return transcription
 
+        except subprocess.TimeoutExpired:
+            error_msg = f"Transcription timeout for {sermon.title}"
+            print(f"❌ {error_msg}")
+            self.errors.append(error_msg)
+            return None
         except Exception as e:
             error_msg = f"Transcription failed for {sermon.title}: {e}"
             print(f"❌ {error_msg}")
@@ -278,7 +317,7 @@ class WorkingTranscriptionProcessor:
                     new_content += f"{key}: {value}\n"
 
             # Add transcription model information
-            new_content += f"transcription_model: whisper-large-v3-turbo\n"
+            new_content += f"transcription_model: whisper-cpp-large-v3-q5\n"
             new_content += "---\n\n"
 
             if body.strip():
@@ -335,11 +374,11 @@ class WorkingTranscriptionProcessor:
 
     def process_all_sermons(self):
         """Process all sermons reliably"""
-        print("🔧 Saints Church WORKING Transcription System")
+        print("🔧 Saints Church Transcription System")
         print("=" * 60)
-        print("⚡ Large-V3-Turbo model for fast, stable transcription")
-        print("🎯 Single-threaded for stability")
-        print("🔄 Will complete 100% of sermons")
+        print("⚡ Using whisper.cpp with Metal GPU acceleration")
+        print("📦 Model: large-v3 Q5 quantized (1.0GB)")
+        print("🚀 Expected: 4-9 minutes per sermon")
         print("=" * 60)
 
         sermons = self.get_all_sermons()
@@ -351,10 +390,9 @@ class WorkingTranscriptionProcessor:
         self.start_time = time.time()
 
         print(f"\n📊 Processing {len(sermons)} sermons")
-        print(f"⏱️  Estimated time: {len(sermons) * 8 / 60:.1f} hours (large-v3 model)")
+        print(f"⏱️  Estimated time: {len(sermons) * 7 / 60:.1f} hours (avg 7 min/sermon)")
         print()
 
-        # Process one by one for maximum reliability
         for i, sermon in enumerate(sermons):
             print(f"\n{'='*20} SERMON {i+1}/{len(sermons)} {'='*20}")
             success = self.process_sermon(sermon)
@@ -379,12 +417,23 @@ class WorkingTranscriptionProcessor:
                 print(f"  ✅ {filename}")
 
 def main():
+    # Check dependencies
+    if not Path(WHISPER_CLI).exists():
+        print(f"❌ whisper-cli not found at {WHISPER_CLI}")
+        print("Install: brew install whisper-cpp")
+        sys.exit(1)
+
+    if not Path(WHISPER_MODEL).exists():
+        print(f"❌ Model not found at {WHISPER_MODEL}")
+        print("Download: brew install whisper-cpp")
+        sys.exit(1)
+
     script_dir = Path(__file__).parent
     os.chdir(script_dir)
 
-    print("🚀 Starting WORKING transcription system")
+    print("🚀 Starting whisper.cpp transcription system")
 
-    with WorkingTranscriptionProcessor() as processor:
+    with WhisperCppTranscriptionProcessor() as processor:
         processor.process_all_sermons()
 
 if __name__ == "__main__":
