@@ -20,6 +20,10 @@ from dataclasses import dataclass
 # Import description formatter
 from utils import format_description
 
+# ESV API configuration
+ESV_API_URL = "https://api.esv.org/v3/passage/text/"
+ESV_API_KEY = os.environ.get("ESV_API_KEY", "")  # Can be set in environment, or uses public API
+
 @dataclass
 class SermonFile:
     filepath: str
@@ -39,6 +43,7 @@ class WorkingTranscriptionProcessor:
         self.errors = []
         self.completed_sermons = []
         self.start_time = time.time()
+        self.esv_cache = {}  # Cache ESV passages to avoid repeated API calls
 
     def __enter__(self):
         return self
@@ -54,6 +59,53 @@ class WorkingTranscriptionProcessor:
             self.model = whisper.load_model("large-v3-turbo")
             print("✅ Large-V3-Turbo model loaded successfully!")
         return self.model
+
+    def fetch_esv_scripture(self, scripture_ref: str) -> Optional[str]:
+        """Fetch ESV scripture text for a given reference"""
+        if not scripture_ref or not scripture_ref.strip():
+            return None
+
+        # Check cache first
+        if scripture_ref in self.esv_cache:
+            return self.esv_cache[scripture_ref]
+
+        try:
+            headers = {}
+            if ESV_API_KEY:
+                headers["Authorization"] = f"Token {ESV_API_KEY}"
+
+            params = {
+                "q": scripture_ref,
+                "include-headings": False,
+                "include-footnotes": False,
+                "include-verse-numbers": True,
+                "include-short-copyright": False,
+                "include-passage-references": False
+            }
+
+            response = requests.get(
+                ESV_API_URL,
+                params=params,
+                headers=headers,
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                data = response.json()
+                passages = data.get("passages", [])
+                if passages:
+                    text = passages[0].strip()
+                    # Cache the result
+                    self.esv_cache[scripture_ref] = text
+                    print(f"📖 Fetched ESV text for {scripture_ref} ({len(text)} chars)")
+                    return text
+            else:
+                print(f"⚠️  ESV API returned status {response.status_code} for {scripture_ref}")
+                return None
+
+        except Exception as e:
+            print(f"⚠️  Failed to fetch ESV text for {scripture_ref}: {e}")
+            return None
 
     def parse_frontmatter(self, content: str) -> Tuple[Dict, str]:
         """Parse Jekyll frontmatter"""
@@ -150,19 +202,33 @@ class WorkingTranscriptionProcessor:
             return None
 
     def transcribe_audio(self, audio_file: Path, sermon: SermonFile) -> Optional[str]:
-        """Transcribe with contextual prompt from sermon description"""
+        """Transcribe with contextual prompt from sermon description and scripture text"""
         try:
             print(f"🎤 [{self.processed_count + 1}/{self.total_count}] Transcribing: {sermon.title}")
 
             model = self.load_whisper_model()
 
-            # Create contextual prompt from sermon description
-            description = sermon.frontmatter.get('description', '')
-            # Strip HTML tags from description for cleaner prompt
-            import html
-            clean_description = re.sub(r'<[^>]+>', '', html.unescape(description))
+            # Build contextual prompt
+            prompt_parts = [f"This is a sermon by Pastor Nate Ellis on {sermon.title}."]
 
-            initial_prompt = f"This is a sermon by Pastor Nate Ellis on {sermon.title}. {clean_description[:200]}..."
+            # Add scripture text if available
+            scripture_ref = sermon.frontmatter.get('scripture', '')
+            if scripture_ref:
+                esv_text = self.fetch_esv_scripture(scripture_ref)
+                if esv_text:
+                    # Include first 1500 chars of scripture (Whisper prompt has limits)
+                    scripture_sample = esv_text[:1500]
+                    prompt_parts.append(f"Scripture passage ({scripture_ref}): {scripture_sample}")
+
+            # Add sermon description
+            description = sermon.frontmatter.get('description', '')
+            if description:
+                # Strip HTML tags from description for cleaner prompt
+                import html
+                clean_description = re.sub(r'<[^>]+>', '', html.unescape(description))
+                prompt_parts.append(clean_description[:200])
+
+            initial_prompt = " ".join(prompt_parts)
 
             # Better Whisper settings for sermon transcription
             result = model.transcribe(
