@@ -1,0 +1,59 @@
+<!-- Auto-generated Breadcrumbs from URL -->
+{% assign crumbs = page.url | split: '/' %}
+{% assign crumb_count = 0 %}
+{% for c in crumbs %}{% if c != '' %}{% assign crumb_count = crumb_count | plus: 1 %}{% endif %}{% endfor %}
+
+{% if crumb_count > 1 %}
+{% comment %}Only show visible breadcrumbs for 3+ level deep pages{% endcomment %}
+{% if crumb_count > 2 %}
+<nav aria-label="Breadcrumb" class="mb-8">
+  <ol class="flex flex-wrap items-center gap-2 text-sm text-stone-500 dark:text-stone-400">
+    {% assign path = '' %}
+    {% assign first_visible = true %}
+    {% for crumb in crumbs %}
+      {% if crumb != '' and forloop.last == false %}
+        {% assign path = path | append: '/' | append: crumb %}
+
+        {% assign crumb_title = crumb | replace: '-', ' ' | capitalize %}
+        {% if crumb == 'sermons' %}{% assign crumb_title = 'Sermons' %}{% endif %}
+        {% if crumb == 'resources' %}{% assign crumb_title = 'Resources' %}{% endif %}
+        {% if crumb == 'prayer-gatherings' %}{% assign crumb_title = 'Prayer Gatherings' %}{% endif %}
+
+        <li class="flex items-center gap-2">
+          {% unless first_visible %}<span class="text-stone-300 dark:text-stone-600">/</span>{% endunless %}
+          <a href="{{ path }}/" class="hover:text-saints-600 dark:hover:text-saints-400 transition-colors">{{ crumb_title }}</a>
+        </li>
+        {% assign first_visible = false %}
+      {% endif %}
+    {% endfor %}
+  </ol>
+</nav>
+{% endif %}
+
+<!-- Schema.org BreadcrumbList (always output for SEO) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ site.url }}"
+    }{% assign path = '' %}{% assign position = 2 %}{% for crumb in crumbs %}{% if crumb != '' and forloop.last == false %}{% assign path = path | append: '/' | append: crumb %}{% assign crumb_title = crumb | replace: '-', ' ' | capitalize %}{% if crumb == 'sermons' %}{% assign crumb_title = 'Sermons' %}{% endif %}{% if crumb == 'resources' %}{% assign crumb_title = 'Resources' %}{% endif %}{% if crumb == 'prayer-gatherings' %}{% assign crumb_title = 'Prayer Gatherings' %}{% endif %},
+    {
+      "@type": "ListItem",
+      "position": {{ position }},
+      "name": {{ crumb_title | jsonify }},
+      "item": "{{ site.url }}{{ path }}/"
+    }{% assign position = position | plus: 1 %}{% endif %}{% endfor %},
+    {
+      "@type": "ListItem",
+      "position": {{ position }},
+      "name": {{ page.title | jsonify }}
+    }
+  ]
+}
+</script>
+{% endif %}

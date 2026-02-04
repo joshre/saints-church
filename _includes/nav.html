@@ -99,9 +99,8 @@
             <path d="M8 0H7V7H0V8H7V15H8V8H15V7H8V0Z"></path>
           </svg>
 
-          {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-          <a class="flex items-center py-3 px-4 text-base font-medium transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-white/5 hover:bg-stone-900/5" href="{{ email_link }}">
-            {{ site.data.content.navigation.buttons.reach_out }}
+          <a class="flex items-center py-3 px-4 text-base font-medium transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-white/5 hover:bg-stone-900/5" href="/resources/">
+            {{ site.data.content.navigation.links.resources }}
           </a>
         </div>
 
@@ -165,9 +164,8 @@
                 <a href="/sermons/" class="block py-2 px-3 text-base font-medium rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100">
                   {{ site.data.content.navigation.links.sermons }}
                 </a>
-                {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-                <a href="{{ email_link }}" class="block py-2 px-3 text-base font-medium rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100">
-                  {{ site.data.content.navigation.buttons.reach_out }}
+                <a href="/resources/" class="block py-2 px-3 text-base font-medium rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100">
+                  {{ site.data.content.navigation.links.resources }}
                 </a>
                 <button class="block py-2 px-3 w-full text-base font-medium text-left rounded-lg transition-colors text-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 hover:bg-stone-100" command="show-modal" commandfor="visit-modal">
                   {{ site.data.content.navigation.buttons.visit_us }}

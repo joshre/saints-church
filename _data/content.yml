@@ -13,9 +13,11 @@ navigation:
   buttons:
     visit_us: "Visit Us"
     reach_out: "Reach Out"
+    give: "Give"
   links:
     beliefs: "Our Beliefs"
     sermons: "Sermons"
+    resources: "Resources"
     pastor_letter: "Letter from the Pastor"
   email: "contact@saintschurchknox.com"
   announcement:
@@ -183,6 +185,7 @@ footer:
     copyright: "Saints Church"
   links:
     beliefs: "Our Beliefs"
+    resources: "Resources"
     pastor_letter: "Letter from the Pastor"
 
 modal:
@@ -243,6 +246,7 @@ podcast:
 subnav:
   beliefs: "Our Beliefs"
   pastor_letter: "Letter from the Pastor"
+  resources: "Resources"
 
 ui:
   labels:
@@ -287,6 +291,32 @@ seo:
     sermons:
       title: "Sermons"
       description: "Listen to expository sermons from Saints Church in Knoxville, TN. Reformed Baptist preaching through books of the Bible verse-by-verse, available on Apple Podcasts, Spotify, and Overcast."
+    resources:
+      title: "Resources"
+      description: "Church resources including giving, worship playlists, and helpful documents for Saints Church in Knoxville, TN. Find everything you need to connect with our church community."
+
+resources:
+  title: "Resources"
+  subtitle: "Everything you need to connect with Saints Church"
+  giving:
+    title: "Giving"
+    description: "Thank you for your generosity in supporting the ministry of Saints Church. Your giving helps us continue to preach the gospel, care for our community, and advance God's kingdom in Knoxville and beyond."
+    link: "https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf"
+    button_text: "Give Online"
+  worship:
+    title: "Worship Music"
+    description: "Listen to the songs we sing together on Sunday mornings. These playlists are updated regularly with our current worship rotation."
+    apple_music:
+      title: "Apple Music"
+      subtitle: "SCC Worship Playlist"
+      link: "https://music.apple.com/us/playlist/scc-worship/pl.u-vmNjcP1EdlP"
+    spotify:
+      title: "Spotify"
+      subtitle: "SCC Worship Playlist"
+      link: "https://open.spotify.com/playlist/1NdmWibC41vpty7bPk47tL?si=lr7CiZzOTqGh6_gA4SuJxw"
+  documents:
+    title: "Documents"
+    description: "Additional resources and documents will be added here soon."
 
 images:
   placeholders:

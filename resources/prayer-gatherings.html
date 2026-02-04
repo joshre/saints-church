@@ -1,0 +1,37 @@
+---
+layout: default
+title: "Prayer Gatherings"
+description: "Monthly prayer gathering themes and scripture readings for Saints Church in Knoxville, TN."
+permalink: /resources/prayer-gatherings/
+---
+
+<main class="min-h-screen bg-saints-white dark:bg-saints-black">
+  <div class="px-6 py-16 mx-auto max-w-4xl lg:px-8 lg:py-24">
+    <div class="animate-children">
+
+      <!-- Header -->
+      <div class="child mb-16 text-center">
+        <p class="text-sm font-medium tracking-widest uppercase text-saints-600 dark:text-saints-400 mb-4">
+          Saints Church
+        </p>
+        <h1 class="text-4xl font-bold tracking-tight text-stone-900 dark:text-white font-display sm:text-5xl mb-6">
+          Prayer Gatherings
+        </h1>
+        <p class="text-lg text-stone-600 dark:text-stone-400 max-w-xl mx-auto leading-relaxed">
+          Monthly themes and scripture readings for our prayer gatherings.
+        </p>
+      </div>
+
+      <!-- All Prayer Gatherings -->
+      <div class="child [--delay:0.15s] grid gap-4 sm:grid-cols-2">
+        {% assign prayer_gatherings = site.prayer_gatherings | sort: 'date' | reverse %}
+        {% for gathering in prayer_gatherings %}
+          {% include prayer-gathering-card.html gathering=gathering %}
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+  {% include cta.html %}
+</main>

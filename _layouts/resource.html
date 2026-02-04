@@ -1,0 +1,40 @@
+---
+layout: default
+---
+
+<main class="min-h-screen bg-saints-white dark:bg-saints-black">
+  <div class="px-6 py-16 mx-auto max-w-4xl lg:px-8 lg:py-24">
+    <article class="animate-children">
+
+      <!-- Breadcrumbs (auto-generated from URL) -->
+      <div class="child">
+        {% include breadcrumbs.html %}
+      </div>
+
+      <!-- Header -->
+      <header class="mb-8 text-center child">
+        <h1 class="text-4xl font-bold tracking-tight leading-[1.15] text-balance text-stone-900 dark:text-white font-display sm:text-5xl mb-4">
+          {{ page.title }}
+        </h1>
+        {% if page.theme %}
+        <p class="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
+          Theme: {{ page.theme }}
+        </p>
+        {% endif %}
+        {% if page.description %}
+        <p class="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto mt-4">
+          {{ page.description }}
+        </p>
+        {% endif %}
+      </header>
+
+      <!-- Content -->
+      <div class="child [--delay:0.15s] prose prose-lg prose-zinc dark:prose-invert max-w-prose mx-auto [&>h1]:font-display [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:tracking-tight [&>h1]:mb-6 [&>h2]:font-display [&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:tracking-tight [&>h2]:mt-10 [&>h2]:mb-4 [&>h3]:font-display [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:tracking-tight [&>h3]:mt-8 [&>h3]:mb-3">
+        {{ content }}
+      </div>
+
+    </article>
+  </div>
+
+  {% include cta.html %}
+</main>
