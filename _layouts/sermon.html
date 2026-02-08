@@ -48,7 +48,7 @@ layout: default
               <div>
                 <h3 class="mb-3 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Speaker</h3>
                 <div class="flex gap-3 items-center">
-                  {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" %}
+                  {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" speaker=page.pastor %}
                   <address itemscope itemtype="https://schema.org/Person" class="not-italic">
                     <div class="text-sm dark:text-white text-stone-900" itemprop="name">{{ page.pastor | remove: "Pastor " }}</div>
                   </address>

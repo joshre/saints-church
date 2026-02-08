@@ -1,0 +1,14 @@
+- name: Nate Ellis
+  role: Pastor
+  key: "Pastor Nate Ellis"
+  image: pastor
+
+- name: Evan Burress
+  role: Elder
+  key: "Evan Burress"
+  image: evan
+
+- name: Josh Reeder-Esparza
+  role: Elder
+  key: "Josh Reeder-Esparza"
+  image: josh

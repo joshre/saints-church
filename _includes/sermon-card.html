@@ -30,7 +30,7 @@
         <!-- Speaker Info -->
         <div class="flex gap-3 items-center">
           {% if include.post.pastor %}
-            {% include pastor-image.html class="flex-shrink-0 w-8 h-8 rounded-full" %}
+            {% include pastor-image.html class="flex-shrink-0 w-8 h-8 rounded-full" speaker=include.post.pastor %}
             <div>
               <p class="text-sm font-medium dark:text-white text-stone-900">{{ include.post.pastor | remove: "Pastor " }}</p>
             </div>
