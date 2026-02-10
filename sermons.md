@@ -77,10 +77,11 @@ permalink: /sermons/
                   <div>
                     <dt class="mb-3 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Speaker</dt>
                     <dd class="flex gap-3 items-center">
-                      {% include pastor-image.html class="flex-shrink-0 w-12 h-12 rounded-full" %}
+                      {% include pastor-image.html class="flex-shrink-0 w-12 h-12 rounded-full" speaker=latest_sermon.pastor %}
+                      {% assign current_speaker = site.data.speakers | where: "key", latest_sermon.pastor | first %}
                       <div>
                         <p class="text-sm font-medium dark:text-white text-stone-900">{{ latest_sermon.pastor | remove: "Pastor " }}</p>
-                        <p class="text-xs text-stone-500 dark:text-stone-400">Pastor</p>
+                        <p class="text-xs text-stone-500 dark:text-stone-400">{{ current_speaker.role | default: "Pastor" }}</p>
                       </div>
                     </dd>
                   </div>
