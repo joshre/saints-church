@@ -7,16 +7,16 @@ permalink: /sermons/
 
 <div class="relative bg-wallpaper dark:bg-wallpaper-dark">
   <!-- Single noise texture layer covering the entire page -->
-  <div class="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+  <div class="absolute inset-0 opacity-30 pointer-events-none mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
 
   <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
     <!-- Header gradient overlay (no separate noise) -->
-    <div class="relative overflow-hidden">
-      <div class="absolute inset-0 bg-linear-to-b from-wallpaper-light to-transparent dark:from-wallpaper-dark-light dark:to-transparent"></div>
+    <div class="overflow-hidden relative">
+      <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
       <div class="relative">
     <header role="banner" class="relative px-6 pt-28 pb-12 mx-auto max-w-7xl lg:px-8 animate-children">
     <div class="mx-auto max-w-4xl text-center">
-      <h1 itemprop="name headline" class="mb-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl dark:text-white font-display text-white child" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
+      <h1 itemprop="name headline" class="mb-5 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl dark:text-white font-display child" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
         {{ site.data.content.sermons.title }}
       </h1>
 
@@ -46,13 +46,13 @@ permalink: /sermons/
       <section aria-labelledby="featured-sermon" class="pb-16 animate-children">
       <div class="px-6 mx-auto max-w-4xl lg:px-8">
 
-        <div class="relative p-7 bg-white dark:bg-stone-900 rounded-[2rem] lg:p-10 shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] child [--delay:0.15s] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-[2rem] dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
+        <div class="relative p-7 bg-white lg:p-10 rounded-[2rem] shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] child [--delay:0.15s] dark:bg-stone-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-[2rem] dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
           <div class="grid grid-cols-1 gap-8 items-start lg:grid-cols-3">
             <!-- Content Column -->
             <div class="lg:col-span-2">
               <header class="mb-6">
                 <!-- Latest Badge -->
-                <div class="inline-flex gap-x-1.5 items-center py-1 px-2.5 mb-4 font-medium rounded-full text-xs tracking-wide forced-colors:outline bg-saints-500/10 text-saints-700 border border-saints-500/15 dark:bg-saints-400/10 dark:text-saints-300 dark:border-saints-400/15">
+                <div class="inline-flex gap-x-1.5 items-center py-1 px-2.5 mb-4 text-xs font-medium tracking-wide rounded-full border forced-colors:outline bg-saints-500/10 text-saints-700 border-saints-500/15 dark:bg-saints-400/10 dark:text-saints-300 dark:border-saints-400/15">
                   Latest Sermon
                 </div>
                 <h3 class="mb-3 text-2xl font-semibold lg:text-3xl dark:text-white font-display text-stone-900">
@@ -77,7 +77,7 @@ permalink: /sermons/
             </div>
 
             <!-- Metadata Sidebar -->
-            <div class="lg:col-span-1 lg:border-l lg:border-stone-100 lg:pl-8 dark:lg:border-stone-800">
+            <div class="lg:col-span-1 lg:pl-8 lg:border-l lg:border-stone-100 dark:lg:border-stone-800">
               <div class="space-y-6">
                 <!-- Preacher -->
                 {% if latest_sermon.pastor %}
@@ -132,7 +132,7 @@ permalink: /sermons/
     {% else %}
       <section class="pb-16">
         <div class="px-6 mx-auto max-w-5xl text-center lg:px-8">
-          <div class="p-12 bg-white dark:bg-stone-900 rounded-3xl border shadow-lg border-stone-900/5 dark:border-white/10">
+          <div class="p-12 bg-white rounded-3xl border shadow-lg border-stone-900/5 dark:bg-stone-900 dark:border-white/10">
             <h2 class="mb-4 text-3xl font-semibold dark:text-white font-display text-stone-900">Sermons Coming Soon</h2>
             <p class="text-stone-600 dark:text-stone-400">We're preparing our sermon archive. In the meantime, you can listen to our latest teachings on your favorite podcast platform above.</p>
           </div>
@@ -158,10 +158,10 @@ permalink: /sermons/
       <section aria-labelledby="sermon-archive" class="relative pt-16 pb-16">
       <div class="px-6 mx-auto max-w-7xl lg:px-8">
         <div class="mb-14 text-center">
-          <p class="mb-4 text-xs font-medium tracking-[0.2em] uppercase text-white/35 font-display">Browse All</p>
-          <div class="flex justify-center items-center gap-4 mb-0">
+          <p class="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-white/35 font-display">Browse All</p>
+          <div class="flex gap-4 justify-center items-center mb-0">
             <span class="block w-12 h-px bg-white/20"></span>
-            <h2 id="sermon-archive" class="text-2xl font-semibold dark:text-white font-display text-white sm:text-3xl" style="text-shadow: 0 1px 2px rgba(0,0,0,0.1);">{{ site.data.content.sermons.archive_subtitle }}</h2>
+            <h2 id="sermon-archive" class="text-2xl font-semibold text-white sm:text-3xl dark:text-white font-display" style="text-shadow: 0 1px 2px rgba(0,0,0,0.1);">{{ site.data.content.sermons.archive_subtitle }}</h2>
             <span class="block w-12 h-px bg-white/20"></span>
           </div>
         </div>
@@ -245,7 +245,7 @@ permalink: /sermons/
       <aside aria-labelledby="cta-section" class="relative pt-14 pb-16 animate-children">
         <div class="px-6 mx-auto max-w-3xl text-center lg:px-8">
           <div class="child">
-            <h2 id="cta-section" class="mb-4 text-2xl font-semibold text-white/90 font-display sm:text-3xl" style="text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+            <h2 id="cta-section" class="mb-4 text-2xl font-semibold sm:text-3xl text-white/90 font-display" style="text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
               {{ site.data.content.sermons.cta.sermons_page.title }}
             </h2>
             <p class="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-white/55">

@@ -7,7 +7,7 @@
 {% comment %}Only show visible breadcrumbs for 3+ level deep pages{% endcomment %}
 {% if crumb_count > 2 %}
 <nav aria-label="Breadcrumb" class="mb-8">
-  <ol class="flex flex-wrap items-center gap-2 text-sm text-white/50 dark:text-stone-400">
+  <ol class="flex flex-wrap gap-2 items-center text-sm text-white/50 dark:text-stone-400">
     {% assign path = '' %}
     {% assign first_visible = true %}
     {% for crumb in crumbs %}
@@ -19,9 +19,9 @@
         {% if crumb == 'resources' %}{% assign crumb_title = 'Resources' %}{% endif %}
         {% if crumb == 'prayer-gatherings' %}{% assign crumb_title = 'Prayer Gatherings' %}{% endif %}
 
-        <li class="flex items-center gap-2">
+        <li class="flex gap-2 items-center">
           {% unless first_visible %}<span class="text-white/30 dark:text-stone-600">/</span>{% endunless %}
-          <a href="{{ path }}/" class="hover:text-white dark:hover:text-saints-400 transition-colors">{{ crumb_title }}</a>
+          <a href="{{ path }}/" class="transition-colors hover:text-white dark:hover:text-saints-400">{{ crumb_title }}</a>
         </li>
         {% assign first_visible = false %}
       {% endif %}

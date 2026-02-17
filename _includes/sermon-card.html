@@ -1,8 +1,8 @@
 <!-- Sermon Card Component -->
 <div class="relative group">
   <!-- Main Card (Top Layer) -->
-  <div class="relative z-10 rounded-2xl transition-transform duration-300 ease-out group-hover:-translate-y-1 after:absolute after:inset-0 after:rounded-2xl after:border after:border-stone-200/50 dark:after:border-white/10 after:z-10 after:pointer-events-none">
-    <a class="flex relative z-20 flex-col p-6 h-full bg-white rounded-2xl border shadow-lg transition-shadow duration-200 ease-out group-hover:shadow-xl md:aspect-[3.75/4] border-stone-900/10 dark:border-white/10 dark:bg-stone-900"
+  <div class="relative z-10 rounded-2xl transition-transform duration-300 ease-out group-hover:-translate-y-1 after:absolute after:inset-0 after:rounded-2xl after:border after:border-stone-200/50 after:z-10 after:pointer-events-none dark:after:border-white/10">
+    <a class="flex relative z-20 flex-col p-6 h-full bg-white rounded-2xl border shadow-lg transition-shadow duration-200 ease-out group-hover:shadow-xl border-stone-900/10 md:aspect-[3.75/4] dark:border-white/10 dark:bg-stone-900"
        href="{{ include.post.url }}"
        title="Listen to {{ include.post.title }}"
        aria-label="Listen to {{ include.post.title }}">
@@ -39,7 +39,7 @@
 
         <!-- Duration -->
         {% if include.post.duration %}
-          <div class="py-0.5 px-2 text-[0.65rem] rounded-full text-stone-400 bg-stone-50 dark:text-stone-500 dark:bg-stone-800 font-medium tabular-nums">
+          <div class="py-0.5 px-2 font-medium tabular-nums rounded-full text-[0.65rem] text-stone-400 bg-stone-50 dark:text-stone-500 dark:bg-stone-800">
             {{ include.post.duration }}
           </div>
         {% endif %}
