@@ -52,7 +52,7 @@ breaking_bread:
     title: "The Lord's Supper"
     description: "The supper of the Lord Jesus was instituted by him the same night he was betrayed. It is to be observed in his churches to the end of the age as a perpetual remembrance and display of the sacrifice of himself in his death."
     details: "In this ordinance Christ is not offered up to his Father, nor is any real sacrifice made at all for remission of sin of the living or the dead. It is only a memorial of the one offering Christ made of himself on the cross once for all."
-    practice: "Practically, we partake of the Lord's Supper weekly. And any Christian who is not under discipline from another church may participate."
+    practice: "Practically, we partake of the Lord's Supper weekly. And any baptized Christian who is not under discipline from another church may participate."
   meals:
     title: "Meals together"
     description: "Eating with fellow believers as well as neighbors. Throughout the scriptures we see Jesus having meals with people. From the tax collector to the prostitute Jesus would welcome all to his table. We try our best to welcome our neighbors and our friends into our homes or our favorite restaurants, and even your buddy who works for the IRS."
@@ -292,6 +292,9 @@ seo:
     resources:
       title: "Resources"
       description: "Church resources including giving, worship playlists, and helpful documents for Saints Church in Knoxville, TN. Find everything you need to connect with our church community."
+    reformed_baptist_knoxville:
+      title: "Reformed Baptist Church in Knoxville, TN"
+      description: "Saints Church is a Reformed Baptist church in Knoxville, TN holding to the 1689 London Baptist Confession. Expository preaching, weekly Lord's Supper, and family-integrated worship. Sundays 9:30 AM."
 
 resources:
   title: "Resources"
@@ -315,6 +318,49 @@ resources:
   documents:
     title: "Documents"
     description: "Additional resources and documents will be added here soon."
+
+reformed_baptist_knoxville:
+  title: "Reformed Baptist Church in Knoxville, TN"
+  intro: "A confessional Baptist church holding to the 1689 London Baptist Confession of Faith."
+  content_html: |
+    <p>Saints Church is a Reformed Baptist church in Knoxville, Tennessee. We are a confessional church, holding to the London Baptist Confession of Faith (1689) as a standard of doctrine. Every Sunday at 9:30 AM, we gather for church, the Lord's Supper, and faithful teaching from God's Word. Then we live as disciples in our homes, workplaces, and communities.</p>
+
+    <h2>What to expect on Sunday</h2>
+
+    <p>We meet at 11213 Outlet Dr, Knoxville, TN 37932. Here's what a Sunday morning looks like:</p>
+
+    <ul>
+      <li><strong>9:30 AM</strong> — Fellowship, coffee, and light snacks</li>
+      <li><strong>10:00 AM</strong> — Family church: all ages gather to review catechism and worship together</li>
+      <li><strong>10:30 AM</strong> — Children's program begins (babies to about age 10)</li>
+      <li><strong>10:35 AM</strong> — Prayer, communion, worship, and teaching</li>
+      <li><strong>11:30 AM</strong> — Service concludes</li>
+    </ul>
+
+    <h2>What we believe</h2>
+
+    <p>We love the London Baptist Confession of Faith written in 1689. It's a document that articulates what we see taught in Scripture. When we say we are "confessional" we mean that we gladly and publicly confess what we believe the Bible teaches about God, salvation, the church, and Christian living.</p>
+
+    <ul>
+      <li><strong>Expository preaching</strong> — We work through books of the Bible verse by verse</li>
+      <li><strong>Believer's baptism</strong> — Baptism by immersion for those who profess faith in Christ</li>
+      <li><strong>Weekly Lord's Supper</strong> — Any baptized Christian not under discipline may participate</li>
+      <li><strong>Elder-led, congregational government</strong> — Major decisions are made together</li>
+      <li><strong>Family-integrated worship</strong> — All ages worship together</li>
+      <li><strong>Church membership and discipline</strong> — With love and gentleness, always toward restoration</li>
+    </ul>
+
+    <p><a href="/beliefs/">Read more about our beliefs →</a></p>
+
+    <h2>Our story</h2>
+
+    <p>Our church started in the fall of 2022 when a few families realized that their friendship was meant for more than just us. We started meeting weekly in a home and our kids quickly outgrew the 2 bedrooms they were sharing. One of our elders opened up his business office for us to meet in. We still meet there weekly, and there's room for you.</p>
+
+    <p><a href="/pastor-letter/">Read a letter from Pastor Nate Ellis →</a></p>
+
+    <h2>Listen to our sermons</h2>
+
+    <p>We preach through books of the Bible verse by verse. You can listen to our sermons on <a href="/sermons/">our sermon archive</a> or subscribe on <a href="https://podcasts.apple.com/us/podcast/saints-church-sermon-feed/id1744952518">Apple Podcasts</a>, <a href="https://open.spotify.com/show/56Dd1OdPxjZ6FfkjJhHQG9">Spotify</a>, or <a href="https://overcast.fm/itunes1744952518/saints-church-sermon-feed">Overcast</a>.</p>
 
 images:
   placeholders:

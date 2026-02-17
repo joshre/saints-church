@@ -17,12 +17,17 @@
 
         <!-- Left Section - Church Info -->
         <div class="flex flex-col gap-8">
-          <div>
+          <div itemscope itemtype="https://schema.org/Church">
+            <meta itemprop="name" content="{{ site.church.name }}">
+            <meta itemprop="denomination" content="{{ site.church.denomination }}">
             <h3 class="mb-5 uppercase text-[0.6875rem] tracking-[0.2em] text-white/40 font-display">Gather with Us</h3>
             <div class="flex flex-col gap-2.5">
-              <div class="text-lg font-medium text-white/95">{{ site.data.content.footer.address | split: ', ' | first }}</div>
-              <div class="text-base text-white/70">{{ site.data.content.footer.address | split: ', ' | slice: 1, 2 | join: ', ' }}</div>
+              <div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                <div class="text-lg font-medium text-white/95" itemprop="streetAddress">{{ site.church.address.street }}</div>
+                <div class="text-base text-white/70"><span itemprop="addressLocality">{{ site.church.address.city }}</span>, <span itemprop="addressRegion">{{ site.church.address.state }}</span> <span itemprop="postalCode">{{ site.church.address.zip }}</span></div>
+              </div>
               <div class="text-sm text-white/50">{{ site.data.content.footer.service_time }}</div>
+              <div class="text-sm text-white/50"><a href="mailto:{{ site.email }}" class="transition-colors duration-200 hover:text-white/70" itemprop="email">{{ site.email }}</a></div>
             </div>
           </div>
 
