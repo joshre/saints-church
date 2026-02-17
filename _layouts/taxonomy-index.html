@@ -2,17 +2,20 @@
 layout: default
 ---
 
-<div class="min-h-screen bg-[#596352] dark:bg-[#26361b]">
-  <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content">
-    <!-- Header with gradient + noise texture -->
-    <div class="relative overflow-hidden bg-linear-to-b from-[#9ca88f] to-[#596352] dark:from-[#333a2b] dark:to-[#26361b]">
-      <div class="absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+<div class="relative min-h-screen bg-[#596352] dark:bg-[#26361b]">
+  <!-- Single noise texture layer covering the entire page -->
+  <div class="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+
+  <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
+    <!-- Header gradient overlay (no separate noise) -->
+    <div class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-linear-to-b from-[#9ca88f] to-transparent dark:from-[#333a2b] dark:to-transparent"></div>
       <div class="relative">
         <header role="banner" class="relative px-6 pt-28 pb-12 mx-auto max-w-7xl lg:px-8 animate-children">
           <div class="mx-auto max-w-4xl text-center">
             <!-- Breadcrumb -->
             <nav aria-label="Breadcrumb" class="mb-6 child">
-              <ol class="flex gap-2 justify-center items-center text-sm text-white/40">
+              <ol class="flex gap-2 justify-center items-center text-sm text-white/70">
                 <li><a href="/sermons/" class="hover:text-white/70 transition-colors">Sermons</a></li>
               </ol>
             </nav>
@@ -26,16 +29,8 @@ layout: default
       </div>
     </div>
 
-    <!-- Double border divider -->
-    <div class="flex flex-col gap-[3px]">
-      <div class="h-px bg-white/15"></div>
-      <div class="h-px bg-white/10"></div>
-    </div>
-
     <!-- Taxonomy listing -->
-    <div class="relative" style="box-shadow: inset 0 8px 24px -12px rgba(0,0,0,0.15);">
-      <div class="absolute inset-0 opacity-25 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
-
+    <div class="relative">
       <section class="relative py-16">
         <div class="px-6 mx-auto max-w-4xl lg:px-8">
 
@@ -86,11 +81,5 @@ layout: default
       </section>
     </div>
 
-    <!-- Transition zone into footer -->
-    <div class="relative -mb-px" style="background: linear-gradient(to bottom, #596352 0%, #4d5847 35%, #434e3c 60%, #3a4333 80%, #353d2f 100%);">
-      <div class="absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
-      <div class="absolute inset-0" style="background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 24px 24px;"></div>
-      <div class="relative h-16"></div>
-    </div>
   </main>
 </div>
