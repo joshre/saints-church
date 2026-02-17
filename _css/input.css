@@ -31,8 +31,8 @@
 @theme {
   --font-display: "PP Formula", sans-serif;
   --font-sans: "Inter", sans-serif;
-  --color-saints-black: #231f20;
-  --color-saints-white: #f7f6f3;
+  --color-saints-black: oklch(20.5% 0.008 17);   /* was #231f20 */
+  --color-saints-white: oklch(97.4% 0.004 90);   /* was #f7f6f3 */
   
   /* Saints Accent Color Scale (OKLCH) - Calibrated to Tailwind patterns */
   --color-saints-50: oklch(97.8% 0.008 128.2);
@@ -48,12 +48,17 @@
   --color-saints-950: oklch(16.2% 0.018 128.4);
 
   /* Wallpaper greens - the textured page backgrounds */
-  --color-wallpaper: oklch(43.5% 0.04 140);          /* main bg - was #596352 */
-  --color-wallpaper-light: oklch(69.2% 0.04 138);    /* header gradient start - was #9ca88f */
-  --color-wallpaper-footer: oklch(28.8% 0.03 140);   /* footer bg - was #353d2f */
-  --color-wallpaper-dark: oklch(24.5% 0.04 140);     /* dark mode bg - was #26361b */
-  --color-wallpaper-dark-light: oklch(27.5% 0.03 140); /* dark mode header - was #333a2b */
-  --color-wallpaper-dark-footer: oklch(18.5% 0.03 140); /* dark mode footer - was #1e2618 */
+  --color-wallpaper: oklch(43.5% 0.04 140);          /* main bg */
+  --color-wallpaper-light: oklch(69.2% 0.04 138);    /* header gradient start */
+  --color-wallpaper-footer: oklch(28.8% 0.03 140);   /* footer bg */
+  --color-wallpaper-dark: oklch(24.5% 0.04 140);     /* dark mode bg */
+  --color-wallpaper-dark-light: oklch(27.5% 0.03 140); /* dark mode header */
+  --color-wallpaper-dark-footer: oklch(18.5% 0.03 140); /* dark mode footer */
+
+  /* Footer gradient transition stops (cream → dark green) */
+  --color-gradient-1: oklch(81% 0.01 130);            /* warm gray transition */
+  --color-gradient-2: oklch(60% 0.03 135);            /* olive midpoint */
+  --color-gradient-3: oklch(36% 0.035 140);           /* dark olive */
 
   --smooth-bezier: cubic-bezier(0.4, 0.01, 0.165, 0.99);
   --ease-smooth: cubic-bezier(0.4, 0.01, 0.165, 0.99);
@@ -257,15 +262,15 @@ button:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible {
   @apply outline-2 outline-transparent outline-offset-2 transition-shadow duration-200;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.6);
+  box-shadow: 0 0 0 2px oklch(49% 0.22 265 / 0.6);
   transition-timing-function: var(--smooth-bezier);
 }
 
 @media (prefers-color-scheme: dark) {
   .enhanced-contrast {
-    --text-primary: #ffffff;
-    --text-secondary: #e5e7eb;
-    --text-muted: #9ca3af;
+    --text-primary: oklch(100% 0 0);               /* was #ffffff */
+    --text-secondary: oklch(92% 0.004 265);        /* was #e5e7eb */
+    --text-muted: oklch(71% 0.01 260);             /* was #9ca3af */
   }
 }
 

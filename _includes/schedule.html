@@ -1,15 +1,15 @@
-<div class="px-6 mx-auto mt-20 max-w-7xl sm:mt-40 lg:px-8 animate-children">
-  <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none child">
+<div class="px-6 mx-auto mt-20 max-w-7xl sm:mt-32 lg:px-8 animate-children">
+  <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-3xl child">
     <h2 id="schedule-heading" class="text-4xl font-semibold tracking-tight sm:text-5xl dark:text-white font-display text-pretty text-stone-900">{{ site.data.content.schedule.title }}</h2>
     <p class="mt-6 text-lg/8 text-stone-700 dark:text-stone-300">{{ site.data.content.schedule.subtitle }}</p>
     
-    <div class="mt-6 border-t border-saints-500/30 border-dotted dark:border-white/10 child ![--delay:0.15s]">
-      <dl class="divide-y divide-dotted divide-saints-500/30 dark:divide-white/10">
+    <div class="mt-8 border-t border-stone-200 dark:border-white/10 child ![--delay:0.15s]">
+      <dl class="divide-y divide-stone-200 dark:divide-white/10">
         {% for item in site.data.content.schedule.items %}
           {% assign delay = forloop.index0 | times: 0.1 | plus: 0.25 %}
-          <div class="py-6 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 child" style="--delay: {{ delay }}s">
-            <dt class="font-medium text-sm/6 text-stone-900 dark:text-stone-100"><time>{{ item.time }}</time></dt>
-            <dd class="mt-1 max-w-prose sm:col-span-2 sm:mt-0 text-sm/6 text-stone-700 dark:text-stone-400">{{ item.activity }}</dd>
+          <div class="flex flex-col gap-1 py-5 px-4 sm:flex-row sm:gap-8 sm:items-baseline sm:px-0 child" style="--delay: {{ delay }}s">
+            <dt class="flex-shrink-0 font-display font-semibold text-base/6 text-stone-900 dark:text-stone-100 tabular-nums sm:w-24"><time>{{ item.time }}</time></dt>
+            <dd class="max-w-prose text-sm/6 text-stone-700 dark:text-stone-400">{{ item.activity }}</dd>
           </div>
         {% endfor %}
       </dl>
