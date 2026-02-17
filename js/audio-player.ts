@@ -27,7 +27,10 @@ class SermonPlayer {
 
   constructor(container: HTMLElement) {
     this.container = container;
-    this.audio = container.querySelector('audio')!;
+
+    const audio = container.querySelector('audio');
+    if (!audio) return;
+    this.audio = audio;
 
     this.playPauseBtns = container.querySelectorAll('.play-pause-btn');
     this.currentTimeElements = container.querySelectorAll('.current-time');
@@ -39,7 +42,7 @@ class SermonPlayer {
     this.speedBtns = container.querySelectorAll('.speed-toggle');
     this.speedTextElements = container.querySelectorAll('.speed-text');
 
-    this.playerId = parseUrl(container.dataset.audioUrl || this.audio?.src);
+    this.playerId = parseUrl(container.dataset.audioUrl || this.audio.src);
     this.setupEventListeners();
     this.loadState();
   }

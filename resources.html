@@ -195,7 +195,7 @@ permalink: /resources/
             {% for item in site.data.catechism %}
             <div data-catechism="{{ item.number }}">
               <p class="text-xs font-medium tracking-widest uppercase text-saints-500 dark:text-saints-400 mb-3">
-                Part {{ item.part }}: {{ item.part_title }}
+                Part {{ item.part }}: {% case item.part %}{% when 1 %}God, Creation, Fall, Law{% when 2 %}Christ, Redemption, Grace{% when 3 %}Spirit, Restoration, Growing in Grace{% endcase %}
               </p>
               <blockquote class="mb-4">
                 <p class="text-lg sm:text-xl font-semibold text-stone-900 dark:text-white leading-relaxed">
