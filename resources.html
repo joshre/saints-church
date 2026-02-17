@@ -32,6 +32,8 @@ permalink: /resources/
         <span class="py-2 text-stone-300 dark:text-stone-600">·</span>
         <a href="#guides" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Study Guides</a>
         <span class="py-2 text-stone-300 dark:text-stone-600">·</span>
+        <a href="#catechism" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Catechism</a>
+        <span class="py-2 text-stone-300 dark:text-stone-600">·</span>
         <a href="#prayer" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Prayer</a>
       </nav>
 
@@ -171,6 +173,49 @@ permalink: /resources/
             </div>
             {% include chevron-right-icon.html class="flex-shrink-0 w-5 h-5 text-stone-400 group-hover:text-saints-600 dark:group-hover:text-saints-400 transition-colors" %}
           </a>
+        </div>
+      </div>
+
+      <!-- This Week's Catechism -->
+      <div id="catechism" class="child [--delay:0.28s] mb-20 scroll-mt-24">
+        <div class="bg-saints-500/5 dark:bg-saints-500/10 rounded-2xl p-8 sm:p-10 border border-saints-500/20 dark:border-saints-500/30">
+          <div class="flex items-center gap-3 mb-6">
+            <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display">
+              This Week's Catechism
+            </h2>
+            <span id="catechism-week-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-saints-500/10 text-saints-600 dark:text-saints-400 border border-saints-500/20">
+            </span>
+          </div>
+          <p class="text-stone-600 dark:text-stone-400 mb-6 text-sm">
+            We study one question from the <a href="https://newcitycatechism.com" target="_blank" rel="noopener noreferrer" class="text-saints-600 dark:text-saints-400 underline underline-offset-2 hover:text-saints-700 dark:hover:text-saints-300">New City Catechism</a> each week, learning the foundations of the Christian faith together.
+          </p>
+
+          <div id="catechism-questions">
+            {% for item in site.data.catechism %}
+            <div data-catechism="{{ item.number }}">
+              <p class="text-xs font-medium tracking-widest uppercase text-saints-500 dark:text-saints-400 mb-3">
+                Part {{ item.part }}: {{ item.part_title }}
+              </p>
+              <blockquote class="mb-4">
+                <p class="text-lg sm:text-xl font-semibold text-stone-900 dark:text-white leading-relaxed">
+                  Q{{ item.number }}. {{ item.question }}
+                </p>
+              </blockquote>
+              <p class="text-base sm:text-lg text-stone-700 dark:text-stone-300 leading-relaxed">
+                <span class="font-semibold text-saints-600 dark:text-saints-400">A.</span> {{ item.answer }}
+              </p>
+              <a
+                href="https://newcitycatechism.com/new-city-catechism/#{{ item.number }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-saints-600 dark:text-saints-400 hover:text-saints-700 dark:hover:text-saints-300 transition-colors"
+              >
+                Read commentary & prayer
+                {% include external-link-icon.html class="w-4 h-4" %}
+              </a>
+            </div>
+            {% endfor %}
+          </div>
         </div>
       </div>
 
