@@ -5,31 +5,50 @@ layout: default
 {% assign content_data = site.data.content[page.data_key] %}
 
 <!-- Article Layout -->
-<div class="min-h-screen">
-  {% include subnav.html %}
+<div class="relative bg-wallpaper dark:bg-wallpaper-dark">
+  <!-- Single noise texture layer covering the entire page -->
+  <div class="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
 
   <!-- Article Content -->
-  <main itemscope itemtype="https://schema.org/WebPage" tabindex="-1" id="main-content">
-    <article class="px-6 pt-8 pb-16 mx-auto max-w-4xl lg:px-8" itemscope itemtype="https://schema.org/Article">
-    <!-- Header -->
-    <header class="mx-auto max-w-2xl text-center animate-reveal">
-      {% if page.header_image %}
-        <div class="mb-6 animate-reveal">
-          {% include {{ page.header_image }} %}
+  <main itemscope itemtype="https://schema.org/WebPage" tabindex="-1" id="main-content" class="relative">
+    <!-- Header gradient overlay (no separate noise) -->
+    <div class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-linear-to-b from-wallpaper-light to-transparent dark:from-wallpaper-dark-light dark:to-transparent"></div>
+      <div class="relative">
+        {% include subnav.html %}
+        <div class="px-6 pt-16 pb-20 mx-auto max-w-4xl lg:px-8 animate-children">
+          <!-- Header -->
+          <header class="mx-auto max-w-2xl text-center">
+            {% if page.header_image %}
+              <div class="mb-6 child">
+                {% include {{ page.header_image }} %}
+              </div>
+            {% endif %}
+            <h1 class="{% if page.header_image %}text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% else %}mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% endif %} child font-display text-pretty text-white [text-wrap:balance]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;" itemprop="headline name">{{ content_data.title }}</h1>
+            <p class="mx-auto mt-6 max-w-xl child [--delay:0.15s] text-lg/8 text-white/55" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06); letter-spacing: 0.01em;" itemprop="description">{{ content_data.intro | default: page.description }}</p>
+          </header>
         </div>
-      {% endif %}
-      <h1 class="{% if page.header_image %}text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% else %}mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% endif %} dark:text-white animate-reveal font-display text-pretty text-stone-900 [text-wrap:balance]" itemprop="headline name">{{ content_data.title }}</h1>
-      <p class="mx-auto mt-6 max-w-xl animate-reveal text-lg/8 text-stone-600 dark:text-stone-400" itemprop="description">{{ content_data.intro | default: page.description }}</p>
-    </header>
-
-    <!-- Content -->
-    <div class="mx-auto mt-16 {% if page.content_width == 'wide' %}max-w-3xl{% else %}max-w-2xl{% endif %} animate-reveal">
-      <div class="{{ page.prose_class | default: 'prose prose-lg prose-zinc dark:prose-invert max-w-none' }}" itemprop="articleBody">
-        {{ content_data.content_html }}
       </div>
     </div>
 
-    {% include page-cta.html %}
-    </article>
+    <!-- Content area -->
+    <div class="relative pb-12">
+      <div class="relative px-6 mx-auto max-w-4xl lg:px-8">
+        <!-- White content card floating up into the header -->
+        <article class="-mt-8 page-content-card" itemscope itemtype="https://schema.org/Article">
+          <!-- Content -->
+          <div class="px-8 pt-12 pb-16 sm:px-12 lg:px-16 animate-reveal">
+            <div class="mx-auto {% if page.content_width == 'wide' %}max-w-3xl{% else %}max-w-2xl{% endif %}">
+              <div class="{{ page.prose_class | default: 'prose prose-lg prose-zinc dark:prose-invert max-w-none' }}" itemprop="articleBody">
+                {{ content_data.content_html }}
+              </div>
+            </div>
+
+            {% include page-cta.html %}
+          </div>
+        </article>
+      </div>
+    </div>
+
   </main>
 </div>

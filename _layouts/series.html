@@ -2,14 +2,14 @@
 layout: default
 ---
 
-<div class="relative min-h-screen bg-[#596352] dark:bg-[#26361b]">
+<div class="relative bg-wallpaper dark:bg-wallpaper-dark">
   <!-- Single noise texture layer covering the entire page -->
   <div class="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
 
   <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
     <!-- Header gradient overlay (no separate noise) -->
     <div class="relative overflow-hidden">
-      <div class="absolute inset-0 bg-linear-to-b from-[#9ca88f] to-transparent dark:from-[#333a2b] dark:to-transparent"></div>
+      <div class="absolute inset-0 bg-linear-to-b from-wallpaper-light to-transparent dark:from-wallpaper-dark-light dark:to-transparent"></div>
       <div class="relative">
         <header role="banner" class="relative px-6 pt-28 pb-12 mx-auto max-w-7xl lg:px-8 animate-children">
           <div class="mx-auto max-w-4xl text-center">
@@ -40,13 +40,13 @@ layout: default
     <div class="relative">
       <section class="relative py-16">
         <div class="px-6 mx-auto max-w-7xl lg:px-8">
-          <!-- Speaker filter chips -->
-          {% assign series_speakers = series_sermons | map: "pastor" | compact | uniq | sort %}
-          {% if series_speakers.size > 1 %}
+          <!-- Preacher filter chips -->
+          {% assign series_preachers = series_sermons | map: "pastor" | compact | uniq | sort %}
+          {% if series_preachers.size > 1 %}
             <div class="flex flex-wrap gap-2 justify-center mb-12">
-              {% for sp in series_speakers %}
-                {% assign speaker_slug = sp | slugify %}
-                <a href="/sermons/speakers/{{ speaker_slug }}/" class="py-1 px-3 text-xs font-medium tracking-wide rounded-full transition-colors text-white/60 bg-white/10 hover:bg-white/20 hover:text-white/90">{{ sp | remove: "Pastor " }}</a>
+              {% for sp in series_preachers %}
+                {% assign preacher_slug = sp | slugify %}
+                <a href="/sermons/preachers/{{ preacher_slug }}/" class="py-1 px-3 text-xs font-medium tracking-wide rounded-full transition-colors text-white/60 bg-white/10 hover:bg-white/20 hover:text-white/90">{{ sp | remove: "Pastor " }}</a>
               {% endfor %}
             </div>
           {% endif %}

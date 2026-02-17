@@ -46,7 +46,15 @@
   --color-saints-800: oklch(32.1% 0.035 128.8);
   --color-saints-900: oklch(26.8% 0.028 128.6);
   --color-saints-950: oklch(16.2% 0.018 128.4);
-  
+
+  /* Wallpaper greens - the textured page backgrounds */
+  --color-wallpaper: oklch(43.5% 0.04 140);          /* main bg - was #596352 */
+  --color-wallpaper-light: oklch(69.2% 0.04 138);    /* header gradient start - was #9ca88f */
+  --color-wallpaper-footer: oklch(28.8% 0.03 140);   /* footer bg - was #353d2f */
+  --color-wallpaper-dark: oklch(24.5% 0.04 140);     /* dark mode bg - was #26361b */
+  --color-wallpaper-dark-light: oklch(27.5% 0.03 140); /* dark mode header - was #333a2b */
+  --color-wallpaper-dark-footer: oklch(18.5% 0.03 140); /* dark mode footer - was #1e2618 */
+
   --smooth-bezier: cubic-bezier(0.4, 0.01, 0.165, 0.99);
   --ease-smooth: cubic-bezier(0.4, 0.01, 0.165, 0.99);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -599,6 +607,24 @@ a:focus-visible,
 
 @media (prefers-color-scheme: dark) {
   .featured-sermon-container {
+    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+  }
+}
+
+/* Page Content Card (beliefs, pastor-letter) */
+.page-content-card {
+  @apply relative bg-white dark:bg-stone-900 rounded-2xl;
+  box-shadow: 0px 0px 0px 1px rgba(9,9,11,0.07), 0px 2px 2px 0px rgba(9,9,11,0.05);
+}
+
+.page-content-card::before {
+  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+  inset: -1px;
+  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page-content-card {
     box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
   }
 }

@@ -27,10 +27,10 @@
 
       <!-- Footer -->
       <div class="flex relative z-10 justify-between items-center pt-5 mt-auto border-t border-stone-100 dark:border-stone-800">
-        <!-- Speaker Info -->
+        <!-- Preacher Info -->
         <div class="flex gap-3 items-center">
           {% if include.post.pastor %}
-            {% include pastor-image.html class="flex-shrink-0 w-8 h-8 rounded-full" speaker=include.post.pastor %}
+            {% include pastor-image.html class="flex-shrink-0 w-8 h-8 rounded-full" preacher=include.post.pastor %}
             <div>
               <p class="text-sm font-medium dark:text-white text-stone-900">{{ include.post.pastor | remove: "Pastor " }}</p>
             </div>

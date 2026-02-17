@@ -18,18 +18,18 @@ layout: default
               <ol class="flex gap-2 justify-center items-center text-sm text-white/70">
                 <li><a href="/sermons/" class="hover:text-white/70 transition-colors">Sermons</a></li>
                 <li class="select-none">/</li>
-                <li><a href="/sermons/speakers/" class="hover:text-white/70 transition-colors">Preachers</a></li>
+                <li><a href="/sermons/preachers/" class="hover:text-white/70 transition-colors">Preachers</a></li>
               </ol>
             </nav>
 
-            {% include pastor-image.html class="mx-auto mb-6 rounded-full size-20 child [--delay:0.1s]" speaker=page.speaker %}
+            {% include pastor-image.html class="mx-auto mb-6 rounded-full size-20 child [--delay:0.1s]" preacher=page.preacher %}
 
             <h1 itemprop="name" class="mb-3 text-4xl font-semibold tracking-tight sm:text-5xl dark:text-white font-display text-white child [--delay:0.15s]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
-              {{ page.speaker | remove: "Pastor " }}
+              {{ page.preacher | remove: "Pastor " }}
             </h1>
             <p class="text-lg text-white/55 child [--delay:0.25s]">
-              {% assign speaker_sermons = site.posts | where: "pastor", page.speaker %}
-              {{ speaker_sermons.size }} sermons
+              {% assign preacher_sermons = site.posts | where: "pastor", page.preacher %}
+              {{ preacher_sermons.size }} sermons
             </p>
           </div>
         </header>
@@ -37,16 +37,16 @@ layout: default
     </div>
 
     <!-- Sermon grid -->
-    {% assign speaker_sermons = site.posts | where: "pastor", page.speaker | sort: "date" | reverse %}
-    {% if speaker_sermons.size > 0 %}
+    {% assign preacher_sermons = site.posts | where: "pastor", page.preacher | sort: "date" | reverse %}
+    {% if preacher_sermons.size > 0 %}
     <div class="relative">
       <section class="relative py-16">
         <div class="px-6 mx-auto max-w-7xl lg:px-8">
           <!-- Series filter chips -->
-          {% assign speaker_series = speaker_sermons | map: "series" | compact | uniq | sort %}
-          {% if speaker_series.size > 1 %}
+          {% assign preacher_series = preacher_sermons | map: "series" | compact | uniq | sort %}
+          {% if preacher_series.size > 1 %}
             <div class="flex flex-wrap gap-2 justify-center mb-12">
-              {% for s in speaker_series %}
+              {% for s in preacher_series %}
                 {% assign series_slug = s | slugify %}
                 <a href="/sermons/series/{{ series_slug }}/" class="py-1 px-3 text-xs font-medium tracking-wide rounded-full transition-colors text-white/60 bg-white/10 hover:bg-white/20 hover:text-white/90">{{ s }}</a>
               {% endfor %}
@@ -54,7 +54,7 @@ layout: default
           {% endif %}
 
           <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {% for sermon in speaker_sermons %}
+            {% for sermon in preacher_sermons %}
               {% include sermon-card.html post=sermon %}
             {% endfor %}
           </div>

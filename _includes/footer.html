@@ -1,22 +1,28 @@
-<footer class="overflow-hidden relative bg-gradient-to-br from-saints-500 via-saints-600 to-saints-700 dark:from-saints-600 dark:via-saints-700 dark:to-saints-800">
+<footer class="overflow-hidden relative bg-wallpaper-footer dark:bg-wallpaper-dark-footer" style="box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);">
+  <!-- Bottom vignette for depth -->
+  <div class="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.12));"></div>
+  <!-- Noise texture overlay -->
+  <div class="absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+  <!-- Subtle dot pattern overlay (distinct from sermons archive grid) -->
+  <div class="absolute inset-0" style="background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 24px 24px;"></div>
   <!-- Large Saints Church Logo Watermark -->
-  <div class="flex absolute inset-x-0 bottom-0 justify-center opacity-10 translate-y-1/4 pointer-events-none select-none dark:opacity-5">
+  <div class="flex absolute inset-x-0 bottom-0 justify-center opacity-[0.05] translate-y-1/4 pointer-events-none select-none dark:opacity-[0.03]">
     {% include logo.html class="overflow-visible h-32 lg:h-64" %}
   </div>
 
   <div class="relative px-6 mx-auto max-w-7xl lg:px-8">
-    <div class="py-16 lg:py-24">
+    <div class="pt-14 pb-16 lg:pt-20 lg:pb-24">
       <!-- Main Content Grid -->
       <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
 
         <!-- Left Section - Church Info -->
         <div class="flex flex-col gap-8">
           <div>
-            <h3 class="mb-4 text-xs tracking-widest uppercase text-white/60 font-display">Gather with Us</h3>
-            <div class="flex flex-col gap-3">
-              <div class="text-lg font-medium text-white">{{ site.data.content.footer.address | split: ', ' | first }}</div>
-              <div class="text-lg text-white/90">{{ site.data.content.footer.address | split: ', ' | slice: 1, 2 | join: ', ' }}</div>
-              <div class="text-base text-white/75">{{ site.data.content.footer.service_time }}</div>
+            <h3 class="mb-5 text-[0.6875rem] tracking-[0.2em] uppercase text-white/40 font-display">Gather with Us</h3>
+            <div class="flex flex-col gap-2.5">
+              <div class="text-lg font-medium text-white/95">{{ site.data.content.footer.address | split: ', ' | first }}</div>
+              <div class="text-base text-white/70">{{ site.data.content.footer.address | split: ', ' | slice: 1, 2 | join: ', ' }}</div>
+              <div class="text-sm text-white/50">{{ site.data.content.footer.service_time }}</div>
             </div>
           </div>
 
@@ -28,31 +34,31 @@
         <!-- Right Section - Navigation -->
         <div class="flex flex-col gap-8">
           <div>
-            <h3 class="mb-4 text-xs tracking-widest uppercase text-white/60 font-display">Explore</h3>
-            <div class="flex flex-col gap-3">
+            <h3 class="mb-5 text-[0.6875rem] tracking-[0.2em] uppercase text-white/40 font-display">Explore</h3>
+            <div class="flex flex-col gap-2.5">
               <div>
-                <a href="/beliefs/" class="inline-block text-lg font-medium text-white transition-all duration-200 hover:translate-x-1 hover:text-white/75">
+                <a href="/beliefs/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
                   {{ site.data.content.footer.links.beliefs }}
                 </a>
               </div>
               <div>
-                <a href="/sermons/" class="inline-block text-lg font-medium text-white transition-all duration-200 hover:translate-x-1 hover:text-white/75">
+                <a href="/sermons/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
                   Sermons
                 </a>
               </div>
               <div>
-                <a href="/resources/" class="inline-block text-lg font-medium text-white transition-all duration-200 hover:translate-x-1 hover:text-white/75">
+                <a href="/resources/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
                   Resources
                 </a>
               </div>
               <div>
-                <a href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-lg font-medium text-white transition-all duration-200 hover:translate-x-1 hover:text-white/75">
+                <a href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
                   Give
-                  {% include external-link-icon.html class="w-4 h-4" %}
+                  {% include external-link-icon.html class="w-3.5 h-3.5" %}
                 </a>
               </div>
               <div>
-                <a href="/pastor-letter/" class="inline-block text-lg font-medium text-white transition-all duration-200 hover:translate-x-1 hover:text-white/75">
+                <a href="/pastor-letter/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
                   {{ site.data.content.footer.links.pastor_letter }}
                 </a>
               </div>
@@ -68,17 +74,17 @@
       </div>
 
       <!-- Bottom Section -->
-      <div class="pt-12 mt-12 border-t border-dotted border-white/20">
-        <div class="flex flex-col gap-4 items-center text-center lg:flex-row lg:gap-0 lg:justify-between">
+      <div class="pt-10 mt-10 border-t border-white/[0.06]" style="border-image: linear-gradient(to right, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent) 1;">
+        <div class="flex flex-col gap-5 items-center text-center lg:flex-row lg:gap-0 lg:justify-between">
           <!-- Scripture Quote -->
-          <div class="text-sm lg:text-base text-white/75">
+          <div class="text-[0.8125rem] italic leading-relaxed lg:text-sm text-white/40" style="letter-spacing: 0.01em;">
             {{ site.data.content.footer.sections.acts_text }}
           </div>
 
           <!-- Copyright & Sola Deo Gloria -->
-          <div class="flex flex-col gap-1 items-center text-xs lg:items-end text-white/60">
+          <div class="flex flex-col gap-1.5 items-center text-xs lg:items-end text-white/30">
             <div>&copy; <script>document.write(new Date().getFullYear())</script> {{ site.data.content.footer.sections.copyright }}</div>
-            <div class="tracking-wider font-display">{{ site.data.content.footer.sections.sola_deo_gloria }}</div>
+            <div class="text-[0.6875rem] tracking-[0.2em] uppercase font-display text-white/40">{{ site.data.content.footer.sections.sola_deo_gloria }}</div>
           </div>
         </div>
       </div>

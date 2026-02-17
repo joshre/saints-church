@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 /**
- * Generate taxonomy index pages for speakers and series
+ * Generate taxonomy index pages for preachers and series
  * Scans _posts/ frontmatter and creates filtered listing pages
  * Works on vanilla GitHub Pages (no plugins needed)
  *
@@ -12,7 +12,7 @@ import * as path from 'path';
 
 const ROOT = path.join(__dirname, '..');
 const POSTS_DIR = path.join(ROOT, '_posts');
-const SPEAKERS_DIR = path.join(ROOT, 'sermons', 'speakers');
+const PREACHERS_DIR = path.join(ROOT, 'sermons', 'preachers');
 const SERIES_DIR = path.join(ROOT, 'sermons', 'series');
 
 function slugify(str: string): string {
@@ -52,36 +52,36 @@ const posts = fs.readdirSync(POSTS_DIR)
   .filter(f => f.endsWith('.md'))
   .map(f => parseFrontmatter(fs.readFileSync(path.join(POSTS_DIR, f), 'utf-8')));
 
-// Extract unique speakers and series with counts
-const speakers = new Map<string, number>();
+// Extract unique preachers and series with counts
+const preachers = new Map<string, number>();
 const series = new Map<string, number>();
 
 for (const fm of posts) {
   if (fm.pastor) {
-    speakers.set(fm.pastor, (speakers.get(fm.pastor) || 0) + 1);
+    preachers.set(fm.pastor, (preachers.get(fm.pastor) || 0) + 1);
   }
   if (fm.series) {
     series.set(fm.series, (series.get(fm.series) || 0) + 1);
   }
 }
 
-// Generate speaker pages
-ensureDir(SPEAKERS_DIR);
-cleanDir(SPEAKERS_DIR);
+// Generate preacher pages
+ensureDir(PREACHERS_DIR);
+cleanDir(PREACHERS_DIR);
 
-for (const [name, count] of speakers) {
+for (const [name, count] of preachers) {
   const slug = slugify(name);
   const displayName = name.replace(/^Pastor /, '');
   const page = `---
-layout: speaker
+layout: preacher
 title: "Sermons by ${displayName}"
 description: "Listen to ${count} sermons by ${displayName} from Saints Church in Knoxville, TN. Expository preaching through books of the Bible."
-speaker: "${name}"
-permalink: /sermons/speakers/${slug}/
+preacher: "${name}"
+permalink: /sermons/preachers/${slug}/
 ---
 `;
-  fs.writeFileSync(path.join(SPEAKERS_DIR, `${slug}.md`), page);
-  console.log(`  Speaker: ${name} (${count} sermons) → /sermons/speakers/${slug}/`);
+  fs.writeFileSync(path.join(PREACHERS_DIR, `${slug}.md`), page);
+  console.log(`  Preacher: ${name} (${count} sermons) → /sermons/preachers/${slug}/`);
 }
 
 // Generate series pages
@@ -103,16 +103,16 @@ permalink: /sermons/series/${slug}/
 }
 
 // Generate index pages
-const speakerIndex = `---
+const preacherIndex = `---
 layout: taxonomy-index
 title: "Preachers"
 description: "Browse sermons by preacher from Saints Church in Knoxville, TN."
-taxonomy_type: speakers
-permalink: /sermons/speakers/
+taxonomy_type: preachers
+permalink: /sermons/preachers/
 ---
 `;
-fs.writeFileSync(path.join(SPEAKERS_DIR, 'index.md'), speakerIndex);
-console.log('  Index: /sermons/speakers/');
+fs.writeFileSync(path.join(PREACHERS_DIR, 'index.md'), preacherIndex);
+console.log('  Index: /sermons/preachers/');
 
 const seriesIndex = `---
 layout: taxonomy-index
@@ -125,4 +125,4 @@ permalink: /sermons/series/
 fs.writeFileSync(path.join(SERIES_DIR, 'index.md'), seriesIndex);
 console.log('  Index: /sermons/series/');
 
-console.log(`\nGenerated ${speakers.size} speaker pages, ${series.size} series pages, and 2 index pages.`);
+console.log(`\nGenerated ${preachers.size} preacher pages, ${series.size} series pages, and 2 index pages.`);

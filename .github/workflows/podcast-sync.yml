@@ -1164,7 +1164,7 @@ jobs:
 
           # Check if there are any changes
           if [ -n "$(git status --porcelain)" ]; then
-            git add _posts/ _data/processed_episodes.json sermons/speakers/ sermons/series/
+            git add _posts/ _data/processed_episodes.json sermons/preachers/ sermons/series/
 
             # Count new, modified, and deleted files
             NEW_FILES=$(git diff --cached --name-status | grep "^A" | grep "_posts/" | wc -l)
