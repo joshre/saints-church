@@ -1154,6 +1154,9 @@ jobs:
 
           node sync-episodes.js
 
+      - name: Regenerate taxonomy pages
+        run: npx tsx scripts/generate-taxonomies.ts
+
       - name: Commit episode changes
         run: |
           git config --local user.email "action@github.com"
@@ -1161,7 +1164,7 @@ jobs:
 
           # Check if there are any changes
           if [ -n "$(git status --porcelain)" ]; then
-            git add _posts/ _data/processed_episodes.json
+            git add _posts/ _data/processed_episodes.json sermons/speakers/ sermons/series/
 
             # Count new, modified, and deleted files
             NEW_FILES=$(git diff --cached --name-status | grep "^A" | grep "_posts/" | wc -l)

@@ -9,7 +9,8 @@
     "build:prod": "./build.js && yarn tailwindcss -i _css/input.css -o css/output.css --minify",
     "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload --incremental\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\"",
     "generate-icons": "node scripts/generate-icons.js",
-    "update-icons": "git submodule update --remote assets/heroicons && yarn generate-icons"
+    "update-icons": "git submodule update --remote assets/heroicons && yarn generate-icons",
+    "generate-taxonomies": "npx tsx scripts/generate-taxonomies.ts"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.12",

@@ -1,0 +1,71 @@
+---
+layout: default
+---
+
+<div class="relative min-h-screen bg-[#596352] dark:bg-[#26361b]">
+  <!-- Single noise texture layer covering the entire page -->
+  <div class="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+
+  <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
+    <!-- Header gradient overlay (no separate noise) -->
+    <div class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-linear-to-b from-[#9ca88f] to-transparent dark:from-[#333a2b] dark:to-transparent"></div>
+      <div class="relative">
+        <header role="banner" class="relative px-6 pt-28 pb-12 mx-auto max-w-7xl lg:px-8 animate-children">
+          <div class="mx-auto max-w-4xl text-center">
+            <!-- Breadcrumb -->
+            <nav aria-label="Breadcrumb" class="mb-6 child">
+              <ol class="flex gap-2 justify-center items-center text-sm text-white/40">
+                <li><a href="/sermons/" class="hover:text-white/70 transition-colors">Sermons</a></li>
+                <li class="select-none">/</li>
+                <li><a href="/sermons/series/" class="hover:text-white/70 transition-colors">Series</a></li>
+              </ol>
+            </nav>
+
+            <h1 itemprop="name" class="mb-3 text-4xl font-semibold tracking-tight sm:text-5xl dark:text-white font-display text-white child [--delay:0.1s]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
+              {{ page.series }}
+            </h1>
+            <p class="text-lg text-white/55 child [--delay:0.2s]">
+              {% assign series_sermons = site.posts | where: "series", page.series %}
+              {{ series_sermons.size }} sermons
+            </p>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <!-- Double border divider -->
+    <div class="flex flex-col gap-[3px]">
+      <div class="h-px bg-white/15"></div>
+      <div class="h-px bg-white/10"></div>
+    </div>
+
+    <!-- Sermon grid -->
+    {% assign series_sermons = site.posts | where: "series", page.series | sort: "date" | reverse %}
+    {% if series_sermons.size > 0 %}
+    <div class="relative">
+      <section class="relative py-16">
+        <div class="px-6 mx-auto max-w-7xl lg:px-8">
+          <!-- Speaker filter chips -->
+          {% assign series_speakers = series_sermons | map: "pastor" | compact | uniq | sort %}
+          {% if series_speakers.size > 1 %}
+            <div class="flex flex-wrap gap-2 justify-center mb-12">
+              {% for sp in series_speakers %}
+                {% assign speaker_slug = sp | slugify %}
+                <a href="/sermons/speakers/{{ speaker_slug }}/" class="py-1 px-3 text-xs font-medium tracking-wide rounded-full transition-colors text-white/60 bg-white/10 hover:bg-white/20 hover:text-white/90">{{ sp | remove: "Pastor " }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {% for sermon in series_sermons %}
+              {% include sermon-card.html post=sermon %}
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </div>
+    {% endif %}
+
+  </main>
+</div>

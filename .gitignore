@@ -68,3 +68,8 @@ venv/
 whisper_env/
 sermon_audio_*/
 /tmp/
+/.playwright-mcp
+
+# Design iterator screenshots
+*.png
+!assets/**/*.png
