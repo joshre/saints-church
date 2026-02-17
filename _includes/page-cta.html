@@ -1,13 +1,13 @@
 <!-- Footer CTA -->
-<div class="pt-12 mx-auto mt-16 max-w-2xl text-center border-t animate-reveal border-stone-200 dark:border-stone-800">
+<div class="pt-8 mx-auto mt-10 max-w-2xl text-center border-t animate-reveal border-stone-200/60 dark:border-stone-800/60">
   {% if page.path == 'beliefs.md' %}
-    <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.page_cta.beliefs.message }}</p>
+    <p class="mb-6 text-sm text-stone-500 dark:text-stone-400" style="letter-spacing: 0.02em;">{{ site.data.content.page_cta.beliefs.message }}</p>
     <div class="flex flex-col gap-3 justify-center items-stretch mx-auto max-w-sm sm:flex-row sm:items-center sm:max-w-none">
       {% include button.html href="/pastor-letter/" text=site.data.content.page_cta.beliefs.buttons.pastor_letter class="w-full sm:w-auto" %}
       {% include button.html text=site.data.content.page_cta.beliefs.buttons.visit_us command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
     </div>
   {% else %}
-    <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.page_cta.default.message }}</p>
+    <p class="mb-6 text-sm text-stone-500 dark:text-stone-400" style="letter-spacing: 0.02em;">{{ site.data.content.page_cta.default.message }}</p>
     <div class="flex flex-col gap-3 justify-center items-stretch mx-auto max-w-sm sm:flex-row sm:items-center sm:max-w-none">
       {% include button.html href="/beliefs/" text=site.data.content.page_cta.default.buttons.beliefs class="w-full sm:w-auto" %}
       {% include button.html text=site.data.content.page_cta.default.buttons.visit_us command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}

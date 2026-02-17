@@ -1,8 +1,8 @@
 <!-- Sermon Card Component -->
 <div class="relative group">
   <!-- Main Card (Top Layer) -->
-  <div class="relative z-10 rounded-2xl transition-transform duration-300 ease-out group-hover:-translate-y-1 after:absolute after:inset-0 after:rounded-2xl after:border after:border-stone-200/50 after:z-10 after:pointer-events-none dark:after:border-white/10">
-    <a class="flex relative z-20 flex-col p-6 h-full bg-white rounded-2xl border shadow-lg transition-shadow duration-200 ease-out group-hover:shadow-xl border-stone-900/10 md:aspect-[3.75/4] dark:border-white/10 dark:bg-stone-900"
+  <div class="relative z-10 rounded-2xl transition-transform duration-300 ease-out group-hover:-translate-y-1 after:absolute after:inset-0 after:rounded-2xl after:border after:border-stone-200/30 after:z-10 after:pointer-events-none dark:after:border-white/8">
+    <a class="flex relative z-20 flex-col p-6 h-full bg-white rounded-2xl border shadow-md transition-shadow duration-200 ease-out group-hover:shadow-lg border-stone-900/5 md:aspect-[3.75/4] dark:border-white/10 dark:bg-stone-900"
        href="{{ include.post.url }}"
        title="Listen to {{ include.post.title }}"
        aria-label="Listen to {{ include.post.title }}">
@@ -10,36 +10,36 @@
       <!-- Content -->
       <div class="relative z-10">
         <!-- Title -->
-        <h3 class="mb-4 text-xl font-semibold leading-tight dark:text-white font-display text-stone-900">{{ include.post.title }}</h3>
+        <h3 class="mb-3 text-xl font-semibold leading-tight dark:text-white font-display text-stone-900" style="letter-spacing: -0.01em;">{{ include.post.title }}</h3>
 
         <!-- Date -->
         {% if include.post.date %}
-          <p class="mb-4 text-xs font-medium text-saints-600/80 dark:text-saints-400">{{ include.post.date | date: "%B %d, %Y" }}</p>
+          <p class="mb-3 text-xs font-medium text-saints-600/70 dark:text-saints-400/80">{{ include.post.date | date: "%B %d, %Y" }}</p>
         {% endif %}
 
         <!-- Description -->
         {% if include.post.description %}
-          <p class="mb-auto text-sm leading-relaxed text-stone-500 line-clamp-3 dark:text-stone-400">
+          <p class="mb-auto text-sm leading-relaxed text-stone-400 line-clamp-3 dark:text-stone-500">
             {{ include.post.description | strip_html | strip_newlines | truncate: 120 }}
           </p>
         {% endif %}
       </div>
 
       <!-- Footer -->
-      <div class="flex relative z-10 justify-between items-center pt-5 mt-auto border-t border-stone-100 dark:border-stone-800">
+      <div class="flex relative z-10 justify-between items-center pt-4 mt-auto border-t border-stone-100/50 dark:border-stone-800/50">
         <!-- Preacher Info -->
         <div class="flex gap-3 items-center">
           {% if include.post.pastor %}
-            {% include pastor-image.html class="flex-shrink-0 w-8 h-8 rounded-full" preacher=include.post.pastor %}
+            {% include pastor-image.html class="flex-shrink-0 w-7 h-7 rounded-full" preacher=include.post.pastor %}
             <div>
-              <p class="text-sm font-medium dark:text-white text-stone-900">{{ include.post.pastor | remove: "Pastor " }}</p>
+              <p class="text-sm font-normal dark:text-white/90 text-stone-700">{{ include.post.pastor | remove: "Pastor " }}</p>
             </div>
           {% endif %}
         </div>
 
         <!-- Duration -->
         {% if include.post.duration %}
-          <div class="py-0.5 px-2 font-medium tabular-nums rounded-full text-[0.65rem] text-stone-400 bg-stone-50 dark:text-stone-500 dark:bg-stone-800">
+          <div class="py-0.5 px-2 font-medium tabular-nums rounded-full text-[0.6875rem] text-stone-400/80 bg-stone-50/70 dark:text-stone-500 dark:bg-stone-800/70">
             {{ include.post.duration }}
           </div>
         {% endif %}
@@ -48,14 +48,14 @@
   </div>
 
   <!-- Background Card 1 (Second Layer) -->
-  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white/90 dark:bg-stone-800 rounded-2xl border border-stone-900/5 dark:border-white/10 transition-all ease-out duration-300 shadow-md group-hover:shadow-lg
+  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white/90 dark:bg-stone-800 rounded-2xl border border-stone-900/[0.03] dark:border-white/8 transition-all ease-out duration-300 shadow-md group-hover:shadow-lg
     [.group:nth-child(4n+1)_&]:rotate-[0.6deg] [.group:nth-child(4n+1)_&]:-translate-y-1 [.group:nth-child(4n+1):hover_&]:rotate-[1.2deg] [.group:nth-child(4n+1):hover_&]:-translate-y-2
     [.group:nth-child(4n+2)_&]:rotate-1 [.group:nth-child(4n+2)_&]:-translate-y-1 [.group:nth-child(4n+2):hover_&]:rotate-[1.5deg] [.group:nth-child(4n+2):hover_&]:-translate-y-2
     [.group:nth-child(4n+3)_&]:-rotate-[0.6deg] [.group:nth-child(4n+3)_&]:-translate-y-1 [.group:nth-child(4n+3):hover_&]:-rotate-[1.2deg] [.group:nth-child(4n+3):hover_&]:-translate-y-2
     [.group:nth-child(4n)_&]:rotate-[1.5deg] [.group:nth-child(4n)_&]:-translate-y-1 [.group:nth-child(4n):hover_&]:rotate-2 [.group:nth-child(4n):hover_&]:-translate-y-2"></div>
 
   <!-- Background Card 2 (Third Layer) -->
-  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white/80 dark:bg-stone-800 rounded-2xl border border-stone-900/5 dark:border-white/10 transition-all ease-out duration-300 shadow-sm group-hover:shadow-md
+  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white/80 dark:bg-stone-800 rounded-2xl border border-stone-900/[0.03] dark:border-white/8 transition-all ease-out duration-300 shadow-sm group-hover:shadow-md
     [.group:nth-child(4n+1)_&]:-rotate-1 [.group:nth-child(4n+1)_&]:translate-y-1 [.group:nth-child(4n+1):hover_&]:-rotate-[1.5deg] [.group:nth-child(4n+1):hover_&]:translate-y-0.5
     [.group:nth-child(4n+2)_&]:-rotate-[0.5deg] [.group:nth-child(4n+2)_&]:translate-y-1 [.group:nth-child(4n+2):hover_&]:-rotate-1 [.group:nth-child(4n+2):hover_&]:translate-y-0.5
     [.group:nth-child(4n+3)_&]:rotate-[1.5deg] [.group:nth-child(4n+3)_&]:translate-y-1 [.group:nth-child(4n+3):hover_&]:rotate-2 [.group:nth-child(4n+3):hover_&]:translate-y-0.5

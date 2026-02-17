@@ -16,16 +16,16 @@ layout: default
       <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
       <div class="relative">
         {% include subnav.html %}
-        <div class="px-6 pt-16 pb-20 mx-auto max-w-4xl lg:px-8 animate-children">
+        <div class="px-6 pt-14 pb-18 mx-auto max-w-4xl lg:px-8 animate-children">
           <!-- Header -->
           <header class="mx-auto max-w-2xl text-center">
             {% if page.header_image %}
-              <div class="mb-6 child">
+              <div class="mb-5 child">
                 {% include {{ page.header_image }} %}
               </div>
             {% endif %}
-            <h1 class="{% if page.header_image %}text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% else %}mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% endif %} child font-display text-pretty text-white [text-wrap:balance]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;" itemprop="headline name">{{ content_data.title }}</h1>
-            <p class="mx-auto mt-6 max-w-xl child [--delay:0.15s] text-lg/8 text-white/55" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06); letter-spacing: 0.01em;" itemprop="description">{{ content_data.intro | default: page.description }}</p>
+            <h1 class="{% if page.header_image %}text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% else %}mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl{% endif %} child font-display text-pretty text-white [text-wrap:balance]" style="text-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.04); letter-spacing: -0.02em;" itemprop="headline name">{{ content_data.title }}</h1>
+            <p class="mx-auto mt-4 max-w-xl child [--delay:0.15s] text-lg/8 text-white/55" style="text-shadow: 0 1px 2px rgba(0,0,0,0.05); letter-spacing: 0.01em;" itemprop="description">{{ content_data.intro | default: page.description }}</p>
           </header>
         </div>
       </div>
@@ -35,9 +35,9 @@ layout: default
     <div class="relative pb-12">
       <div class="relative px-6 mx-auto max-w-4xl lg:px-8">
         <!-- White content card floating up into the header -->
-        <article class="-mt-8 page-content-card" itemscope itemtype="https://schema.org/Article">
+        <article class="-mt-10 page-content-card" itemscope itemtype="https://schema.org/Article">
           <!-- Content -->
-          <div class="px-8 pt-12 pb-16 sm:px-12 lg:px-16 animate-reveal">
+          <div class="px-8 pt-14 pb-10 sm:px-12 lg:px-16 animate-reveal">
             <div class="mx-auto {% if page.content_width == 'wide' %}max-w-3xl{% else %}max-w-2xl{% endif %}">
               <div class="{{ page.prose_class | default: 'prose prose-lg prose-zinc dark:prose-invert max-w-none' }}" itemprop="articleBody">
                 {{ content_data.content_html }}

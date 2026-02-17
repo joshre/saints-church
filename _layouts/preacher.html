@@ -51,23 +51,23 @@ layout: default
     <div class="overflow-hidden relative">
       <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
       <div class="relative">
-        <header role="banner" class="relative px-6 pt-28 pb-12 mx-auto max-w-7xl lg:px-8 animate-children">
+        <header role="banner" class="relative px-6 pt-28 pb-10 mx-auto max-w-7xl lg:px-8 animate-children">
           <div class="mx-auto max-w-4xl text-center">
             <!-- Breadcrumb -->
             <nav aria-label="Breadcrumb" class="mb-6 child">
-              <ol class="flex gap-2 justify-center items-center text-sm text-white/70">
-                <li><a href="/sermons/" class="transition-colors hover:text-white/70">Sermons</a></li>
-                <li class="select-none">/</li>
-                <li><a href="/sermons/preachers/" class="transition-colors hover:text-white/70">Preachers</a></li>
+              <ol class="flex gap-2 justify-center items-center text-sm text-white/60">
+                <li><a href="/sermons/" class="transition-colors hover:text-white/80">Sermons</a></li>
+                <li class="select-none text-white/30">/</li>
+                <li><a href="/sermons/preachers/" class="transition-colors hover:text-white/80">Preachers</a></li>
               </ol>
             </nav>
 
             {% include pastor-image.html class="mx-auto mb-6 rounded-full size-20 child [--delay:0.1s]" preacher=page.preacher %}
 
-            <h1 itemprop="name" class="mb-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl dark:text-white font-display child [--delay:0.15s]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
+            <h1 itemprop="name" class="mb-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl dark:text-white font-display child [--delay:0.15s]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
               {{ page.preacher | remove: "Pastor " }}
             </h1>
-            <p class="text-lg text-white/55 child [--delay:0.25s]">
+            <p class="text-base tracking-wide text-white/45 child [--delay:0.25s]">
               {{ preacher_sermons.size }} sermons
             </p>
           </div>
@@ -79,20 +79,20 @@ layout: default
     {% assign preacher_sermons = preacher_sermons | sort: "date" | reverse %}
     {% if preacher_sermons.size > 0 %}
     <div class="relative">
-      <section class="relative py-16">
+      <section class="relative pt-12 pb-16">
         <div class="px-6 mx-auto max-w-7xl lg:px-8">
           <!-- Series filter chips -->
           {% assign preacher_series = preacher_sermons | map: "series" | compact | uniq | sort %}
           {% if preacher_series.size > 1 %}
-            <div class="flex flex-wrap gap-2 justify-center mb-12">
+            <div class="flex flex-wrap gap-2 justify-center mb-10">
               {% for s in preacher_series %}
                 {% assign series_slug = s | slugify %}
-                <a href="/sermons/series/{{ series_slug }}/" class="py-1 px-3 text-xs font-medium tracking-wide rounded-full transition-colors text-white/60 bg-white/10 hover:bg-white/20 hover:text-white/90">{{ s }}</a>
+                <a href="/sermons/series/{{ series_slug }}/" class="py-1 px-3 text-xs font-medium tracking-wide rounded-full transition-colors text-white/55 bg-white/[0.07] hover:bg-white/[0.14] hover:text-white/85">{{ s }}</a>
               {% endfor %}
             </div>
           {% endif %}
 
-          <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {% for sermon in preacher_sermons %}
               {% include sermon-card.html post=sermon %}
             {% endfor %}

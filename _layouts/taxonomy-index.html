@@ -34,19 +34,19 @@ layout: default
     <div class="overflow-hidden relative">
       <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
       <div class="relative">
-        <header role="banner" class="relative px-6 pt-28 pb-12 mx-auto max-w-7xl lg:px-8 animate-children">
+        <header role="banner" class="relative px-6 pt-28 pb-8 mx-auto max-w-7xl lg:px-8 animate-children">
           <div class="mx-auto max-w-4xl text-center">
             <!-- Breadcrumb -->
-            <nav aria-label="Breadcrumb" class="mb-6 child">
-              <ol class="flex gap-2 justify-center items-center text-sm text-white/70">
-                <li><a href="/sermons/" class="transition-colors hover:text-white/70">Sermons</a></li>
+            <nav aria-label="Breadcrumb" class="mb-3 child">
+              <ol class="flex gap-2 justify-center items-center text-xs tracking-wider text-white/50">
+                <li><a href="/sermons/" class="transition-colors hover:text-white/80">Sermons</a></li>
               </ol>
             </nav>
 
             <h1 itemprop="name" class="mb-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl dark:text-white font-display child [--delay:0.1s]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
               {{ page.title }}
             </h1>
-            <p class="text-lg text-white/55 child [--delay:0.2s]">{{ page.description }}</p>
+            <p class="mx-auto max-w-2xl text-base text-white/55 child [--delay:0.2s]">{{ page.description }}</p>
           </div>
         </header>
       </div>
@@ -54,25 +54,25 @@ layout: default
 
     <!-- Taxonomy listing -->
     <div class="relative">
-      <section class="relative py-16">
+      <section class="relative pt-8 pb-20">
         <div class="px-6 mx-auto max-w-4xl lg:px-8">
 
           {% if page.taxonomy_type == "preachers" %}
             {% assign all_sermons = site.posts | where: "category", "sermon" %}
             {% assign all_preachers = all_sermons | map: "pastor" | compact | uniq | sort %}
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {% for sp in all_preachers %}
                 {% assign sp_slug = sp | slugify %}
                 {% assign sp_posts = all_sermons | where: "pastor", sp %}
                 {% assign sp_latest = sp_posts | sort: "date" | reverse | first %}
                 <a href="/sermons/preachers/{{ sp_slug }}/"
-                   class="flex gap-5 items-center p-6 rounded-2xl border transition-all group bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20">
-                  {% include pastor-image.html class="flex-shrink-0 rounded-full size-14" preacher=sp %}
+                   class="flex gap-4 items-center py-5 px-5 rounded-xl border transition-all duration-200 group bg-white/[0.04] border-white/[0.07] hover:bg-white/[0.08] hover:border-white/[0.14] hover:-translate-y-px">
+                  {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" preacher=sp %}
                   <div class="min-w-0">
-                    <h2 class="text-lg font-semibold text-white transition-colors font-display group-hover:text-white/90">{{ sp | remove: "Pastor " }}</h2>
-                    <p class="text-sm text-white/50">{{ sp_posts.size }} sermons</p>
+                    <h2 class="text-lg font-medium text-white transition-colors font-display group-hover:text-white/90" style="letter-spacing: -0.01em;">{{ sp | remove: "Pastor " }}</h2>
+                    <p class="mt-0.5 text-sm leading-tight text-white/45">{{ sp_posts.size }} sermons</p>
                     {% if sp_latest %}
-                      <p class="mt-1 text-xs text-white/30 truncate">Latest: {{ sp_latest.title }}</p>
+                      <p class="mt-1.5 text-xs text-white/20 truncate"><span class="text-white/15">Latest:</span> {{ sp_latest.title }}</p>
                     {% endif %}
                   </div>
                 </a>
@@ -82,17 +82,17 @@ layout: default
           {% elsif page.taxonomy_type == "series" %}
             {% assign all_sermons = site.posts | where: "category", "sermon" %}
             {% assign all_series = all_sermons | map: "series" | compact | uniq | sort %}
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {% for s in all_series %}
                 {% assign series_slug = s | slugify %}
                 {% assign series_posts = all_sermons | where: "series", s %}
                 {% assign latest = series_posts | sort: "date" | reverse | first %}
                 {% assign earliest = series_posts | sort: "date" | first %}
                 <a href="/sermons/series/{{ series_slug }}/"
-                   class="flex flex-col p-6 rounded-2xl border transition-all group bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20">
-                  <h2 class="mb-1 text-lg font-semibold text-white transition-colors font-display group-hover:text-white/90">{{ s }}</h2>
-                  <p class="text-sm text-white/50">{{ series_posts.size }} sermons</p>
-                  <p class="mt-2 text-xs text-white/30">
+                   class="flex flex-col px-6 pt-6 pb-5 rounded-xl border transition-all duration-200 group bg-white/[0.04] border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.14] hover:-translate-y-px">
+                  <h2 class="mb-1.5 text-lg font-semibold text-white font-display" style="letter-spacing: -0.01em;">{{ s }}</h2>
+                  <p class="text-sm text-white/45 transition-colors group-hover:text-white/55">{{ series_posts.size }} sermons</p>
+                  <p class="mt-2.5 text-[0.6875rem] leading-tight tracking-wide text-white/30 uppercase">
                     {{ earliest.date | date: "%b %Y" }}{% if earliest.date != latest.date %} – {{ latest.date | date: "%b %Y" }}{% endif %}
                   </p>
                 </a>

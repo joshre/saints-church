@@ -11,7 +11,7 @@ layout: default
     <div class="overflow-hidden relative">
       <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
       <div class="relative">
-        <div class="px-6 pt-24 pb-16 mx-auto max-w-7xl lg:px-8 animate-children">
+        <div class="px-6 pt-24 pb-20 mx-auto max-w-7xl lg:px-8 animate-children">
           <!-- Breadcrumb -->
           <div class="mb-8 child">
             {% include breadcrumbs.html %}
@@ -26,7 +26,7 @@ layout: default
                   {{ page.title }}
                 </h1>
                 {% if page.scripture != page.title %}
-                  <p class="text-lg text-white/55" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06);">
+                  <p class="text-lg text-white/60" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06);">
                     <cite itemprop="about citation">{{ page.scripture }}</cite>
                   </p>
                 {% endif %}
@@ -54,17 +54,17 @@ layout: default
     <div class="relative px-6 pb-12 mx-auto max-w-7xl lg:px-8">
       <!-- White content card -->
       <div class="page-content-card">
-        <div class="p-7 lg:p-10 animate-reveal">
+        <div class="p-8 lg:p-10 animate-reveal">
           <article itemscope itemtype="https://schema.org/Article">
             <!-- Main Content Grid -->
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
               <!-- Metadata Sidebar -->
-              <div class="order-1 lg:order-1 lg:col-span-1">
+              <div class="order-1 lg:order-1 lg:col-span-1 lg:border-r lg:border-saints-100 lg:dark:border-stone-800 lg:pr-8">
                 <div class="space-y-6">
                   <!-- Preacher Section -->
                   {% if page.pastor %}
                     <div>
-                      <h3 class="mb-3 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Preacher</h3>
+                      <h3 class="mb-2.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Preacher</h3>
                       <div class="flex gap-3 items-center">
                         {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" preacher=page.pastor %}
                         <address itemscope itemtype="https://schema.org/Person" class="not-italic">
@@ -75,9 +75,9 @@ layout: default
                   {% endif %}
 
                   <!-- Metadata -->
-                  <div class="space-y-4">
+                  <div class="pt-5 space-y-5 border-t border-stone-100 dark:border-stone-800">
                     <div>
-                      <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Published</dt>
+                      <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Published</dt>
                       <dd>
                         <time datetime="{{ page.date | date_to_xmlschema }}" pubdate itemprop="datePublished" class="text-sm dark:text-white text-stone-900">
                           {{ page.date | date: "%B %d, %Y" }}
@@ -87,16 +87,16 @@ layout: default
 
                     {% if page.duration %}
                       <div>
-                        <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Duration</dt>
+                        <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Duration</dt>
                         <dd>
-                          <data value="{{ page.duration }}" itemprop="duration" class="text-sm dark:text-white text-stone-900">{{ page.duration }}</data>
+                          <data value="{{ page.duration }}" itemprop="duration" class="text-sm tabular-nums dark:text-white text-stone-900">{{ page.duration }}</data>
                         </dd>
                       </div>
                     {% endif %}
 
                     {% if page.scripture %}
                       <div>
-                        <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Scripture</dt>
+                        <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Scripture</dt>
                         <dd>
                           <cite itemprop="about citation" class="text-sm not-italic dark:text-white text-stone-900">{{ page.scripture }}</cite>
                         </dd>
@@ -105,7 +105,7 @@ layout: default
 
                     {% if page.series %}
                       <div>
-                        <dt class="mb-1 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Series</dt>
+                        <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Series</dt>
                         <dd>
                           <span itemscope itemtype="https://schema.org/CreativeWorkSeries" class="text-sm dark:text-white text-stone-900">
                             <a href="/sermons/series/{{ page.series | slugify }}/" itemprop="name" class="underline transition-colors decoration-stone-300 underline-offset-2 dark:decoration-stone-600 hover:decoration-saints-500">{{ page.series }}</a>
@@ -123,7 +123,7 @@ layout: default
 
                   {% if page.description %}
                     <!-- Always show description first for SEO and user experience -->
-                    <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mb-8">
+                    <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mb-6 leading-relaxed text-stone-700 dark:text-stone-300">
                       {{ page.description | markdownify }}
                     </div>
                   {% endif %}
@@ -161,12 +161,12 @@ layout: default
                   {% if has_transcription and transcription_content != "" %}
                         <!-- Collapsible transcription content -->
                       <details class="transcript-details group">
-                        <summary class="flex gap-3 items-center p-4 mb-6 list-none rounded-lg border transition-colors duration-200 cursor-pointer border-stone-200 bg-stone-50 dark:border-stone-700 dark:bg-stone-800/50 dark:hover:bg-stone-800 hover:bg-stone-100">
-                          <svg class="transition-transform duration-200 size-5 text-saints-600 group-open:rotate-90 dark:text-saints-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <summary class="flex gap-3 items-center p-4 mb-6 list-none rounded-lg border transition-colors duration-200 cursor-pointer border-stone-200/80 bg-stone-50/70 dark:border-stone-700 dark:bg-stone-800/50 dark:hover:bg-stone-800 hover:bg-stone-100/80">
+                          <svg class="transition-transform duration-200 size-5 text-saints-500 group-open:rotate-90 dark:text-saints-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                           </svg>
                           <div class="flex-1">
-                            <h3 class="font-medium dark:text-white text-stone-900 font-display">Full Transcription</h3>
+                            <h3 class="text-sm font-medium dark:text-white text-stone-900 font-display">Full Transcription</h3>
                           </div>
                         </summary>
 
@@ -186,8 +186,8 @@ layout: default
             </div>
 
             <!-- CTA Section -->
-            <div class="pt-8 mx-auto mt-8 max-w-2xl text-center border-t border-stone-200 dark:border-stone-800">
-              <p class="mb-6 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.sermons.cta.episode_page.description }}</p>
+            <div class="pt-8 mx-auto mt-8 max-w-2xl text-center border-t border-stone-200/70 dark:border-stone-800/60">
+              <p class="mb-6 text-[13px] text-stone-500 dark:text-stone-400">{{ site.data.content.sermons.cta.episode_page.description }}</p>
               <div class="flex flex-col gap-3 justify-center items-stretch mx-auto max-w-sm sm:flex-row sm:items-center sm:max-w-none">
                 {% include button.html href="/beliefs/" text="Our Beliefs" class="w-full sm:w-auto" %}
                 {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
