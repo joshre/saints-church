@@ -1,22 +1,21 @@
 import { CONFIG } from './config';
 
-function getMostRecentSunday(date: Date): Date {
-  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const dayOfWeek = d.getDay(); // 0 = Sunday
-  d.setDate(d.getDate() - dayOfWeek);
-  return d;
+const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+
+function getMostRecentSundayUTC(date: Date): number {
+  const utcDay = date.getUTCDay(); // 0 = Sunday
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() - utcDay);
 }
 
 function getCurrentQuestionNumber(): number {
-  const today = new Date();
-  const currentSunday = getMostRecentSunday(today);
-  const anchorSunday = CONFIG.catechism.anchorDate;
+  const currentSundayUTC = getMostRecentSundayUTC(new Date());
+  const anchorUTC = CONFIG.catechism.anchorDate;
 
-  const diffMs = currentSunday.getTime() - anchorSunday.getTime();
-  const diffWeeks = Math.floor(diffMs / (7 * CONFIG.catechism.msPerDay));
+  const diffWeeks = Math.round((currentSundayUTC - anchorUTC) / MS_PER_WEEK);
+  const total = CONFIG.catechism.totalQuestions;
 
   // Wrap around every 52 weeks, 1-indexed
-  return ((diffWeeks % CONFIG.catechism.totalQuestions) + CONFIG.catechism.totalQuestions) % CONFIG.catechism.totalQuestions + 1;
+  return ((diffWeeks % total) + total) % total + 1;
 }
 
 export function initCatechism(): void {
@@ -28,8 +27,7 @@ export function initCatechism(): void {
 
   // Hide all questions except the current week's
   items.forEach(item => {
-    const num = Number(item.dataset.catechism);
-    if (num !== questionNumber) {
+    if (Number(item.dataset.catechism) !== questionNumber) {
       item.hidden = true;
     }
   });

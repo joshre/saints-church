@@ -5,8 +5,7 @@ export const CONFIG = {
   speeds: [1, 1.25, 1.5, 2] as const,
   reading: { minProgress: 0.05, scrollDebounce: 100, restoreDelay: 500, scrollRatio: 0.8 },
   catechism: {
-    anchorDate: new Date(2026, 0, 4), // Sunday, January 4, 2026 = Q1
+    anchorDate: Date.UTC(2026, 0, 4), // Sunday, January 4, 2026 = Q1 (stored as UTC ms)
     totalQuestions: 52,
-    msPerDay: 24 * 60 * 60 * 1000,
   },
 };

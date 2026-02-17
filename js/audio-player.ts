@@ -1,5 +1,5 @@
 import { CONFIG } from './config';
-import { toggleClasses, bindEventListeners, getElements, formatTime, parseUrl } from './utils';
+import { formatTime, parseUrl } from './utils';
 
 interface PlayerState {
   currentTime: number;
@@ -29,44 +29,28 @@ class SermonPlayer {
     this.container = container;
     this.audio = container.querySelector('audio')!;
 
-    const els = getElements(container, {
-      playPauseBtns: '.play-pause-btn',
-      currentTimeElements: '.current-time',
-      durationElements: '.duration',
-      scrubberElements: '.audio-scrubber',
-      progressFillElements: '.progress-fill',
-      skipBackBtns: '.skip-back',
-      skipForwardBtns: '.skip-forward',
-      speedBtns: '.speed-toggle',
-      speedTextElements: '.speed-text',
-    });
+    this.playPauseBtns = container.querySelectorAll('.play-pause-btn');
+    this.currentTimeElements = container.querySelectorAll('.current-time');
+    this.durationElements = container.querySelectorAll('.duration');
+    this.scrubberElements = container.querySelectorAll<HTMLInputElement>('.audio-scrubber');
+    this.progressFillElements = container.querySelectorAll('.progress-fill');
+    this.skipBackBtns = container.querySelectorAll('.skip-back');
+    this.skipForwardBtns = container.querySelectorAll('.skip-forward');
+    this.speedBtns = container.querySelectorAll('.speed-toggle');
+    this.speedTextElements = container.querySelectorAll('.speed-text');
 
-    this.playPauseBtns = els.playPauseBtns;
-    this.currentTimeElements = els.currentTimeElements;
-    this.durationElements = els.durationElements;
-    this.scrubberElements = els.scrubberElements as NodeListOf<HTMLInputElement>;
-    this.progressFillElements = els.progressFillElements;
-    this.skipBackBtns = els.skipBackBtns;
-    this.skipForwardBtns = els.skipForwardBtns;
-    this.speedBtns = els.speedBtns;
-    this.speedTextElements = els.speedTextElements;
-
-    this.playerId = parseUrl((container as HTMLElement).dataset.audioUrl || this.audio?.src);
-    this.init();
-  }
-
-  private init(): void {
+    this.playerId = parseUrl(container.dataset.audioUrl || this.audio?.src);
     this.setupEventListeners();
     this.loadState();
   }
 
   private setupEventListeners(): void {
-    bindEventListeners(this.playPauseBtns, 'click', () => this.togglePlayPause());
-    bindEventListeners(this.scrubberElements, 'input', (e) => this.seek(e));
-    bindEventListeners(this.scrubberElements, 'change', (e) => this.seek(e));
-    bindEventListeners(this.skipBackBtns, 'click', () => this.skip(CONFIG.skip.backward));
-    bindEventListeners(this.skipForwardBtns, 'click', () => this.skip(CONFIG.skip.forward));
-    bindEventListeners(this.speedBtns, 'click', () => this.toggleSpeed());
+    this.playPauseBtns.forEach(el => el.addEventListener('click', () => this.togglePlayPause()));
+    this.scrubberElements.forEach(el => el.addEventListener('input', (e) => this.seek(e)));
+    this.scrubberElements.forEach(el => el.addEventListener('change', (e) => this.seek(e)));
+    this.skipBackBtns.forEach(el => el.addEventListener('click', () => this.skip(CONFIG.skip.backward)));
+    this.skipForwardBtns.forEach(el => el.addEventListener('click', () => this.skip(CONFIG.skip.forward)));
+    this.speedBtns.forEach(el => el.addEventListener('click', () => this.toggleSpeed()));
 
     if (this.audio) {
       this.audio.addEventListener('loadedmetadata', () => this.onLoadedMetadata());
@@ -140,8 +124,8 @@ class SermonPlayer {
       const playIcon = btn.querySelector('.play-icon');
       const pauseIcon = btn.querySelector('.pause-icon');
 
-      if (playIcon) toggleClasses(playIcon, isPlaying ? 'hidden' : null, isPlaying ? null : 'hidden');
-      if (pauseIcon) toggleClasses(pauseIcon, isPlaying ? null : 'hidden', isPlaying ? 'hidden' : null);
+      if (playIcon) playIcon.classList.toggle('hidden', isPlaying);
+      if (pauseIcon) pauseIcon.classList.toggle('hidden', !isPlaying);
 
       btn.setAttribute('aria-label', isPlaying ? 'Pause sermon' : 'Play sermon');
       (btn as HTMLElement).dataset.state = state;
@@ -206,8 +190,14 @@ class SermonPlayer {
 
   private loadState(): void {
     const saved = localStorage.getItem(`sermon-${this.playerId}`);
-    if (saved) {
-      this.savedState = JSON.parse(saved) as PlayerState;
+    if (!saved) return;
+    try {
+      const parsed = JSON.parse(saved);
+      if (typeof parsed?.currentTime === 'number' && typeof parsed?.lastPlayed === 'number') {
+        this.savedState = parsed as PlayerState;
+      }
+    } catch {
+      // Corrupted localStorage entry — ignore
     }
   }
 
@@ -259,15 +249,14 @@ class SermonPlayer {
       ],
     });
 
-    const handlers: Record<string, () => void> = {
-      play: () => this.play(),
-      pause: () => this.pause(),
-      seekbackward: () => this.skip(CONFIG.skip.backward),
-      seekforward: () => this.skip(CONFIG.skip.forward),
-    };
-
-    for (const [action, handler] of Object.entries(handlers)) {
-      navigator.mediaSession.setActionHandler(action as MediaSessionAction, handler);
+    const actions: Array<[MediaSessionAction, () => void]> = [
+      ['play', () => this.play()],
+      ['pause', () => this.pause()],
+      ['seekbackward', () => this.skip(CONFIG.skip.backward)],
+      ['seekforward', () => this.skip(CONFIG.skip.forward)],
+    ];
+    for (const [action, handler] of actions) {
+      navigator.mediaSession.setActionHandler(action, handler);
     }
   }
 }
