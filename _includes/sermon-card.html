@@ -1,7 +1,7 @@
 <!-- Sermon Card Component -->
 <div class="relative group">
   <!-- Main Card (Top Layer) -->
-  <div class="relative z-10 rounded-2xl transition-transform duration-300 ease-out group-hover:-translate-y-2 after:absolute after:inset-0 after:rounded-2xl after:border after:border-stone-200/50 dark:after:border-white/10 after:z-10 after:pointer-events-none">
+  <div class="relative z-10 rounded-2xl transition-transform duration-300 ease-out group-hover:-translate-y-1 after:absolute after:inset-0 after:rounded-2xl after:border after:border-stone-200/50 dark:after:border-white/10 after:z-10 after:pointer-events-none">
     <a class="flex relative z-20 flex-col p-6 h-full bg-white rounded-2xl border shadow-lg transition-shadow duration-200 ease-out group-hover:shadow-xl md:aspect-[3.75/4] border-stone-900/10 dark:border-white/10 dark:bg-stone-900"
        href="{{ include.post.url }}"
        title="Listen to {{ include.post.title }}"
@@ -14,19 +14,19 @@
 
         <!-- Date -->
         {% if include.post.date %}
-          <p class="mb-4 text-sm font-medium text-saints-600 dark:text-saints-400">{{ include.post.date | date: "%B %d, %Y" }}</p>
+          <p class="mb-4 text-xs font-medium text-saints-600/80 dark:text-saints-400">{{ include.post.date | date: "%B %d, %Y" }}</p>
         {% endif %}
 
         <!-- Description -->
         {% if include.post.description %}
-          <p class="mb-auto text-sm leading-relaxed text-stone-600 line-clamp-4 dark:text-stone-400">
+          <p class="mb-auto text-sm leading-relaxed text-stone-500 line-clamp-3 dark:text-stone-400">
             {{ include.post.description | strip_html | strip_newlines | truncate: 120 }}
           </p>
         {% endif %}
       </div>
 
       <!-- Footer -->
-      <div class="flex relative z-10 justify-between items-center pt-6 mt-auto">
+      <div class="flex relative z-10 justify-between items-center pt-5 mt-auto border-t border-stone-100 dark:border-stone-800">
         <!-- Speaker Info -->
         <div class="flex gap-3 items-center">
           {% if include.post.pastor %}
@@ -39,7 +39,7 @@
 
         <!-- Duration -->
         {% if include.post.duration %}
-          <div class="py-1 px-2 text-xs rounded-full text-stone-500 bg-stone-100 dark:text-stone-400 dark:bg-stone-800">
+          <div class="py-0.5 px-2 text-[0.65rem] rounded-full text-stone-400 bg-stone-50 dark:text-stone-500 dark:bg-stone-800 font-medium tabular-nums">
             {{ include.post.duration }}
           </div>
         {% endif %}
@@ -48,16 +48,16 @@
   </div>
 
   <!-- Background Card 1 (Second Layer) -->
-  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white dark:bg-stone-800 rounded-2xl border border-stone-900/10 dark:border-white/10 transition-all ease-out duration-300 shadow-lg group-hover:shadow-xl
-    [.group:nth-child(4n+1)_&]:rotate-1 [.group:nth-child(4n+1)_&]:-translate-y-2 [.group:nth-child(4n+1):hover_&]:rotate-2 [.group:nth-child(4n+1):hover_&]:-translate-y-3 [.group:nth-child(4n+1):hover_&]:-translate-x-1
-    [.group:nth-child(4n+2)_&]:rotate-2 [.group:nth-child(4n+2)_&]:-translate-y-2 [.group:nth-child(4n+2):hover_&]:rotate-3 [.group:nth-child(4n+2):hover_&]:-translate-y-3 [.group:nth-child(4n+2):hover_&]:-translate-x-1
-    [.group:nth-child(4n+3)_&]:-rotate-1 [.group:nth-child(4n+3)_&]:-translate-y-2 [.group:nth-child(4n+3):hover_&]:-rotate-2 [.group:nth-child(4n+3):hover_&]:-translate-y-3 [.group:nth-child(4n+3):hover_&]:-translate-x-1
-    [.group:nth-child(4n)_&]:rotate-3 [.group:nth-child(4n)_&]:-translate-y-2 [.group:nth-child(4n):hover_&]:rotate-[4deg] [.group:nth-child(4n):hover_&]:-translate-y-3 [.group:nth-child(4n):hover_&]:-translate-x-1"></div>
+  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white/90 dark:bg-stone-800 rounded-2xl border border-stone-900/5 dark:border-white/10 transition-all ease-out duration-300 shadow-md group-hover:shadow-lg
+    [.group:nth-child(4n+1)_&]:rotate-[0.6deg] [.group:nth-child(4n+1)_&]:-translate-y-1 [.group:nth-child(4n+1):hover_&]:rotate-[1.2deg] [.group:nth-child(4n+1):hover_&]:-translate-y-2
+    [.group:nth-child(4n+2)_&]:rotate-1 [.group:nth-child(4n+2)_&]:-translate-y-1 [.group:nth-child(4n+2):hover_&]:rotate-[1.5deg] [.group:nth-child(4n+2):hover_&]:-translate-y-2
+    [.group:nth-child(4n+3)_&]:-rotate-[0.6deg] [.group:nth-child(4n+3)_&]:-translate-y-1 [.group:nth-child(4n+3):hover_&]:-rotate-[1.2deg] [.group:nth-child(4n+3):hover_&]:-translate-y-2
+    [.group:nth-child(4n)_&]:rotate-[1.5deg] [.group:nth-child(4n)_&]:-translate-y-1 [.group:nth-child(4n):hover_&]:rotate-2 [.group:nth-child(4n):hover_&]:-translate-y-2"></div>
 
   <!-- Background Card 2 (Third Layer) -->
-  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white dark:bg-stone-800 rounded-2xl border border-stone-900/10 dark:border-white/10 transition-all ease-out duration-300 shadow-lg group-hover:shadow-xl
-    [.group:nth-child(4n+1)_&]:-rotate-2 [.group:nth-child(4n+1)_&]:translate-y-2 [.group:nth-child(4n+1):hover_&]:-rotate-3 [.group:nth-child(4n+1):hover_&]:translate-y-1 [.group:nth-child(4n+1):hover_&]:-translate-x-1
-    [.group:nth-child(4n+2)_&]:-rotate-1 [.group:nth-child(4n+2)_&]:translate-y-2 [.group:nth-child(4n+2):hover_&]:-rotate-2 [.group:nth-child(4n+2):hover_&]:translate-y-1 [.group:nth-child(4n+2):hover_&]:-translate-x-1
-    [.group:nth-child(4n+3)_&]:rotate-3 [.group:nth-child(4n+3)_&]:translate-y-2 [.group:nth-child(4n+3):hover_&]:rotate-[4deg] [.group:nth-child(4n+3):hover_&]:translate-y-1 [.group:nth-child(4n+3):hover_&]:-translate-x-1
-    [.group:nth-child(4n)_&]:-rotate-3 [.group:nth-child(4n)_&]:translate-y-2 [.group:nth-child(4n):hover_&]:-rotate-[4deg] [.group:nth-child(4n):hover_&]:translate-y-1 [.group:nth-child(4n):hover_&]:-translate-x-1"></div>
+  <div class="hidden sm:block absolute top-0 left-0 w-full h-full bg-white/80 dark:bg-stone-800 rounded-2xl border border-stone-900/5 dark:border-white/10 transition-all ease-out duration-300 shadow-sm group-hover:shadow-md
+    [.group:nth-child(4n+1)_&]:-rotate-1 [.group:nth-child(4n+1)_&]:translate-y-1 [.group:nth-child(4n+1):hover_&]:-rotate-[1.5deg] [.group:nth-child(4n+1):hover_&]:translate-y-0.5
+    [.group:nth-child(4n+2)_&]:-rotate-[0.5deg] [.group:nth-child(4n+2)_&]:translate-y-1 [.group:nth-child(4n+2):hover_&]:-rotate-1 [.group:nth-child(4n+2):hover_&]:translate-y-0.5
+    [.group:nth-child(4n+3)_&]:rotate-[1.5deg] [.group:nth-child(4n+3)_&]:translate-y-1 [.group:nth-child(4n+3):hover_&]:rotate-2 [.group:nth-child(4n+3):hover_&]:translate-y-0.5
+    [.group:nth-child(4n)_&]:-rotate-[1.5deg] [.group:nth-child(4n)_&]:translate-y-1 [.group:nth-child(4n):hover_&]:-rotate-2 [.group:nth-child(4n):hover_&]:translate-y-0.5"></div>
 </div>
