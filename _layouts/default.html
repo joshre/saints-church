@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Primary Meta Tags -->
-    <title itemprop="name">{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
-    <meta name="title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+    {% if page.title and page.title != 'Home' %}{% assign page_title = page.title | append: ' - ' | append: site.title %}{% else %}{% assign page_title = site.title | append: ' (1689)' %}{% endif %}
+    <title itemprop="name">{{ page_title }}</title>
+    <meta name="title" content="{{ page_title }}">
     <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" itemprop="description">
     <meta name="keywords" content="{{ site.keywords }}">
     <meta name="author" content="{{ site.church.name }}">
@@ -34,7 +35,7 @@
     <meta property="article:section" content="{{ site.data.content.seo.meta.article_section }}">
     {% endif %}
     <meta property="og:url" content="{{ page.url | absolute_url }}">
-    <meta property="og:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:title" content="{{ page_title }}">
     <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
     <meta property="og:image" content="{{ site.data.content.seo.meta.social_image | absolute_url }}">
     <meta property="og:image:width" content="{{ site.data.content.seo.meta.social_image_width }}">
@@ -45,7 +46,7 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="{{ site.data.content.seo.meta.twitter_card }}">
     <meta property="twitter:url" content="{{ page.url | absolute_url }}">
-    <meta property="twitter:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="twitter:title" content="{{ page_title }}">
     <meta property="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
     <meta property="twitter:image" content="{{ site.data.content.seo.meta.social_image | absolute_url }}">
     
@@ -71,7 +72,9 @@
     {
       "@context": "https://schema.org",
       "@type": "Church",
+      "additionalType": "https://schema.org/PlaceOfWorship",
       "name": "{{ site.church.name }}",
+      "alternateName": "Saints Church Knoxville",
       "description": "{{ site.description }}",
       "url": "{{ site.url }}",
       "telephone": "{{ site.church.phone }}",
@@ -86,15 +89,35 @@
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": "{{ site.data.content.seo.coordinates.lat }}",
-        "longitude": "{{ site.data.content.seo.coordinates.lng }}"
+        "latitude": {{ site.data.content.seo.coordinates.lat }},
+        "longitude": {{ site.data.content.seo.coordinates.lng }}
       },
       "denomination": "{{ site.church.denomination }}",
       "hasCredential": "{{ site.church.confession }}",
       "serviceType": "{{ site.data.content.seo.service_type }}",
-      "serviceTime": "{{ site.church.service_times.sunday }}",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "09:30",
+        "closes": "11:30"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Knoxville",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Tennessee"
+        }
+      },
+      "knowsAbout": [
+        "Reformed Baptist theology",
+        "1689 London Baptist Confession of Faith",
+        "Expository preaching",
+        "Confessional Baptist doctrine"
+      ],
       "sameAs": [
-        "{{ site.url }}"
+        "{{ site.podcast.platforms.apple }}",
+        "{{ site.podcast.platforms.spotify }}"
       ]
     }
     </script>

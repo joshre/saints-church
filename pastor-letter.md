@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Letter from the Pastor"
-description: ""
+description: "A personal welcome from Pastor Nate Ellis at Saints Church, a Reformed Baptist church in Knoxville, TN. Learn about our heart for expository preaching, biblical community, and gospel-centered church life."
 permalink: /pastor-letter/
 data_key: pastor_letter
 header_image: pastor-image.html
