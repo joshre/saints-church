@@ -1,7 +1,7 @@
 ---
 layout: series
 title: "John Sermon Series"
-description: "Listen to 54 sermons in the John series from Saints Church in Knoxville, TN. Verse-by-verse expository preaching."
+description: "Verse-by-verse expository preaching through the Gospel of John from Saints Church in Knoxville, TN."
 series: "John"
 permalink: /sermons/series/john/
 ---

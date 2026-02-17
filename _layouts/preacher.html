@@ -2,6 +2,46 @@
 layout: default
 ---
 
+{% assign preacher_sermons = site.posts | where: "pastor", page.preacher | sort: "date" %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ page.title | jsonify }},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ site.url | jsonify }} },
+      { "@type": "ListItem", "position": 2, "name": "Sermons", "item": {{ "/sermons/" | absolute_url | jsonify }} },
+      { "@type": "ListItem", "position": 3, "name": "Preachers", "item": {{ "/sermons/preachers/" | absolute_url | jsonify }} },
+      { "@type": "ListItem", "position": 4, "name": {{ page.preacher | remove: "Pastor " | jsonify }}, "item": {{ page.url | absolute_url | jsonify }} }
+    ]
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": {{ preacher_sermons.size }},
+    "itemListElement": [
+      {% for sermon in preacher_sermons %}
+      {
+        "@type": "ListItem",
+        "position": {{ forloop.index }},
+        "url": {{ sermon.url | absolute_url | jsonify }},
+        "name": {{ sermon.title | jsonify }}
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  },
+  "publisher": {
+    "@type": "Church",
+    "name": {{ site.church.name | jsonify }},
+    "url": {{ site.url | jsonify }}
+  }
+}
+</script>
+
 <div class="relative bg-wallpaper dark:bg-wallpaper-dark">
   <!-- Single noise texture layer covering the entire page -->
   <div class="absolute inset-0 opacity-30 pointer-events-none mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
@@ -28,7 +68,6 @@ layout: default
               {{ page.preacher | remove: "Pastor " }}
             </h1>
             <p class="text-lg text-white/55 child [--delay:0.25s]">
-              {% assign preacher_sermons = site.posts | where: "pastor", page.preacher %}
               {{ preacher_sermons.size }} sermons
             </p>
           </div>
@@ -37,7 +76,7 @@ layout: default
     </div>
 
     <!-- Sermon grid -->
-    {% assign preacher_sermons = site.posts | where: "pastor", page.preacher | sort: "date" | reverse %}
+    {% assign preacher_sermons = preacher_sermons | sort: "date" | reverse %}
     {% if preacher_sermons.size > 0 %}
     <div class="relative">
       <section class="relative py-16">

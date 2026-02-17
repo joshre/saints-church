@@ -1,7 +1,7 @@
 ---
 layout: series
 title: "Acts Sermon Series"
-description: "Listen to 18 sermons in the Acts series from Saints Church in Knoxville, TN. Verse-by-verse expository preaching."
+description: "Verse-by-verse expository preaching through the book of Acts from Saints Church in Knoxville, TN."
 series: "Acts"
 permalink: /sermons/series/acts/
 ---
