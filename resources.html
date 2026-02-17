@@ -24,9 +24,11 @@ permalink: /resources/
 
       <!-- Section Navigation -->
       <nav class="child [--delay:0.05s] mb-16 flex flex-wrap justify-center gap-x-1 gap-y-2">
-        <a href="#giving" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Giving</a>
+        <a href="#catechism" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Catechism</a>
         <span class="py-2 text-stone-300 dark:text-stone-600">·</span>
         <a href="#sermons" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Sermons</a>
+        <span class="py-2 text-stone-300 dark:text-stone-600">·</span>
+        <a href="#giving" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Giving</a>
         <span class="py-2 text-stone-300 dark:text-stone-600">·</span>
         <a href="#music" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Music</a>
         <span class="py-2 text-stone-300 dark:text-stone-600">·</span>
@@ -35,30 +37,59 @@ permalink: /resources/
         <a href="#prayer" class="py-2 px-3 text-sm font-medium text-stone-500 dark:text-stone-400 hover:text-saints-600 dark:hover:text-saints-400 transition-colors">Prayer</a>
       </nav>
 
-      <!-- Giving Section -->
-      <div id="giving" class="child [--delay:0.1s] mb-20 scroll-mt-24">
-        <div class="bg-saints-500/5 dark:bg-saints-500/10 rounded-2xl p-8 sm:p-10 border border-saints-500/20 dark:border-saints-500/30">
-          <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display mb-4">
-            Giving
-          </h2>
-          <p class="text-stone-600 dark:text-stone-400 mb-6">
-            Thank you for your generosity in supporting the ministry of Saints Church. Your giving helps us continue to preach the gospel, care for our community, and advance God's kingdom in Knoxville and beyond.
-          </p>
-          <a
-            href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-6 py-3 text-base font-medium text-white transition-colors rounded-lg bg-saints-600 hover:bg-saints-700 dark:bg-saints-500 dark:hover:bg-saints-600"
-          >
-            Give Online
-            {% include external-link-icon.html class="w-5 h-5" %}
-          </a>
+      <!-- This Week's Catechism -->
+      <div id="catechism" class="child [--delay:0.1s] mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display mb-2">
+          This Week's Catechism
+        </h2>
+        <p class="text-stone-600 dark:text-stone-400 mb-6">
+          We study one question from the <a href="https://newcitycatechism.com" target="_blank" rel="noopener noreferrer" class="text-saints-600 dark:text-saints-400 underline underline-offset-2 hover:text-saints-700 dark:hover:text-saints-300">New City Catechism</a> each week, learning the foundations of the Christian faith together.
+        </p>
+
+        <div class="group/mode bg-saints-500/5 dark:bg-saints-500/10 rounded-2xl p-8 sm:p-10 border border-saints-500/20 dark:border-saints-500/30">
+          <input type="checkbox" id="catechism-mode" class="sr-only">
+          <div class="flex flex-wrap items-center gap-3 mb-6">
+            <span id="catechism-week-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-saints-500/10 text-saints-600 dark:text-saints-400 border border-saints-500/20">
+              This Week
+            </span>
+            <div class="ml-auto relative inline-flex rounded-full border border-stone-200 dark:border-stone-700 p-0.5 text-xs font-medium">
+              <span class="absolute top-0.5 left-0.5 h-[calc(100%-4px)] w-[calc(50%-2px)] rounded-full bg-saints-600 dark:bg-saints-500 transition-transform duration-250 ease-[var(--ease-smooth)] group-has-[:checked]/mode:translate-x-full"></span>
+              <label for="catechism-mode" class="relative z-10 px-3 py-1 rounded-full cursor-pointer select-none text-white transition-colors duration-200 group-has-[:checked]/mode:text-saints-500 dark:group-has-[:checked]/mode:text-saints-400">Kids</label>
+              <label for="catechism-mode" class="relative z-10 px-3 py-1 rounded-full cursor-pointer select-none text-saints-500 dark:text-saints-400 transition-colors duration-200 group-has-[:checked]/mode:text-white">Adult</label>
+            </div>
+          </div>
+          <div id="catechism-questions">
+            {% for item in site.data.catechism %}
+            <div data-catechism="{{ item.number }}">
+              <blockquote class="mb-4">
+                <p class="text-lg sm:text-xl font-semibold text-stone-900 dark:text-white leading-relaxed">
+                  Q{{ item.number }}. {{ item.question }}
+                </p>
+              </blockquote>
+              <p data-answer="kids" class="text-base sm:text-lg text-stone-700 dark:text-stone-300 leading-relaxed group-has-[:checked]/mode:hidden">
+                <span class="font-semibold text-saints-600 dark:text-saints-400">A.</span> {{ item.kids_answer }}
+              </p>
+              <p data-answer="adult" class="hidden text-base sm:text-lg text-stone-700 dark:text-stone-300 leading-relaxed group-has-[:checked]/mode:block">
+                <span class="font-semibold text-saints-600 dark:text-saints-400">A.</span> {{ item.answer }}
+              </p>
+              <a
+                href="https://newcitycatechism.com/new-city-catechism/#{{ item.number }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-saints-600 dark:text-saints-400 hover:text-saints-700 dark:hover:text-saints-300 transition-colors"
+              >
+                Read commentary & prayer
+                {% include external-link-icon.html class="w-4 h-4" %}
+              </a>
+            </div>
+            {% endfor %}
+          </div>
         </div>
       </div>
 
       <!-- Recent Sermons -->
       <div id="sermons" class="child [--delay:0.15s] mb-20 scroll-mt-24">
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center justify-between mb-8">
           <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display">
             Recent Sermons
           </h2>
@@ -76,9 +107,30 @@ permalink: /resources/
         </div>
       </div>
 
+      <!-- Giving Section -->
+      <div id="giving" class="child [--delay:0.2s] mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display mb-8">
+          Giving
+        </h2>
+        <div class="bg-saints-500/5 dark:bg-saints-500/10 rounded-2xl p-8 sm:p-10 border border-saints-500/20 dark:border-saints-500/30">
+          <p class="text-stone-600 dark:text-stone-400 mb-6">
+            Thank you for your generosity in supporting the ministry of Saints Church. Your giving helps us continue to preach the gospel, care for our community, and advance God's kingdom in Knoxville and beyond.
+          </p>
+          <a
+            href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 text-base font-medium text-white transition-colors rounded-lg bg-saints-600 hover:bg-saints-700 dark:bg-saints-500 dark:hover:bg-saints-600"
+          >
+            Give Online
+            {% include external-link-icon.html class="w-5 h-5" %}
+          </a>
+        </div>
+      </div>
+
       <!-- Worship Music Section -->
-      <div id="music" class="child [--delay:0.2s] mb-20 scroll-mt-24">
-        <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display mb-6">
+      <div id="music" class="child [--delay:0.25s] mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display mb-2">
           Worship Music
         </h2>
         <p class="text-stone-600 dark:text-stone-400 mb-6">
@@ -131,8 +183,8 @@ permalink: /resources/
       </div>
 
       <!-- Study Guides & Resources -->
-      <div id="guides" class="child [--delay:0.25s] mb-20 scroll-mt-24">
-        <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display mb-6">
+      <div id="guides" class="child [--delay:0.28s] mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display mb-2">
           Study Guides
         </h2>
         <p class="text-stone-600 dark:text-stone-400 mb-6">
@@ -176,7 +228,7 @@ permalink: /resources/
 
       <!-- Monthly Prayer Gatherings -->
       <div id="prayer" class="child [--delay:0.3s] scroll-mt-24">
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center justify-between mb-2">
           <h2 class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-white font-display">
             Prayer Gatherings
           </h2>

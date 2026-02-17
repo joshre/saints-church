@@ -12,6 +12,47 @@ const path = require('path');
 const HEROICONS_DIR = 'assets/heroicons/optimized';
 const OUTPUT_FILE = '_includes/icon.html';
 
+// Scan codebase to find which icons are actually used
+function findUsedIcons() {
+  const scanDirs = ['_includes', '_layouts'];
+  const scanGlobs = ['*.html', '*.md'];
+  const iconPattern = /include icon\.html name="([^"]+)"/g;
+  const used = new Set();
+
+  function scanFile(filePath) {
+    // Don't scan the output file itself
+    if (filePath === OUTPUT_FILE) return;
+    const content = fs.readFileSync(filePath, 'utf8');
+    let match;
+    while ((match = iconPattern.exec(content)) !== null) {
+      used.add(match[1]);
+    }
+  }
+
+  // Scan directories recursively
+  for (const dir of scanDirs) {
+    if (!fs.existsSync(dir)) continue;
+    const files = fs.readdirSync(dir, { recursive: true });
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      if (fs.statSync(filePath).isFile() && /\.(html|md)$/.test(file)) {
+        scanFile(filePath);
+      }
+    }
+  }
+
+  // Scan root-level files
+  for (const pattern of scanGlobs) {
+    const ext = pattern.replace('*.', '.');
+    const rootFiles = fs.readdirSync('.').filter(f => f.endsWith(ext));
+    for (const file of rootFiles) {
+      scanFile(file);
+    }
+  }
+
+  return used;
+}
+
 function readSVGContent(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
   // Extract just the path content from the SVG
@@ -22,7 +63,7 @@ function readSVGContent(filePath) {
   return content.replace(/<\?xml[^>]*>/, '').replace(/<svg[^>]*>/, '').replace('</svg>', '').trim();
 }
 
-function generateIconCases() {
+function generateIconCases(usedIcons) {
   const sizes = ['16', '20', '24'];
   const types = ['outline', 'solid'];
   const iconData = {};
@@ -37,6 +78,10 @@ function generateIconCases() {
 
       for (const file of files) {
         const iconName = file.replace('.svg', '');
+
+        // Skip icons not used in the codebase
+        if (!usedIcons.has(iconName)) continue;
+
         const filePath = path.join(dir, file);
 
         if (!iconData[iconName]) {
@@ -99,8 +144,8 @@ function generateIconCases() {
   return cases;
 }
 
-function generateTemplate() {
-  const iconCases = generateIconCases();
+function generateTemplate(usedIcons) {
+  const iconCases = generateIconCases(usedIcons);
 
   return `{% comment %}
 Auto-generated Heroicons component
@@ -146,8 +191,9 @@ ${iconCases}{% endcase %}
 }
 
 // Generate and write the template
-console.log('Generating icon template from Heroicons SVG files...');
-const template = generateTemplate();
+console.log('Scanning codebase for icon usage...');
+const usedIcons = findUsedIcons();
+console.log(`Found ${usedIcons.size} icons in use: ${[...usedIcons].sort().join(', ')}`);
+const template = generateTemplate(usedIcons);
 fs.writeFileSync(OUTPUT_FILE, template);
-console.log(`✅ Generated ${OUTPUT_FILE} with dynamic icon support`);
-console.log('Icons will automatically update when Heroicons submodule is updated!');
+console.log(`Generated ${OUTPUT_FILE} (${usedIcons.size} icons, was 324)`);

@@ -34,6 +34,12 @@ exclude:
   - package-lock.json
   - yarn.lock
   - README.md
+  - build.js
+  - "js/*.ts"
+  - venv
+  - whisper_env
+  - scripts
+  - assets/heroicons
 
 # Plugins (GitHub Pages compatible)
 plugins:

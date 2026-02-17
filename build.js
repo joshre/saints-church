@@ -4,7 +4,7 @@ const { build } = require("estrella")
 const isDev = process.argv.includes('--watch')
 
 build({
-  entry: "js/site.js",
+  entry: "js/site.ts",
   outfile: "js/site.min.js",
   bundle: true,
   minify: !isDev,

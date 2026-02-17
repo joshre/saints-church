@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@source not "../_site";
 
 @font-face {
   font-family: 'PP Formula';
@@ -828,4 +829,5 @@ input.audio-scrubber:active::-moz-range-thumb {
 .prose.prose-stone[itemprop="articleBody"] p:has(cite) {
   @apply text-saints-600 dark:text-saints-400 font-medium;
 }
+
 
