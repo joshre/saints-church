@@ -55,11 +55,6 @@
   --color-wallpaper-dark-light: oklch(27.5% 0.03 140); /* dark mode header */
   --color-wallpaper-dark-footer: oklch(18.5% 0.03 140); /* dark mode footer */
 
-  /* Footer gradient transition stops (cream → dark green) */
-  --color-gradient-1: oklch(81% 0.01 130);            /* warm gray transition */
-  --color-gradient-2: oklch(60% 0.03 135);            /* olive midpoint */
-  --color-gradient-3: oklch(36% 0.035 140);           /* dark olive */
-
   --smooth-bezier: cubic-bezier(0.4, 0.01, 0.165, 0.99);
   --ease-smooth: cubic-bezier(0.4, 0.01, 0.165, 0.99);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
