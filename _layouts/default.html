@@ -156,7 +156,7 @@
     </script>
     {% endif %}
 
-    <link href="{{ '/css/output.css' | relative_url }}" rel="stylesheet">
+    <link href="{{ '/css/output.css?v=' | append: site.time | date: '%s' | relative_url }}" rel="stylesheet">
 </head>
 <body class="antialiased bg-saints-white dark:bg-saints-black" itemscope itemtype="https://schema.org/WebPage">
     {% include nav.html %}
@@ -165,6 +165,6 @@
     {% include visit-modal.html %}
     
     <!-- Bundled JS with Tailwind Elements and animations -->
-    <script src="{{ '/js/site.min.js' | relative_url }}"></script>
+    <script src="{{ '/js/site.min.js?v=' | append: site.time | date: '%s' | relative_url }}"></script>
 </body>
 </html>
