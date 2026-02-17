@@ -1,266 +1,319 @@
 # New City Catechism - 52 Questions & Answers
 # Used weekly: Q1 started January 5, 2026, advancing one question per Sunday
 # Source: newcitycatechism.com (The Gospel Coalition / Redeemer Presbyterian)
+# Kids answers: Official NCC for Kids (shortened versions of adult answers)
 
 # Part 1: God, Creation, Fall, Law (Q1-20)
 - number: 1
   question: "What is our only hope in life and death?"
   answer: "That we are not our own but belong, body and soul, both in life and death, to God and to our Savior Jesus Christ."
+  kids_answer: "That we are not our own but belong to God."
   part: 1
 
 - number: 2
   question: "What is God?"
   answer: "God is the creator and sustainer of everyone and everything. He is eternal, infinite, and unchangeable in his power and perfection, goodness and glory, wisdom, justice, and truth. Nothing happens except through him and by his will."
+  kids_answer: "God is the creator of everyone and everything."
   part: 1
 
 - number: 3
   question: "How many persons are there in God?"
-  answer: "There are three persons in the one true God: the Father, the Son, and the Holy Spirit. They are the same in substance, equal in power and glory."
+  answer: "There are three persons in the one true and living God: the Father, the Son, and the Holy Spirit. They are the same in substance, equal in power and glory."
+  kids_answer: "There are three persons in one God: the Father, the Son, and the Holy Spirit."
   part: 1
 
 - number: 4
   question: "How and why did God create us?"
   answer: "God created us male and female in his own image to know him, love him, live with him, and glorify him. And it is right that we who were created by God should live to his glory."
+  kids_answer: "God created us male and female in his own image to glorify him."
   part: 1
 
 - number: 5
   question: "What else did God create?"
   answer: "God created all things by his powerful Word, and all his creation was very good; everything flourished under his loving rule."
+  kids_answer: "God created all things and all his creation was very good."
   part: 1
 
 - number: 6
   question: "How can we glorify God?"
   answer: "We glorify God by enjoying him, loving him, trusting him, and by obeying his will, commands, and law."
+  kids_answer: "By loving him and by obeying his commands and law."
   part: 1
 
 - number: 7
   question: "What does the law of God require?"
   answer: "Personal, perfect, and perpetual obedience; that we love God with all our heart, soul, mind, and strength; and love our neighbor as ourselves. What God forbids should never be done and what God commands should always be done."
+  kids_answer: "That we love God with all our heart, soul, mind, and strength; and love our neighbor as ourselves."
   part: 1
 
 - number: 8
   question: "What is the law of God stated in the Ten Commandments?"
-  answer: "You shall have no other gods before me. You shall not make for yourself an idol. You shall not misuse the name of the LORD your God. Remember the Sabbath day by keeping it holy. Honor your father and your mother. You shall not murder. You shall not commit adultery. You shall not steal. You shall not give false testimony. You shall not covet."
+  answer: "You shall have no other gods before me. You shall not make for yourself an idol in the form of anything in heaven above or on the earth beneath or in the waters below—you shall not bow down to them or worship them. You shall not misuse the name of the LORD your God. Remember the Sabbath day by keeping it holy. Honor your father and your mother. You shall not murder. You shall not commit adultery. You shall not steal. You shall not give false testimony. You shall not covet."
+  kids_answer: "You shall have no other gods before me. You shall not make for yourself an idol. You shall not misuse the name of the Lord your God. Remember the Sabbath day by keeping it holy. Honor your father and your mother. You shall not murder. You shall not commit adultery. You shall not steal. You shall not give false testimony. You shall not covet."
   part: 1
 
 - number: 9
   question: "What does God require in the first, second, and third commandments?"
   answer: "First, that we know and trust God as the only true and living God. Second, that we avoid all idolatry and do not worship God improperly. Third, that we treat God's name with fear and reverence, honoring also his Word and works."
+  kids_answer: "First, that we know God as the only true God. Second, that we avoid all idolatry. Third, that we treat God's name with fear and reverence."
   part: 1
 
 - number: 10
   question: "What does God require in the fourth and fifth commandments?"
   answer: "Fourth, that on the Sabbath day we spend time in public and private worship of God, rest from routine employment, serve the Lord and others, and so anticipate the eternal Sabbath. Fifth, that we love and honor our father and our mother, submitting to their godly discipline and direction."
+  kids_answer: "Fourth, that on the Sabbath day we spend time in worship of God. Fifth, that we love and honor our father and our mother."
   part: 1
 
 - number: 11
   question: "What does God require in the sixth, seventh, and eighth commandments?"
   answer: "Sixth, that we do not hurt, or hate, or be hostile to our neighbor, but be patient and peaceful, pursuing even our enemies with love. Seventh, that we abstain from sexual immorality and live purely and faithfully, whether in marriage or in single life, avoiding all impure actions, looks, words, thoughts, or desires, and whatever might lead to them. Eighth, that we do not take without permission that which belongs to someone else, nor withhold any good from someone we might benefit."
+  kids_answer: "Sixth, that we do not hurt or hate our neighbor. Seventh, that we live purely and faithfully. Eighth, that we do not take without permission that which belongs to someone else."
   part: 1
 
 - number: 12
   question: "What does God require in the ninth and tenth commandments?"
   answer: "Ninth, that we do not lie or deceive, but speak the truth in love. Tenth, that we are content, not envying anyone or resenting what God has given them or us."
+  kids_answer: "Ninth, that we do not lie or deceive. Tenth, that we are content, not envying anyone."
   part: 1
 
 - number: 13
   question: "Can anyone keep the law of God perfectly?"
   answer: "Since the fall, no mere human has been able to keep the law of God perfectly, but consistently breaks it in thought, word, and deed."
+  kids_answer: "Since the fall, no human has been able to keep the law of God perfectly."
   part: 1
 
 - number: 14
   question: "Did God create us unable to keep his law?"
-  answer: "No, but because of the disobedience of our first parents, Adam and Eve, all of creation is fallen; we are all born in sin and guilt, corrupt in our nature, and unable to keep God's law."
+  answer: "No, but because of the disobedience of our first parents, Adam and Eve, all of creation is fallen; we are all born in sin and guilt, corrupt in our nature and unable to keep God's law."
+  kids_answer: "No, but because of the disobedience of Adam and Eve we are all born in sin and guilt, unable to keep God's law."
   part: 1
 
 - number: 15
   question: "Since no one can keep the law, what is its purpose?"
   answer: "That we may know the holy nature and will of God, and the sinful nature and disobedience of our hearts; and thus our need of a Savior. The law also teaches and exhorts us to live a life worthy of our Savior."
+  kids_answer: "That we may know the holy nature of God, and the sinful nature of our hearts; and thus our need of a Savior."
   part: 1
 
 - number: 16
   question: "What is sin?"
   answer: "Sin is rejecting or ignoring God in the world he created, rebelling against him by living without reference to him, not being or doing what he requires in his law—resulting in our death and the disintegration of all creation."
+  kids_answer: "Sin is rejecting or ignoring God in the world he created, not being or doing what he requires in his law."
   part: 1
 
 - number: 17
   question: "What is idolatry?"
   answer: "Idolatry is trusting in created things rather than the Creator for our hope and happiness, significance and security."
+  kids_answer: "Idolatry is trusting in created things rather than the Creator."
   part: 1
 
 - number: 18
   question: "Will God allow our disobedience and idolatry to go unpunished?"
   answer: "No, every sin is against the sovereignty, holiness, and goodness of God, and against his righteous law, and God is righteously angry with our sins and will punish them in his just judgment both in this life, and in the life to come."
+  kids_answer: "No, God is righteously angry with our sins and will punish them both in this life, and in the life to come."
   part: 1
 
 - number: 19
   question: "Is there any way to escape punishment and be brought back into God's favor?"
   answer: "Yes, to satisfy his justice, God himself, out of mere mercy, reconciles us to himself and delivers us from sin and from the punishment for sin, by a Redeemer."
+  kids_answer: "Yes, God reconciles us to himself by a Redeemer."
   part: 1
 
 - number: 20
   question: "Who is the Redeemer?"
   answer: "The only Redeemer is the Lord Jesus Christ, the eternal Son of God, in whom God became man and bore the penalty for sin himself."
+  kids_answer: "The only Redeemer is the Lord Jesus Christ."
   part: 1
 
 # Part 2: Christ, Redemption, Grace (Q21-35)
 - number: 21
   question: "What sort of Redeemer is needed to bring us back to God?"
   answer: "One who is truly human and also truly God."
+  kids_answer: "One who is truly human and also truly God."
   part: 2
 
 - number: 22
   question: "Why must the Redeemer be truly human?"
   answer: "That in human nature he might on our behalf perfectly obey the whole law and suffer the punishment for human sin; and also that he might sympathize with our weaknesses."
+  kids_answer: "That in human nature he might on our behalf perfectly obey the whole law and suffer the punishment for human sin."
   part: 2
 
 - number: 23
   question: "Why must the Redeemer be truly God?"
   answer: "That because of his divine nature his obedience and suffering would be perfect and effective; and also that he would be able to bear the righteous anger of God against sin and yet overcome death."
+  kids_answer: "That because of his divine nature his obedience and suffering would be perfect and effective."
   part: 2
 
 - number: 24
   question: "Why was it necessary for Christ, the Redeemer, to die?"
   answer: "Since death is the punishment for sin, Christ died willingly in our place to deliver us from the power and penalty of sin and bring us back to God. By his substitutionary atoning death, he alone redeems us from hell and gains for us forgiveness of sin, righteousness, and everlasting life."
+  kids_answer: "Christ died willingly in our place to deliver us from the power and penalty of sin and bring us back to God."
   part: 2
 
 - number: 25
   question: "Does Christ's death mean all our sins can be forgiven?"
   answer: "Yes, because Christ's death on the cross fully paid the penalty for our sin, God graciously imputes Christ's righteousness to us as if it were our own and will remember our sins no more."
+  kids_answer: "Yes, because Christ's death on the cross fully paid the penalty for our sin, God will remember our sins no more."
   part: 2
 
 - number: 26
   question: "What else does Christ's death redeem?"
-  answer: "Christ's death is the beginning of the redemption and renewal of every part of fallen creation, as he powerfully directs all things for his own glory and his people's good."
+  answer: "Christ's death is the beginning of the redemption and renewal of every part of fallen creation, as he powerfully directs all things for his own glory and creation's good."
+  kids_answer: "Every part of fallen creation."
   part: 2
 
 - number: 27
   question: "Are all people, just as they were lost through Adam, saved through Christ?"
   answer: "No, only those who are elected by God and united to Christ by faith. Nevertheless God in his mercy demonstrates common grace even to those who are not elect, by restraining the effects of sin and enabling works of culture for human well-being."
+  kids_answer: "No, only those who are elected by God and united to Christ by faith."
   part: 2
 
 - number: 28
   question: "What happens after death to those not united to Christ by faith?"
   answer: "At the day of judgment they will receive the fearful but just sentence of condemnation pronounced against them. They will be cast out from the favorable presence of God, into hell, to be justly and grievously punished, forever."
+  kids_answer: "They will be cast out from the presence of God, into hell, to be justly punished, forever."
   part: 2
 
 - number: 29
   question: "How can we be saved?"
   answer: "Only by faith in Jesus Christ and in his substitutionary atoning death on the cross; so even though we are guilty of having disobeyed God and are still inclined to all evil, nevertheless, God, without any merit of our own but only by pure grace, imputes to us the perfect righteousness of Christ when we repent and believe in him."
+  kids_answer: "Only by faith in Jesus Christ and in his substitutionary atoning death on the cross."
   part: 2
 
 - number: 30
   question: "What is faith in Jesus Christ?"
   answer: "Faith in Jesus Christ is acknowledging the truth of everything that God has revealed in his Word, trusting in him, and also receiving and resting on him alone for salvation as he is offered to us in the gospel."
+  kids_answer: "Receiving and resting on him alone for salvation as he is offered to us in the gospel."
   part: 2
 
 - number: 31
   question: "What do we believe by true faith?"
-  answer: "Everything taught to us in the gospel. The Apostles' Creed expresses what we believe in these words: We believe in God the Father Almighty, Maker of heaven and earth; and in Jesus Christ his only Son our Lord, who was conceived by the Holy Spirit, born of the virgin Mary, suffered under Pontius Pilate, was crucified, dead, and buried; the third day he rose again from the dead; he ascended into heaven, and is seated at the right hand of God the Father Almighty; from there he shall come to judge the living and the dead. We believe in the Holy Spirit, the holy catholic church, the communion of saints, the forgiveness of sins, the resurrection of the body, and the life everlasting."
+  answer: "Everything taught to us in the gospel. The Apostles' Creed expresses what we believe in these words: We believe in God the Father Almighty, Maker of heaven and earth; and in Jesus Christ his only Son our Lord, who was conceived by the Holy Spirit, born of the virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried. He descended into hell. The third day he rose again from the dead. He ascended into heaven, and is seated at the right hand of God the Father Almighty; from there he will come to judge the living and the dead. We believe in the Holy Spirit, the holy catholic church, the communion of saints, the forgiveness of sins, the resurrection of the body, and the life everlasting."
+  kids_answer: "We believe in God the Father Almighty, Maker of heaven and earth; and in Jesus Christ his only Son our Lord, who was conceived by the Holy Spirit, born of the virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried. He descended into hell. The third day he rose again from the dead. He ascended into heaven, and is seated at the right hand of God the Father Almighty; from there he will come to judge the living and the dead. We believe in the Holy Spirit, the holy catholic church, the communion of saints, the forgiveness of sins, the resurrection of the body, and the life everlasting."
   part: 2
 
 - number: 32
   question: "What do justification and sanctification mean?"
   answer: "Justification means our declared righteousness before God, made possible by Christ's death and resurrection for us. Sanctification means our gradual, growing righteousness, made possible by the Spirit's work in us."
+  kids_answer: "Justification means our declared righteousness before God. Sanctification means our gradual, growing righteousness."
   part: 2
 
 - number: 33
   question: "Should those who have faith in Christ seek their salvation through their own works, or anywhere else?"
   answer: "No, they should not, as everything necessary to salvation is found in Christ. To seek salvation through good works is a denial that Christ is the only Redeemer and Savior."
+  kids_answer: "No, everything necessary to salvation is found in Christ."
   part: 2
 
 - number: 34
   question: "Since we are redeemed by grace alone, through Christ alone, must we still do good works and obey God's Word?"
-  answer: "Yes, because Christ, having redeemed us by his blood, also renews us by his Spirit; so that our lives may show love and gratitude to God; and so that by our godly behavior others may be won to Christ."
+  answer: "Yes, because Christ, having redeemed us by his blood, also renews us by his Spirit; so that our lives may show love and gratitude to God; so that we may be assured of our faith by the fruits; and so that by our godly behavior others may be won to Christ."
+  kids_answer: "Yes, so that our lives may show love and gratitude to God; and so that by our godly behavior others may be won to Christ."
   part: 2
 
 - number: 35
   question: "Since we are redeemed by grace alone, through faith alone, where does this faith come from?"
   answer: "All the gifts we receive from Christ we receive through the Holy Spirit, including faith itself."
+  kids_answer: "From the Holy Spirit."
   part: 2
 
 # Part 3: Spirit, Restoration, Growing in Grace (Q36-52)
 - number: 36
   question: "What do we believe about the Holy Spirit?"
   answer: "That he is God, coeternal with the Father and the Son, and that God grants him irrevocably to all who believe."
+  kids_answer: "That he is God, coeternal with the Father and the Son."
   part: 3
 
 - number: 37
   question: "How does the Holy Spirit help us?"
   answer: "The Holy Spirit convicts us of our sin, comforts us, guides us, gives us spiritual gifts and the desire to obey God; and he enables us to pray and to understand God's Word."
+  kids_answer: "The Holy Spirit convicts us of our sin, and he enables us to pray and to understand God's Word."
   part: 3
 
 - number: 38
   question: "What is prayer?"
   answer: "Prayer is pouring out our hearts to God in praise, petition, confession of sin, and thanksgiving."
+  kids_answer: "Prayer is pouring out our hearts to God."
   part: 3
 
 - number: 39
   question: "With what attitude should we pray?"
   answer: "With love, perseverance, and gratefulness; in humble submission to God's will, knowing that, for the sake of Christ, he always hears our prayers."
+  kids_answer: "With love, perseverance, and gratefulness."
   part: 3
 
 - number: 40
   question: "What should we pray?"
   answer: "The whole Word of God directs and inspires us in what we should pray, including the prayer Jesus himself taught us."
+  kids_answer: "The whole Word of God directs us in what we should pray."
   part: 3
 
 - number: 41
-  question: "What is the prayer that Jesus taught us?"
+  question: "What is the Lord's Prayer?"
   answer: "Our Father in heaven, hallowed be your name, your kingdom come, your will be done, on earth as it is in heaven. Give us today our daily bread. And forgive us our debts, as we also have forgiven our debtors. And lead us not into temptation, but deliver us from evil."
+  kids_answer: "Our Father in heaven, hallowed be your name, your kingdom come, your will be done, on earth as it is in heaven. Give us today our daily bread. And forgive us our debts, as we also have forgiven our debtors. And lead us not into temptation, but deliver us from evil."
   part: 3
 
 - number: 42
   question: "How is the Word of God to be read and heard?"
   answer: "With diligence, preparation, and prayer; so that we may accept it with faith, store it in our hearts, and practice it in our lives."
+  kids_answer: "With diligence, preparation, and prayer; so that we may accept it with faith and practice it in our lives."
   part: 3
 
 - number: 43
   question: "What are the sacraments or ordinances?"
-  answer: "The sacraments or ordinances given by God and instituted by Christ, namely baptism and the Lord's Supper, are visible signs and seals of an inward grace. God's Spirit works through them with a power only he possesses as he witnesses to the work of Christ, and they are a means of grace to all who receive them in faith."
+  answer: "The sacraments or ordinances given by God and instituted by Christ, namely baptism and the Lord's Supper, are visible signs and seals that we are bound together as a community of faith by his death and resurrection. By our use of them the Holy Spirit more fully declares and seals the promises of the gospel to us."
+  kids_answer: "Baptism and the Lord's Supper."
   part: 3
 
 - number: 44
   question: "What is baptism?"
   answer: "Baptism is the washing with water in the name of the Father, the Son, and the Holy Spirit; it signifies and seals our adoption into Christ, our cleansing from sin, and our commitment to belong to the Lord and to his church."
+  kids_answer: "Baptism is the washing with water in the name of the Father, the Son, and the Holy Spirit."
   part: 3
 
 - number: 45
   question: "Is baptism with water the washing away of sin itself?"
   answer: "No, only the blood of Christ and the renewal of the Holy Spirit can cleanse us from sin."
+  kids_answer: "No, only the blood of Christ can cleanse us from sin."
   part: 3
 
 - number: 46
   question: "What is the Lord's Supper?"
   answer: "Christ commanded all Christians to eat bread and to drink from the cup in thankful remembrance of him and his death. The Lord's Supper is a celebration of the presence of God in our midst; bringing us into communion with God and with one another; feeding and nourishing our souls. It also anticipates the day when we will eat and drink with Christ in his Father's kingdom."
+  kids_answer: "Christ commanded all Christians to eat bread and to drink from the cup in thankful remembrance of him."
   part: 3
 
 - number: 47
   question: "Does the Lord's Supper add anything to Christ's atoning work?"
-  answer: "No, Christ died once for all. The Lord's Supper is a covenant meal celebrating Christ's atoning work; as it is also a means of strengthening our faith as we look to him, and a foretaste of the future."
+  answer: "No, Christ died once for all. The Lord's Supper is a covenant meal celebrating Christ's atoning work; as it is also a means of strengthening our faith as we look to him, and a foretaste of the future feast. But those who take part with unrepentant hearts eat and drink judgment on themselves."
+  kids_answer: "No, Christ died once for all."
   part: 3
 
 - number: 48
   question: "What is the church?"
-  answer: "God chooses and preserves for himself a community elected for eternal life and united by faith, who love, follow, learn from, and worship God together. God sends out this community to preach the gospel and prefigure Christ's kingdom by the quality of their life together and their love for one another."
+  answer: "God chooses and preserves for himself a community elected for eternal life and united by faith, who love, follow, learn from, and worship God together. God sends out this community to proclaim the gospel and prefigure Christ's kingdom by the quality of their life together and their love for one another."
+  kids_answer: "A community elected for eternal life and united by faith, who love, follow, learn from, and worship God together."
   part: 3
 
 - number: 49
   question: "Where is Christ now?"
   answer: "Christ rose bodily from the grave on the third day after his death and is seated at the right hand of the Father, ruling his kingdom and interceding for us, until he returns to judge and renew the whole world."
+  kids_answer: "Christ rose bodily from the grave on the third day after his death and is seated at the right hand of the Father."
   part: 3
 
 - number: 50
   question: "What does Christ's resurrection mean for us?"
-  answer: "Christ triumphed over sin and death by being raised to life again for our justification, giving us new life, and the promise that he will raise us on the last day."
+  answer: "Christ triumphed over sin and death by being physically resurrected, so that all who trust in him are raised to new life in this world and to everlasting life in the world to come. Just as we will one day be resurrected, so this world will one day be restored. But those who do not trust in Christ will be raised to everlasting death."
+  kids_answer: "Christ triumphed over sin and death so that all who trust in him are raised to new life in this world and to everlasting life in the world to come."
   part: 3
 
 - number: 51
   question: "Of what advantage to us is Christ's ascension?"
-  answer: "Christ is now advocating for us in the presence of his Father and also sends us his Spirit."
+  answer: "Christ physically ascended on our behalf, just as he came down to earth physically on our account, and he is now advocating for us in the presence of his Father, preparing a place for us, and also sends us his Spirit."
+  kids_answer: "Christ is now advocating for us in the presence of his Father and also sends us his Spirit."
   part: 3
 
 - number: 52
   question: "What hope does everlasting life hold for us?"
-  answer: "That we will live with and enjoy God forever in the new heaven and the new earth, where we will be forever freed from all sin in a renewed, restored creation."
+  answer: "It reminds us that this present fallen world is not all there is; soon we will live with and enjoy God forever in the new city, in the new heaven and the new earth, where we will be fully and forever freed from all sin and will inhabit renewed, resurrection bodies in a renewed, restored creation."
+  kids_answer: "That we will live with and enjoy God forever in the new heaven and the new earth, where we will be forever freed from all sin in a renewed, restored creation."
   part: 3

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "./build.js",
     "build:prod": "./build.js && yarn tailwindcss -i _css/input.css -o css/output.css --minify",
-    "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\"",
+    "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload --incremental\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\"",
     "generate-icons": "node scripts/generate-icons.js",
     "update-icons": "git submodule update --remote assets/heroicons && yarn generate-icons"
   },

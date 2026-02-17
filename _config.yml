@@ -36,6 +36,10 @@ exclude:
   - README.md
   - build.js
   - "js/*.ts"
+  - venv
+  - whisper_env
+  - scripts
+  - assets/heroicons
 
 # Plugins (GitHub Pages compatible)
 plugins:
