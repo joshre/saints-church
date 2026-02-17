@@ -5,22 +5,26 @@ description: "Listen to expository sermons from Saints Church in Knoxville, TN. 
 permalink: /sermons/
 ---
 
-<div class="min-h-screen bg-saints-100 dark:bg-saints-black">
+<div class="min-h-screen bg-[#596352] dark:bg-[#26361b]">
   <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content">
+    <!-- Header with gradient + noise texture -->
+    <div class="relative overflow-hidden bg-linear-to-b from-[#9ca88f] to-[#596352] dark:from-[#333a2b] dark:to-[#26361b]">
+      <div class="absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+      <div class="relative">
     <header role="banner" class="relative px-6 pt-24 pb-16 mx-auto max-w-7xl lg:px-8 animate-children">
     <div class="mx-auto max-w-4xl text-center">
-      <h1 itemprop="name headline" class="mb-6 text-5xl font-semibold sm:text-6xl lg:text-7xl dark:text-white font-display text-stone-900 child">
+      <h1 itemprop="name headline" class="mb-6 text-5xl font-semibold sm:text-6xl lg:text-7xl dark:text-white font-display text-white child" style="text-shadow: 0 1px 2px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);">
         {{ site.data.content.sermons.title }}
       </h1>
 
       {% if site.data.content.sermons.subtitle %}
-        <p role="doc-subtitle" itemprop="alternativeHeadline" class="mb-8 text-xl font-medium sm:text-2xl text-stone-600 child [--delay:0.15s] dark:text-stone-400">
+        <p role="doc-subtitle" itemprop="alternativeHeadline" class="mb-8 text-xl font-medium sm:text-2xl text-white/80 child [--delay:0.15s] dark:text-stone-400" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06);">
           {{ site.data.content.sermons.subtitle }}
         </p>
       {% endif %}
 
       <div class="mx-auto max-w-2xl child [--delay:0.25s]">
-        <p itemprop="description" class="mb-8 text-lg leading-relaxed text-stone-700 dark:text-stone-300">
+        <p itemprop="description" class="mb-8 text-lg leading-relaxed text-white/70 dark:text-stone-300">
           {{ site.data.content.sermons.details }}
         </p>
 
@@ -132,13 +136,20 @@ permalink: /sermons/
         </div>
       </section>
     {% endif %}
+      </div>
+    </div>
+    <!-- End header gradient -->
 
     {% assign sorted_posts = site.posts | where: "category", "sermon" | sort: "date" | reverse %}
     {% assign archive_sermons = sorted_posts | offset: 1 %}
     {% if archive_sermons.size > 0 %}
-      <section aria-labelledby="sermon-archive" class="py-16 bg-gradient-to-b border-t from-saints-200 to-saints-100 dark:from-saints-900 dark:to-saints-black border-saints-900/10 dark:border-white/10">
+    <div class="relative pt-[3px]" style="border-top: 2px solid rgba(255,255,255,0.15);">
+      <div class="absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+      <div class="absolute inset-0" style="background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cline x1='0' y1='32' x2='32' y2='32' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3Cline x1='32' y1='0' x2='32' y2='32' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3C/svg%3E&quot;); background-size: 32px 32px;"></div>
+
+      <section aria-labelledby="sermon-archive" class="relative py-16" style="border-top: 1px solid rgba(255,255,255,0.15);">
       <div class="px-6 mx-auto max-w-7xl lg:px-8">
-        <h2 id="sermon-archive" class="mb-12 text-3xl font-semibold text-center dark:text-white font-display text-stone-900">{{ site.data.content.sermons.archive_subtitle }}</h2>
+        <h2 id="sermon-archive" class="mb-12 text-3xl font-semibold text-center dark:text-white font-display text-white">{{ site.data.content.sermons.archive_subtitle }}</h2>
 
         <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="sermon-archive-grid">
           {% for sermon in archive_sermons limit: 12 %}
@@ -148,7 +159,7 @@ permalink: /sermons/
 
         {% if archive_sermons.size > 12 %}
           <div class="mt-12 text-center">
-            <output role="status" aria-live="polite" class="block mb-4 text-stone-600 dark:text-stone-400" id="sermon-count">
+            <output role="status" aria-live="polite" class="block mb-4 text-white/60 dark:text-stone-400" id="sermon-count">
               Showing <span id="showing-count">12</span> of <data value="{{ archive_sermons.size }}">{{ archive_sermons.size }}</data> sermons
             </output>
             <button
@@ -205,31 +216,32 @@ permalink: /sermons/
     {% else %}
       <section class="py-16">
         <div class="px-6 mx-auto max-w-7xl text-center lg:px-8">
-          <p class="text-stone-600 dark:text-stone-400">Our sermon archive is being prepared. Check back soon or listen on your favorite podcast platform.</p>
+          <p class="text-white/60 dark:text-stone-400">Our sermon archive is being prepared. Check back soon or listen on your favorite podcast platform.</p>
         </div>
       </section>
     {% endif %}
 
-    <aside aria-labelledby="cta-section" class="py-24 animate-children">
-      <div class="px-6 mx-auto max-w-4xl text-center lg:px-8">
-        <div class="relative p-12 bg-white dark:bg-stone-900 rounded-3xl shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-3xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
-          <div class="child">
-            <h2 id="cta-section" class="mb-4 text-3xl font-semibold dark:text-white font-display text-stone-900">
-              {{ site.data.content.sermons.cta.sermons_page.title }}
-            </h2>
-            <p class="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-stone-600 dark:text-stone-400">
-              {{ site.data.content.sermons.cta.sermons_page.description }}
-            </p>
-          </div>
-
-          <nav aria-label="Church information" class="child [--delay:0.15s]">
-            <div class="flex flex-col gap-4 justify-center items-center mx-auto max-w-sm sm:flex-row sm:max-w-none">
-              {% include button.html href="/beliefs/" text="Our Beliefs" class="w-full sm:w-auto" %}
-              {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" variant="secondary" class="w-full sm:w-auto" %}
+      <aside aria-labelledby="cta-section" class="relative py-24 animate-children">
+        <div class="px-6 mx-auto max-w-4xl text-center lg:px-8">
+          <div class="relative p-12 bg-white dark:bg-stone-900 rounded-3xl shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-3xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
+            <div class="child">
+              <h2 id="cta-section" class="mb-4 text-3xl font-semibold dark:text-white font-display text-stone-900">
+                {{ site.data.content.sermons.cta.sermons_page.title }}
+              </h2>
+              <p class="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-stone-600 dark:text-stone-400">
+                {{ site.data.content.sermons.cta.sermons_page.description }}
+              </p>
             </div>
-          </nav>
+
+            <nav aria-label="Church information" class="child [--delay:0.15s]">
+              <div class="flex flex-col gap-4 justify-center items-center mx-auto max-w-sm sm:flex-row sm:max-w-none">
+                {% include button.html href="/beliefs/" text="Our Beliefs" class="w-full sm:w-auto" %}
+                {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" variant="secondary" class="w-full sm:w-auto" %}
+              </div>
+            </nav>
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </div>
   </main>
 </div>
