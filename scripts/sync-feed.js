@@ -103,6 +103,19 @@ async function sync() {
   const processedGuids = new Set(processed.map(p => p.guid));
   const existingFiles = new Set(fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.md')));
 
+  // Count episodes per biblical book across the entire feed to detect actual series
+  const bookCounts = {};
+  for (const item of feed.items) {
+    const scripture = extractScripture(item.title) || extractScripture(item.description);
+    if (scripture) {
+      const bookMatch = scripture.match(/^(.*?)\s+\d+/);
+      if (bookMatch) {
+        const book = bookMatch[1].trim();
+        bookCounts[book] = (bookCounts[book] || 0) + 1;
+      }
+    }
+  }
+
   let newCount = 0;
   let skippedExisting = 0;
 
@@ -128,13 +141,13 @@ async function sync() {
     const duration = parseDuration(item['itunes:duration']);
     const episodeHash = crypto.createHash('sha256').update(guid).digest('hex').substring(0, 8);
 
-    // Detect series from scripture
+    // Detect series from scripture (only if 3+ sermons from the same book in the feed)
     let series = null;
     if (scripture) {
       const bookMatch = scripture.match(/^(.*?)\s+\d+/);
       if (bookMatch) {
         const book = bookMatch[1].trim();
-        if (['John', 'Galatians', 'Romans', 'Acts', 'Genesis', 'Matthew', 'Mark', 'Luke', 'Ephesians', 'Philippians'].includes(book)) {
+        if (bookCounts[book] >= 3) {
           series = book;
         }
       }
