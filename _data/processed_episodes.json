@@ -618,15 +618,15 @@
   {
     "guid": "c2be82e6-31f4-43d1-aed0-6a3e45c28f90",
     "title": "Acts 14",
-    "filename": "2026-02-09-acts-14.md",
-    "content_hash": "",
-    "processed_at": "2026-02-10T14:00:00.000Z"
+    "filename": "2026-02-08-acts-14.md",
+    "content_hash": "6fbd2a03c9b74958",
+    "processed_at": "2026-02-22T09:35:53.428Z"
   },
   {
     "guid": "c3a84171-4f6d-48a2-927a-ccc8d15ff82f",
     "title": "Acts 15",
     "filename": "2026-02-15-acts-15.md",
-    "content_hash": "",
-    "processed_at": "2026-02-17T03:32:37.000Z"
+    "content_hash": "b52ad65ff8e34c24",
+    "processed_at": "2026-02-22T09:35:53.426Z"
   }
 ]
