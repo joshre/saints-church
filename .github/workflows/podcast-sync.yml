@@ -518,6 +518,13 @@ jobs:
           }
 
 
+          // Detect pastor name from description text (e.g. "This sermon was preached by Evan Burress.")
+          function detectPastor(text) {
+            if (!text) return null;
+            const match = text.match(/[Pp]reached by ([A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)+)/);
+            return match ? match[1] : null;
+          }
+
           // Parse existing frontmatter to preserve custom fields
           function parseExistingFrontmatter(content) {
             if (!content) return {};
@@ -614,7 +621,7 @@ jobs:
               duration: duration,
               scripture: scripture,
               series: series,
-              pastor: DEFAULT_PASTOR,
+              pastor: existingFrontmatter.pastor || detectPastor(episode.description || episode['itunes:summary'] || '') || DEFAULT_PASTOR,
               description: cleanDescription(episode.description || episode['itunes:summary'] || ''),
               guid: episode.guid,
               episode_id: episodeHash,
