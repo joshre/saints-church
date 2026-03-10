@@ -7,7 +7,7 @@
     {% for item in site.data.content.values.items %}
       {% assign delay = forloop.index0 | times: 0.1 | plus: 0.25 %}
       <div class="pt-6 border-t border-stone-200 dark:border-stone-700">
-        <dt class="font-display font-semibold dark:text-white child text-stone-900" style="--delay: {{ delay }}s">{{ item.title }}</dt>
+        <dt class="font-semibold dark:text-white font-display child text-stone-900" style="--delay: {{ delay }}s">{{ item.title }}</dt>
         <dd class="mt-2 child text-stone-600 dark:text-stone-400" style="--delay: {{ delay | plus: 0.05 }}s">{{ item.description }}</dd>
       </div>
     {% endfor %}

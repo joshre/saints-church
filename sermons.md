@@ -47,7 +47,7 @@ permalink: /sermons/
       <div class="px-6 mx-auto max-w-4xl lg:px-8">
 
         <div class="relative p-7 bg-white lg:p-10 rounded-[2rem] shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] child [--delay:0.15s] dark:bg-stone-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-[2rem] dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_rgba(255,255,255,0.06)_inset]">
-          <div class="grid grid-cols-1 gap-6 items-start lg:gap-8 lg:grid-cols-3">
+          <div class="grid grid-cols-1 gap-6 items-start lg:grid-cols-3 lg:gap-8">
             <!-- Content Column -->
             <div class="lg:col-span-2">
               <header class="mb-6">

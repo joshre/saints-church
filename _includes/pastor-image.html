@@ -7,7 +7,7 @@
   <source srcset="/assets/images/{{ preacher.image }}.webp" type="image/webp">
   <img
     src="/assets/images/{{ preacher.image }}.jpg"
-    alt="{{ preacher.name }}"
+    alt="{{ preacher.name }}, {{ preacher.role }} at Saints Church Knoxville"
     class="object-cover mx-auto {% if include.class %}{{ include.class }}{% else %}size-32 rounded-full{% endif %} ring-2 transition-transform hover:scale-105 ring-white/10 will-animate var(--animation-fast) var(--smooth-bezier) dark:ring-white/10"
     width="{% if include.class %}64{% else %}128{% endif %}"
     height="{% if include.class %}64{% else %}128{% endif %}"

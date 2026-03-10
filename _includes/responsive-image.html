@@ -25,6 +25,15 @@ Parameters:
 {% assign show_ring = include.ring | default: true %}
 {% assign ring_radius = include.ring_class | default: 'rounded-xl' %}
 
+{% assign alt_parts = include.alt_key | split: '.' %}
+{% if alt_parts.size == 2 %}
+  {% assign _alt_section = alt_parts[0] %}
+  {% assign _alt_subkey = alt_parts[1] %}
+  {% assign resolved_alt = site.data.content.images.alt_text[_alt_section][_alt_subkey] %}
+{% else %}
+  {% assign resolved_alt = site.data.content.images.alt_text[include.alt_key] %}
+{% endif %}
+
 <div class="{{ include.container_class }} {{ delay_class }}">
   <picture>
     <!-- AVIF sources with responsive widths -->
@@ -66,7 +75,7 @@ Parameters:
     {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-play' %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-1184w.jpg' | relative_url }}"
-        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        alt="{{ resolved_alt }}"
         class="{{ include.class }}"
         loading="{{ loading_attr }}"
       />
@@ -74,7 +83,7 @@ Parameters:
     {% elsif include.name == 'fellowship-joyful' or include.name == 'fellowship-guitarist' %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-768w.jpg' | relative_url }}"
-        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        alt="{{ resolved_alt }}"
         class="{{ include.class }}"
         loading="{{ loading_attr }}"
       />
@@ -82,7 +91,7 @@ Parameters:
     {% elsif include.name == 'prayer-family-1' or include.name == 'prayer-family-2' or include.name == 'prayer-communal-1' or include.name == 'prayer-teaching' %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-680w.jpg' | relative_url }}"
-        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        alt="{{ resolved_alt }}"
         class="{{ include.class }}"
         loading="{{ loading_attr }}"
       />
@@ -90,14 +99,14 @@ Parameters:
     {% elsif include.name == 'fellowship-hug' or include.name == 'fellowship-mothers' or include.name == 'fellowship-kitchen' or include.name == 'fellowship-men' or include.name == 'fellowship-toddler' %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-352w.jpg' | relative_url }}"
-        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        alt="{{ resolved_alt }}"
         class="{{ include.class }}"
         loading="{{ loading_attr }}"
       />
     {% else %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-768w.jpg' | relative_url }}"
-        alt="{{ site.data.content.images.alt_text[include.alt_key] }}"
+        alt="{{ resolved_alt }}"
         class="{{ include.class }}"
         loading="{{ loading_attr }}"
       />

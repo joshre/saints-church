@@ -32,7 +32,7 @@
           {% if include.post.pastor %}
             {% include pastor-image.html class="flex-shrink-0 w-7 h-7 rounded-full" preacher=include.post.pastor %}
             <div>
-              <p class="text-sm font-normal dark:text-white/90 text-stone-700">{{ include.post.pastor | remove: "Pastor " }}</p>
+              <p class="text-sm font-normal text-stone-700 dark:text-white/90">{{ include.post.pastor | remove: "Pastor " }}</p>
             </div>
           {% endif %}
         </div>

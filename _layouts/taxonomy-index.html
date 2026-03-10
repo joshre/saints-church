@@ -66,7 +66,7 @@ layout: default
                 {% assign sp_posts = all_sermons | where: "pastor", sp %}
                 {% assign sp_latest = sp_posts | sort: "date" | reverse | first %}
                 <a href="/sermons/preachers/{{ sp_slug }}/"
-                   class="flex gap-4 items-center py-5 px-5 rounded-xl border transition-all duration-200 group bg-white/[0.04] border-white/[0.07] hover:bg-white/[0.08] hover:border-white/[0.14] hover:-translate-y-px">
+                   class="flex gap-4 items-center py-5 px-5 rounded-xl border transition-all duration-200 hover:-translate-y-px group bg-white/[0.04] border-white/[0.07] hover:bg-white/[0.08] hover:border-white/[0.14]">
                   {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" preacher=sp %}
                   <div class="min-w-0">
                     <h2 class="text-lg font-medium text-white transition-colors font-display group-hover:text-white/90" style="letter-spacing: -0.01em;">{{ sp | remove: "Pastor " }}</h2>
@@ -89,10 +89,10 @@ layout: default
                 {% assign latest = series_posts | sort: "date" | reverse | first %}
                 {% assign earliest = series_posts | sort: "date" | first %}
                 <a href="/sermons/series/{{ series_slug }}/"
-                   class="flex flex-col px-6 pt-6 pb-5 rounded-xl border transition-all duration-200 group bg-white/[0.04] border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.14] hover:-translate-y-px">
+                   class="flex flex-col px-6 pt-6 pb-5 rounded-xl border transition-all duration-200 hover:-translate-y-px group bg-white/[0.04] border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.14]">
                   <h2 class="mb-1.5 text-lg font-semibold text-white font-display" style="letter-spacing: -0.01em;">{{ s }}</h2>
-                  <p class="text-sm text-white/45 transition-colors group-hover:text-white/55">{{ series_posts.size }} sermons</p>
-                  <p class="mt-2.5 text-[0.6875rem] leading-tight tracking-wide text-white/30 uppercase">
+                  <p class="text-sm transition-colors text-white/45 group-hover:text-white/55">{{ series_posts.size }} sermons</p>
+                  <p class="mt-2.5 tracking-wide leading-tight uppercase text-[0.6875rem] text-white/30">
                     {{ earliest.date | date: "%b %Y" }}{% if earliest.date != latest.date %} – {{ latest.date | date: "%b %Y" }}{% endif %}
                   </p>
                 </a>
