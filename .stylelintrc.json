@@ -1,0 +1,23 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "at-rule-no-unknown": [true, {
+      "ignoreAtRules": ["import", "plugin", "source", "theme", "apply", "layer", "utility", "variant", "tailwind"]
+    }],
+    "function-no-unknown": null,
+    "no-descending-specificity": null,
+    "import-notation": null,
+    "alpha-value-notation": null,
+    "color-function-notation": null,
+    "hue-degree-notation": null,
+    "font-family-name-quotes": null,
+    "custom-property-empty-line-before": null,
+    "at-rule-empty-line-before": null,
+    "rule-empty-line-before": null,
+    "media-feature-range-notation": "context",
+    "keyframes-name-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      { "message": "Keyframe names must be kebab-case" }
+    ]
+  }
+}

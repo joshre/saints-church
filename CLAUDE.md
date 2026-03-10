@@ -265,6 +265,33 @@ yarn watch             # Watch mode
 bundle exec jekyll serve  # Serve locally
 ```
 
+### Linting
+All linters run automatically as a pre-commit hook. To run manually:
+```bash
+yarn lint          # Run all linters (full pipeline)
+yarn lint:types    # TypeScript strict type checking (tsc --noEmit)
+yarn lint:ts       # ESLint strict + stylistic TypeScript rules
+yarn lint:format   # Prettier formatting check
+yarn lint:css      # stylelint with opinionated rules (kebab-case keyframes, range media queries)
+yarn lint:md       # markdownlint (Markdown posts)
+yarn lint:yaml     # yamllint (_data/, _config.yml)
+yarn lint:tw       # rustywind Tailwind class order check
+yarn format        # Auto-fix Prettier formatting
+```
+
+Before committing, also run rustywind in write mode if classes are out of order:
+```bash
+rustywind --write _includes/ _layouts/ index.md beliefs.md pastor-letter.md sermons.md
+```
+
+Node 22 is required for linting (set in `.nvmrc`). Run `nvm use` to switch automatically.
+
+Linter standards enforced:
+- **TypeScript**: strict mode, noUncheckedIndexedAccess, noImplicitReturns, noUnusedLocals
+- **ESLint**: typescript-eslint strict + stylistic, explicit return types, nullish coalescing, no any
+- **CSS**: kebab-case keyframe names, modern media query range syntax (`width <= 640px`)
+- **Formatting**: Prettier with single quotes, 100 char line width
+
 ### Available Scripts (`scripts/`)
 - `transcribe.py` - Whisper-based sermon transcription
 - `sync-feed.js` - Manual podcast feed sync

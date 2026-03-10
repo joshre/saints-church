@@ -16,10 +16,13 @@ export function initTranscriptionEnhancements(): void {
   let ticking = false;
 
   function savePosition(progress: number): void {
-    localStorage.setItem(`reading-${location.pathname}`, JSON.stringify({
-      progress,
-      timestamp: Date.now(),
-    }));
+    localStorage.setItem(
+      `reading-${location.pathname}`,
+      JSON.stringify({
+        progress,
+        timestamp: Date.now(),
+      })
+    );
   }
 
   function restorePosition(): void {
@@ -72,10 +75,18 @@ export function initTranscriptionEnhancements(): void {
     if (['INPUT', 'TEXTAREA'].includes((event.target as Element).tagName)) return;
 
     const shortcuts: Record<string, () => void> = {
-      'Home': () => transcription!.scrollIntoView({ behavior: 'smooth', block: 'start' }),
-      'End': () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }),
-      'PageUp': () => window.scrollBy({ top: -window.innerHeight * CONFIG.reading.scrollRatio, behavior: 'smooth' }),
-      'PageDown': () => window.scrollBy({ top: window.innerHeight * CONFIG.reading.scrollRatio, behavior: 'smooth' }),
+      Home: () => transcription?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+      End: () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }),
+      PageUp: () =>
+        window.scrollBy({
+          top: -window.innerHeight * CONFIG.reading.scrollRatio,
+          behavior: 'smooth',
+        }),
+      PageDown: () =>
+        window.scrollBy({
+          top: window.innerHeight * CONFIG.reading.scrollRatio,
+          behavior: 'smooth',
+        }),
     };
 
     const action = shortcuts[event.key];

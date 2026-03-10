@@ -10,14 +10,31 @@
     "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload --incremental\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\"",
     "generate-icons": "node scripts/generate-icons.js",
     "update-icons": "git submodule update --remote assets/heroicons && yarn generate-icons",
-    "generate-taxonomies": "npx tsx scripts/generate-taxonomies.ts"
+    "generate-taxonomies": "npx tsx scripts/generate-taxonomies.ts",
+    "lint": "yarn lint:types && yarn lint:ts && yarn lint:format && yarn lint:css && yarn lint:md && yarn lint:yaml && yarn lint:tw",
+    "lint:types": "tsc --noEmit",
+    "lint:ts": "eslint js/**/*.ts",
+    "lint:format": "prettier --check 'js/**/*.ts'",
+    "format": "prettier --write 'js/**/*.ts'",
+    "lint:css": "stylelint '_css/**/*.css'",
+    "lint:md": "markdownlint '_posts/**/*.md' 'beliefs.md' 'pastor-letter.md' 'sermons.md' --ignore node_modules",
+    "lint:yaml": "yamllint _data/ _config.yml",
+    "lint:tw": "rustywind --check-formatted _includes/ _layouts/ index.md beliefs.md pastor-letter.md sermons.md"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/cli": "^4.1.12",
     "@tailwindcss/typography": "^0.5.16",
     "concurrently": "^9.2.0",
+    "eslint": "^10.0.3",
     "estrella": "^1.4.1",
-    "tailwindcss": "^4.1.12"
+    "markdownlint-cli": "^0.48.0",
+    "prettier": "^3.8.1",
+    "stylelint": "^17.4.0",
+    "stylelint-config-standard": "^40.0.0",
+    "tailwindcss": "^4.1.12",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0"
   },
   "dependencies": {
     "@tailwindplus/elements": "^1.0.9",

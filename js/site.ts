@@ -14,6 +14,8 @@ function initAll(): void {
   initCatechism();
 }
 
-document.readyState === 'loading'
-  ? document.addEventListener('DOMContentLoaded', initAll)
-  : initAll();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAll);
+} else {
+  initAll();
+}

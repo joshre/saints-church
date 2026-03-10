@@ -66,7 +66,7 @@
 }
 
 
-@keyframes fadeInUp {
+@keyframes fade-in-up {
   0% {
     opacity: 0;
     transform: translate3d(0, var(--translate-y), 0);
@@ -80,7 +80,7 @@
   }
 }
 
-@keyframes slideUp {
+@keyframes slide-up {
   0% {
     opacity: 0;
     transform: translate3d(0, 1.5rem, 0) scale(0.95);
@@ -91,7 +91,7 @@
   }
 }
 
-@keyframes scaleIn {
+@keyframes scale-in {
   0% {
     opacity: 0;
     transform: scale(0.9);
@@ -122,7 +122,7 @@
   }
 }
 
-@keyframes fadeInRight {
+@keyframes fade-in-right {
   0% {
     opacity: 0;
     transform: translate3d(var(--translate-x), 0, 0);
@@ -136,7 +136,7 @@
   }
 }
 
-@keyframes fadeInUpHero {
+@keyframes fade-in-up-hero {
   from {
     opacity: 0;
     transform: translate3d(0, 8px, 0);
@@ -147,7 +147,7 @@
   }
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -156,7 +156,7 @@
   }
 }
 
-@keyframes fadeInHero {
+@keyframes fade-in-hero {
   from {
     opacity: 0;
   }
@@ -170,7 +170,8 @@
   --duration: 0.9s;
   --translate-y: 1rem;
   @apply opacity-0;
-  animation-name: fadeInUp;
+
+  animation-name: fade-in-up;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
   animation-delay: var(--delay);
@@ -188,14 +189,15 @@
   --duration: 0.9s;
   --translate-y: 1rem;
   @apply opacity-0;
-  animation-name: fadeInUp;
+
+  animation-name: fade-in-up;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
   animation-delay: var(--delay);
   animation-iteration-count: 1;
   animation-fill-mode: both;
   animation-play-state: paused;
-  text-rendering: geometricPrecision;
+  text-rendering: geometricprecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -203,7 +205,8 @@
 .animate-children .child-x {
 
   --translate-x: 1rem;
-  animation-name: fadeInRight;
+
+  animation-name: fade-in-right;
   animation-timing-function: var(--smooth-bezier);
 }
 
@@ -215,7 +218,8 @@
   --delay: 0s;
   --duration: 0.9s;
   @apply opacity-0;
-  animation-name: fadeIn;
+
+  animation-name: fade-in;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
   animation-delay: var(--delay);
@@ -232,7 +236,8 @@
   --delay: 0s;
   --duration: 0.9s;
   @apply opacity-0;
-  animation-name: fadeInHero;
+
+  animation-name: fade-in-hero;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
   animation-delay: var(--delay);
@@ -244,7 +249,8 @@
   --delay: 0s;
   --duration: 0.9s;
   @apply opacity-0;
-  animation-name: fadeInUpHero;
+
+  animation-name: fade-in-up-hero;
   animation-duration: var(--duration);
   animation-timing-function: var(--smooth-bezier);
   animation-delay: var(--delay);
@@ -257,6 +263,7 @@ button:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible {
   @apply outline-2 outline-transparent outline-offset-2 transition-shadow duration-200;
+
   box-shadow: 0 0 0 2px oklch(49% 0.22 265 / 0.6);
   transition-timing-function: var(--smooth-bezier);
 }
@@ -286,11 +293,13 @@ a:focus-visible,
   button:active,
   [role="button"]:active {
     @apply scale-95 transition-transform duration-150;
+
     transition-timing-function: var(--smooth-bezier);
   }
 
   .sermon-card:active {
     @apply scale-98 transition-transform duration-150;
+
     transition-timing-function: var(--smooth-bezier);
   }
 
@@ -317,6 +326,7 @@ a:focus-visible,
   .animate-slide-up,
   .animate-scale-in {
     @apply transform-gpu;
+
     backface-visibility: hidden;
     perspective: 1000px;
   }
@@ -373,18 +383,20 @@ a:focus-visible,
 /* Refined sermon card styles with perfect proportions and enhanced interactions */
 .sermon-card {
   @apply relative h-full w-full rounded-xl bg-white p-7 transition-all duration-300 ease-out dark:bg-stone-900;
-  shadow: 0px 0px 0px 1px rgba(9,9,11,0.07), 0px 2px 2px 0px rgba(9,9,11,0.05);
+
+  box-shadow: 0 0 0 1px rgb(9 9 11 / 0.07), 0 2px 2px 0 rgb(9 9 11 / 0.05);
 }
 
 .sermon-card::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-xl dark:content-[''];
+
   inset: -1px;
-  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
+  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
 }
 
 @media (prefers-color-scheme: dark) {
   .sermon-card {
-    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
   }
 }
 
@@ -399,6 +411,7 @@ a:focus-visible,
 
 .sermon-card-title {
   @apply font-display font-bold text-stone-900 dark:text-white text-lg leading-tight mb-5 line-clamp-3;
+
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.3;
@@ -406,12 +419,14 @@ a:focus-visible,
 
 .sermon-scripture {
   @apply text-sm font-bold text-saints-600 dark:text-saints-400 mb-6 tracking-wide;
+
   font-weight: 600;
   letter-spacing: 0.025em;
 }
 
 .sermon-meta {
   @apply text-xs text-stone-500 dark:text-stone-400 font-semibold mt-auto;
+
   font-weight: 600;
   letter-spacing: 0.025em;
 }
@@ -456,7 +471,8 @@ a:focus-visible,
   --delay: 0s;
   --duration: 0.6s;
   @apply opacity-0;
-  animation-name: slideUp;
+
+  animation-name: slide-up;
   animation-duration: var(--duration);
   animation-timing-function: var(--ease-gentle);
   animation-delay: var(--delay);
@@ -473,7 +489,8 @@ a:focus-visible,
   --delay: 0s;
   --duration: 0.5s;
   @apply opacity-0;
-  animation-name: scaleIn;
+
+  animation-name: scale-in;
   animation-duration: var(--duration);
   animation-timing-function: var(--ease-spring);
   animation-delay: var(--delay);
@@ -502,6 +519,7 @@ a:focus-visible,
 .hover-shimmer::before {
   content: '';
   @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10 -translate-x-full transition-transform duration-[600ms] ease-out;
+
   background-size: 200% 100%;
 }
 
@@ -514,25 +532,9 @@ a:focus-visible,
   @apply transition-all duration-300 ease-out;
 }
 
-.interactive-element:hover {
-
-}
-
-.interactive-element:active {
-
-}
-
 /* Audio player specific animations */
 .audio-control-btn {
   @apply transition-all duration-300 ease-out;
-}
-
-.audio-control-btn:hover {
-
-}
-
-.audio-control-btn:active {
-
 }
 
 /* Progress bar enhancements */
@@ -543,6 +545,7 @@ a:focus-visible,
 .progress-enhance::before {
   content: '';
   @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition-opacity duration-300 ease-out;
+
   animation: shimmer 2s infinite;
 }
 
@@ -567,18 +570,20 @@ a:focus-visible,
 
 .sermon-content {
   @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-8 dark:bg-stone-900;
-  box-shadow: 0px 0px 0px 1px rgba(9,9,11,0.07), 0px 2px 2px 0px rgba(9,9,11,0.05);
+
+  box-shadow: 0 0 0 1px rgb(9,9,11,0.07), 0 2px 2px 0 rgb(9,9,11,0.05);
 }
 
 .sermon-content::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+
   inset: -1px;
-  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
+  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
 }
 
 @media (prefers-color-scheme: dark) {
   .sermon-content {
-    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
   }
 }
 
@@ -596,44 +601,48 @@ a:focus-visible,
 
 .featured-sermon-container {
   @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-16 dark:bg-stone-900;
-  box-shadow: 0px 0px 0px 1px rgba(9,9,11,0.07), 0px 2px 2px 0px rgba(9,9,11,0.05);
+
+  box-shadow: 0 0 0 1px rgb(9,9,11,0.07), 0 2px 2px 0 rgb(9,9,11,0.05);
 }
 
 .featured-sermon-container::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+
   inset: -1px;
-  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
+  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
 }
 
 @media (prefers-color-scheme: dark) {
   .featured-sermon-container {
-    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
   }
 }
 
 /* Page Content Card (beliefs, pastor-letter) */
 .page-content-card {
   @apply relative bg-white dark:bg-stone-900 rounded-2xl;
-  box-shadow: 0px 0px 0px 1px rgba(9,9,11,0.05), 0px 2px 4px 0px rgba(9,9,11,0.04), 0px 8px 24px -4px rgba(9,9,11,0.06);
+
+  box-shadow: 0 0 0 1px rgb(9,9,11,0.05), 0 2px 4px 0 rgb(9,9,11,0.04), 0 8px 24px -4px rgb(9,9,11,0.06);
 }
 
 .page-content-card::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+
   inset: -1px;
-  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.20), 0px 1px 0px 0px rgba(255,255,255,0.06) inset;
+  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
 }
 
 @media (prefers-color-scheme: dark) {
   .page-content-card {
-    box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
   }
 }
 
 /* Audio Player Styles */
 input.audio-scrubber {
   @apply bg-transparent cursor-pointer;
+
   appearance: none;
-  -webkit-appearance: none;
 }
 
 /* Hide the default track - we use custom background */
@@ -652,14 +661,15 @@ input.audio-scrubber::-moz-range-progress {
 /* Thumb/handle styling - always visible and properly centered */
 input.audio-scrubber::-webkit-slider-thumb {
   @apply size-4 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
+
   appearance: none;
-  -webkit-appearance: none;
   background: oklch(58.2% 0.054 129.1); /* saints-500 */
   margin-top: -5px; /* Center vertically relative to track */
 }
 
 input.audio-scrubber::-moz-range-thumb {
   @apply size-4 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
+
   background: oklch(58.2% 0.054 129.1); /* saints-500 */
 }
 
@@ -682,6 +692,7 @@ input.audio-scrubber:active::-moz-range-thumb {
 }
 
 /* Sermon Card Background Variations */
+
 /* Use nth-child on the parent containers to create different rotations */
 
 /* Card 1, 5, 9, etc. - subtle positive rotation */
@@ -750,6 +761,8 @@ input.audio-scrubber:active::-moz-range-thumb {
 .prose.prose-stone[itemprop="articleBody"] {
   /* Long-form reading optimizations */
   @apply leading-relaxed;
+
+  position: relative;
   line-height: 1.7;
   font-size: 1.0625rem; /* 17px - optimal reading size */
   max-width: none;
@@ -757,26 +770,26 @@ input.audio-scrubber:active::-moz-range-thumb {
 
 .prose.prose-stone[itemprop="articleBody"] p {
   @apply mb-6; /* More breathing room between paragraphs */
+
   text-align: left;
   hanging-punctuation: first last;
 }
 
 .prose.prose-stone[itemprop="articleBody"] p:first-of-type {
   @apply text-lg font-medium text-stone-800 dark:text-stone-200;
+
   line-height: 1.6;
 }
 
 /* Auto-detect and style timestamp/speaker patterns like "[12:34]" or "Pastor:" */
-.prose.prose-stone[itemprop="articleBody"] strong:first-child:is(
-  [data-timestamp],
-  :has-text(":")
-) {
+.prose.prose-stone[itemprop="articleBody"] strong:first-child:is([data-timestamp]) {
   @apply text-saints-600 dark:text-saints-400 font-semibold block mb-2;
+
   font-size: 0.9375rem;
 }
 
 /* Enhanced readability on mobile */
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .prose.prose-stone[itemprop="articleBody"] {
     font-size: 1rem;
     line-height: 1.65;
@@ -795,16 +808,12 @@ input.audio-scrubber:active::-moz-range-thumb {
 /* Auto-style common transcription patterns */
 .prose.prose-stone[itemprop="articleBody"] em:first-child {
   @apply text-saints-600 dark:text-saints-400 text-sm font-medium;
+
   display: inline-block;
   margin-right: 0.5rem;
 }
 
-/* Progressive enhancement for better reading experience */
-.prose.prose-stone[itemprop="articleBody"] {
-  position: relative;
-  /* Add subtle reading indicator */
-}
-
+/* Progressive enhancement - reading indicator */
 .prose.prose-stone[itemprop="articleBody"]::before {
   content: '';
   position: absolute;
@@ -838,7 +847,7 @@ input.audio-scrubber:active::-moz-range-thumb {
 }
 
 /* Responsive text scaling for optimal reading */
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .prose.prose-stone[itemprop="articleBody"] {
     font-size: 1.125rem; /* 18px on larger screens */
     line-height: 1.75;

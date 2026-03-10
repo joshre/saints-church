@@ -15,7 +15,7 @@ function getCurrentQuestionNumber(): number {
   const diffWeeks = Math.round((currentSundayUTC - anchorUTC) / MS_PER_WEEK);
   const total = CONFIG.catechism.totalQuestions;
 
-  return ((diffWeeks % total) + total) % total + 1;
+  return (((diffWeeks % total) + total) % total) + 1;
 }
 
 export function initCatechism(): void {
@@ -25,7 +25,7 @@ export function initCatechism(): void {
   const questionNumber = getCurrentQuestionNumber();
 
   // Hide all questions except the current week's
-  container.querySelectorAll<HTMLElement>('[data-catechism]').forEach(item => {
+  container.querySelectorAll<HTMLElement>('[data-catechism]').forEach((item) => {
     if (Number(item.dataset.catechism) !== questionNumber) {
       item.hidden = true;
     }

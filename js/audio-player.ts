@@ -10,20 +10,20 @@ interface PlayerState {
 
 class SermonPlayer {
   private container: HTMLElement;
-  private audio: HTMLAudioElement;
+  private audio!: HTMLAudioElement;
   private currentSpeedIndex = 0;
   private savedState: PlayerState | null = null;
-  private playerId: string;
+  private playerId!: string;
 
-  private playPauseBtns: NodeListOf<HTMLElement>;
-  private currentTimeElements: NodeListOf<HTMLElement>;
-  private durationElements: NodeListOf<HTMLElement>;
-  private scrubberElements: NodeListOf<HTMLInputElement>;
-  private progressFillElements: NodeListOf<HTMLElement>;
-  private skipBackBtns: NodeListOf<HTMLElement>;
-  private skipForwardBtns: NodeListOf<HTMLElement>;
-  private speedBtns: NodeListOf<HTMLElement>;
-  private speedTextElements: NodeListOf<HTMLElement>;
+  private playPauseBtns!: NodeListOf<HTMLElement>;
+  private currentTimeElements!: NodeListOf<HTMLElement>;
+  private durationElements!: NodeListOf<HTMLElement>;
+  private scrubberElements!: NodeListOf<HTMLInputElement>;
+  private progressFillElements!: NodeListOf<HTMLElement>;
+  private skipBackBtns!: NodeListOf<HTMLElement>;
+  private skipForwardBtns!: NodeListOf<HTMLElement>;
+  private speedBtns!: NodeListOf<HTMLElement>;
+  private speedTextElements!: NodeListOf<HTMLElement>;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -42,25 +42,27 @@ class SermonPlayer {
     this.speedBtns = container.querySelectorAll('.speed-toggle');
     this.speedTextElements = container.querySelectorAll('.speed-text');
 
-    this.playerId = parseUrl(container.dataset.audioUrl || this.audio.src);
+    this.playerId = parseUrl(container.dataset.audioUrl ?? this.audio.src);
     this.setupEventListeners();
     this.loadState();
   }
 
   private setupEventListeners(): void {
-    this.playPauseBtns.forEach(el => el.addEventListener('click', () => this.togglePlayPause()));
-    this.scrubberElements.forEach(el => el.addEventListener('input', (e) => this.seek(e)));
-    this.scrubberElements.forEach(el => el.addEventListener('change', (e) => this.seek(e)));
-    this.skipBackBtns.forEach(el => el.addEventListener('click', () => this.skip(CONFIG.skip.backward)));
-    this.skipForwardBtns.forEach(el => el.addEventListener('click', () => this.skip(CONFIG.skip.forward)));
-    this.speedBtns.forEach(el => el.addEventListener('click', () => this.toggleSpeed()));
+    this.playPauseBtns.forEach((el) => el.addEventListener('click', () => this.togglePlayPause()));
+    this.scrubberElements.forEach((el) => el.addEventListener('input', (e) => this.seek(e)));
+    this.scrubberElements.forEach((el) => el.addEventListener('change', (e) => this.seek(e)));
+    this.skipBackBtns.forEach((el) =>
+      el.addEventListener('click', () => this.skip(CONFIG.skip.backward))
+    );
+    this.skipForwardBtns.forEach((el) =>
+      el.addEventListener('click', () => this.skip(CONFIG.skip.forward))
+    );
+    this.speedBtns.forEach((el) => el.addEventListener('click', () => this.toggleSpeed()));
 
-    if (this.audio) {
-      this.audio.addEventListener('loadedmetadata', () => this.onLoadedMetadata());
-      this.audio.addEventListener('timeupdate', () => this.onTimeUpdate());
-      this.audio.addEventListener('ended', () => this.onEnded());
-      this.audio.addEventListener('error', () => this.onError());
-    }
+    this.audio.addEventListener('loadedmetadata', () => this.onLoadedMetadata());
+    this.audio.addEventListener('timeupdate', () => this.onTimeUpdate());
+    this.audio.addEventListener('ended', () => this.onEnded());
+    this.audio.addEventListener('error', () => this.onError());
 
     this.container.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboard(e));
 
@@ -70,7 +72,11 @@ class SermonPlayer {
   }
 
   private togglePlayPause(): void {
-    this.audio.paused ? this.play() : this.pause();
+    if (this.audio.paused) {
+      this.play();
+    } else {
+      this.pause();
+    }
   }
 
   private async play(): Promise<void> {
@@ -102,20 +108,23 @@ class SermonPlayer {
 
   private skip(seconds: number): void {
     if (this.audio.duration) {
-      this.audio.currentTime = Math.max(0, Math.min(this.audio.currentTime + seconds, this.audio.duration));
+      this.audio.currentTime = Math.max(
+        0,
+        Math.min(this.audio.currentTime + seconds, this.audio.duration)
+      );
       this.saveState();
     }
   }
 
   private updateSpeedText(speed: number): void {
-    this.speedTextElements.forEach(el => {
+    this.speedTextElements.forEach((el) => {
       el.textContent = speed === 1 ? '1\u00d7' : `${speed}\u00d7`;
     });
   }
 
   private toggleSpeed(): void {
     this.currentSpeedIndex = (this.currentSpeedIndex + 1) % CONFIG.speeds.length;
-    const speed = CONFIG.speeds[this.currentSpeedIndex];
+    const speed = CONFIG.speeds[this.currentSpeedIndex] ?? 1;
     this.audio.playbackRate = speed;
     this.updateSpeedText(speed);
     this.saveState();
@@ -123,7 +132,7 @@ class SermonPlayer {
 
   private updatePlayPauseButton(state: 'playing' | 'paused'): void {
     const isPlaying = state === 'playing';
-    this.playPauseBtns.forEach(btn => {
+    this.playPauseBtns.forEach((btn) => {
       const playIcon = btn.querySelector('.play-icon');
       const pauseIcon = btn.querySelector('.pause-icon');
 
@@ -139,23 +148,23 @@ class SermonPlayer {
     if (!this.audio.duration) return;
     const percent = (this.audio.currentTime / this.audio.duration) * 100;
 
-    this.progressFillElements.forEach(fill => {
+    this.progressFillElements.forEach((fill) => {
       fill.style.width = `${percent}%`;
     });
 
-    this.scrubberElements.forEach(scrubber => {
+    this.scrubberElements.forEach((scrubber) => {
       scrubber.value = String(percent);
       scrubber.setAttribute('aria-valuenow', String(Math.round(percent)));
     });
   }
 
   private updateTime(): void {
-    this.currentTimeElements.forEach(el => {
+    this.currentTimeElements.forEach((el) => {
       el.textContent = formatTime(this.audio.currentTime);
     });
 
     if (this.audio.duration) {
-      this.durationElements.forEach(el => {
+      this.durationElements.forEach((el) => {
         el.textContent = formatTime(this.audio.duration);
       });
     }
@@ -210,11 +219,12 @@ class SermonPlayer {
     if (this.savedState.playbackRate) {
       this.audio.playbackRate = this.savedState.playbackRate;
       this.currentSpeedIndex = this.savedState.speedIndex || 0;
-      this.updateSpeedText(CONFIG.speeds[this.currentSpeedIndex]);
+      this.updateSpeedText(CONFIG.speeds[this.currentSpeedIndex] ?? 1);
     }
 
-    const isRecent = this.savedState.lastPlayed &&
-      (Date.now() - this.savedState.lastPlayed) < CONFIG.localStorage.audioTTL;
+    const isRecent =
+      this.savedState.lastPlayed &&
+      Date.now() - this.savedState.lastPlayed < CONFIG.localStorage.audioTTL;
 
     if (isRecent && this.savedState.currentTime > 5) {
       this.audio.currentTime = this.savedState.currentTime;
@@ -228,8 +238,8 @@ class SermonPlayer {
 
     const keyActions: Record<string, () => void> = {
       ' ': () => this.togglePlayPause(),
-      'ArrowLeft': () => this.skip(event.shiftKey ? CONFIG.skip.shiftBackward : CONFIG.skip.backward),
-      'ArrowRight': () => this.skip(event.shiftKey ? CONFIG.skip.shiftForward : CONFIG.skip.forward),
+      ArrowLeft: () => this.skip(event.shiftKey ? CONFIG.skip.shiftBackward : CONFIG.skip.backward),
+      ArrowRight: () => this.skip(event.shiftKey ? CONFIG.skip.shiftForward : CONFIG.skip.forward),
     };
 
     const action = keyActions[event.key];
@@ -240,23 +250,41 @@ class SermonPlayer {
   }
 
   private setupMediaSession(): void {
-    const title = this.container.querySelector('.player-header h3')?.textContent || 'Sermon';
-    const scripture = this.container.querySelector('.player-header p')?.textContent || '';
+    const title = this.container.querySelector('.player-header h3')?.textContent ?? 'Sermon';
+    const scripture = this.container.querySelector('.player-header p')?.textContent ?? '';
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title,
       artist: 'Saints Church',
       album: scripture,
-      artwork: [
-        { src: '/assets/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-      ],
+      artwork: [{ src: '/assets/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     });
 
-    const actions: Array<[MediaSessionAction, () => void]> = [
-      ['play', () => this.play()],
-      ['pause', () => this.pause()],
-      ['seekbackward', () => this.skip(CONFIG.skip.backward)],
-      ['seekforward', () => this.skip(CONFIG.skip.forward)],
+    const actions: [MediaSessionAction, () => void][] = [
+      [
+        'play',
+        (): void => {
+          void this.play();
+        },
+      ],
+      [
+        'pause',
+        (): void => {
+          this.pause();
+        },
+      ],
+      [
+        'seekbackward',
+        (): void => {
+          this.skip(CONFIG.skip.backward);
+        },
+      ],
+      [
+        'seekforward',
+        (): void => {
+          this.skip(CONFIG.skip.forward);
+        },
+      ],
     ];
     for (const [action, handler] of actions) {
       navigator.mediaSession.setActionHandler(action, handler);
@@ -266,5 +294,5 @@ class SermonPlayer {
 
 export function initAudioPlayers(): void {
   const players = document.querySelectorAll<HTMLElement>('.sermon-player');
-  players.forEach(player => new SermonPlayer(player));
+  players.forEach((player) => new SermonPlayer(player));
 }

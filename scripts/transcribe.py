@@ -20,9 +20,24 @@ from dataclasses import dataclass
 # Import description formatter
 from utils import format_description
 
+# Load .env from project root
+def _load_env():
+    env_file = Path(__file__).parent.parent / '.env'
+    if env_file.exists():
+        with open(env_file) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    os.environ.setdefault(key.strip(), value.strip().strip('"\''))
+
+_load_env()
+
 # ESV API configuration
 ESV_API_URL = "https://api.esv.org/v3/passage/text/"
 ESV_API_KEY = os.environ.get("ESV_API_KEY", "")
+
+
 
 # Whisper.cpp configuration
 WHISPER_CLI = "/opt/homebrew/bin/whisper-cli"
@@ -212,35 +227,44 @@ class WhisperCppTranscriptionProcessor:
                 audio_file = wav_file
 
             # Build contextual prompt
-            prompt_parts = [f"This is a sermon by Pastor Nate Ellis on {sermon.title}."]
+            # Whisper large-v3 allows ~224 tokens (~170 words) for the initial prompt.
+            # Priority: proper nouns > theological vocab > scripture > description.
+            # --carry-initial-prompt repeats this context on every 30s chunk.
+            prompt_parts = [f"Sermon by Pastor Nate Ellis, Saints Church Knoxville."]
 
-            # Add scripture text if available
+            # Scripture text from ESV API
             scripture_ref = sermon.frontmatter.get('scripture', '')
             if scripture_ref:
                 esv_text = self.fetch_esv_scripture(scripture_ref)
                 if esv_text:
-                    # Include first 500 chars of scripture
-                    scripture_sample = esv_text[:500]
-                    prompt_parts.append(f"Scripture passage ({scripture_ref}): {scripture_sample}")
-
-            # Add sermon description
-            description = sermon.frontmatter.get('description', '')
-            if description:
-                import html
-                clean_description = re.sub(r'<[^>]+>', '', html.unescape(description))
-                prompt_parts.append(clean_description[:200])
+                    prompt_parts.append(f"{scripture_ref}: {esv_text[:400]}")
+                else:
+                    prompt_parts.append(f"Scripture: {scripture_ref}.")
 
             initial_prompt = " ".join(prompt_parts)
+
+            if ESV_API_KEY:
+                print(f"📖 ESV scripture context: active")
+            else:
+                print(f"⚠️  ESV_API_KEY not set — scripture text omitted from prompt (set in .env)")
 
             # Create output path for JSON
             output_json = self.temp_dir / f"{sermon.date}_transcript.json"
 
-            # Call whisper-cli
+            # Call whisper-cli with quality-optimized flags:
+            # --carry-initial-prompt: repeat context on every 30s chunk (critical for long sermons)
+            # --beam-size 8: more exhaustive beam search
+            # --best-of 8: more candidates per decode step
+            # --suppress-nst: suppress non-speech tokens ([BLANK_AUDIO] etc.)
             cmd = [
                 WHISPER_CLI,
                 "-m", WHISPER_MODEL,
                 "-l", "en",
                 "--prompt", initial_prompt,
+                "--carry-initial-prompt",
+                "--beam-size", "8",
+                "--best-of", "8",
+                "--suppress-nst",
                 "-ojf",  # Output JSON full
                 "-of", str(output_json.with_suffix('')),  # Output file (without extension)
                 str(audio_file)
