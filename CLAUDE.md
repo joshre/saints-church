@@ -247,13 +247,13 @@ The site uses automated workflows in `.github/workflows/`:
 - Provides automated code review feedback
 
 ### Sermon Transcription Workflow
-Sermons can be transcribed using Whisper large-v3 locally:
-1. Script location: `scripts/transcribe.py`
-2. Uses WhisperX for high-quality transcription
+Sermons can be transcribed using whisper.cpp locally:
+1. Binary: `/opt/homebrew/bin/whisper-cli`
+2. Model: `/opt/homebrew/share/whisper-cpp/ggml-large-v3-q5_0.bin`
 3. Audio files downloaded and processed locally
 4. Transcriptions added to sermon markdown files under `## Transcription` heading
 5. Sermon layout automatically detects and displays transcriptions in collapsible section
-6. Python virtual environment in `whisper_env/` or `venv/`
+6. ~7.5 minutes for a 40-min sermon on M-series Mac with Metal GPU
 
 ## Development Notes
 
