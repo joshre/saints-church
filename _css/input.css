@@ -51,9 +51,9 @@
   --color-wallpaper: oklch(43.5% 0.04 140);          /* main bg */
   --color-wallpaper-light: oklch(69.2% 0.04 138);    /* header gradient start */
   --color-wallpaper-footer: oklch(28.8% 0.03 140);   /* footer bg */
-  --color-wallpaper-dark: oklch(24.5% 0.04 140);     /* dark mode bg */
-  --color-wallpaper-dark-light: oklch(27.5% 0.03 140); /* dark mode header */
-  --color-wallpaper-dark-footer: oklch(18.5% 0.03 140); /* dark mode footer */
+  --color-wallpaper-dark: oklch(24.5% 0.01 140);     /* dark mode bg */
+  --color-wallpaper-dark-light: oklch(27.5% 0.01 140); /* dark mode header */
+  --color-wallpaper-dark-footer: oklch(18.5% 0.01 140); /* dark mode footer */
 
   --smooth-bezier: cubic-bezier(0.4, 0.01, 0.165, 0.99);
   --ease-smooth: cubic-bezier(0.4, 0.01, 0.165, 0.99);
@@ -565,7 +565,7 @@ a:focus-visible,
 
 /* Sermon page specific styles */
 .sermon-page-bg {
-  @apply bg-saints-100 dark:bg-stone-900 min-h-screen max-w-4xl mx-auto px-6 py-12 sm:py-16;
+  @apply bg-saints-100 dark:bg-zinc-950 min-h-screen max-w-4xl mx-auto px-6 py-12 sm:py-16;
 }
 
 .sermon-content {
@@ -592,7 +592,7 @@ a:focus-visible,
 }
 
 .sermons-index-bg {
-  @apply bg-saints-100 dark:bg-stone-900 min-h-screen;
+  @apply bg-saints-100 dark:bg-zinc-950 min-h-screen;
 }
 
 .sermons-grid {
