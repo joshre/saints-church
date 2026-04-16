@@ -1,5 +1,11 @@
 [
   {
+    "guid": "bced0328-14ad-4645-a6d2-993c80da832e",
+    "title": "Acts 23",
+    "filename": "2026-04-12-acts-23.md",
+    "processed_at": "2026-04-16T13:54:55.000Z"
+  },
+  {
     "guid": "79ffc36a-8294-49ea-9088-07b7b21ec8ca",
     "title": "Acts 1:1-11",
     "filename": "2025-09-28-acts-11-11.md",
@@ -667,7 +673,7 @@
   {
     "guid": "32f25ae7-7d8b-4c07-a821-c340066158a6",
     "title": "Acts 19",
-    "filename": "2026-03-22-acts-19.md",
+    "filename": "2026-03-15-acts-19.md",
     "content_hash": "515c93a379ceb7c7",
     "processed_at": "2026-03-29T09:41:50.003Z"
   }
