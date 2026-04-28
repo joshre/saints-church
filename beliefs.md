@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Our Beliefs"
+title: "1689 Confession & Reformed Baptist Beliefs"
 description: "Our Reformed Baptist beliefs and doctrinal distinctives based on the London Baptist Confession of 1689. Learn what Saints Church in Knoxville, TN believes about Scripture, salvation, baptism, and church life."
 permalink: /beliefs/
 data_key: beliefs
