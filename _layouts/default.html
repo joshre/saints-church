@@ -7,7 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Primary Meta Tags -->
-    {% if page.title and page.title != 'Home' %}{% assign page_title = page.title | append: ' - ' | append: site.title %}{% else %}{% assign page_title = site.title | append: ' (1689)' %}{% endif %}
+    {% if page.title and page.title != 'Home' %}
+      {% if page.layout == 'sermon' and page.series and page.series != page.title %}
+        {% assign page_title = page.title | append: ' (' | append: page.series | append: ') | ' | append: site.church.name %}
+      {% else %}
+        {% assign page_title = page.title | append: ' | ' | append: site.church.name %}
+      {% endif %}
+    {% else %}
+      {% assign page_title = site.title | append: ' (1689)' %}
+    {% endif %}
     <title itemprop="name">{{ page_title }}</title>
     <meta name="title" content="{{ page_title }}">
     <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" itemprop="description">
@@ -78,6 +86,8 @@
       "description": "{{ site.description }}",
       "url": "{{ site.url }}",
       "email": "{{ site.email }}",
+      {% if site.church.phone and site.church.phone != "(865) 555-0123" %}"telephone": "{{ site.church.phone }}",
+      {% endif %}"priceRange": "Free",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "{{ site.church.address.street }}",
@@ -131,7 +141,7 @@
     {% endif %}
 
     <!-- Enhanced schema for sermons listing page -->
-    {% if page.title == "Sermons" and page.layout == "default" %}
+    {% if page.url == "/sermons/" and page.layout == "default" %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
