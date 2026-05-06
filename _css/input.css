@@ -352,6 +352,18 @@ a:focus-visible,
   }
 }
 
+@media (scripting: none) {
+  .animate-reveal,
+  .animate-fade-in,
+  .animate-hero-fade,
+  .animate-hero-up,
+  .animate-children .child,
+  .animate-children .child-x {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .will-animate,
   .hover-lift,
