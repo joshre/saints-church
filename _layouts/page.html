@@ -37,7 +37,7 @@ layout: default
         <!-- White content card floating up into the header -->
         <article class="-mt-10 page-content-card" itemscope itemtype="https://schema.org/Article">
           <!-- Content -->
-          <div class="px-8 pt-14 pb-10 sm:px-12 lg:px-16 animate-reveal">
+          <div class="px-8 pt-14 pb-10 sm:px-12 lg:px-16">
             <div class="mx-auto {% if page.content_width == 'wide' %}max-w-3xl{% else %}max-w-2xl{% endif %}">
               <div class="{{ page.prose_class | default: 'prose prose-lg prose-zinc dark:prose-invert max-w-none' }}" itemprop="articleBody">
                 {{ content_data.content_html }}
