@@ -4,4 +4,73 @@ layout: null
 User-agent: *
 Allow: /
 
+# Policy:
+# - Search and on-demand AI retrieval/citation bots: allowed
+# - Training crawlers (corpus builders): disallowed
+#
+# Per-bot User-agent groups override the User-agent: * group entirely (RFC).
+
+# --- Training-only crawlers ---
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: AI2Bot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+# --- Search and on-demand retrieval crawlers ---
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+# Aspirational/experimental signal — not yet honored by any crawler.
+# Documented here so operator intent (allow citation, disallow training) is explicit.
+# See https://contentsignal.org/ for the emerging proposal.
+Content-Signal: search=yes, ai-train=no, ai-input=yes
+
 Sitemap: {{ site.url }}/sitemap.xml

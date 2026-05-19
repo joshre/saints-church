@@ -1,0 +1,75 @@
+<!-- Baseline JSON-LD @graph: Church + WebSite (emitted on every page) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Church", "PlaceOfWorship"],
+      "@id": "{{ site.url }}/#org",
+      "name": "{{ site.church.name }}",
+      "alternateName": "Saints Church Knoxville",
+      "description": "{{ site.description }}",
+      "url": "{{ site.url }}",
+      "email": "{{ site.email }}",
+      {% if site.church.phone and site.church.phone != "(865) 555-0123" %}"telephone": "{{ site.church.phone }}",
+      {% endif %}"address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ site.church.address.street }}",
+        "addressLocality": "{{ site.church.address.city }}",
+        "addressRegion": "{{ site.church.address.state }}",
+        "postalCode": "{{ site.church.address.zip }}",
+        "addressCountry": "{{ site.church.address.country }}"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": {{ site.data.content.seo.coordinates.lat }},
+        "longitude": {{ site.data.content.seo.coordinates.lng }}
+      },
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "{{ site.url }}/#logo",
+        "url": {{ site.data.content.seo.meta.social_image | absolute_url | jsonify }},
+        "width": {{ site.data.content.seo.meta.social_image_width }},
+        "height": {{ site.data.content.seo.meta.social_image_height }}
+      },
+      "denomination": "{{ site.church.denomination }}",
+      "serviceType": "{{ site.data.content.seo.service_type }}",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "09:30",
+        "closes": "11:30"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Knoxville",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Tennessee"
+        }
+      },
+      "knowsAbout": [
+        "Reformed Baptist theology",
+        "1689 London Baptist Confession of Faith",
+        "Expository preaching",
+        "Confessional Baptist doctrine"
+      ],
+      "sameAs": [
+        "{{ site.podcast.platforms.apple }}",
+        "{{ site.podcast.platforms.spotify }}"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}/#website",
+      "url": "{{ site.url }}",
+      "name": "{{ site.church.name }}",
+      "description": "{{ site.description }}",
+      "publisher": {
+        "@id": "{{ site.url }}/#org"
+      },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>

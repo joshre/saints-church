@@ -1,0 +1,76 @@
+<!-- Prayer Gathering JSON-LD @graph: Event + WebPage + BreadcrumbList -->
+{% assign pg_webpage_id = page.url | absolute_url | append: '#webpage' %}
+{% assign pg_event_id = page.url | absolute_url | append: '#event' %}
+{% assign pg_breadcrumb_id = page.url | absolute_url | append: '#breadcrumb' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": {{ pg_webpage_id | jsonify }},
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": {{ page.title | jsonify }},
+      "description": {{ page.description | default: page.theme | default: page.title | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#org" },
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "Event",
+      "@id": {{ pg_event_id | jsonify }},
+      "name": {{ page.title | jsonify }},
+      {% if page.theme %}"description": {{ page.theme | prepend: 'Monthly prayer gathering theme: ' | jsonify }},
+      {% endif %}"startDate": {{ page.date | date: '%Y-%m-%d' | jsonify }},
+      "endDate": {{ page.date | date: '%Y-%m-%d' | jsonify }},
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "{{ site.church.name }}",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "{{ site.church.address.street }}",
+          "addressLocality": "{{ site.church.address.city }}",
+          "addressRegion": "{{ site.church.address.state }}",
+          "postalCode": "{{ site.church.address.zip }}",
+          "addressCountry": "{{ site.church.address.country }}"
+        }
+      },
+      "organizer": { "@id": "{{ site.url }}/#org" },
+      "isAccessibleForFree": true,
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": {{ pg_breadcrumb_id | jsonify }},
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ site.url }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Resources",
+          "item": "{{ site.url }}/resources/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Prayer Gatherings",
+          "item": "{{ site.url }}/resources/prayer-gatherings/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": {{ page.title | jsonify }},
+          "item": {{ page.url | absolute_url | jsonify }}
+        }
+      ]
+    }
+  ]
+}
+</script>
