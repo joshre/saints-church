@@ -38,8 +38,19 @@
         "contentUrl": {{ page.audio_url | jsonify }},
         "encodingFormat": "audio/mpeg",
         "name": {{ page.title | append: ' - Audio' | jsonify }},
-        {% if page.duration %}"duration": {{ page.duration | prepend: 'PT' | replace: ':', 'M' | append: 'S' | jsonify }},
-        {% endif %}"creator": { "@id": "{{ site.url }}/#author-nate-ellis" }
+        {%- comment -%}
+          ISO 8601 duration. Sermon front-matter uses MM:SS (e.g. "27:14").
+          We assemble PTxxMyyS explicitly and only emit when both segments are present
+          so a stray "1:02:14" (HH:MM:SS) or other shape is skipped rather than producing
+          malformed output like PT1M02M14S.
+        {%- endcomment -%}
+        {%- if page.duration -%}
+          {%- assign duration_parts = page.duration | split: ':' -%}
+          {%- if duration_parts.size == 2 -%}
+            "duration": {{ duration_parts[0] | prepend: 'PT' | append: 'M' | append: duration_parts[1] | append: 'S' | jsonify }},
+          {%- endif -%}
+        {%- endif -%}
+        "creator": { "@id": "{{ site.url }}/#author-nate-ellis" }
       },
       {% endif %}"about": [
         { "@type": "Thing", "name": "Reformed Baptist Theology" },
