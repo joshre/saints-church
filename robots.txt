@@ -4,4 +4,38 @@ layout: null
 User-agent: *
 Allow: /
 
+# AI crawlers — we welcome citation in AI search; we do not consent to model training
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
+# Content signal: allow AI search citation; do not use for model training
+Content-Signal: search=yes, ai-train=no, ai-input=yes
+
 Sitemap: {{ site.url }}/sitemap.xml

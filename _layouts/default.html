@@ -75,114 +75,71 @@
     <meta name="msapplication-TileColor" content="{{ site.data.content.seo.meta.tile_color }}">
     <meta name="theme-color" content="{{ site.data.content.seo.meta.theme_color }}">
     
-    <!-- Church Schema JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Church",
-      "additionalType": "https://schema.org/PlaceOfWorship",
-      "name": "{{ site.church.name }}",
-      "alternateName": "Saints Church Knoxville",
-      "description": "{{ site.description }}",
-      "url": "{{ site.url }}",
-      "email": "{{ site.email }}",
-      {% if site.church.phone and site.church.phone != "(865) 555-0123" %}"telephone": "{{ site.church.phone }}",
-      {% endif %}"priceRange": "Free",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "{{ site.church.address.street }}",
-        "addressLocality": "{{ site.church.address.city }}",
-        "addressRegion": "{{ site.church.address.state }}",
-        "postalCode": "{{ site.church.address.zip }}",
-        "addressCountry": "{{ site.church.address.country }}"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": {{ site.data.content.seo.coordinates.lat }},
-        "longitude": {{ site.data.content.seo.coordinates.lng }}
-      },
-      "denomination": "{{ site.church.denomination }}",
-      "serviceType": "{{ site.data.content.seo.service_type }}",
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Sunday",
-        "opens": "09:30",
-        "closes": "11:30"
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "Knoxville",
-        "containedInPlace": {
-          "@type": "State",
-          "name": "Tennessee"
-        }
-      },
-      "knowsAbout": [
-        "Reformed Baptist theology",
-        "1689 London Baptist Confession of Faith",
-        "Expository preaching",
-        "Confessional Baptist doctrine"
-      ],
-      "sameAs": [
-        "{{ site.podcast.platforms.apple }}",
-        "{{ site.podcast.platforms.spotify }}"
-      ]
-    }
-    </script>
+    <!-- Baseline Church + WebSite @graph schema (every page) -->
+    {% include schema/baseline.html %}
 
-    <!-- Include sermon-specific schema if it's a sermon page -->
+    <!-- Homepage WebPage schema -->
+    {% if page.url == "/" or page.title == "Home" %}
+    {% include schema/homepage.html %}
+    {% endif %}
+
+    <!-- Sermon-specific @graph schema -->
     {% if page.layout == "sermon" %}
-    {% include sermon-schema.html %}
+    {% include schema/sermon.html %}
     {% endif %}
 
-    <!-- Include page-specific schema for static pages -->
+    <!-- Static page @graph schema (beliefs, pastor letter, etc.) -->
     {% if page.layout == "page" %}
-    {% include page-schema.html %}
+    {% include schema/page.html %}
     {% endif %}
 
-    <!-- Enhanced schema for sermons listing page -->
+    <!-- Prayer gathering Event @graph schema -->
+    {% if page.layout == "resource" and page.category == "prayer-gathering" %}
+    {% include schema/prayer-gathering.html %}
+    {% endif %}
+
+    <!-- Sermons listing CollectionPage @graph schema -->
     {% if page.url == "/sermons/" and page.layout == "default" %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "@id": {{ page.url | absolute_url | jsonify }},
-      "name": {{ page.title | jsonify }},
-      "description": {{ page.description | jsonify }},
-      "url": {{ page.url | absolute_url | jsonify }},
-      "mainEntity": {
-        "@type": "PodcastSeries",
-        "name": {{ site.podcast.title | jsonify }},
-        "description": {{ site.podcast.description | jsonify }},
-        "url": {{ site.podcast.rss_url | jsonify }},
-        "author": {
-          "@type": "Church",
-          "name": {{ site.church.name | jsonify }},
-          "url": {{ site.url | jsonify }}
-        }
-      },
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": {{ site.url | jsonify }}
+      "@graph": [
+        {
+          "@type": "CollectionPage",
+          "@id": {{ page.url | absolute_url | append: '#webpage' | jsonify }},
+          "url": {{ page.url | absolute_url | jsonify }},
+          "name": {{ page.title | jsonify }},
+          "description": {{ page.description | jsonify }},
+          "isPartOf": { "@id": "{{ site.url }}/#website" },
+          "about": { "@id": "{{ site.url }}/#org" },
+          "mainEntity": {
+            "@type": "PodcastSeries",
+            "name": {{ site.podcast.title | jsonify }},
+            "description": {{ site.podcast.description | jsonify }},
+            "url": {{ site.podcast.rss_url | jsonify }},
+            "author": { "@id": "{{ site.url }}/#org" }
           },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Sermons",
-            "item": {{ page.url | absolute_url | jsonify }}
-          }
-        ]
-      },
-      "publisher": {
-        "@type": "Church",
-        "name": {{ site.church.name | jsonify }},
-        "url": {{ site.url | jsonify }}
-      }
+          "publisher": { "@id": "{{ site.url }}/#org" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": {{ page.url | absolute_url | append: '#breadcrumb' | jsonify }},
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": {{ site.url | jsonify }}
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Sermons",
+              "item": {{ page.url | absolute_url | jsonify }}
+            }
+          ]
+        }
+      ]
     }
     </script>
     {% endif %}

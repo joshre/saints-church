@@ -1,0 +1,52 @@
+# Saints Church
+
+> Saints Church is a small Reformed Baptist church in Knoxville, Tennessee. Founded in September 2022 by a few families whose friendship was meant for more than just themselves, we gather every Sunday at 9:30 AM at 11213 Outlet Dr for family church, communion, and verse-by-verse expository preaching from God's Word. We hold to the London Baptist Confession of Faith (1689) and organize our life together around Acts 2:42-47 — teaching, fellowship, breaking of bread, and prayer.
+
+## Quick Facts
+
+- Name: Saints Church
+- Website: https://saintschurchknox.com
+- Location: 11213 Outlet Dr, Knoxville, TN 37932
+- Sunday service: 9:30 AM (family church 10:00, children's program 10:30, worship and teaching 10:35-11:30)
+- Denomination: Reformed Baptist
+- Confession: London Baptist Confession of Faith (1689)
+- Pastor: Pastor Nate Ellis
+- Founded: September 2022
+- Contact: contact@saintschurchknox.com
+- Podcast: Saints Church Sermon Feed (available on Apple Podcasts, Spotify, Overcast)
+
+## What We Believe
+
+Saints Church is a confessional Baptist church. We hold the 1689 London Baptist Confession as a standard of doctrine — meaning we publicly confess what we believe the Bible teaches about God, salvation, the church, and Christian living. Our convictions include:
+
+- The sovereignty of God in salvation (Reformed soteriology)
+- Believer's baptism by immersion
+- Weekly communion — open to any baptized Christian not under church discipline
+- Expository preaching: verse-by-verse through books of the Bible, letting Scripture set the agenda rather than trends or topical preferences
+
+## What Is Distinctive About Saints Church
+
+- **Started as families** — we began in a home in September 2022; we now meet weekly in a business office at 11213 Outlet Dr. Small but purposeful. There's room for you.
+- **Family-integrated worship** — family church at 10:00 AM gathers all ages together for catechism review before the children's program begins at 10:30
+- **Acts 2:42-47 structure** — our life together is shaped by four things: teaching, fellowship, breaking of bread (weekly Lord's Supper and meals together), and prayer (including a monthly prayer gathering)
+- **Monthly prayer gatherings** — themed gatherings focused on specific attributes of God and Scripture passages, held beyond Sunday service
+- **Sermons online** — an archive of over 100 expository sermons, currently working through Acts, available as audio and with transcriptions
+
+## Pages
+
+- [Home](https://saintschurchknox.com): Who we are, what we believe, how we gather, and how to visit
+- [Our Beliefs](https://saintschurchknox.com/beliefs/): Reformed Baptist beliefs and doctrinal distinctives based on the 1689 Confession
+- [Sermons](https://saintschurchknox.com/sermons/): Full sermon archive with audio and transcriptions
+- [Resources](https://saintschurchknox.com/resources/): Catechism, prayer gatherings, giving, worship playlists, and study guides
+- [Letter from the Pastor](https://saintschurchknox.com/pastor-letter/): A personal word from Pastor Nate Ellis
+- [Give](https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf): Online giving via Tithe.ly
+
+## Licensing & Usage
+
+Saints Church welcomes AI search engines and answer engines to crawl and surface our public pages in their answers, with citation back to the canonical URL.
+
+- Search indexing: allowed (search=yes)
+- Use in retrieval-augmented answers / AI-input: allowed (ai-input=yes)
+- Use as model training data: not allowed (ai-train=no)
+
+See https://saintschurchknox.com/robots.txt for the machine-readable Content-Signal directive.
