@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
  * Sync podcast RSS feed to Jekyll posts
- * Creates sermon posts for any episodes not yet tracked
+ *
+ * Creates sermon posts for any episodes not yet tracked. When an existing
+ * post is found, preserves the body (including any transcription) and only
+ * refreshes the frontmatter if it has drifted from the RSS feed.
  */
 
 const Parser = require('rss-parser');
@@ -18,6 +21,8 @@ const parser = new Parser({
 const RSS_URL = 'https://anchor.fm/s/f5d78a70/podcast/rss';
 const POSTS_DIR = path.join(__dirname, '..', '_posts');
 const PROCESSED_FILE = path.join(__dirname, '..', '_data', 'processed_episodes.json');
+const DEFAULT_PASTOR = 'Pastor Nate Ellis';
+const SERIES_THRESHOLD = 3;
 
 function getSermonSunday(date) {
   const day = new Date(date);
@@ -42,9 +47,11 @@ function generateFilename(date, title) {
 
 function extractScripture(text) {
   if (!text) return null;
-  const pattern = /\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|1\s*Samuel|2\s*Samuel|1\s*Kings|2\s*Kings|1\s*Chronicles|2\s*Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song\s+of\s+Songs|Song\s+of\s+Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|1\s*Corinthians|2\s*Corinthians|Galatians|Ephesians|Philippians|Colossians|1\s*Thessalonians|2\s*Thessalonians|1\s*Timothy|2\s*Timothy|Titus|Philemon|Hebrews|James|1\s*Peter|2\s*Peter|1\s*John|2\s*John|3\s*John|Jude|Revelation)\s+\d+(?::\d+(?:[-–]\d+)?)?(?:[-–]\d+:\d+)?\b/i;
+  // Verse range may span chapters: "John 11:45-12:8" or stay in one chapter: "Acts 1:1-11".
+  const pattern =
+    /\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|1\s*Samuel|2\s*Samuel|1\s*Kings|2\s*Kings|1\s*Chronicles|2\s*Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song\s+of\s+Songs|Song\s+of\s+Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|1\s*Corinthians|2\s*Corinthians|Galatians|Ephesians|Philippians|Colossians|1\s*Thessalonians|2\s*Thessalonians|1\s*Timothy|2\s*Timothy|Titus|Philemon|Hebrews|James|1\s*Peter|2\s*Peter|1\s*John|2\s*John|3\s*John|Jude|Revelation)\s+\d+(?::\d+)?(?:\s*[-–]\s*\d+(?::\d+)?)?\b/i;
   const match = pattern.exec(text);
-  return match ? match[0].trim() : null;
+  return match ? match[0].replace(/\s+/g, ' ').trim() : null;
 }
 
 function parseDuration(duration) {
@@ -88,6 +95,12 @@ function cleanDescription(text) {
     .trim();
 }
 
+function detectPastor(text) {
+  if (!text) return null;
+  const match = text.match(/[Pp]reached by ([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)+)/);
+  return match ? `Pastor ${match[1]}` : null;
+}
+
 function escapeYaml(value) {
   if (typeof value !== 'string') return value;
   return value
@@ -97,12 +110,118 @@ function escapeYaml(value) {
     .replace(/\r/g, '\\r');
 }
 
-async function sync() {
+function splitFrontmatter(content) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if (!match) return null;
+  return { frontmatterText: match[1], body: match[2] };
+}
+
+function parseFrontmatter(text) {
+  const result = {};
+  for (const line of text.split('\n')) {
+    const m = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*):\s*(.*)$/);
+    if (!m) continue;
+    let value = m[2].trim();
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+    }
+    result[m[1]] = value;
+  }
+  return result;
+}
+
+function yamlNeedsQuotes(value) {
+  if (typeof value !== 'string') return false;
+  if (value === '') return true;
+  if (/^\s|\s$/.test(value)) return true;
+  // YAML treats ": " as a key/value separator inside flow scalars; standalone colons are fine.
+  if (/:\s|\s#/.test(value)) return true;
+  // Leading chars that have special meaning in YAML.
+  if (/^[-?:,[\]{}#&*!|>'"%@`]/.test(value)) return true;
+  // Pipe mid-value is technically legal as a plain scalar, but quoting it avoids
+  // surprising readers (the workflow heredoc used to quote it).
+  if (/[|\n"\\]/.test(value)) return true;
+  return false;
+}
+
+function buildFrontmatter(fields) {
+  let out = '---\n';
+  for (const [key, value] of Object.entries(fields)) {
+    if (value === null || value === undefined || value === '') continue;
+    if (yamlNeedsQuotes(value)) {
+      out += `${key}: "${escapeYaml(value)}"\n`;
+    } else {
+      out += `${key}: ${value}\n`;
+    }
+  }
+  out += '---\n';
+  return out;
+}
+
+// Compare field maps semantically (string equality on non-null fields only).
+function fieldsEqual(a, b) {
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  for (const key of keys) {
+    const av = a[key] == null ? '' : String(a[key]);
+    const bv = b[key] == null ? '' : String(b[key]);
+    if (av !== bv) return false;
+  }
+  return true;
+}
+
+function buildFields(item, bookCounts, existingFields = {}) {
+  const pubDate = new Date(item.pubDate);
+  const sermonDate = getSermonSunday(pubDate);
+  const scripture = extractScripture(item.title) || extractScripture(item.description);
+  const duration = parseDuration(item['itunes:duration']);
+  const guid = item.guid || item.link;
+  const episodeHash = crypto.createHash('sha256').update(guid).digest('hex').substring(0, 8);
+
+  let series = existingFields.series || null;
+  if (!series && scripture) {
+    const bookMatch = scripture.match(/^(.*?)\s+\d+/);
+    if (bookMatch) {
+      const book = bookMatch[1].trim();
+      if (bookCounts[book] >= SERIES_THRESHOLD) series = book;
+    }
+  }
+
+  const detectedPastor =
+    detectPastor(item.description) || detectPastor(item['itunes:summary']);
+  const pastor = existingFields.pastor || detectedPastor || DEFAULT_PASTOR;
+
+  const desc = cleanDescription(item.description || item['itunes:summary'] || '');
+
+  const fields = {
+    layout: 'sermon',
+    title: item.title,
+    date: sermonDate.toISOString(),
+    category: 'sermon',
+    audio_url: item.enclosure && item.enclosure.url ? item.enclosure.url : null,
+    duration,
+    scripture,
+    series,
+    pastor,
+    description: desc || null,
+    guid,
+    episode_id: episodeHash
+  };
+
+  // Preserve custom fields that aren't sourced from RSS (transcription_model, etc.)
+  const preservedKeys = ['transcription_model'];
+  for (const key of preservedKeys) {
+    if (existingFields[key]) fields[key] = existingFields[key];
+  }
+
+  return fields;
+}
+
+async function sync({ updateExisting = false } = {}) {
   console.log('Fetching RSS feed...');
+  if (updateExisting) console.log('Update mode: existing posts will be rewritten if frontmatter differs.');
   const feed = await parser.parseURL(RSS_URL);
   console.log(`Found ${feed.items.length} episodes in feed`);
 
-  // Load processed episodes
   let processed = [];
   try {
     if (fs.existsSync(PROCESSED_FILE)) {
@@ -112,10 +231,9 @@ async function sync() {
     console.log('Starting fresh processed episodes list');
   }
 
-  const processedGuids = new Set(processed.map(p => p.guid));
+  const processedMap = new Map(processed.map(p => [p.guid, p]));
   const existingFiles = new Set(fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.md')));
 
-  // Count episodes per biblical book across the entire feed to detect actual series
   const bookCounts = {};
   for (const item of feed.items) {
     const scripture = extractScripture(item.title) || extractScripture(item.description);
@@ -129,77 +247,91 @@ async function sync() {
   }
 
   let newCount = 0;
-  let skippedExisting = 0;
+  let updatedCount = 0;
+  let trackedExisting = 0;
 
   for (const item of feed.items) {
     const guid = item.guid || item.link;
-
-    // Skip if already processed
-    if (processedGuids.has(guid)) continue;
-
-    const pubDate = new Date(item.pubDate);
-    const sermonDate = getSermonSunday(pubDate);
-    const filename = generateFilename(sermonDate, item.title);
-
-    // If file exists but not tracked, just add to tracking
-    if (existingFiles.has(filename)) {
-      processed.push({ guid, title: item.title, filename, processed_at: new Date().toISOString() });
-      skippedExisting++;
+    if (!guid) {
+      console.warn(`Skipping episode with no GUID: ${item.title}`);
       continue;
     }
 
-    // Extract metadata
-    const scripture = extractScripture(item.title) || extractScripture(item.description);
-    const duration = parseDuration(item['itunes:duration']);
-    const episodeHash = crypto.createHash('sha256').update(guid).digest('hex').substring(0, 8);
+    const pubDate = new Date(item.pubDate);
+    if (isNaN(pubDate.getTime())) {
+      console.warn(`Skipping episode with invalid pubDate: ${item.title}`);
+      continue;
+    }
 
-    // Detect series from scripture (only if 3+ sermons from the same book in the feed)
-    let series = null;
-    if (scripture) {
-      const bookMatch = scripture.match(/^(.*?)\s+\d+/);
-      if (bookMatch) {
-        const book = bookMatch[1].trim();
-        if (bookCounts[book] >= 3) {
-          series = book;
-        }
+    const sermonDate = getSermonSunday(pubDate);
+    const filename = generateFilename(sermonDate, item.title);
+    const filepath = path.join(POSTS_DIR, filename);
+    const fileExists = existingFiles.has(filename);
+
+    let existingFields = {};
+    let existingBody = '';
+    if (fileExists) {
+      const existingContent = fs.readFileSync(filepath, 'utf8');
+      const split = splitFrontmatter(existingContent);
+      if (split) {
+        existingFields = parseFrontmatter(split.frontmatterText);
+        existingBody = split.body;
       }
     }
 
-    const desc = cleanDescription(item.description || item['itunes:summary'] || '');
+    const fields = buildFields(item, bookCounts, existingFields);
+    const newFrontmatter = buildFrontmatter(fields);
 
-    // Build frontmatter
-    let content = '---\n';
-    content += 'layout: sermon\n';
-    content += `title: "${escapeYaml(item.title)}"\n`;
-    content += `date: ${sermonDate.toISOString()}\n`;
-    content += 'category: sermon\n';
-    if (item.enclosure && item.enclosure.url) content += `audio_url: ${item.enclosure.url}\n`;
-    if (duration) content += `duration: ${duration}\n`;
-    if (scripture) content += `scripture: ${scripture}\n`;
-    if (series) content += `series: ${series}\n`;
-    content += 'pastor: Pastor Nate Ellis\n';
-    if (desc) content += `description: "${escapeYaml(desc)}"\n`;
-    content += `guid: ${guid}\n`;
-    content += `episode_id: ${episodeHash}\n`;
-    content += '---\n\n';
+    if (!fileExists) {
+      fs.writeFileSync(filepath, `${newFrontmatter}\n`);
+      console.log(`Created: ${filename}`);
+      newCount++;
+    } else if (updateExisting) {
+      const newContent = `${newFrontmatter}\n${existingBody}`;
+      const oldContent = fs.readFileSync(filepath, 'utf8');
+      if (newContent !== oldContent) {
+        fs.writeFileSync(filepath, newContent);
+        console.log(`Updated frontmatter: ${filename}`);
+        updatedCount++;
+      } else if (!processedMap.has(guid)) {
+        trackedExisting++;
+      }
+    } else if (!processedMap.has(guid)) {
+      trackedExisting++;
+    }
 
-    fs.writeFileSync(path.join(POSTS_DIR, filename), content);
-    console.log(`Created: ${filename}`);
-    newCount++;
-
-    processed.push({ guid, title: item.title, filename, processed_at: new Date().toISOString() });
+    processedMap.set(guid, {
+      guid,
+      title: item.title,
+      filename,
+      processed_at: new Date().toISOString()
+    });
   }
 
-  // Save processed list
-  fs.writeFileSync(PROCESSED_FILE, JSON.stringify(processed, null, 2));
+  fs.writeFileSync(PROCESSED_FILE, JSON.stringify(Array.from(processedMap.values()), null, 2));
 
   console.log(`\nSync complete:`);
   console.log(`  - ${newCount} new episodes created`);
-  console.log(`  - ${skippedExisting} existing files added to tracking`);
-  console.log(`  - ${processed.length} total episodes tracked`);
+  console.log(`  - ${updatedCount} existing episodes refreshed`);
+  console.log(`  - ${trackedExisting} existing files added to tracking`);
+  console.log(`  - ${processedMap.size} total episodes tracked`);
 }
 
-sync().catch(e => {
-  console.error('Error:', e);
-  process.exit(1);
-});
+module.exports = {
+  sync,
+  parseDuration,
+  extractScripture,
+  detectPastor,
+  buildFrontmatter,
+  parseFrontmatter,
+  splitFrontmatter,
+  yamlNeedsQuotes
+};
+
+if (require.main === module) {
+  const updateExisting = process.argv.includes('--update');
+  sync({ updateExisting }).catch(e => {
+    console.error('Error:', e);
+    process.exit(1);
+  });
+}
