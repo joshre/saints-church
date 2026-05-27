@@ -49,14 +49,26 @@ function extractScripture(text) {
 
 function parseDuration(duration) {
   if (!duration) return null;
-  const parts = duration.split(':').map(p => parseInt(p, 10));
-  if (parts.some(p => isNaN(p))) return null;
-  if (parts.length === 2) return `${parts[0]}:${parts[1].toString().padStart(2, '0')}`;
-  if (parts.length === 3) {
-    if (parts[0] > 0) return `${parts[0]}:${parts[1].toString().padStart(2, '0')}:${parts[2].toString().padStart(2, '0')}`;
-    return `${parts[1]}:${parts[2].toString().padStart(2, '0')}`;
+  const str = String(duration).trim();
+  if (str.includes(':')) {
+    const parts = str.split(':').map(p => parseInt(p, 10));
+    if (parts.some(p => isNaN(p))) return null;
+    if (parts.length === 2) return `${parts[0]}:${parts[1].toString().padStart(2, '0')}`;
+    if (parts.length === 3) {
+      if (parts[0] > 0) return `${parts[0]}:${parts[1].toString().padStart(2, '0')}:${parts[2].toString().padStart(2, '0')}`;
+      return `${parts[1]}:${parts[2].toString().padStart(2, '0')}`;
+    }
+    return str;
   }
-  return duration;
+  const seconds = Number(str);
+  if (!Number.isFinite(seconds) || seconds <= 0) return null;
+  const total = Math.round(seconds);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  return h > 0
+    ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+    : `${m}:${s.toString().padStart(2, '0')}`;
 }
 
 function cleanDescription(text) {
