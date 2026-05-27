@@ -73,3 +73,6 @@ sermon_audio_*/
 # Design iterator screenshots
 *.png
 !assets/**/*.png
+
+# Local git worktrees
+/.worktrees/
