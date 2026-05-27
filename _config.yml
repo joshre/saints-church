@@ -29,6 +29,7 @@ exclude:
   - CLAUDE.md
   - Gemfile
   - Gemfile.lock
+  - HEROICONS.md
   - node_modules
   - package.json
   - package-lock.json
