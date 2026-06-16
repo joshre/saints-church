@@ -18,7 +18,7 @@ Editorial layout with sophisticated spacing and typography
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-4 mx-auto max-w-5xl sm:grid-cols-2 lg:grid-cols-4 child [--delay:0.15s]">
+  <div class="grid grid-cols-1 gap-4 mx-auto max-w-5xl sm:grid-cols-2 lg:grid-cols-5 child [--delay:0.15s]">
     {% include button.html
        href=site.podcast.platforms.overcast
        text="Overcast"
@@ -37,6 +37,13 @@ Editorial layout with sophisticated spacing and typography
        href=site.podcast.platforms.apple
        text="Apple Podcasts"
        icon="apple-podcasts"
+       variant="secondary"
+       class="h-16 text-base font-semibold platform-btn" %}
+
+    {% include button.html
+       href=site.podcast.platforms.youtube
+       text="YouTube"
+       icon="youtube"
        variant="secondary"
        class="h-16 text-base font-semibold platform-btn" %}
 

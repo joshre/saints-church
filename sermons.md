@@ -31,11 +31,16 @@ permalink: /sermons/
           {{ site.data.content.sermons.details }}
         </p>
 
-        <div class="flex flex-wrap gap-2.5 justify-center child [--delay:0.35s]">
-          {% include button.html href=site.podcast.platforms.apple text="Apple Podcasts" icon="apple-podcasts" variant="secondary" class="text-sm" %}
-          {% include button.html href=site.podcast.platforms.spotify text="Spotify" icon="spotify" variant="secondary" class="text-sm" %}
-          {% include button.html href=site.podcast.platforms.overcast text="Overcast" icon="overcast" variant="secondary" class="text-sm" %}
-          {% include button.html href=site.podcast.rss_url text="RSS Feed" icon="rss" variant="secondary" class="text-sm" %}
+        <div class="flex flex-col gap-2.5 items-center child [--delay:0.35s]">
+          <div class="flex flex-wrap gap-2.5 justify-center">
+            {% include button.html href=site.podcast.platforms.apple text="Apple Podcasts" icon="apple-podcasts" variant="secondary" class="text-sm" %}
+            {% include button.html href=site.podcast.platforms.spotify text="Spotify" icon="spotify" variant="secondary" class="text-sm" %}
+            {% include button.html href=site.podcast.platforms.overcast text="Overcast" icon="overcast" variant="secondary" class="text-sm" %}
+          </div>
+          <div class="flex flex-wrap gap-2.5 justify-center">
+            {% include button.html href=site.podcast.platforms.youtube text="YouTube" icon="youtube" variant="secondary" class="text-sm" %}
+            {% include button.html href=site.podcast.rss_url text="RSS Feed" icon="rss" variant="secondary" class="text-sm" %}
+          </div>
         </div>
       </div>
     </div>
