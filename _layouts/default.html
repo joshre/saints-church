@@ -144,6 +144,13 @@
     </script>
     {% endif %}
 
+    <!-- Privacy-friendly analytics -->
+    <script async src="https://plausible.io/js/pa-LzUkCkBGY5boJP4DFhQ3E.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+
     {% assign build_time = site.time | date: '%s' %}
     <link href="{{ '/css/output.css?v=' | append: build_time }}" rel="stylesheet">
     <noscript><style>
