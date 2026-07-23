@@ -25,10 +25,13 @@ const DEFAULT_PASTOR = 'Pastor Nate Ellis';
 const SERIES_THRESHOLD = 3;
 
 function getSermonSunday(date) {
+  // UTC methods, not local (getDay/setDate): the scheduled workflow runs in UTC,
+  // but a local run in any other timezone would otherwise derive a different
+  // calendar day near midnight and create a duplicate post under a shifted filename.
   const day = new Date(date);
-  const dayOfWeek = day.getDay();
+  const dayOfWeek = day.getUTCDay();
   const sermonDate = new Date(day);
-  sermonDate.setDate(day.getDate() - dayOfWeek);
+  sermonDate.setUTCDate(day.getUTCDate() - dayOfWeek);
   return sermonDate;
 }
 
@@ -175,11 +178,14 @@ function fieldsEqual(a, b) {
 function buildFields(item, bookCounts, existingFields = {}) {
   const pubDate = new Date(item.pubDate);
   const sermonDate = getSermonSunday(pubDate);
-  const scripture = extractScripture(item.title) || extractScripture(item.description);
+  const scripture = existingFields.scripture ||
+    extractScripture(item.title) || extractScripture(item.description);
   const duration = parseDuration(item['itunes:duration']);
   const guid = item.guid || item.link;
   const episodeHash = crypto.createHash('sha256').update(guid).digest('hex').substring(0, 8);
 
+  // Re-run on every sync (not gated behind --update) so a book crossing SERIES_THRESHOLD
+  // backfills series onto posts created before the threshold was met.
   let series = existingFields.series || null;
   if (!series && scripture) {
     const bookMatch = scripture.match(/^(.*?)\s+\d+/);
@@ -193,19 +199,25 @@ function buildFields(item, bookCounts, existingFields = {}) {
     detectPastor(item.description) || detectPastor(item['itunes:summary']);
   const pastor = existingFields.pastor || detectedPastor || DEFAULT_PASTOR;
 
-  const desc = cleanDescription(item.description || item['itunes:summary'] || '');
+  const desc = existingFields.description ||
+    cleanDescription(item.description || item['itunes:summary'] || '') || null;
+
+  // date/title fall back to a hand-corrected existing value (e.g. a mis-dated RSS
+  // pubDate) rather than always trusting the feed.
+  const date = existingFields.date || sermonDate.toISOString();
+  const title = existingFields.title || item.title;
 
   const fields = {
     layout: 'sermon',
-    title: item.title,
-    date: sermonDate.toISOString(),
+    title,
+    date,
     category: 'sermon',
     audio_url: item.enclosure && item.enclosure.url ? item.enclosure.url : null,
     duration,
     scripture,
     series,
     pastor,
-    description: desc || null,
+    description: desc,
     guid,
     episode_id: episodeHash
   };
@@ -278,7 +290,9 @@ async function sync({ updateExisting = false } = {}) {
       const split = splitFrontmatter(existingContent);
       if (split) {
         existingFields = parseFrontmatter(split.frontmatterText);
-        existingBody = split.body;
+        // splitFrontmatter's regex already consumes one \n after the closing ---,
+        // so strip further leading blank lines to avoid growing them on rewrite.
+        existingBody = split.body.replace(/^\n+/, '\n');
       }
     }
 
@@ -290,9 +304,11 @@ async function sync({ updateExisting = false } = {}) {
       console.log(`Created: ${filename}`);
       newCount++;
     } else if (updateExisting) {
-      const newContent = `${newFrontmatter}\n${existingBody}`;
-      const oldContent = fs.readFileSync(filepath, 'utf8');
-      if (newContent !== oldContent) {
+      // Compare parsed fields, not serialized bytes: pre-existing files may have
+      // cosmetic quoting that yamlNeedsQuotes wouldn't itself apply, and byte-diffing
+      // would rewrite (and commit) every such post despite no real content change.
+      if (!fieldsEqual(existingFields, fields)) {
+        const newContent = `${newFrontmatter}\n${existingBody}`;
         fs.writeFileSync(filepath, newContent);
         console.log(`Updated frontmatter: ${filename}`);
         updatedCount++;

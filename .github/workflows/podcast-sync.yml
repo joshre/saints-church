@@ -69,7 +69,7 @@ jobs:
         run: mkdir -p _posts
 
       - name: Sync podcast episodes
-        run: node scripts/sync-feed.js
+        run: node scripts/sync-feed.js --update
 
       - name: Regenerate taxonomy pages
         run: npx tsx scripts/generate-taxonomies.ts
