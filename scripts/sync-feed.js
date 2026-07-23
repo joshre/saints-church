@@ -136,6 +136,9 @@ function yamlNeedsQuotes(value) {
   if (/^\s|\s$/.test(value)) return true;
   // YAML treats ": " as a key/value separator inside flow scalars; standalone colons are fine.
   if (/:\s|\s#/.test(value)) return true;
+  // YAML 1.1 parses all-numeric colon-separated segments (e.g. "34:22") as sexagesimal,
+  // which silently turns a MM:SS duration string into an integer.
+  if (/^\d+(:\d+){1,2}$/.test(value)) return true;
   // Leading chars that have special meaning in YAML.
   if (/^[-?:,[\]{}#&*!|>'"%@`]/.test(value)) return true;
   // Pipe mid-value is technically legal as a plain scalar, but quoting it avoids

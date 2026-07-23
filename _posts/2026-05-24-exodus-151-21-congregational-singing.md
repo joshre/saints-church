@@ -4,7 +4,7 @@ title: "Exodus 15:1-21 | Congregational Singing"
 date: 2026-05-24T13:19:52.000Z
 category: sermon
 audio_url: https://anchor.fm/s/f5d78a70/podcast/play/120511190/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-4-25%2F424847564-44100-2-2e2c6716c6ae.m4a
-duration: 35:45
+duration: "35:45"
 scripture: Exodus 15:1-21
 pastor: Pastor Nate Ellis
 description: "In this sermon we look at Exodus 15 to see why the people of God are a singing people. Why we sing today and the importance of singing in the church."
