@@ -38,16 +38,16 @@ Parameters:
   <picture>
     <!-- AVIF sources with responsive widths -->
     <!-- 1184px images (Large Fellowship) -->
-    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-play' %}
+    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-sermon' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-1184w.avif' | relative_url }}" type="image/avif">
     <!-- 768px images (Medium Fellowship) -->
-    {% elsif include.name == 'fellowship-joyful' or include.name == 'fellowship-guitarist' %}
+    {% elsif include.name == 'fellowship-friends-hug' or include.name == 'fellowship-coffee-bar' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-768w.avif' | relative_url }}" type="image/avif">
     <!-- 680px images (Prayer Section) -->
     {% elsif include.name == 'prayer-family-1' or include.name == 'prayer-family-2' or include.name == 'prayer-communal-1' or include.name == 'prayer-teaching' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-680w.avif' | relative_url }}" type="image/avif">
     <!-- 352px images (Small Fellowship) -->
-    {% elsif include.name == 'fellowship-hug' or include.name == 'fellowship-mothers' or include.name == 'fellowship-kitchen' or include.name == 'fellowship-men' or include.name == 'fellowship-toddler' %}
+    {% elsif include.name == 'fellowship-hallway-greeting' or include.name == 'fellowship-mothers' or include.name == 'fellowship-kitchen' or include.name == 'fellowship-men' or include.name == 'fellowship-coffee-chat' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-352w.avif' | relative_url }}" type="image/avif">
     {% else %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-768w.avif' | relative_url }}" type="image/avif">
@@ -55,16 +55,16 @@ Parameters:
 
     <!-- WebP sources with responsive widths -->
     <!-- 1184px images (Large Fellowship) -->
-    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-play' %}
+    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-sermon' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-1184w.webp' | relative_url }}" type="image/webp">
     <!-- 768px images (Medium Fellowship) -->
-    {% elsif include.name == 'fellowship-joyful' or include.name == 'fellowship-guitarist' %}
+    {% elsif include.name == 'fellowship-friends-hug' or include.name == 'fellowship-coffee-bar' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-768w.webp' | relative_url }}" type="image/webp">
     <!-- 680px images (Prayer Section) -->
     {% elsif include.name == 'prayer-family-1' or include.name == 'prayer-family-2' or include.name == 'prayer-communal-1' or include.name == 'prayer-teaching' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-680w.webp' | relative_url }}" type="image/webp">
     <!-- 352px images (Small Fellowship) -->
-    {% elsif include.name == 'fellowship-hug' or include.name == 'fellowship-mothers' or include.name == 'fellowship-kitchen' or include.name == 'fellowship-men' or include.name == 'fellowship-toddler' %}
+    {% elsif include.name == 'fellowship-hallway-greeting' or include.name == 'fellowship-mothers' or include.name == 'fellowship-kitchen' or include.name == 'fellowship-men' or include.name == 'fellowship-coffee-chat' %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-352w.webp' | relative_url }}" type="image/webp">
     {% else %}
       <source srcset="{{ '/assets/images/' | append: include.name | append: '-768w.webp' | relative_url }}" type="image/webp">
@@ -72,7 +72,7 @@ Parameters:
 
     <!-- JPG fallback with responsive widths -->
     <!-- 1184px images (Large Fellowship) -->
-    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-play' %}
+    {% if include.name == 'fellowship-conversation' or include.name == 'fellowship-sermon' %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-1184w.jpg' | relative_url }}"
         alt="{{ resolved_alt }}"
@@ -80,7 +80,7 @@ Parameters:
         loading="{{ loading_attr }}"
       />
     <!-- 768px images (Medium Fellowship) -->
-    {% elsif include.name == 'fellowship-joyful' or include.name == 'fellowship-guitarist' %}
+    {% elsif include.name == 'fellowship-friends-hug' or include.name == 'fellowship-coffee-bar' %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-768w.jpg' | relative_url }}"
         alt="{{ resolved_alt }}"
@@ -96,7 +96,7 @@ Parameters:
         loading="{{ loading_attr }}"
       />
     <!-- 352px images (Small Fellowship) -->
-    {% elsif include.name == 'fellowship-hug' or include.name == 'fellowship-mothers' or include.name == 'fellowship-kitchen' or include.name == 'fellowship-men' or include.name == 'fellowship-toddler' %}
+    {% elsif include.name == 'fellowship-hallway-greeting' or include.name == 'fellowship-mothers' or include.name == 'fellowship-kitchen' or include.name == 'fellowship-men' or include.name == 'fellowship-coffee-chat' %}
       <img
         src="{{ '/assets/images/' | append: include.name | append: '-352w.jpg' | relative_url }}"
         alt="{{ resolved_alt }}"
