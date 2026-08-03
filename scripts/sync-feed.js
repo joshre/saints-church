@@ -8,6 +8,7 @@
  */
 
 const Parser = require('rss-parser');
+const yaml = require('js-yaml');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -21,6 +22,7 @@ const parser = new Parser({
 const RSS_URL = 'https://anchor.fm/s/f5d78a70/podcast/rss';
 const POSTS_DIR = path.join(__dirname, '..', '_posts');
 const PROCESSED_FILE = path.join(__dirname, '..', '_data', 'processed_episodes.json');
+const PREACHERS_FILE = path.join(__dirname, '..', '_data', 'preachers.yml');
 const DEFAULT_PASTOR = 'Pastor Nate Ellis';
 const SERIES_THRESHOLD = 3;
 
@@ -98,10 +100,26 @@ function cleanDescription(text) {
     .trim();
 }
 
+let preacherCache = null;
+
+function loadPreachers() {
+  if (preacherCache) return preacherCache;
+  try {
+    const parsed = yaml.load(fs.readFileSync(PREACHERS_FILE, 'utf8'));
+    preacherCache = Array.isArray(parsed) ? parsed.filter((p) => p && p.name && p.key) : [];
+  } catch {
+    preacherCache = [];
+  }
+  return preacherCache;
+}
+
 function detectPastor(text) {
   if (!text) return null;
-  const match = text.match(/[Pp]reached by ([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)+)/);
-  return match ? `Pastor ${match[1]}` : null;
+  const match = text.match(/[Pp]reached by ([A-Z][a-zA-Z'’-]+(?:\s+[A-Z][a-zA-Z'’-]+)+)/);
+  if (!match) return null;
+  // titles come from _data/preachers.yml — not every preacher is a pastor
+  const known = loadPreachers().find((p) => p.name === match[1]);
+  return known ? known.key : match[1];
 }
 
 function escapeYaml(value) {
