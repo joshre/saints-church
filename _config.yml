@@ -19,6 +19,12 @@ church:
   denomination: "Reformed Baptist"
   confession: "London Baptist Confession (1689)"
 
+# Social profiles
+social:
+  instagram: "https://www.instagram.com/saintschurchknx/"
+  facebook: "https://www.facebook.com/people/Saints-Church-Knoxville/61590505886389/"
+  youtube: "https://www.youtube.com/@SaintsChurchKnox"
+
 # Build settings
 strict_front_matter: true
 show_drafts: false
