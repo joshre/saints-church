@@ -77,3 +77,4 @@ sermon_audio_*/
 # Local git worktrees
 /.worktrees/
 CLAUDE.md
+AGENTS.md
