@@ -1,0 +1,52 @@
+#!/bin/sh
+# Pre-commit hook: auto-format what can be fixed, then lint what can't.
+# Requires Node 22+ (set in .nvmrc). Loads nvm automatically if available.
+
+# Load nvm if present
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Use the project's node version
+nvm use --silent 2>/dev/null || true
+
+# re-staging only these keeps a formatter from sweeping an unrelated dirty file into the commit
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR)
+
+if [ -n "$STAGED" ]; then
+  echo "Auto-formatting (biome, rumdl, rustywind)..."
+  yarn --silent format >/dev/null 2>&1 || {
+    echo "Formatter failed — running it directly to show the error:"
+    yarn format
+    exit 1
+  }
+
+  # committed artifacts GitHub Pages serves as-is; regenerating here is what keeps them from shipping stale
+  echo "Regenerating icons, taxonomies, and assets..."
+  yarn --silent generate-icons >/dev/null 2>&1
+  yarn --silent generate-taxonomies >/dev/null 2>&1
+  yarn --silent build:prod >/dev/null 2>&1
+
+  GENERATED="_includes/icon.html css/output.css js/site.min.js sermons/preachers sermons/series"
+
+  RESTAGED=""
+  for f in $STAGED $GENERATED; do
+    [ -e "$f" ] || continue
+    if ! git diff --quiet -- "$f"; then
+      git add -- "$f"
+      RESTAGED="$RESTAGED $f"
+    fi
+  done
+
+  [ -n "$RESTAGED" ] && echo "Updated and re-staged:$RESTAGED"
+fi
+
+echo "Running linters..."
+
+yarn lint:types  || { echo "TypeScript type check failed"; exit 1; }
+yarn lint:js     || { echo "Biome check failed — run: yarn format"; exit 1; }
+yarn lint:css    || { echo "stylelint failed"; exit 1; }
+yarn lint:md     || { echo "rumdl check failed — run: yarn format:md"; exit 1; }
+yamllint _data/ _config.yml 2>&1 | grep -v "warning" | grep -q "error" && { echo "yamllint failed"; exit 1; } || true
+yarn lint:tw     || { echo "rustywind check failed — run: yarn format:tw"; exit 1; }
+
+echo "All linters passed."

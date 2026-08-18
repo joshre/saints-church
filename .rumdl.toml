@@ -1,10 +1,3 @@
-# Markdown linting for the Jekyll site.
-#
-# Auto-fix is deliberately limited to whitespace/structural rules (see the
-# `format:md` script). Rules that rewrite meaning — MD036 turning bold scripture
-# labels into headings, MD025 changing heading levels — are reported, never
-# applied unattended.
-
 exclude = [
   "node_modules",
   "_site",

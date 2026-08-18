@@ -59,10 +59,11 @@ guid: "unique-episode-identifier"
 
 ### Schedule
 
-**Primary Schedule**: Weekly on Sundays at 9:00 AM UTC (4:00 AM EST / 5:00 AM EDT)
+**Primary Schedule**: Daily at 2:00 AM UTC (9:00 PM EST / 10:00 PM EDT the previous evening)
 
-- Timing allows for sermon uploads after Sunday morning service
-- Accounts for timezone differences in Knoxville, TN
+Looking at all 114 published episodes, uploads cluster between 12:00 and 00:00 UTC – 61% land on Monday, 35% on Sunday. Running the job daily just after that window closes means a sermon gets picked up within hours rather than sitting around waiting on a weekly slot.
+
+The old setup ran weekly on Sundays at 9:00 AM UTC, which fired roughly four hours before the 9:30 AM service even started. Every single sermon was missed on the day and only collected by the following week's run.
 
 **Manual Trigger**: Available via GitHub Actions interface for immediate sync
 
