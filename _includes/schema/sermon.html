@@ -8,36 +8,36 @@
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": {{ sermon_webpage_id | jsonify }},
-      "url": {{ page.url | absolute_url | jsonify }},
-      "name": {{ page.title | jsonify }},
-      "description": {{ page.description | default: page.title | strip_html | truncate: 200 | jsonify }},
+      "@id": {{ sermon_webpage_id | jsonify | replace: '</', '<\/' }},
+      "url": {{ page.url | absolute_url | jsonify | replace: '</', '<\/' }},
+      "name": {{ page.title | jsonify | replace: '</', '<\/' }},
+      "description": {{ page.description | default: page.title | strip_html | truncate: 200 | jsonify | replace: '</', '<\/' }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#org" },
       "inLanguage": "en-US"
     },
     {
       "@type": "Article",
-      "@id": {{ sermon_article_id | jsonify }},
-      "headline": {{ page.title | jsonify }},
-      "description": {{ page.description | default: page.title | strip_html | truncate: 200 | jsonify }},
-      "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
-      "dateModified": {{ page.date | date_to_xmlschema | jsonify }},
+      "@id": {{ sermon_article_id | jsonify | replace: '</', '<\/' }},
+      "headline": {{ page.title | jsonify | replace: '</', '<\/' }},
+      "description": {{ page.description | default: page.title | strip_html | truncate: 200 | jsonify | replace: '</', '<\/' }},
+      "datePublished": {{ page.date | date_to_xmlschema | jsonify | replace: '</', '<\/' }},
+      "dateModified": {{ page.date | date_to_xmlschema | jsonify | replace: '</', '<\/' }},
       "author": {
         "@type": "Person",
         "@id": "{{ site.url }}/#author-nate-ellis",
-        "name": {{ page.pastor | default: 'Pastor Nate Ellis' | jsonify }},
+        "name": {{ page.pastor | default: 'Pastor Nate Ellis' | jsonify | replace: '</', '<\/' }},
         "jobTitle": "Pastor",
         "worksFor": { "@id": "{{ site.url }}/#org" }
       },
       "publisher": { "@id": "{{ site.url }}/#org" },
-      "mainEntityOfPage": { "@id": {{ sermon_webpage_id | jsonify }} },
-      "image": {{ site.data.content.seo.meta.social_image | absolute_url | jsonify }},
+      "mainEntityOfPage": { "@id": {{ sermon_webpage_id | jsonify | replace: '</', '<\/' }} },
+      "image": {{ site.data.content.seo.meta.social_image | absolute_url | jsonify | replace: '</', '<\/' }},
       {% if page.audio_url %}"associatedMedia": {
         "@type": "AudioObject",
-        "contentUrl": {{ page.audio_url | jsonify }},
+        "contentUrl": {{ page.audio_url | jsonify | replace: '</', '<\/' }},
         "encodingFormat": "audio/mpeg",
-        "name": {{ page.title | append: ' - Audio' | jsonify }},
+        "name": {{ page.title | append: ' - Audio' | jsonify | replace: '</', '<\/' }},
         {%- comment -%}
           ISO 8601 duration. Sermon front-matter uses MM:SS (e.g. "27:14").
           We assemble PTxxMyyS explicitly and only emit when both segments are present
@@ -47,7 +47,7 @@
         {%- if page.duration -%}
           {%- assign duration_parts = page.duration | split: ':' -%}
           {%- if duration_parts.size == 2 -%}
-            "duration": {{ duration_parts[0] | prepend: 'PT' | append: 'M' | append: duration_parts[1] | append: 'S' | jsonify }},
+            "duration": {{ duration_parts[0] | prepend: 'PT' | append: 'M' | append: duration_parts[1] | append: 'S' | jsonify | replace: '</', '<\/' }},
           {%- endif -%}
         {%- endif -%}
         "creator": { "@id": "{{ site.url }}/#author-nate-ellis" }
@@ -56,24 +56,24 @@
         { "@type": "Thing", "name": "Reformed Baptist Theology" },
         { "@type": "Thing", "name": "Expository Preaching" }
         {%- if page.scripture -%},
-        { "@type": "Thing", "name": {{ page.scripture | jsonify }} }
+        { "@type": "Thing", "name": {{ page.scripture | jsonify | replace: '</', '<\/' }} }
         {%- endif -%}
         {%- if page.series -%},
-        { "@type": "CreativeWorkSeries", "name": {{ page.series | jsonify }} }
+        { "@type": "CreativeWorkSeries", "name": {{ page.series | jsonify | replace: '</', '<\/' }} }
         {%- endif %}
       ],
       "isPartOf": {
         "@type": "PodcastSeries",
-        "name": {{ site.podcast.title | jsonify }},
-        "url": {{ site.podcast.rss_url | jsonify }},
-        "description": {{ site.podcast.description | jsonify }}
+        "name": {{ site.podcast.title | jsonify | replace: '</', '<\/' }},
+        "url": {{ site.podcast.rss_url | jsonify | replace: '</', '<\/' }},
+        "description": {{ site.podcast.description | jsonify | replace: '</', '<\/' }}
       },
       "genre": "Religious",
       "inLanguage": "en-US"
     },
     {
       "@type": "BreadcrumbList",
-      "@id": {{ sermon_breadcrumb_id | jsonify }},
+      "@id": {{ sermon_breadcrumb_id | jsonify | replace: '</', '<\/' }},
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -90,8 +90,8 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": {{ page.title | jsonify }},
-          "item": {{ page.url | absolute_url | jsonify }}
+          "name": {{ page.title | jsonify | replace: '</', '<\/' }},
+          "item": {{ page.url | absolute_url | jsonify | replace: '</', '<\/' }}
         }
       ]
     }

@@ -102,6 +102,30 @@ function cleanDescription(text) {
     .trim();
 }
 
+function cleanTitle(text) {
+  if (!text) return text;
+  return text
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// the url lands in a src attribute, so anything that is not plain http(s) is dropped rather than rendered
+function safeAudioUrl(url) {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? url : null;
+  } catch {
+    return null;
+  }
+}
+
 let preacherCache = null;
 
 function loadPreachers() {
@@ -235,14 +259,15 @@ function buildFields(item, bookCounts, existingFields = {}) {
   // date/title fall back to a hand-corrected existing value (e.g. a mis-dated RSS
   // pubDate) rather than always trusting the feed.
   const date = existingFields.date || sermonDate.toISOString();
-  const title = existingFields.title || item.title;
+  // titles render unescaped in Liquid, so strip markup here as cleanDescription already does for descriptions
+  const title = existingFields.title || cleanTitle(item.title);
 
   const fields = {
     layout: 'sermon',
     title,
     date,
     category: 'sermon',
-    audio_url: item.enclosure?.url ? item.enclosure.url : null,
+    audio_url: safeAudioUrl(item.enclosure?.url),
     duration,
     scripture,
     series,

@@ -5,14 +5,14 @@ Uses native HTML5 audio features where possible
 
 {% assign audio_id = include.audio_url | split: '/' | last | split: '.' | first | append: '-player' %}
 
-<div class="sermon-player w-full" data-audio-url="{{ include.audio_url }}" data-episode-id="{{ include.episode_id | default: 'unknown' }}" data-title="{{ include.title | escape }}">
+<div class="sermon-player w-full" data-audio-url="{{ include.audio_url | escape }}" data-episode-id="{{ include.episode_id | default: 'unknown' }}" data-title="{{ include.title | escape }}">
   <!-- Native HTML5 Audio Element -->
   <audio
     id="{{ audio_id }}"
     preload="metadata"
-    src="{{ include.audio_url }}"
+    src="{{ include.audio_url | escape }}"
     class="sr-only">
-    <source src="{{ include.audio_url }}" type="audio/mpeg">
+    <source src="{{ include.audio_url | escape }}" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
@@ -21,7 +21,7 @@ Uses native HTML5 audio features where possible
     <!-- Track Title -->
     {% if include.title %}
     <div class="mb-3">
-      <h3 class="text-base font-medium text-stone-900 dark:text-white">{{ include.title }}</h3>
+      <h3 class="text-base font-medium text-stone-900 dark:text-white">{{ include.title | escape }}</h3>
     </div>
     {% endif %}
 
@@ -98,7 +98,7 @@ Uses native HTML5 audio features where possible
           </button>
 
           <!-- Download Button -->
-          <a href="{{ include.audio_url }}"
+          <a href="{{ include.audio_url | escape }}"
              download
              class="download-btn relative flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-950/10 bg-transparent text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
              aria-label="Download sermon">
@@ -175,7 +175,7 @@ Uses native HTML5 audio features where possible
         </button>
 
         <!-- Download Button -->
-        <a href="{{ include.audio_url }}"
+        <a href="{{ include.audio_url | escape }}"
            download
            class="download-btn relative flex size-10 cursor-pointer items-center justify-center rounded-lg border border-zinc-950/10 bg-transparent text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
            aria-label="Download sermon">

@@ -23,7 +23,7 @@ layout: default
               <!-- Title Section -->
               <div class="flex-1">
                 <h1 class="mb-4 font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;" itemprop="headline name">
-                  {{ page.title }}
+                  {{ page.title | escape }}
                 </h1>
                 {% if page.scripture != page.title %}
                   <p class="text-lg text-white/60" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06);">
@@ -41,7 +41,7 @@ layout: default
             <!-- Audio Player Section -->
             {% if page.audio_url %}
               <section aria-labelledby="sermon-audio-caption" class="child [--delay:0.25s]">
-                <h2 id="sermon-audio-caption" class="sr-only">{{ page.title }} Audio</h2>
+                <h2 id="sermon-audio-caption" class="sr-only">{{ page.title | escape }} Audio</h2>
                 {% include audio-player.html audio_url=page.audio_url title=page.title episode_id=page.episode_id %}
               </section>
             {% endif %}

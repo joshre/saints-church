@@ -28,7 +28,7 @@
       "logo": {
         "@type": "ImageObject",
         "@id": "{{ site.url }}/#logo",
-        "url": {{ site.data.content.seo.meta.social_image | absolute_url | jsonify }},
+        "url": {{ site.data.content.seo.meta.social_image | absolute_url | jsonify | replace: '</', '<\/' }},
         "width": {{ site.data.content.seo.meta.social_image_width }},
         "height": {{ site.data.content.seo.meta.social_image_height }}
       },
