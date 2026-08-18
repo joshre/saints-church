@@ -83,10 +83,10 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add _posts/ _data/processed_episodes.json sermons/preachers/ sermons/series/
 
-            # Count new, modified, and deleted files
-            NEW_FILES=$(git diff --cached --name-status | grep "^A" | grep "_posts/" | wc -l)
-            MODIFIED_FILES=$(git diff --cached --name-status | grep "^M" | grep "_posts/" | wc -l)
-            DELETED_FILES=$(git diff --cached --name-status | grep "^D" | grep "_posts/" | wc -l)
+            # --no-renames keeps a retitled post visible as the A/D pair the counts below expect
+            NEW_FILES=$(git diff --cached --no-renames --name-status | grep "^A" | grep "_posts/" | wc -l)
+            MODIFIED_FILES=$(git diff --cached --no-renames --name-status | grep "^M" | grep "_posts/" | wc -l)
+            DELETED_FILES=$(git diff --cached --no-renames --name-status | grep "^D" | grep "_posts/" | wc -l)
 
             # Adjust counts: if we have equal deletions and additions, treat as updates
             if [ "$DELETED_FILES" -gt 0 ] && [ "$NEW_FILES" -gt 0 ]; then
@@ -121,8 +121,12 @@ jobs:
                 git commit -m "Sync sermons: $NEW_FILES new, $MODIFIED_FILES updated" -m "$(echo "$CHANGED_TITLES" | tr '|' '\n' | sed 's/^/- /' | head -5)" -m "Automated podcast sync"
               fi
               echo "Committed $NEW_FILES new episode(s) and $MODIFIED_FILES updated episode(s)"
+            elif ! git diff --cached --quiet; then
+              # tracking JSON and taxonomy pages change without any _posts/ diff; dropping them stranded the sync
+              git commit -m "Sync sermon tracking data" -m "Automated podcast sync"
+              echo "Committed tracking/taxonomy changes with no episode diff"
             else
-              echo "No episodes to commit"
+              echo "Nothing staged to commit"
             fi
           else
             echo "No changes detected"
@@ -131,7 +135,12 @@ jobs:
       - name: Push changes
         run: |
           if [ -n "$(git log @{u}.. --oneline 2>/dev/null)" ]; then
-            git push
+            # a human push between checkout and here rejects ours, silently losing the day's sync
+            git push || {
+              echo "Push rejected, rebasing onto the updated remote and retrying"
+              git pull --rebase
+              git push
+            }
             echo "Pushed changes to repository"
           else
             echo "No changes to push"
