@@ -8,21 +8,21 @@
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": {{ pg_webpage_id | jsonify }},
-      "url": {{ page.url | absolute_url | jsonify }},
-      "name": {{ page.title | jsonify }},
-      "description": {{ page.description | default: page.theme | default: page.title | jsonify }},
+      "@id": {{ pg_webpage_id | jsonify | replace: '</', '<\/' }},
+      "url": {{ page.url | absolute_url | jsonify | replace: '</', '<\/' }},
+      "name": {{ page.title | jsonify | replace: '</', '<\/' }},
+      "description": {{ page.description | default: page.theme | default: page.title | jsonify | replace: '</', '<\/' }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#org" },
       "inLanguage": "en-US"
     },
     {
       "@type": "Event",
-      "@id": {{ pg_event_id | jsonify }},
-      "name": {{ page.title | jsonify }},
-      {% if page.theme %}"description": {{ page.theme | prepend: 'Monthly prayer gathering theme: ' | jsonify }},
-      {% endif %}"startDate": {{ page.date | date: '%Y-%m-%d' | jsonify }},
-      "endDate": {{ page.date | date: '%Y-%m-%d' | jsonify }},
+      "@id": {{ pg_event_id | jsonify | replace: '</', '<\/' }},
+      "name": {{ page.title | jsonify | replace: '</', '<\/' }},
+      {% if page.theme %}"description": {{ page.theme | prepend: 'Monthly prayer gathering theme: ' | jsonify | replace: '</', '<\/' }},
+      {% endif %}"startDate": {{ page.date | date: '%Y-%m-%d' | jsonify | replace: '</', '<\/' }},
+      "endDate": {{ page.date | date: '%Y-%m-%d' | jsonify | replace: '</', '<\/' }},
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "location": {
@@ -43,7 +43,7 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": {{ pg_breadcrumb_id | jsonify }},
+      "@id": {{ pg_breadcrumb_id | jsonify | replace: '</', '<\/' }},
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -66,8 +66,8 @@
         {
           "@type": "ListItem",
           "position": 4,
-          "name": {{ page.title | jsonify }},
-          "item": {{ page.url | absolute_url | jsonify }}
+          "name": {{ page.title | jsonify | replace: '</', '<\/' }},
+          "item": {{ page.url | absolute_url | jsonify | replace: '</', '<\/' }}
         }
       ]
     }

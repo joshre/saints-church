@@ -5,10 +5,10 @@ on:
     types: [opened, synchronize]
     # Optional: Only run on specific file changes
     # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
+    #   - "js/**/*.ts"
+    #   - "scripts/**/*.ts"
+    #   - "_includes/**/*.html"
+    #   - "_layouts/**/*.html"
 
 jobs:
   claude-review:
@@ -69,7 +69,7 @@ jobs:
           #   'Please provide a thorough code review focusing on our coding standards and best practices.' }}
           
           # Optional: Add specific tools for running tests or linting
-          # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run typecheck)"
+          # allowed_tools: "Bash(yarn lint),Bash(yarn lint:types),Bash(yarn build)"
           
           # Optional: Skip review for certain conditions
           # if: |

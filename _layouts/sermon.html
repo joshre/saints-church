@@ -4,7 +4,7 @@ layout: default
 
 <div class="bg-wallpaper dark:bg-wallpaper-dark relative">
   <!-- Single noise texture layer covering the entire page -->
-  <div class="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+  {% include noise-overlay.html %}
 
   <main tabindex="-1" id="main-content" class="relative">
     <!-- Header gradient overlay (no separate noise) -->
@@ -23,7 +23,7 @@ layout: default
               <!-- Title Section -->
               <div class="flex-1">
                 <h1 class="mb-4 font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;" itemprop="headline name">
-                  {{ page.title }}
+                  {{ page.title | escape }}
                 </h1>
                 {% if page.scripture != page.title %}
                   <p class="text-lg text-white/60" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06);">
@@ -41,7 +41,7 @@ layout: default
             <!-- Audio Player Section -->
             {% if page.audio_url %}
               <section aria-labelledby="sermon-audio-caption" class="child [--delay:0.25s]">
-                <h2 id="sermon-audio-caption" class="sr-only">{{ page.title }} Audio</h2>
+                <h2 id="sermon-audio-caption" class="sr-only">{{ page.title | escape }} Audio</h2>
                 {% include audio-player.html audio_url=page.audio_url title=page.title episode_id=page.episode_id %}
               </section>
             {% endif %}

@@ -64,11 +64,12 @@ jobs:
           yarn generate-taxonomies
           yarn build:prod
 
+      # porcelain, not git diff: a brand-new taxonomy page is untracked and git diff cannot see it
       - name: Fail if generated output is stale
         run: |
-          if ! git diff --quiet; then
+          if [ -n "$(git status --porcelain)" ]; then
             echo "Generated files are out of date. Run 'yarn generate-icons', 'yarn generate-taxonomies', and 'yarn build:prod', then commit the result."
-            git diff --stat
+            git status --porcelain
             exit 1
           fi
 

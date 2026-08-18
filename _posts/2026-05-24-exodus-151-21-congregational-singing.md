@@ -7,7 +7,7 @@ audio_url: https://anchor.fm/s/f5d78a70/podcast/play/120511190/https%3A%2F%2Fd3c
 duration: "35:45"
 scripture: Exodus 15:1-21
 pastor: Pastor Nate Ellis
-description: "In this sermon we look at Exodus 15 to see why the people of God are a singing people. Why we sing today and the importance of singing in the church."
+description: In this sermon we look at Exodus 15 to see why the people of God are a singing people. Why we sing today and the importance of singing in the church.
 guid: 80715d5b-ed22-4e9b-a1b5-f3fbde58fbe8
 episode_id: 53122e5a
 transcription_model: whisper-cpp-large-v3-q5

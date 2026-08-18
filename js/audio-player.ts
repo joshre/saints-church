@@ -42,9 +42,19 @@ class SermonPlayer {
     this.speedBtns = container.querySelectorAll('.speed-toggle');
     this.speedTextElements = container.querySelectorAll('.speed-text');
 
-    this.playerId = parseUrl(container.dataset.audioUrl ?? this.audio.src);
+    // anchor.fm percent-encodes the inner CDN url, so parseUrl collapses every sermon onto one key
+    const episodeId = container.dataset.episodeId;
+    this.playerId =
+      episodeId && episodeId !== 'unknown'
+        ? episodeId
+        : parseUrl(container.dataset.audioUrl ?? this.audio.src);
     this.setupEventListeners();
     this.loadState();
+
+    // a cached response can reach HAVE_METADATA before the listener attaches, and loadedmetadata never fires again
+    if (this.audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      this.onLoadedMetadata();
+    }
   }
 
   private setupEventListeners(): void {
@@ -73,10 +83,6 @@ class SermonPlayer {
     this.audio.addEventListener('error', () => this.onError());
 
     this.container.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboard(e));
-
-    if ('mediaSession' in navigator) {
-      this.setupMediaSession();
-    }
   }
 
   private togglePlayPause(): void {
@@ -89,11 +95,21 @@ class SermonPlayer {
 
   private async play(): Promise<void> {
     try {
+      pauseOtherPlayers(this);
+      if ('mediaSession' in navigator) {
+        this.setupMediaSession();
+      }
       await this.audio.play();
       this.updatePlayPauseButton('playing');
       this.saveState();
     } catch {
       this.onError();
+    }
+  }
+
+  pauseIfPlaying(): void {
+    if (!this.audio.paused) {
+      this.pause();
     }
   }
 
@@ -203,7 +219,11 @@ class SermonPlayer {
       speedIndex: this.currentSpeedIndex,
       lastPlayed: Date.now(),
     };
-    localStorage.setItem(`sermon-${this.playerId}`, JSON.stringify(state));
+    try {
+      localStorage.setItem(`sermon-${this.playerId}`, JSON.stringify(state));
+    } catch {
+      // private browsing or quota exceeded — playback must not break over a lost resume point
+    }
   }
 
   private loadState(): void {
@@ -232,7 +252,11 @@ class SermonPlayer {
       this.savedState.lastPlayed &&
       Date.now() - this.savedState.lastPlayed < CONFIG.localStorage.audioTTL;
 
-    if (isRecent && this.savedState.currentTime > 5) {
+    // resuming within the last few seconds just replays the outro, so treat a finished sermon as unstarted
+    const duration = this.audio.duration;
+    const nearEnd = Number.isFinite(duration) && this.savedState.currentTime > duration - 15;
+
+    if (isRecent && this.savedState.currentTime > 5 && !nearEnd) {
       this.audio.currentTime = this.savedState.currentTime;
       this.updateProgress();
       this.updateTime();
@@ -256,13 +280,12 @@ class SermonPlayer {
   }
 
   private setupMediaSession(): void {
-    const title = this.container.querySelector('.player-header h3')?.textContent ?? 'Sermon';
-    const scripture = this.container.querySelector('.player-header p')?.textContent ?? '';
+    // the markup has no .player-header, so the old selector always fell through to the generic label
+    const title = this.container.dataset.title || 'Sermon';
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title,
       artist: 'Saints Church',
-      album: scripture,
       artwork: [{ src: '/assets/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     });
 
@@ -299,6 +322,15 @@ class SermonPlayer {
 }
 
 const activePlayers: SermonPlayer[] = [];
+
+// MediaSession is global, so two players on one page would otherwise fight over it and both keep playing
+function pauseOtherPlayers(current: SermonPlayer): void {
+  for (const player of activePlayers) {
+    if (player !== current) {
+      player.pauseIfPlaying();
+    }
+  }
+}
 
 export function initAudioPlayers(): void {
   const players = document.querySelectorAll<HTMLElement>('.sermon-player');

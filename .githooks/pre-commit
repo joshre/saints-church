@@ -22,16 +22,21 @@ if [ -n "$STAGED" ]; then
 
   # committed artifacts GitHub Pages serves as-is; regenerating here is what keeps them from shipping stale
   echo "Regenerating icons, taxonomies, and assets..."
-  yarn --silent generate-icons >/dev/null 2>&1
-  yarn --silent generate-taxonomies >/dev/null 2>&1
-  yarn --silent build:prod >/dev/null 2>&1
+  for gen in generate-icons generate-taxonomies build:prod; do
+    yarn --silent "$gen" >/dev/null 2>&1 || {
+      echo "$gen failed — running it directly to show the error:"
+      yarn "$gen"
+      exit 1
+    }
+  done
 
   GENERATED="_includes/icon.html css/output.css js/site.min.js sermons/preachers sermons/series"
 
   RESTAGED=""
   for f in $STAGED $GENERATED; do
     [ -e "$f" ] || continue
-    if ! git diff --quiet -- "$f"; then
+    # porcelain, not git diff: a newly generated taxonomy page is untracked and git diff cannot see it
+    if [ -n "$(git status --porcelain -- "$f")" ]; then
       git add -- "$f"
       RESTAGED="$RESTAGED $f"
     fi
