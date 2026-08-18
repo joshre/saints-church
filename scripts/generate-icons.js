@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 /**
  * Generate Heroicons include file from SVG sources
@@ -6,8 +7,8 @@
  * that can dynamically serve any icon without hardcoding paths.
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const HEROICONS_DIR = 'assets/heroicons/optimized';
 const OUTPUT_FILE = '_includes/icon.html';
@@ -23,8 +24,7 @@ function findUsedIcons() {
     // Don't scan the output file itself
     if (filePath === OUTPUT_FILE) return;
     const content = fs.readFileSync(filePath, 'utf8');
-    let match;
-    while ((match = iconPattern.exec(content)) !== null) {
+    for (const match of content.matchAll(iconPattern)) {
       used.add(match[1]);
     }
   }
@@ -44,7 +44,7 @@ function findUsedIcons() {
   // Scan root-level files
   for (const pattern of scanGlobs) {
     const ext = pattern.replace('*.', '.');
-    const rootFiles = fs.readdirSync('.').filter(f => f.endsWith(ext));
+    const rootFiles = fs.readdirSync('.').filter((f) => f.endsWith(ext));
     for (const file of rootFiles) {
       scanFile(file);
     }
@@ -60,10 +60,14 @@ function readSVGContent(filePath) {
   if (pathMatch) {
     return pathMatch.join('');
   }
-  return content.replace(/<\?xml[^>]*>/, '').replace(/<svg[^>]*>/, '').replace('</svg>', '').trim();
+  return content
+    .replace(/<\?xml[^>]*>/, '')
+    .replace(/<svg[^>]*>/, '')
+    .replace('</svg>', '')
+    .trim();
 }
 
-function generateIconCases(usedIcons) {
+function generateIconCases(icons) {
   const sizes = ['16', '20', '24'];
   const types = ['outline', 'solid'];
   const iconData = {};
@@ -74,13 +78,13 @@ function generateIconCases(usedIcons) {
       const dir = path.join(HEROICONS_DIR, size, type);
       if (!fs.existsSync(dir)) continue;
 
-      const files = fs.readdirSync(dir).filter(f => f.endsWith('.svg'));
+      const files = fs.readdirSync(dir).filter((f) => f.endsWith('.svg'));
 
       for (const file of files) {
         const iconName = file.replace('.svg', '');
 
         // Skip icons not used in the codebase
-        if (!usedIcons.has(iconName)) continue;
+        if (!icons.has(iconName)) continue;
 
         const filePath = path.join(dir, file);
 
@@ -111,13 +115,13 @@ function generateIconCases(usedIcons) {
         if (size === '24' && type === 'outline') {
           defaultContent = {
             svgContent,
-            isStroke: true
+            isStroke: true,
           };
         } else {
           conditions.push({
             condition: `icon_size == "${size}" and icon_type == "${type}"`,
             svgContent,
-            isStroke: type === 'outline'
+            isStroke: type === 'outline',
           });
         }
       }
@@ -133,19 +137,19 @@ function generateIconCases(usedIcons) {
 
     // Add default case (24px outline)
     if (defaultContent) {
-      cases += `    {% else %}\n`;
+      cases += '    {% else %}\n';
       cases += `      {% assign icon_svg = '${defaultContent.svgContent.replace(/'/g, "\\'")}' %}\n`;
-      cases += `      {% assign is_stroke = ${defaultContent.isStroke ? 'true' : 'false'} %}\n`;
+      cases += `      {% assign is_stroke = ${String(defaultContent.isStroke)} %}\n`;
     }
 
-    cases += `    {% endif %}\n\n`;
+    cases += '    {% endif %}\n\n';
   }
 
   return cases;
 }
 
-function generateTemplate(usedIcons) {
-  const iconCases = generateIconCases(usedIcons);
+function generateTemplate(icons) {
+  const iconCases = generateIconCases(icons);
 
   return `{% comment %}
 Auto-generated Heroicons component

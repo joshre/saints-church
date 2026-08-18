@@ -7,16 +7,19 @@
  * Usage: npx tsx scripts/generate-taxonomies.ts
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(import.meta.dirname, '..');
 const POSTS_DIR = path.join(ROOT, '_posts');
 const PREACHERS_DIR = path.join(ROOT, 'sermons', 'preachers');
 const SERIES_DIR = path.join(ROOT, 'sermons', 'series');
 
 function slugify(str: string): string {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }
 
 interface Frontmatter {
@@ -29,7 +32,7 @@ function parseFrontmatter(content: string): Frontmatter {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return {};
   const fm: Frontmatter = {};
-  match[1].split('\n').forEach(line => {
+  match[1].split('\n').forEach((line) => {
     const m = line.match(/^(\w+):\s*"?([^"]*)"?\s*$/);
     if (m) fm[m[1]] = m[2].trim();
   });
@@ -42,15 +45,16 @@ function ensureDir(dir: string): void {
 
 function cleanDir(dir: string): void {
   if (!fs.existsSync(dir)) return;
-  fs.readdirSync(dir)
-    .filter(f => f.endsWith('.md'))
-    .forEach(f => fs.unlinkSync(path.join(dir, f)));
+  for (const f of fs.readdirSync(dir).filter((name) => name.endsWith('.md'))) {
+    fs.unlinkSync(path.join(dir, f));
+  }
 }
 
 // Scan all posts
-const posts = fs.readdirSync(POSTS_DIR)
-  .filter(f => f.endsWith('.md'))
-  .map(f => parseFrontmatter(fs.readFileSync(path.join(POSTS_DIR, f), 'utf-8')));
+const posts = fs
+  .readdirSync(POSTS_DIR)
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => parseFrontmatter(fs.readFileSync(path.join(POSTS_DIR, f), 'utf-8')));
 
 // Extract unique preachers and series with counts
 const preachers = new Map<string, number>();
@@ -125,4 +129,6 @@ permalink: /sermons/series/
 fs.writeFileSync(path.join(SERIES_DIR, 'index.md'), seriesIndex);
 console.log('  Index: /sermons/series/');
 
-console.log(`\nGenerated ${preachers.size} preacher pages, ${series.size} series pages, and 2 index pages.`);
+console.log(
+  `\nGenerated ${preachers.size} preacher pages, ${series.size} series pages, and 2 index pages.`,
+);

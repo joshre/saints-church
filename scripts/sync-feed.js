@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 /**
  * Sync podcast RSS feed to Jekyll posts
  *
@@ -9,14 +10,14 @@
 
 const Parser = require('rss-parser');
 const yaml = require('js-yaml');
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
 
 const parser = new Parser({
   customFields: {
-    item: ['guid', 'enclosure', 'itunes:duration', 'itunes:author', 'itunes:summary']
-  }
+    item: ['guid', 'enclosure', 'itunes:duration', 'itunes:author', 'itunes:summary'],
+  },
 });
 
 const RSS_URL = 'https://anchor.fm/s/f5d78a70/podcast/rss';
@@ -45,7 +46,7 @@ function generateFilename(date, title) {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
-    .substring(0, 100);
+    .slice(0, 100);
   if (!slug) slug = 'untitled-sermon';
   return `${dateStr}-${slug}.md`;
 }
@@ -63,11 +64,12 @@ function parseDuration(duration) {
   if (!duration) return null;
   const str = String(duration).trim();
   if (str.includes(':')) {
-    const parts = str.split(':').map(p => parseInt(p, 10));
-    if (parts.some(p => isNaN(p))) return null;
+    const parts = str.split(':').map((p) => Number.parseInt(p, 10));
+    if (parts.some((p) => Number.isNaN(p))) return null;
     if (parts.length === 2) return `${parts[0]}:${parts[1].toString().padStart(2, '0')}`;
     if (parts.length === 3) {
-      if (parts[0] > 0) return `${parts[0]}:${parts[1].toString().padStart(2, '0')}:${parts[2].toString().padStart(2, '0')}`;
+      if (parts[0] > 0)
+        return `${parts[0]}:${parts[1].toString().padStart(2, '0')}:${parts[2].toString().padStart(2, '0')}`;
       return `${parts[1]}:${parts[2].toString().padStart(2, '0')}`;
     }
     return str;
@@ -106,7 +108,7 @@ function loadPreachers() {
   if (preacherCache) return preacherCache;
   try {
     const parsed = yaml.load(fs.readFileSync(PREACHERS_FILE, 'utf8'));
-    preacherCache = Array.isArray(parsed) ? parsed.filter((p) => p && p.name && p.key) : [];
+    preacherCache = Array.isArray(parsed) ? parsed.filter((p) => p?.name && p.key) : [];
   } catch {
     preacherCache = [];
   }
@@ -186,8 +188,8 @@ function buildFrontmatter(fields) {
 function fieldsEqual(a, b) {
   const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
   for (const key of keys) {
-    const av = a[key] == null ? '' : String(a[key]);
-    const bv = b[key] == null ? '' : String(b[key]);
+    const av = a[key] === null ? '' : String(a[key]);
+    const bv = b[key] === null ? '' : String(b[key]);
     if (av !== bv) return false;
   }
   return true;
@@ -196,11 +198,11 @@ function fieldsEqual(a, b) {
 function buildFields(item, bookCounts, existingFields = {}) {
   const pubDate = new Date(item.pubDate);
   const sermonDate = getSermonSunday(pubDate);
-  const scripture = existingFields.scripture ||
-    extractScripture(item.title) || extractScripture(item.description);
+  const scripture =
+    existingFields.scripture || extractScripture(item.title) || extractScripture(item.description);
   const duration = parseDuration(item['itunes:duration']);
   const guid = item.guid || item.link;
-  const episodeHash = crypto.createHash('sha256').update(guid).digest('hex').substring(0, 8);
+  const episodeHash = crypto.createHash('sha256').update(guid).digest('hex').slice(0, 8);
 
   // Re-run on every sync (not gated behind --update) so a book crossing SERIES_THRESHOLD
   // backfills series onto posts created before the threshold was met.
@@ -213,12 +215,13 @@ function buildFields(item, bookCounts, existingFields = {}) {
     }
   }
 
-  const detectedPastor =
-    detectPastor(item.description) || detectPastor(item['itunes:summary']);
+  const detectedPastor = detectPastor(item.description) || detectPastor(item['itunes:summary']);
   const pastor = existingFields.pastor || detectedPastor || DEFAULT_PASTOR;
 
-  const desc = existingFields.description ||
-    cleanDescription(item.description || item['itunes:summary'] || '') || null;
+  const desc =
+    existingFields.description ||
+    cleanDescription(item.description || item['itunes:summary'] || '') ||
+    null;
 
   // date/title fall back to a hand-corrected existing value (e.g. a mis-dated RSS
   // pubDate) rather than always trusting the feed.
@@ -230,14 +233,14 @@ function buildFields(item, bookCounts, existingFields = {}) {
     title,
     date,
     category: 'sermon',
-    audio_url: item.enclosure && item.enclosure.url ? item.enclosure.url : null,
+    audio_url: item.enclosure?.url ? item.enclosure.url : null,
     duration,
     scripture,
     series,
     pastor,
     description: desc,
     guid,
-    episode_id: episodeHash
+    episode_id: episodeHash,
   };
 
   // Preserve custom fields that aren't sourced from RSS (transcription_model, etc.)
@@ -251,7 +254,8 @@ function buildFields(item, bookCounts, existingFields = {}) {
 
 async function sync({ updateExisting = false } = {}) {
   console.log('Fetching RSS feed...');
-  if (updateExisting) console.log('Update mode: existing posts will be rewritten if frontmatter differs.');
+  if (updateExisting)
+    console.log('Update mode: existing posts will be rewritten if frontmatter differs.');
   const feed = await parser.parseURL(RSS_URL);
   console.log(`Found ${feed.items.length} episodes in feed`);
 
@@ -260,12 +264,12 @@ async function sync({ updateExisting = false } = {}) {
     if (fs.existsSync(PROCESSED_FILE)) {
       processed = JSON.parse(fs.readFileSync(PROCESSED_FILE, 'utf8'));
     }
-  } catch (e) {
+  } catch {
     console.log('Starting fresh processed episodes list');
   }
 
-  const processedMap = new Map(processed.map(p => [p.guid, p]));
-  const existingFiles = new Set(fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.md')));
+  const processedMap = new Map(processed.map((p) => [p.guid, p]));
+  const existingFiles = new Set(fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith('.md')));
 
   const bookCounts = {};
   for (const item of feed.items) {
@@ -291,7 +295,7 @@ async function sync({ updateExisting = false } = {}) {
     }
 
     const pubDate = new Date(item.pubDate);
-    if (isNaN(pubDate.getTime())) {
+    if (Number.isNaN(pubDate.getTime())) {
       console.warn(`Skipping episode with invalid pubDate: ${item.title}`);
       continue;
     }
@@ -341,13 +345,13 @@ async function sync({ updateExisting = false } = {}) {
       guid,
       title: item.title,
       filename,
-      processed_at: new Date().toISOString()
+      processed_at: new Date().toISOString(),
     });
   }
 
   fs.writeFileSync(PROCESSED_FILE, JSON.stringify(Array.from(processedMap.values()), null, 2));
 
-  console.log(`\nSync complete:`);
+  console.log('\nSync complete:');
   console.log(`  - ${newCount} new episodes created`);
   console.log(`  - ${updatedCount} existing episodes refreshed`);
   console.log(`  - ${trackedExisting} existing files added to tracking`);
@@ -362,12 +366,12 @@ module.exports = {
   buildFrontmatter,
   parseFrontmatter,
   splitFrontmatter,
-  yamlNeedsQuotes
+  yamlNeedsQuotes,
 };
 
 if (require.main === module) {
   const updateExisting = process.argv.includes('--update');
-  sync({ updateExisting }).catch(e => {
+  sync({ updateExisting }).catch((e) => {
     console.error('Error:', e);
     process.exit(1);
   });
