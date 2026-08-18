@@ -5,7 +5,7 @@ Uses native HTML5 audio features where possible
 
 {% assign audio_id = include.audio_url | split: '/' | last | split: '.' | first | append: '-player' %}
 
-<div class="sermon-player w-full" data-audio-url="{{ include.audio_url }}" data-episode-id="{{ include.episode_id | default: 'unknown' }}">
+<div class="sermon-player w-full" data-audio-url="{{ include.audio_url }}" data-episode-id="{{ include.episode_id | default: 'unknown' }}" data-title="{{ include.title | escape }}">
   <!-- Native HTML5 Audio Element -->
   <audio
     id="{{ audio_id }}"

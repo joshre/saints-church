@@ -11,7 +11,15 @@ export function initMobileNav(): void {
 
   if (!(button && menu && panel && menuIcon && closeIcon)) return;
 
+  let hideTimeout: number | undefined;
+
   const toggleMenu = (show: boolean): void => {
+    // a reopen inside the close transition would otherwise let the old timer hide the menu again
+    if (hideTimeout !== undefined) {
+      clearTimeout(hideTimeout);
+      hideTimeout = undefined;
+    }
+
     if (show) {
       menu.classList.remove('hidden');
       menuIcon.classList.add('hidden');
@@ -24,7 +32,8 @@ export function initMobileNav(): void {
     } else {
       panel.classList.add('translate-x-full');
       panel.classList.remove('translate-x-0');
-      setTimeout(() => {
+      hideTimeout = window.setTimeout(() => {
+        hideTimeout = undefined;
         menu.classList.add('hidden');
         menuIcon.classList.remove('hidden');
         closeIcon.classList.add('hidden');
