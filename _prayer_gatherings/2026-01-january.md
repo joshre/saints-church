@@ -5,11 +5,11 @@ theme: "The Lord Will Provide"
 permalink: /resources/prayer-gatherings/january-2026/
 ---
 
-# The Lord Will Provide
+## The Lord Will Provide
 
-## Genesis 22
+### Genesis 22
 
-## Isaiah 31:1
+### Isaiah 31:1
 
 Woe to those who go down to Egypt for help
 and rely on horses,
@@ -18,4 +18,4 @@ and in horsemen because they are very strong,
 but do not look to the Holy One of Israel
 or consult the Lord!
 
-## Romans 8:32-39
+### Romans 8:32-39

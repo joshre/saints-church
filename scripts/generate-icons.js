@@ -41,11 +41,14 @@ function findUsedIcons() {
     }
   }
 
-  // Scan root-level files
+  // Scan root-level files Jekyll actually renders; frontmatter is what
+  // separates a page from a doc like CLAUDE.md, whose examples would
+  // otherwise register as real icon usage
   for (const pattern of scanGlobs) {
     const ext = pattern.replace('*.', '.');
     const rootFiles = fs.readdirSync('.').filter((f) => f.endsWith(ext));
     for (const file of rootFiles) {
+      if (!fs.readFileSync(file, 'utf8').startsWith('---')) continue;
       scanFile(file);
     }
   }

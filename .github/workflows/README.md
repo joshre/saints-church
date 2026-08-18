@@ -5,11 +5,15 @@ This directory contains automated workflows for the Saints Church Jekyll website
 ## Podcast Sync Workflow (`podcast-sync.yml`)
 
 ### Overview
+
 Automatically syncs sermon episodes from the Saints Church RSS feed to Jekyll posts, optimized for Reformed Baptist expository preaching series.
+
+The workflow is a thin wrapper – all the parsing and post-generation logic lives in `scripts/sync-feed.js`, which is also what you run locally via `node scripts/sync-feed.js`.
 
 ### Features
 
-#### 🎯 **RSS Feed Processing**
+#### RSS Feed Processing
+
 - Parses `https://anchor.fm/s/f5d78a70/podcast/rss`
 - Extracts comprehensive episode metadata:
   - Title and description
@@ -18,7 +22,8 @@ Automatically syncs sermon episodes from the Saints Church RSS feed to Jekyll po
   - Unique GUID for duplicate prevention
   - iTunes metadata (author, duration, etc.)
 
-#### 📝 **Jekyll Post Generation**
+#### Jekyll Post Generation
+
 Creates properly formatted posts in `_posts/` directory with frontmatter:
 
 ```yaml
@@ -38,20 +43,16 @@ guid: "unique-episode-identifier"
 ---
 ```
 
-#### ⛪ **Reformed Baptist Context**
-- **Enhanced Scripture References**: Detects biblical references in multiple formats:
-  - Full book names: "John 21:1-14", "1 Corinthians 15:1-11"
-  - Abbreviated forms: "Jn 21:1-14", "1Cor 15:1-11"
-  - Roman numerals: "I Corinthians 15:1-11"
-  - Single chapter books: "Philemon v. 1-7"
+#### Reformed Baptist Context
 
-- **Series Detection**: Automatically identifies sermon series:
-  - Explicit series patterns: "Series Name: Episode Title"
-  - Biblical book series for expository preaching (John, Galatians, Romans, etc.)
+- **Scripture References**: Detects full book names followed by a chapter and optional verse range — "John 21:1-14", "1 Corinthians 15:1-11", "Genesis 5". All 66 books are recognized, numbered books with or without a space ("1 Samuel", "1Samuel"). Abbreviations ("Jn"), Roman numerals ("I Corinthians"), and "v." verse notation are **not** matched; those titles land without a `scripture` field and need manual frontmatter.
 
-- **Pastor Attribution**: Defaults to "Pastor Nate Ellis" with RSS feed fallback
+- **Series Detection**: Assigns a series once a biblical book reaches `SERIES_THRESHOLD` (3) sermons, so a one-off sermon doesn't create a series of one. This is recalculated on every sync, not just with `--update`, so a book crossing the threshold retroactively picks up its earlier sermons
 
-#### 🔄 **Duplicate Prevention**
+- **Pastor Attribution**: Resolves preacher names against `_data/preachers.yml`, falling back to the RSS feed author
+
+#### Duplicate Prevention
+
 - Tracks processed episodes in `_data/processed_episodes.json`
 - Uses GUID-based duplicate detection
 - Double-checks file existence for additional safety
@@ -59,6 +60,7 @@ guid: "unique-episode-identifier"
 ### Schedule
 
 **Primary Schedule**: Weekly on Sundays at 9:00 AM UTC (4:00 AM EST / 5:00 AM EDT)
+
 - Timing allows for sermon uploads after Sunday morning service
 - Accounts for timezone differences in Knoxville, TN
 
@@ -69,74 +71,79 @@ guid: "unique-episode-identifier"
 Posts are created with the format: `YYYY-MM-DD-slug.md`
 
 Where:
+
 - `YYYY-MM-DD` is the episode publication date
 - `slug` is a URL-friendly version of the episode title
 - Special characters are removed, spaces become hyphens
 
 Examples:
+
 - `2025-09-14-john-211-14.md`
 - `2024-11-03-john-8-12-30.md`
 - `2024-06-02-galatians-3-1-9.md`
 
+### Taxonomy Regeneration
+
+After the sync finishes, the workflow runs `yarn generate-taxonomies` – which rebuilds the preacher and series index pages under `sermons/` so the per-preacher and per-series sermon counts stay accurate.
+
 ### Error Handling
 
 #### Episode-Level Errors
+
 - Individual episode failures don't stop the entire sync
 - Detailed error logging for troubleshooting
 - Graceful handling of malformed RSS data
 
 #### System-Level Errors
+
 - Network failures abort the workflow with proper exit codes
 - File system errors are logged and reported
 - Git operations include safety checks
 
 ### Commit Messages
 
-#### Single Episode
-```
+We commit with a plain summary line and a short body, varying by what changed.
+
+Single episode:
+
+```text
 Add new sermon: John 21:1-14
 
-🎯 Automated podcast sync from Saints Church RSS feed
-📅 Weekly sync for Reformed Baptist sermon series
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
+Automated podcast sync from Saints Church RSS feed
 ```
 
-#### Multiple Episodes
-```
+Multiple episodes:
+
+```text
 Add 3 new sermon episodes
 
-🎯 Automated podcast sync from Saints Church RSS feed
-📅 Weekly sync for Reformed Baptist sermon series
-
-Recent episodes:
 - John 21:1-14
 - John 20:19-31
 - John 20:1-18
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
+Automated podcast sync
 ```
 
 ### Monitoring and Maintenance
 
 #### Checking Workflow Status
+
 1. Go to **Actions** tab in GitHub repository
 2. Select **Sync Podcast Episodes** workflow
 3. View recent runs and their status
 
 #### Manual Triggering
+
 1. Navigate to **Actions** → **Sync Podcast Episodes**
 2. Click **Run workflow** button
 3. Confirm on desired branch (usually `master`)
 
 #### Tracking File Location
+
 Processed episodes are tracked in: `_data/processed_episodes.json`
 
 This file contains:
+
 ```json
 [
   {
@@ -151,51 +158,54 @@ This file contains:
 #### Common Issues and Solutions
 
 **Issue**: Episodes not appearing after sync
+
 - Check workflow run logs in Actions tab
 - Verify RSS feed is accessible
 - Ensure episodes have unique GUIDs
 
 **Issue**: Duplicate episodes created
+
 - Check `_data/processed_episodes.json` for GUID tracking
 - Verify workflow completed successfully on previous runs
 - Manual cleanup may be needed if tracking file is corrupted
 
 **Issue**: Scripture references not detected
+
 - Check episode titles and descriptions for standard biblical reference formats
-- Consider updating scripture extraction patterns in workflow
+- Consider updating scripture extraction patterns in `scripts/sync-feed.js`
 - Manual editing of generated posts may be needed for edge cases
 
 **Issue**: Series not properly assigned
+
 - Verify expository preaching follows recognizable patterns
 - Check that series detection logic covers your biblical books
 - Manual frontmatter editing can correct series assignments
 
 ### Dependencies
 
-The workflow automatically installs these Node.js packages:
-- `rss-parser@^3.13.0` - RSS feed parsing
-- `front-matter@^4.0.2` - Jekyll frontmatter handling
+Dependencies are installed with `yarn install --frozen-lockfile`, and the Node version comes from `.nvmrc`. The sync itself needs `rss-parser`; the taxonomy step needs `tsx`. Both are declared in `package.json`.
 
 ### Security Considerations
 
 - Workflow runs with `contents: write` permission for Git operations
 - No external secrets or API keys required
 - RSS feed access is read-only
-- All commits are properly attributed and signed
+- All commits are properly attributed
 
 ### Customization
 
 To modify the workflow behavior:
 
 1. **Change Schedule**: Edit the `cron` expression in the workflow file
-2. **RSS Feed URL**: Update the `RSS_URL` constant in the JavaScript
-3. **Scripture Patterns**: Modify the `extractScripture` function patterns
-4. **Series Detection**: Update the series detection logic
-5. **Post Template**: Adjust the `generatePost` function frontmatter
+2. **RSS Feed URL**: Update the `RSS_URL` constant in `scripts/sync-feed.js`
+3. **Scripture Patterns**: Modify the `extractScripture` function in `scripts/sync-feed.js`
+4. **Series Detection**: Adjust `SERIES_THRESHOLD` in `scripts/sync-feed.js`
+5. **Post Frontmatter**: Adjust `buildFields` / `buildFrontmatter` in `scripts/sync-feed.js`
 
 ### Integration with Jekyll
 
 This workflow integrates seamlessly with:
+
 - Jekyll's `_posts` directory structure
 - The existing `sermon` layout
 - Site's frontmatter conventions
