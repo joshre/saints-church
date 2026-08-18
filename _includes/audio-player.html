@@ -5,7 +5,7 @@ Uses native HTML5 audio features where possible
 
 {% assign audio_id = include.audio_url | split: '/' | last | split: '.' | first | append: '-player' %}
 
-<div class="w-full sermon-player" data-audio-url="{{ include.audio_url }}" data-episode-id="{{ include.episode_id | default: 'unknown' }}">
+<div class="sermon-player w-full" data-audio-url="{{ include.audio_url }}" data-episode-id="{{ include.episode_id | default: 'unknown' }}">
   <!-- Native HTML5 Audio Element -->
   <audio
     id="{{ audio_id }}"
@@ -17,21 +17,21 @@ Uses native HTML5 audio features where possible
   </audio>
 
   <!-- Player Interface -->
-  <div class="relative p-6 w-full h-full bg-white rounded-2xl player-controls shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-stone-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-2xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_0px_rgba(255,255,255,0.06)_inset]">
+  <div class="player-controls relative h-full w-full rounded-2xl bg-white p-6 shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-stone-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-2xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.20),0px_1px_0px_0px_rgba(255,255,255,0.06)_inset]">
     <!-- Track Title -->
     {% if include.title %}
     <div class="mb-3">
-      <h3 class="text-base font-medium dark:text-white text-stone-900">{{ include.title }}</h3>
+      <h3 class="text-base font-medium text-stone-900 dark:text-white">{{ include.title }}</h3>
     </div>
     {% endif %}
 
     <!-- Mobile: Stack layout -->
     <div class="flex flex-col gap-4 sm:hidden">
       <!-- Top row: Play button and progress -->
-      <div class="flex gap-4 items-center">
+      <div class="flex items-center gap-4">
         <!-- Large Play Button -->
         <button type="button"
-                class="flex flex-shrink-0 justify-center items-center rounded-full transition-colors duration-200 cursor-pointer dark:bg-white play-pause-btn bg-stone-900 size-14 dark:hover:bg-stone-100 hover:bg-stone-800"
+                class="play-pause-btn flex size-14 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-stone-900 transition-colors duration-200 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100"
                 aria-label="Play sermon">
           <!-- Play Icon -->
           {% include icon.html name="play" type="solid" size="24" class="ml-0.5 text-white play-icon size-6 dark:text-stone-900" %}
@@ -42,15 +42,15 @@ Uses native HTML5 audio features where possible
         <!-- HTML5 Range Slider (Scrubber) -->
         <div class="relative flex-1">
           <!-- Background track -->
-          <div class="flex absolute inset-y-0 right-0 left-0 z-0 items-center">
-            <div class="w-full h-1.5 rounded-full bg-stone-200 dark:bg-stone-700">
-              <div class="w-0 h-full rounded-full progress-fill bg-saints-500 [transition:width_0.35s_cubic-bezier(0.4,0.01,0.165,0.99)]"></div>
+          <div class="absolute inset-y-0 right-0 left-0 z-0 flex items-center">
+            <div class="h-1.5 w-full rounded-full bg-stone-200 dark:bg-stone-700">
+              <div class="progress-fill bg-saints-500 h-full w-0 rounded-full [transition:width_0.35s_cubic-bezier(0.4,0.01,0.165,0.99)]"></div>
             </div>
           </div>
           <!-- Range input overlay -->
           <input
             type="range"
-            class="relative z-20 w-full h-1.5 bg-transparent cursor-pointer audio-scrubber"
+            class="audio-scrubber relative z-20 h-1.5 w-full cursor-pointer bg-transparent"
             min="0"
             max="100"
             value="0"
@@ -60,10 +60,10 @@ Uses native HTML5 audio features where possible
       </div>
 
       <!-- Bottom row: Times and controls -->
-      <div class="flex justify-between items-center">
-        <div class="flex gap-2 items-center">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
           <!-- Current Time -->
-          <div class="flex-shrink-0 font-mono text-xs font-medium text-stone-600 current-time dark:text-stone-300">
+          <div class="current-time flex-shrink-0 font-mono text-xs font-medium text-stone-600 dark:text-stone-300">
             0:00
           </div>
           <!-- Total Time -->
@@ -73,26 +73,26 @@ Uses native HTML5 audio features where possible
         </div>
 
         <!-- Control Buttons -->
-        <div class="flex gap-2 items-center">
+        <div class="flex items-center gap-2">
           <!-- Skip Backward -->
           <button type="button"
-                  class="flex relative gap-1 justify-center items-center px-2 h-8 bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer skip-back border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+                  class="skip-back relative flex h-8 cursor-pointer items-center justify-center gap-1 rounded-lg border border-zinc-950/10 bg-transparent px-2 text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
                   aria-label="Skip back 15 seconds">
             {% include icon.html name="arrow-uturn-left" type="micro" class="flex-shrink-0 size-3" %}
-            <span class="flex-shrink-0 font-mono text-xs font-medium leading-none">15</span>
+            <span class="flex-shrink-0 font-mono text-xs leading-none font-medium">15</span>
           </button>
 
           <!-- Skip Forward -->
           <button type="button"
-                  class="flex relative gap-1 justify-center items-center px-2 h-8 bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer skip-forward border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+                  class="skip-forward relative flex h-8 cursor-pointer items-center justify-center gap-1 rounded-lg border border-zinc-950/10 bg-transparent px-2 text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
                   aria-label="Skip forward 15 seconds">
-            <span class="flex-shrink-0 font-mono text-xs font-medium leading-none">15</span>
+            <span class="flex-shrink-0 font-mono text-xs leading-none font-medium">15</span>
             {% include icon.html name="arrow-uturn-right" type="micro" class="flex-shrink-0 size-3" %}
           </button>
 
           <!-- Speed Control -->
           <button type="button"
-                  class="flex relative flex-shrink-0 justify-center items-center px-2 h-8 text-xs font-medium bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer speed-toggle border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+                  class="speed-toggle relative flex h-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-lg border border-zinc-950/10 bg-transparent px-2 text-xs font-medium text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
                   aria-label="Change playback speed">
             <span class="speed-text">1×</span>
           </button>
@@ -100,7 +100,7 @@ Uses native HTML5 audio features where possible
           <!-- Download Button -->
           <a href="{{ include.audio_url }}"
              download
-             class="flex relative justify-center items-center bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer download-btn size-8 border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+             class="download-btn relative flex size-8 cursor-pointer items-center justify-center rounded-lg border border-zinc-950/10 bg-transparent text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
              aria-label="Download sermon">
             {% include icon.html name="arrow-down-tray" type="micro" class="size-3" %}
           </a>
@@ -109,10 +109,10 @@ Uses native HTML5 audio features where possible
     </div>
 
     <!-- Desktop: Single row layout -->
-    <div class="hidden gap-6 items-center sm:flex">
+    <div class="hidden items-center gap-6 sm:flex">
       <!-- Large Play Button -->
       <button type="button"
-              class="flex flex-shrink-0 justify-center items-center rounded-full transition-colors duration-200 cursor-pointer dark:bg-white play-pause-btn bg-stone-900 size-14 dark:hover:bg-stone-100 hover:bg-stone-800"
+              class="play-pause-btn flex size-14 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-stone-900 transition-colors duration-200 hover:bg-stone-800 dark:bg-white dark:hover:bg-stone-100"
               aria-label="Play sermon">
         <!-- Play Icon -->
         {% include icon.html name="play" type="solid" size="24" class="ml-0.5 text-white play-icon size-6 dark:text-stone-900" %}
@@ -121,22 +121,22 @@ Uses native HTML5 audio features where possible
       </button>
 
       <!-- Current Time -->
-      <div class="flex-shrink-0 font-mono text-base font-medium text-stone-600 current-time dark:text-stone-300">
+      <div class="current-time flex-shrink-0 font-mono text-base font-medium text-stone-600 dark:text-stone-300">
         0:00
       </div>
 
       <!-- HTML5 Range Slider (Scrubber) -->
       <div class="relative flex-1">
         <!-- Background track -->
-        <div class="flex absolute inset-y-0 right-0 left-0 z-0 items-center">
-          <div class="w-full h-1.5 rounded-full bg-stone-200 dark:bg-stone-700">
-            <div class="w-0 h-full rounded-full progress-fill bg-saints-500 [transition:width_0.35s_cubic-bezier(0.4,0.01,0.165,0.99)]"></div>
+        <div class="absolute inset-y-0 right-0 left-0 z-0 flex items-center">
+          <div class="h-1.5 w-full rounded-full bg-stone-200 dark:bg-stone-700">
+            <div class="progress-fill bg-saints-500 h-full w-0 rounded-full [transition:width_0.35s_cubic-bezier(0.4,0.01,0.165,0.99)]"></div>
           </div>
         </div>
         <!-- Range input overlay -->
         <input
           type="range"
-          class="relative z-20 w-full h-1.5 bg-transparent cursor-pointer audio-scrubber"
+          class="audio-scrubber relative z-20 h-1.5 w-full cursor-pointer bg-transparent"
           min="0"
           max="100"
           value="0"
@@ -150,26 +150,26 @@ Uses native HTML5 audio features where possible
       </div>
 
       <!-- Control Buttons -->
-      <div class="flex gap-3 items-center">
+      <div class="flex items-center gap-3">
         <!-- Skip Backward -->
         <button type="button"
-                class="flex relative gap-1.5 justify-center items-center px-4 h-10 bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer skip-back border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+                class="skip-back relative flex h-10 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-zinc-950/10 bg-transparent px-4 text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
                 aria-label="Skip back 15 seconds">
           {% include icon.html name="arrow-uturn-left" type="micro" class="flex-shrink-0 size-4" %}
-          <span class="flex-shrink-0 font-mono text-sm font-medium leading-none">15</span>
+          <span class="flex-shrink-0 font-mono text-sm leading-none font-medium">15</span>
         </button>
 
         <!-- Skip Forward -->
         <button type="button"
-                class="flex relative gap-1.5 justify-center items-center px-4 h-10 bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer skip-forward border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+                class="skip-forward relative flex h-10 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-zinc-950/10 bg-transparent px-4 text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
                 aria-label="Skip forward 15 seconds">
-          <span class="flex-shrink-0 font-mono text-sm font-medium leading-none">15</span>
+          <span class="flex-shrink-0 font-mono text-sm leading-none font-medium">15</span>
           {% include icon.html name="arrow-uturn-right" type="micro" class="flex-shrink-0 size-4" %}
         </button>
 
         <!-- Speed Control -->
         <button type="button"
-                class="flex relative flex-shrink-0 justify-center items-center px-4 h-10 text-sm font-medium bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer speed-toggle border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+                class="speed-toggle relative flex h-10 flex-shrink-0 cursor-pointer items-center justify-center rounded-lg border border-zinc-950/10 bg-transparent px-4 text-sm font-medium text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
                 aria-label="Change playback speed">
           <span class="speed-text">1×</span>
         </button>
@@ -177,7 +177,7 @@ Uses native HTML5 audio features where possible
         <!-- Download Button -->
         <a href="{{ include.audio_url }}"
            download
-           class="flex relative justify-center items-center bg-transparent rounded-lg border transition-colors duration-200 cursor-pointer download-btn size-10 border-zinc-950/10 text-stone-700 dark:border-white/10 dark:hover:border-white/20 dark:bg-white/5 dark:hover:bg-white/10 dark:text-stone-300 dark:hover:text-stone-300 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden"
+           class="download-btn relative flex size-10 cursor-pointer items-center justify-center rounded-lg border border-zinc-950/10 bg-transparent text-stone-700 transition-colors duration-200 hover:border-zinc-950/20 hover:bg-zinc-50 hover:text-stone-700 focus:outline-hidden dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-stone-300"
            aria-label="Download sermon">
           {% include icon.html name="arrow-down-tray" type="micro" class="size-4" %}
         </a>

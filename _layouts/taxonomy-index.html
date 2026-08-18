@@ -25,28 +25,28 @@ layout: default
 }
 </script>
 
-<div class="relative bg-wallpaper dark:bg-wallpaper-dark">
+<div class="bg-wallpaper dark:bg-wallpaper-dark relative">
   <!-- Single noise texture layer covering the entire page -->
-  <div class="absolute inset-0 opacity-30 pointer-events-none mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+  <div class="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
 
   <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
     <!-- Header gradient overlay (no separate noise) -->
-    <div class="overflow-hidden relative">
-      <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
+    <div class="relative overflow-hidden">
+      <div class="from-wallpaper-light dark:from-wallpaper-dark-light absolute inset-0 bg-linear-to-b to-transparent dark:to-transparent"></div>
       <div class="relative">
-        <header role="banner" class="relative px-6 pt-28 pb-8 mx-auto max-w-7xl lg:px-8 animate-children">
+        <header role="banner" class="relative mx-auto max-w-7xl animate-children px-6 pt-28 pb-8 lg:px-8">
           <div class="mx-auto max-w-4xl text-center">
             <!-- Breadcrumb -->
-            <nav aria-label="Breadcrumb" class="mb-3 child">
-              <ol class="flex gap-2 justify-center items-center text-xs tracking-wider text-white/50">
+            <nav aria-label="Breadcrumb" class="child mb-3">
+              <ol class="flex items-center justify-center gap-2 text-xs tracking-wider text-white/50">
                 <li><a href="/sermons/" class="transition-colors hover:text-white/80">Sermons</a></li>
               </ol>
             </nav>
 
-            <h1 itemprop="name" class="mb-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl dark:text-white font-display child [--delay:0.1s]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
+            <h1 itemprop="name" class="child mb-3 font-display text-4xl font-semibold tracking-tight text-white [--delay:0.1s] sm:text-5xl dark:text-white" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
               {{ page.title }}
             </h1>
-            <p class="mx-auto max-w-2xl text-base text-white/55 child [--delay:0.2s]">{{ page.description }}</p>
+            <p class="child mx-auto max-w-2xl text-base text-white/55 [--delay:0.2s]">{{ page.description }}</p>
           </div>
         </header>
       </div>
@@ -55,7 +55,7 @@ layout: default
     <!-- Taxonomy listing -->
     <div class="relative">
       <section class="relative pt-8 pb-20">
-        <div class="px-6 mx-auto max-w-4xl lg:px-8">
+        <div class="mx-auto max-w-4xl px-6 lg:px-8">
 
           {% if page.taxonomy_type == "preachers" %}
             {% assign all_sermons = site.posts | where: "category", "sermon" %}
@@ -66,13 +66,13 @@ layout: default
                 {% assign sp_posts = all_sermons | where: "pastor", sp %}
                 {% assign sp_latest = sp_posts | sort: "date" | reverse | first %}
                 <a href="/sermons/preachers/{{ sp_slug }}/"
-                   class="flex gap-4 items-center py-5 px-5 rounded-xl border transition-all duration-200 hover:-translate-y-px group bg-white/[0.04] border-white/[0.07] hover:bg-white/[0.08] hover:border-white/[0.14]">
+                   class="group flex items-center gap-4 rounded-xl border border-white/[0.07] bg-white/[0.04] px-5 py-5 transition-all duration-200 hover:-translate-y-px hover:border-white/[0.14] hover:bg-white/[0.08]">
                   {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" preacher=sp %}
                   <div class="min-w-0">
-                    <h2 class="text-lg font-medium text-white transition-colors font-display group-hover:text-white/90" style="letter-spacing: -0.01em;">{{ sp | remove: "Pastor " }}</h2>
+                    <h2 class="font-display text-lg font-medium text-white transition-colors group-hover:text-white/90" style="letter-spacing: -0.01em;">{{ sp | remove: "Pastor " }}</h2>
                     <p class="mt-0.5 text-sm leading-tight text-white/45">{{ sp_posts.size }} sermons</p>
                     {% if sp_latest %}
-                      <p class="mt-1.5 text-xs text-white/20 truncate"><span class="text-white/15">Latest:</span> {{ sp_latest.title }}</p>
+                      <p class="mt-1.5 truncate text-xs text-white/20"><span class="text-white/15">Latest:</span> {{ sp_latest.title }}</p>
                     {% endif %}
                   </div>
                 </a>
@@ -89,10 +89,10 @@ layout: default
                 {% assign latest = series_posts | sort: "date" | reverse | first %}
                 {% assign earliest = series_posts | sort: "date" | first %}
                 <a href="/sermons/series/{{ series_slug }}/"
-                   class="flex flex-col px-6 pt-6 pb-5 rounded-xl border transition-all duration-200 hover:-translate-y-px group bg-white/[0.04] border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.14]">
-                  <h2 class="mb-1.5 text-lg font-semibold text-white font-display" style="letter-spacing: -0.01em;">{{ s }}</h2>
-                  <p class="text-sm transition-colors text-white/45 group-hover:text-white/55">{{ series_posts.size }} sermons</p>
-                  <p class="mt-2.5 tracking-wide leading-tight uppercase text-[0.6875rem] text-white/30">
+                   class="group flex flex-col rounded-xl border border-white/[0.06] bg-white/[0.04] px-6 pt-6 pb-5 transition-all duration-200 hover:-translate-y-px hover:border-white/[0.14] hover:bg-white/[0.08]">
+                  <h2 class="mb-1.5 font-display text-lg font-semibold text-white" style="letter-spacing: -0.01em;">{{ s }}</h2>
+                  <p class="text-sm text-white/45 transition-colors group-hover:text-white/55">{{ series_posts.size }} sermons</p>
+                  <p class="mt-2.5 text-[0.6875rem] leading-tight tracking-wide text-white/30 uppercase">
                     {{ earliest.date | date: "%b %Y" }}{% if earliest.date != latest.date %} – {{ latest.date | date: "%b %Y" }}{% endif %}
                   </p>
                 </a>

@@ -1,25 +1,25 @@
-<div class="overflow-hidden relative mt-24 sm:mt-32">
+<div class="relative mt-24 overflow-hidden sm:mt-32">
   
-  <div class="relative px-6 mx-auto max-w-7xl lg:flex lg:px-8 animate-children">
-    <div class="grid grid-cols-1 gap-x-12 gap-y-16 mx-auto max-w-2xl lg:flex-none lg:gap-y-8 lg:mx-0 lg:min-w-full lg:max-w-none">
-      <div class="lg:col-end-1 lg:pb-8 lg:w-full lg:max-w-lg">
+  <div class="relative mx-auto max-w-7xl animate-children px-6 lg:flex lg:px-8">
+    <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:max-w-none lg:min-w-full lg:flex-none lg:gap-y-8">
+      <div class="lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8">
         <div class="relative pl-6 sm:pl-8">
-          <span class="absolute inset-y-0 left-0 w-0.5 rounded-full child-x bg-saints-500 dark:bg-saints-500/50"></span>
-          <h2 id="fellowship-heading" class="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl font-display child ![--delay:0.1s] text-stone-900 dark:text-saints-white">{{ site.data.content.fellowship.title }}</h2>
-          <p class="mt-6 text-lg text-stone-700 sm:text-xl/8 dark:text-stone-300 child ![--delay:0.15s]">{{ site.data.content.fellowship.description }}</p>
-          <p class="mt-6 text-sm text-stone-600 sm:text-base/7 dark:text-stone-400 child ![--delay:0.2s]">{{ site.data.content.fellowship.details }}</p>
+          <span class="child-x bg-saints-500 dark:bg-saints-500/50 absolute inset-y-0 left-0 w-0.5 rounded-full"></span>
+          <h2 id="fellowship-heading" class="child dark:text-saints-white font-display text-3xl font-semibold tracking-tight text-stone-900 ![--delay:0.1s] sm:text-4xl lg:text-5xl">{{ site.data.content.fellowship.title }}</h2>
+          <p class="child mt-6 text-lg text-stone-700 ![--delay:0.15s] sm:text-xl/8 dark:text-stone-300">{{ site.data.content.fellowship.description }}</p>
+          <p class="child mt-6 text-sm text-stone-600 ![--delay:0.2s] sm:text-base/7 dark:text-stone-400">{{ site.data.content.fellowship.details }}</p>
         </div>
       </div>
-      <div class="flex flex-wrap gap-6 justify-end items-start sm:gap-8 lg:contents">
+      <div class="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">
         {% include responsive-image.html name="fellowship-conversation" alt_key="fellowship.conversation" class="object-cover max-w-none rounded-2xl aspect-[7/5] w-[37rem] bg-stone-50 max-sm:w-[30rem] dark:bg-stone-800" container_class="relative flex-auto w-0 lg:flex-none lg:self-end lg:ml-auto lg:w-auto" delay="0.25" ring="true" ring_class="rounded-2xl" %}
-        <div class="contents lg:flex lg:col-span-2 lg:col-end-2 lg:gap-x-8 lg:justify-end lg:items-start lg:ml-auto lg:w-[37rem]">
-          <div class="flex flex-none order-first justify-end self-end w-64 lg:w-auto max-sm:w-40">
+        <div class="contents lg:col-span-2 lg:col-end-2 lg:ml-auto lg:flex lg:w-[37rem] lg:items-start lg:justify-end lg:gap-x-8">
+          <div class="order-first flex w-64 flex-none justify-end self-end max-sm:w-40 lg:w-auto">
             {% include responsive-image.html name="fellowship-friends-hug" alt_key="fellowship.friends_hug" class="object-cover flex-none max-w-none rounded-2xl aspect-[4/3] w-[24rem] bg-stone-50 dark:bg-stone-800" container_class="relative" delay="0.25" ring="true" ring_class="rounded-2xl" %}
           </div>
-          <div class="flex flex-auto justify-end w-96 lg:flex-none lg:w-auto">
+          <div class="flex w-96 flex-auto justify-end lg:w-auto lg:flex-none">
             {% include responsive-image.html name="fellowship-sermon" alt_key="fellowship.sermon" class="object-cover flex-none max-w-none rounded-2xl aspect-[7/5] w-[37rem] bg-stone-50 max-sm:w-[30rem] dark:bg-stone-800" container_class="relative" delay="0.35" ring="true" ring_class="rounded-2xl" %}
           </div>
-          <div class="hidden sm:block sm:flex-auto sm:w-0 lg:flex-none lg:w-auto">
+          <div class="hidden sm:block sm:w-0 sm:flex-auto lg:w-auto lg:flex-none">
             {% include responsive-image.html name="fellowship-coffee-bar" alt_key="fellowship.coffee_bar" class="object-cover max-w-none rounded-2xl aspect-[4/3] w-[24rem] bg-stone-50 dark:bg-stone-800" container_class="relative" delay="0.45" ring="true" ring_class="rounded-2xl" %}
           </div>
         </div>

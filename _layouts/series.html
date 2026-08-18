@@ -42,30 +42,30 @@ layout: default
 }
 </script>
 
-<div class="relative bg-wallpaper dark:bg-wallpaper-dark">
+<div class="bg-wallpaper dark:bg-wallpaper-dark relative">
   <!-- Single noise texture layer covering the entire page -->
-  <div class="absolute inset-0 opacity-30 pointer-events-none mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+  <div class="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
 
   <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
     <!-- Header gradient overlay (no separate noise) -->
-    <div class="overflow-hidden relative">
-      <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
+    <div class="relative overflow-hidden">
+      <div class="from-wallpaper-light dark:from-wallpaper-dark-light absolute inset-0 bg-linear-to-b to-transparent dark:to-transparent"></div>
       <div class="relative">
-        <header role="banner" class="relative px-6 pt-28 pb-10 mx-auto max-w-7xl lg:px-8 animate-children">
+        <header role="banner" class="relative mx-auto max-w-7xl animate-children px-6 pt-28 pb-10 lg:px-8">
           <div class="mx-auto max-w-4xl text-center">
             <!-- Breadcrumb -->
-            <nav aria-label="Breadcrumb" class="mb-5 child">
-              <ol class="flex gap-1.5 justify-center items-center font-medium uppercase text-[0.6875rem] tracking-[0.1em] text-white/50">
+            <nav aria-label="Breadcrumb" class="child mb-5">
+              <ol class="flex items-center justify-center gap-1.5 text-[0.6875rem] font-medium tracking-[0.1em] text-white/50 uppercase">
                 <li><a href="/sermons/" class="transition-all duration-200 hover:text-white/70">Sermons</a></li>
-                <li class="select-none text-white/25" aria-hidden="true">&middot;</li>
+                <li class="text-white/25 select-none" aria-hidden="true">&middot;</li>
                 <li><a href="/sermons/series/" class="transition-all duration-200 hover:text-white/70">Series</a></li>
               </ol>
             </nav>
 
-            <h1 itemprop="name" class="mb-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl dark:text-white font-display child [--delay:0.1s]" style="text-shadow: 0 1px 2px rgba(0,0,0,0.08); letter-spacing: -0.02em;">
+            <h1 itemprop="name" class="child mb-2 font-display text-4xl font-semibold tracking-tight text-white [--delay:0.1s] sm:text-5xl dark:text-white" style="text-shadow: 0 1px 2px rgba(0,0,0,0.08); letter-spacing: -0.02em;">
               {{ page.series }}
             </h1>
-            <p class="font-light tracking-wider text-[0.9375rem] text-white/40 child [--delay:0.2s]">
+            <p class="child text-[0.9375rem] font-light tracking-wider text-white/40 [--delay:0.2s]">
               {{ series_sermons.size }} sermons
             </p>
           </div>
@@ -78,14 +78,14 @@ layout: default
     {% if series_sermons.size > 0 %}
     <div class="relative">
       <section class="relative pt-8 pb-16">
-        <div class="px-6 mx-auto max-w-7xl lg:px-8 xl:px-12">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 xl:px-12">
           <!-- Preacher filter chips -->
           {% assign series_preachers = series_sermons | map: "pastor" | compact | uniq | sort %}
           {% if series_preachers.size > 1 %}
-            <div class="flex flex-wrap gap-2.5 justify-center mb-8">
+            <div class="mb-8 flex flex-wrap justify-center gap-2.5">
               {% for sp in series_preachers %}
                 {% assign preacher_slug = sp | slugify %}
-                <a href="/sermons/preachers/{{ preacher_slug }}/" class="py-1.5 px-3.5 font-medium rounded-full border transition-all duration-200 text-[0.6875rem] tracking-[0.05em] text-white/50 bg-white/[0.07] border-white/[0.08] hover:bg-white/[0.14] hover:text-white/80 hover:border-white/[0.14]">{{ sp | remove: "Pastor " }}</a>
+                <a href="/sermons/preachers/{{ preacher_slug }}/" class="rounded-full border border-white/[0.08] bg-white/[0.07] px-3.5 py-1.5 text-[0.6875rem] font-medium tracking-[0.05em] text-white/50 transition-all duration-200 hover:border-white/[0.14] hover:bg-white/[0.14] hover:text-white/80">{{ sp | remove: "Pastor " }}</a>
               {% endfor %}
             </div>
           {% endif %}

@@ -5,16 +5,16 @@ description: "Monthly prayer gathering themes and scripture readings for Saints 
 permalink: /resources/prayer-gatherings/
 ---
 
-<main class="min-h-screen bg-saints-white dark:bg-saints-black">
-  <div class="py-14 px-6 mx-auto max-w-4xl lg:py-24 lg:px-8">
+<main class="bg-saints-white dark:bg-saints-black min-h-screen">
+  <div class="mx-auto max-w-4xl px-6 py-14 lg:px-8 lg:py-24">
     <div class="animate-children">
 
       <!-- Header -->
-      <div class="mb-12 text-center child">
-        <p class="mb-3 text-sm font-medium tracking-widest uppercase text-saints-600 dark:text-saints-400">
+      <div class="child mb-12 text-center">
+        <p class="text-saints-600 dark:text-saints-400 mb-3 text-sm font-medium tracking-widest uppercase">
           Saints Church
         </p>
-        <h1 class="mb-5 text-4xl font-bold tracking-tight sm:text-5xl dark:text-white text-stone-900 font-display">
+        <h1 class="mb-5 font-display text-4xl font-bold tracking-tight text-stone-900 sm:text-5xl dark:text-white">
           Prayer Gatherings
         </h1>
         <p class="mx-auto max-w-lg text-base leading-relaxed text-stone-500 dark:text-stone-400">
@@ -23,7 +23,7 @@ permalink: /resources/prayer-gatherings/
       </div>
 
       <!-- All Prayer Gatherings -->
-      <div class="grid gap-5 sm:grid-cols-2 child [--delay:0.15s]">
+      <div class="child grid gap-5 [--delay:0.15s] sm:grid-cols-2">
         {% assign prayer_gatherings = site.prayer_gatherings | sort: 'date' | reverse %}
         {% for gathering in prayer_gatherings %}
           {% include prayer-gathering-card.html gathering=gathering %}
