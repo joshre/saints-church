@@ -65,6 +65,13 @@
   --spacing: 0.25rem;
 }
 
+:root {
+  --card-shadow: 0 0 0 1px rgb(9 9 11 / 0.07), 0 2px 2px 0 rgb(9 9 11 / 0.05);
+  --card-shadow-soft: 0 0 0 1px rgb(9 9 11 / 0.05), 0 2px 4px 0 rgb(9 9 11 / 0.04), 0 8px 24px -4px rgb(9 9 11 / 0.06);
+  --card-shadow-dark: 0 0 0 1px rgb(255 255 255 / 0.1);
+  --card-inset-glow: 0 2px 8px 0 rgb(0 0 0 / 0.2), 0 1px 0 0 rgb(255 255 255 / 0.06) inset;
+}
+
 
 @keyframes fade-in-up {
   0% {
@@ -396,19 +403,19 @@ a:focus-visible,
 .sermon-card {
   @apply relative h-full w-full rounded-xl bg-white p-7 transition-all duration-300 ease-out dark:bg-stone-900;
 
-  box-shadow: 0 0 0 1px rgb(9 9 11 / 0.07), 0 2px 2px 0 rgb(9 9 11 / 0.05);
+  box-shadow: var(--card-shadow);
 }
 
 .sermon-card::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-xl dark:content-[''];
 
   inset: -1px;
-  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
+  box-shadow: var(--card-inset-glow);
 }
 
 @media (prefers-color-scheme: dark) {
   .sermon-card {
-    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
+    box-shadow: var(--card-shadow-dark);
   }
 }
 
@@ -583,19 +590,19 @@ a:focus-visible,
 .sermon-content {
   @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-8 dark:bg-stone-900;
 
-  box-shadow: 0 0 0 1px rgb(9,9,11,0.07), 0 2px 2px 0 rgb(9,9,11,0.05);
+  box-shadow: var(--card-shadow);
 }
 
 .sermon-content::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
   inset: -1px;
-  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
+  box-shadow: var(--card-inset-glow);
 }
 
 @media (prefers-color-scheme: dark) {
   .sermon-content {
-    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
+    box-shadow: var(--card-shadow-dark);
   }
 }
 
@@ -614,19 +621,19 @@ a:focus-visible,
 .featured-sermon-container {
   @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-16 dark:bg-stone-900;
 
-  box-shadow: 0 0 0 1px rgb(9,9,11,0.07), 0 2px 2px 0 rgb(9,9,11,0.05);
+  box-shadow: var(--card-shadow);
 }
 
 .featured-sermon-container::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
   inset: -1px;
-  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
+  box-shadow: var(--card-inset-glow);
 }
 
 @media (prefers-color-scheme: dark) {
   .featured-sermon-container {
-    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
+    box-shadow: var(--card-shadow-dark);
   }
 }
 
@@ -634,37 +641,37 @@ a:focus-visible,
 .page-content-card {
   @apply relative bg-white dark:bg-stone-900 rounded-2xl;
 
-  box-shadow: 0 0 0 1px rgb(9,9,11,0.05), 0 2px 4px 0 rgb(9,9,11,0.04), 0 8px 24px -4px rgb(9,9,11,0.06);
+  box-shadow: var(--card-shadow-soft);
 }
 
 .page-content-card::before {
   @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
   inset: -1px;
-  box-shadow: 0 2px 8px 0 rgb(0,0,0,0.20), 0 1px 0 0 rgb(255,255,255,0.06) inset;
+  box-shadow: var(--card-inset-glow);
 }
 
 @media (prefers-color-scheme: dark) {
   .page-content-card {
-    box-shadow: 0 0 0 1px rgb(255,255,255,0.1);
+    box-shadow: var(--card-shadow-dark);
   }
 }
 
 /* Dialog Panel Shadow (visit modal) */
 .dialog-panel-shadow {
-  box-shadow: 0 0 0 1px rgb(9 9 11 / 0.07), 0 2px 2px 0 rgb(9 9 11 / 0.05);
+  box-shadow: var(--card-shadow);
 }
 
 .dialog-panel-shadow::before {
   @apply dark:pointer-events-none dark:absolute dark:content-[''];
 
   inset: -1px;
-  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 0.2), 0 1px 0 0 rgb(255 255 255 / 0.06) inset;
+  box-shadow: var(--card-inset-glow);
 }
 
 @media (prefers-color-scheme: dark) {
   .dialog-panel-shadow {
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1);
+    box-shadow: var(--card-shadow-dark);
   }
 }
 
