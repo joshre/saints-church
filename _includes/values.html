@@ -1,14 +1,14 @@
-<div class="px-6 mx-auto mt-20 max-w-7xl sm:mt-36 lg:px-8 animate-children">
-  <div class="mx-auto max-w-2xl lg:mx-0 child">
-    <h2 id="values-heading" class="text-4xl font-semibold tracking-tight sm:text-5xl dark:text-white font-display text-pretty text-stone-900">{{ site.data.content.values.title }}</h2>
+<div class="mx-auto mt-20 max-w-7xl animate-children px-6 sm:mt-36 lg:px-8">
+  <div class="child mx-auto max-w-2xl lg:mx-0">
+    <h2 id="values-heading" class="font-display text-4xl font-semibold tracking-tight text-pretty text-stone-900 sm:text-5xl dark:text-white">{{ site.data.content.values.title }}</h2>
     <p class="mt-6 text-lg/8 text-stone-700 dark:text-stone-300">{{ site.data.content.values.subtitle }}</p>
   </div>
-  <dl class="grid grid-cols-1 gap-8 sm:gap-y-16 mx-auto mt-8 sm:mt-16 max-w-2xl sm:grid-cols-2 lg:grid-cols-3 lg:mx-0 lg:max-w-none text-base/7 child ![--delay:0.15s]">
+  <dl class="child mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-8 text-base/7 ![--delay:0.15s] sm:mt-16 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
     {% for item in site.data.content.values.items %}
       {% assign delay = forloop.index0 | times: 0.1 | plus: 0.25 %}
-      <div class="pt-6 border-t border-stone-200 dark:border-stone-700">
-        <dt class="font-semibold dark:text-white font-display child text-stone-900" style="--delay: {{ delay }}s">{{ item.title }}</dt>
-        <dd class="mt-2 child text-stone-600 dark:text-stone-400" style="--delay: {{ delay | plus: 0.05 }}s">{{ item.description }}</dd>
+      <div class="border-t border-stone-200 pt-6 dark:border-stone-700">
+        <dt class="child font-display font-semibold text-stone-900 dark:text-white" style="--delay: {{ delay }}s">{{ item.title }}</dt>
+        <dd class="child mt-2 text-stone-600 dark:text-stone-400" style="--delay: {{ delay | plus: 0.05 }}s">{{ item.description }}</dd>
       </div>
     {% endfor %}
   </dl>

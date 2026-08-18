@@ -2,27 +2,27 @@
 layout: default
 ---
 
-<div class="relative bg-wallpaper dark:bg-wallpaper-dark">
+<div class="bg-wallpaper dark:bg-wallpaper-dark relative">
   <!-- Single noise texture layer covering the entire page -->
-  <div class="absolute inset-0 opacity-30 pointer-events-none mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
+  <div class="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay" style="background-position: center; background-image: url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 100 100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='1' seed='2' stitchTiles='stitch' result='n' /%3E%3CfeComponentTransfer result='g'%3E%3CfeFuncR type='linear' slope='4' intercept='1' /%3E%3CfeFuncG type='linear' slope='4' intercept='1' /%3E%3CfeFuncB type='linear' slope='4' intercept='1' /%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type='saturate' values='0' in='g' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E&quot;);"></div>
 
   <main tabindex="-1" id="main-content" class="relative">
     <!-- Header gradient overlay (no separate noise) -->
-    <div class="overflow-hidden relative">
-      <div class="absolute inset-0 to-transparent dark:to-transparent bg-linear-to-b from-wallpaper-light dark:from-wallpaper-dark-light"></div>
+    <div class="relative overflow-hidden">
+      <div class="from-wallpaper-light dark:from-wallpaper-dark-light absolute inset-0 bg-linear-to-b to-transparent dark:to-transparent"></div>
       <div class="relative">
-        <div class="px-6 pt-24 pb-20 mx-auto max-w-7xl lg:px-8 animate-children">
+        <div class="mx-auto max-w-7xl animate-children px-6 pt-24 pb-20 lg:px-8">
           <!-- Breadcrumb -->
-          <div class="mb-8 child">
+          <div class="child mb-8">
             {% include breadcrumbs.html %}
           </div>
 
           <article itemscope itemtype="https://schema.org/Article">
             <!-- Title and Subscribe Section -->
-            <div class="flex flex-col gap-6 mb-8 lg:flex-row lg:justify-between lg:items-center child [--delay:0.1s]">
+            <div class="child mb-8 flex flex-col gap-6 [--delay:0.1s] lg:flex-row lg:items-center lg:justify-between">
               <!-- Title Section -->
               <div class="flex-1">
-                <h1 class="mb-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl font-display" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;" itemprop="headline name">
+                <h1 class="mb-4 font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;" itemprop="headline name">
                   {{ page.title }}
                 </h1>
                 {% if page.scripture != page.title %}
@@ -33,7 +33,7 @@ layout: default
               </div>
 
               <!-- Subscribe Buttons -->
-              <div class="flex flex-col gap-3 child [--delay:0.2s] lg:min-w-[300px]">
+              <div class="child flex flex-col gap-3 [--delay:0.2s] lg:min-w-[300px]">
                 {% include subscribe-buttons.html %}
               </div>
             </div>
@@ -51,35 +51,35 @@ layout: default
     </div>
 
     <!-- Content area -->
-    <div class="relative px-6 pb-12 mx-auto max-w-7xl lg:px-8">
+    <div class="relative mx-auto max-w-7xl px-6 pb-12 lg:px-8">
       <!-- White content card -->
       <div class="page-content-card">
-        <div class="p-8 lg:p-10 animate-reveal">
+        <div class="animate-reveal p-8 lg:p-10">
           <article itemscope itemtype="https://schema.org/Article">
             <!-- Main Content Grid -->
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
               <!-- Metadata Sidebar -->
-              <div class="order-1 lg:order-1 lg:col-span-1 lg:pr-8 lg:border-r lg:border-saints-100 lg:dark:border-stone-800">
+              <div class="lg:border-saints-100 order-1 lg:order-1 lg:col-span-1 lg:border-r lg:pr-8 lg:dark:border-stone-800">
                 <div class="space-y-6">
                   <!-- Preacher Section -->
                   {% if page.pastor %}
                     <div>
-                      <h3 class="mb-2.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Preacher</h3>
-                      <div class="flex gap-3 items-center">
+                      <h3 class="text-saints-600 mb-2.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Preacher</h3>
+                      <div class="flex items-center gap-3">
                         {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" preacher=page.pastor %}
                         <address itemscope itemtype="https://schema.org/Person" class="not-italic">
-                          <a href="/sermons/preachers/{{ page.pastor | slugify }}/" class="text-sm underline transition-colors dark:text-white text-stone-900 decoration-stone-300 underline-offset-2 dark:decoration-stone-600 hover:decoration-saints-500" itemprop="name">{{ page.pastor | remove: "Pastor " }}</a>
+                          <a href="/sermons/preachers/{{ page.pastor | slugify }}/" class="hover:decoration-saints-500 text-sm text-stone-900 underline decoration-stone-300 underline-offset-2 transition-colors dark:text-white dark:decoration-stone-600" itemprop="name">{{ page.pastor | remove: "Pastor " }}</a>
                         </address>
                       </div>
                     </div>
                   {% endif %}
 
                   <!-- Metadata -->
-                  <div class="pt-5 space-y-5 border-t border-stone-100 dark:border-stone-800">
+                  <div class="space-y-5 border-t border-stone-100 pt-5 dark:border-stone-800">
                     <div>
-                      <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Published</dt>
+                      <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Published</dt>
                       <dd>
-                        <time datetime="{{ page.date | date_to_xmlschema }}" pubdate itemprop="datePublished" class="text-sm dark:text-white text-stone-900">
+                        <time datetime="{{ page.date | date_to_xmlschema }}" pubdate itemprop="datePublished" class="text-sm text-stone-900 dark:text-white">
                           {{ page.date | date: "%B %d, %Y" }}
                         </time>
                       </dd>
@@ -87,28 +87,28 @@ layout: default
 
                     {% if page.duration %}
                       <div>
-                        <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Duration</dt>
+                        <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Duration</dt>
                         <dd>
-                          <data value="{{ page.duration }}" itemprop="duration" class="text-sm tabular-nums dark:text-white text-stone-900">{{ page.duration }}</data>
+                          <data value="{{ page.duration }}" itemprop="duration" class="text-sm text-stone-900 tabular-nums dark:text-white">{{ page.duration }}</data>
                         </dd>
                       </div>
                     {% endif %}
 
                     {% if page.scripture %}
                       <div>
-                        <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Scripture</dt>
+                        <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Scripture</dt>
                         <dd>
-                          <cite itemprop="about citation" class="text-sm not-italic dark:text-white text-stone-900">{{ page.scripture }}</cite>
+                          <cite itemprop="about citation" class="text-sm text-stone-900 not-italic dark:text-white">{{ page.scripture }}</cite>
                         </dd>
                       </div>
                     {% endif %}
 
                     {% if page.series %}
                       <div>
-                        <dt class="mb-1.5 font-medium uppercase text-saints-600 font-display text-[0.6rem] tracking-[1px] dark:text-stone-400">Series</dt>
+                        <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Series</dt>
                         <dd>
-                          <span itemscope itemtype="https://schema.org/CreativeWorkSeries" class="text-sm dark:text-white text-stone-900">
-                            <a href="/sermons/series/{{ page.series | slugify }}/" itemprop="name" class="underline transition-colors decoration-stone-300 underline-offset-2 dark:decoration-stone-600 hover:decoration-saints-500">{{ page.series }}</a>
+                          <span itemscope itemtype="https://schema.org/CreativeWorkSeries" class="text-sm text-stone-900 dark:text-white">
+                            <a href="/sermons/series/{{ page.series | slugify }}/" itemprop="name" class="hover:decoration-saints-500 underline decoration-stone-300 underline-offset-2 transition-colors dark:decoration-stone-600">{{ page.series }}</a>
                           </span>
                         </dd>
                       </div>
@@ -123,7 +123,7 @@ layout: default
 
                   {% if page.description %}
                     <!-- Always show description first for SEO and user experience -->
-                    <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mb-6 leading-relaxed text-stone-700 dark:text-stone-300">
+                    <div class="prose-stone mb-6 max-w-none prose prose-base leading-relaxed text-stone-700 dark:prose-invert dark:text-stone-300 [&_p:has(br:only-child)]:hidden">
                       {{ page.description | markdownify }}
                     </div>
                   {% endif %}
@@ -161,22 +161,22 @@ layout: default
                   {% if has_transcription and transcription_content != "" %}
                         <!-- Collapsible transcription content -->
                       <details class="transcript-details group">
-                        <summary class="flex gap-3 items-center p-4 mb-6 list-none rounded-lg border transition-colors duration-200 cursor-pointer border-stone-200/80 bg-stone-50/70 dark:border-stone-700 dark:bg-stone-800/50 dark:hover:bg-stone-800 hover:bg-stone-100/80">
-                          <svg class="transition-transform duration-200 size-5 text-saints-500 group-open:rotate-90 dark:text-saints-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <summary class="mb-6 flex cursor-pointer list-none items-center gap-3 rounded-lg border border-stone-200/80 bg-stone-50/70 p-4 transition-colors duration-200 hover:bg-stone-100/80 dark:border-stone-700 dark:bg-stone-800/50 dark:hover:bg-stone-800">
+                          <svg class="text-saints-500 dark:text-saints-400 size-5 transition-transform duration-200 group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                           </svg>
                           <div class="flex-1">
-                            <h3 class="text-sm font-medium dark:text-white text-stone-900 font-display">Full Transcription</h3>
+                            <h3 class="font-display text-sm font-medium text-stone-900 dark:text-white">Full Transcription</h3>
                           </div>
                         </summary>
 
-                        <div class="prose prose-base prose-stone dark:prose-invert max-w-none [&_p:has(br:only-child)]:hidden mt-6" itemprop="articleBody" id="sermon-transcription">
+                        <div class="prose-stone mt-6 max-w-none prose prose-base dark:prose-invert [&_p:has(br:only-child)]:hidden" itemprop="articleBody" id="sermon-transcription">
                           {{ transcription_content }}
                         </div>
                       </details>
                   {% elsif page.description == nil or page.description == "" %}
                     <!-- Fallback if neither content nor description exists -->
-                    <div class="py-8 max-w-none text-center prose prose-base prose-stone dark:prose-invert">
+                    <div class="prose-stone max-w-none py-8 text-center prose prose-base dark:prose-invert">
                       <p class="text-stone-600 dark:text-stone-400">Transcription coming soon...</p>
                     </div>
                   {% endif %}
@@ -186,9 +186,9 @@ layout: default
             </div>
 
             <!-- CTA Section -->
-            <div class="pt-8 mx-auto mt-8 max-w-2xl text-center border-t border-stone-200/70 dark:border-stone-800/60">
+            <div class="mx-auto mt-8 max-w-2xl border-t border-stone-200/70 pt-8 text-center dark:border-stone-800/60">
               <p class="mb-6 text-[13px] text-stone-500 dark:text-stone-400">{{ site.data.content.sermons.cta.episode_page.description }}</p>
-              <div class="flex flex-col gap-3 justify-center items-stretch mx-auto max-w-sm sm:flex-row sm:items-center sm:max-w-none">
+              <div class="mx-auto flex max-w-sm flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center">
                 {% include button.html href="/beliefs/" text="Our Beliefs" class="w-full sm:w-auto" %}
                 {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
               </div>

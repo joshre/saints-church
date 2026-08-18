@@ -1,21 +1,21 @@
 <!-- Final CTA Section -->
-<section class="py-20 px-6 mx-auto max-w-7xl lg:px-8 animate-fade-in">
+<section class="mx-auto max-w-7xl animate-fade-in px-6 py-20 lg:px-8">
   <div class="mx-auto max-w-2xl text-center">
-    <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl dark:text-white font-display text-stone-900">
+    <h2 class="font-display text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl dark:text-white">
       {{ site.data.content.cta.title }}
     </h2>
     <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-stone-600 dark:text-stone-400">
       {{ site.data.content.cta.description }}
     </p>
-    <div class="flex flex-col gap-4 justify-center items-center mt-10 min-[480px]:flex-row">
+    <div class="mt-10 flex flex-col items-center justify-center gap-4 min-[480px]:flex-row">
       {% include button.html text=site.data.content.cta.buttons.visit_us command="show-modal" commandfor="visit-modal" icon="location" %}
       {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
       {% include button.html text=site.data.content.cta.buttons.contact_us href=email_link variant="secondary" icon="email" %}
     </div>
-    <nav aria-label="Learn more" class="flex flex-wrap gap-y-2 gap-x-6 justify-center mt-8 text-sm">
-      <a href="/beliefs/" class="transition-colors duration-200 text-stone-500 dark:text-stone-400 dark:hover:text-stone-200 hover:text-stone-700">Our Beliefs</a>
-      <a href="/sermons/" class="transition-colors duration-200 text-stone-500 dark:text-stone-400 dark:hover:text-stone-200 hover:text-stone-700">Sermons</a>
-      <a href="/pastor-letter/" class="transition-colors duration-200 text-stone-500 dark:text-stone-400 dark:hover:text-stone-200 hover:text-stone-700">Letter from the Pastor</a>
+    <nav aria-label="Learn more" class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+      <a href="/beliefs/" class="text-stone-500 transition-colors duration-200 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200">Our Beliefs</a>
+      <a href="/sermons/" class="text-stone-500 transition-colors duration-200 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200">Sermons</a>
+      <a href="/pastor-letter/" class="text-stone-500 transition-colors duration-200 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200">Letter from the Pastor</a>
     </nav>
   </div>
 </section>

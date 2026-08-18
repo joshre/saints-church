@@ -1,8 +1,8 @@
-<div class="px-6 mx-auto mt-24 max-w-7xl sm:mt-32 lg:px-8">
+<div class="mx-auto mt-24 max-w-7xl px-6 sm:mt-32 lg:px-8">
   <div class="mx-auto max-w-2xl lg:max-w-7xl">
-    <section class="grid grid-cols-1 lg:grid-cols-2 lg:gap-12 animate-children">
-      <div class="lg:row-span-2 lg:-ml-24 xl:-ml-32 child">
-        <div class="grid grid-cols-2 gap-3 -mx-4 sm:grid-cols-4 sm:gap-4 sm:-mx-8 lg:grid-cols-2 lg:gap-4 lg:mx-0 xl:gap-8">
+    <section class="grid animate-children grid-cols-1 lg:grid-cols-2 lg:gap-12">
+      <div class="child lg:row-span-2 lg:-ml-24 xl:-ml-32">
+        <div class="-mx-4 grid grid-cols-2 gap-3 sm:-mx-8 sm:grid-cols-4 sm:gap-4 lg:mx-0 lg:grid-cols-2 lg:gap-4 xl:gap-8">
           {% include responsive-image.html name="prayer-family-1" alt_key="prayer.family_1" class="block object-cover size-full" container_class="overflow-hidden relative rounded-xl border-stone-900/20 aspect-square" delay="0.25" %}
           {% include responsive-image.html name="prayer-family-2" alt_key="prayer.family_2" class="block object-cover size-full" container_class="overflow-hidden relative -mt-8 rounded-xl border-stone-900/20 lg:-mt-32 aspect-square" delay="0.5" %}
           {% include responsive-image.html name="prayer-communal-1" alt_key="prayer.communal_1" class="block object-cover size-full" container_class="overflow-hidden relative rounded-xl border-stone-900/20 aspect-square" delay="0.45" %}
@@ -10,15 +10,15 @@
         </div>
       </div>
       <div class="mt-20 max-w-lg sm:mt-0">
-        <h2 id="prayer-heading" class="text-3xl child ![--delay:0.1s] font-semibold tracking-tight sm:text-4xl lg:text-5xl dark:text-white font-display text-pretty text-stone-900">{{ site.data.content.prayer.title }}</h2>
-        <h3 class="mt-8 text-xl child ![--delay:0.2s] font-semibold tracking-tight sm:mt-10 sm:text-2xl dark:text-white font-display text-stone-900">{{ site.data.content.prayer.family_prayer.title }}</h3>
-        <p class="mt-6 text-lg child ![--delay:0.3s] text-stone-600 sm:text-xl/8 dark:text-stone-300">{{ site.data.content.prayer.family_prayer.description }}</p>
-        <p class="mt-6 text-sm child ![--delay:0.4s] text-stone-700 sm:text-base/7 dark:text-stone-400">{{ site.data.content.prayer.family_prayer.details }}</p>
+        <h2 id="prayer-heading" class="child font-display text-3xl font-semibold tracking-tight text-pretty text-stone-900 ![--delay:0.1s] sm:text-4xl lg:text-5xl dark:text-white">{{ site.data.content.prayer.title }}</h2>
+        <h3 class="child mt-8 font-display text-xl font-semibold tracking-tight text-stone-900 ![--delay:0.2s] sm:mt-10 sm:text-2xl dark:text-white">{{ site.data.content.prayer.family_prayer.title }}</h3>
+        <p class="child mt-6 text-lg text-stone-600 ![--delay:0.3s] sm:text-xl/8 dark:text-stone-300">{{ site.data.content.prayer.family_prayer.description }}</p>
+        <p class="child mt-6 text-sm text-stone-700 ![--delay:0.4s] sm:text-base/7 dark:text-stone-400">{{ site.data.content.prayer.family_prayer.details }}</p>
       </div>
-      <div class="lg:col-span-1 max-lg:mt-16">
-        <h3 class="text-xl child ![--delay:0.5s] font-semibold tracking-tight sm:text-2xl dark:text-white font-display text-stone-900">{{ site.data.content.prayer.communal_prayer.title }}</h3>
-        <p class="mt-6 text-sm child ![--delay:0.6s] text-stone-700 sm:text-base/7 dark:text-stone-400">{{ site.data.content.prayer.communal_prayer.description }}</p>
-        <p class="mt-6 text-sm text-stone-700 sm:text-base/7 child ![--delay:0.7s] dark:text-stone-400">{{ site.data.content.prayer.communal_prayer.details }}</p>
+      <div class="max-lg:mt-16 lg:col-span-1">
+        <h3 class="child font-display text-xl font-semibold tracking-tight text-stone-900 ![--delay:0.5s] sm:text-2xl dark:text-white">{{ site.data.content.prayer.communal_prayer.title }}</h3>
+        <p class="child mt-6 text-sm text-stone-700 ![--delay:0.6s] sm:text-base/7 dark:text-stone-400">{{ site.data.content.prayer.communal_prayer.description }}</p>
+        <p class="child mt-6 text-sm text-stone-700 ![--delay:0.7s] sm:text-base/7 dark:text-stone-400">{{ site.data.content.prayer.communal_prayer.details }}</p>
       </div>
     </section>
   </div>
