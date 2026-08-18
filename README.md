@@ -62,4 +62,4 @@ Formatting is Biome for JS and TypeScript, rumdl for Markdown, rustywind for Tai
 MIT for the code. Sermon audio, transcriptions, and written content are the property of Saints Church.
 
 
-Soli Deo Gloria
+_Soli Deo Gloria_
