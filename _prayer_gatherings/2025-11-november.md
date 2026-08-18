@@ -5,9 +5,9 @@ theme: "The God Who Sees"
 permalink: /resources/prayer-gatherings/november-2025/
 ---
 
-# The God Who Sees
+## The God Who Sees
 
-## Psalm 9:10-11
+### Psalm 9:10-11
 
 **10** And those who know your name put their trust in you,
 for you, O Lord, have not forsaken those who seek you.
@@ -15,11 +15,11 @@ for you, O Lord, have not forsaken those who seek you.
 **11** Sing praises to the Lord, who sits enthroned in Zion!
 Tell among the peoples his deeds!
 
-## Genesis 16:13
+### Genesis 16:13
 
 **13** So she called the name of the Lord who spoke to her, "You are a God of seeing," for she said, "Truly here I have seen him who looks after me."
 
-## Psalm 139:7-12
+### Psalm 139:7-12
 
 **7** Where shall I go from your Spirit?
 Or where shall I flee from your presence?

@@ -5,6 +5,7 @@
   "author": "Josh Reeder-Esparza <joshre@me.com>",
   "license": "MIT",
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks || true",
     "build": "./build.js",
     "build:prod": "./build.js && yarn tailwindcss -i _css/input.css -o css/output.css --minify",
     "watch": "concurrently \"./build.js --watch\" \"bundle exec jekyll serve --livereload --incremental\" \"yarn tailwindcss -i _css/input.css -o css/output.css --minify --watch\"",
@@ -14,11 +15,14 @@
     "lint": "yarn lint:types && yarn lint:js && yarn lint:css && yarn lint:md && yarn lint:yaml && yarn lint:tw",
     "lint:types": "tsc --noEmit",
     "lint:js": "biome check js/ scripts/ build.js",
-    "format": "biome check --write js/ scripts/ build.js",
     "lint:css": "stylelint '_css/**/*.css'",
-    "lint:md": "markdownlint '_posts/**/*.md' 'beliefs.md' 'pastor-letter.md' 'sermons.md' --ignore node_modules",
+    "lint:md": "rumdl check .",
     "lint:yaml": "yamllint _data/ _config.yml",
-    "lint:tw": "rustywind --check-formatted _includes/ _layouts/ index.md beliefs.md pastor-letter.md sermons.md"
+    "lint:tw": "rustywind --check-formatted _includes/ _layouts/ index.md beliefs.md pastor-letter.md sermons.md",
+    "format": "yarn format:js && yarn format:md && yarn format:tw",
+    "format:js": "biome check --write js/ scripts/ build.js",
+    "format:md": "rumdl check --fix .",
+    "format:tw": "rustywind --write _includes/ _layouts/ index.md beliefs.md pastor-letter.md sermons.md"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.8",
@@ -26,7 +30,6 @@
     "@tailwindcss/typography": "^0.5.16",
     "concurrently": "^9.2.0",
     "estrella": "^1.4.1",
-    "markdownlint-cli": "^0.48.0",
     "stylelint": "^17.4.0",
     "stylelint-config-standard": "^40.0.0",
     "tailwindcss": "^4.1.12",

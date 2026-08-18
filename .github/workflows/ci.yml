@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - run: yarn install --frozen-lockfile
+
+      # pinned so CI and local can't drift into disagreeing about formatting
+      - name: Install rumdl and rustywind
+        env:
+          RUMDL_VERSION: v0.2.56
+          RUSTYWIND_VERSION: v0.27.0
+        run: |
+          curl -fsSL "https://github.com/rvben/rumdl/releases/download/${RUMDL_VERSION}/rumdl-${RUMDL_VERSION}-x86_64-unknown-linux-gnu.tar.gz" | sudo tar -xz -C /usr/local/bin
+          curl -fsSL "https://github.com/avencera/rustywind/releases/download/${RUSTYWIND_VERSION}/rustywind-${RUSTYWIND_VERSION}-x86_64-unknown-linux-musl.tar.gz" | sudo tar -xz -C /usr/local/bin
+
+      - run: yarn lint:types
+      - run: yarn lint:js
+      - run: yarn lint:css
+      - run: yarn lint:md
+      - run: yarn lint:tw
+
+      - name: yamllint
+        run: pipx run yamllint _data/ _config.yml
+
+  generated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - run: yarn install --frozen-lockfile
+
+      # every one of these is a committed build artifact GitHub Pages serves as-is,
+      # so drift ships silently — a stale css/output.css already dropped a modal shadow
+      - name: Regenerate committed artifacts
+        run: |
+          yarn generate-icons
+          yarn generate-taxonomies
+          yarn build:prod
+
+      - name: Fail if generated output is stale
+        run: |
+          if ! git diff --quiet; then
+            echo "Generated files are out of date. Run 'yarn generate-icons', 'yarn generate-taxonomies', and 'yarn build:prod', then commit the result."
+            git diff --stat
+            exit 1
+          fi
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:prod
+      - run: bundle exec jekyll build

@@ -1,0 +1,20 @@
+exclude = [
+  "node_modules",
+  "_site",
+  "_site_test",
+  "assets/heroicons",
+  "vendor",
+  "venv",
+  "whisper_env",
+  ".jekyll-cache",
+]
+
+[global]
+disable = [
+  "MD012", # multiple blank lines — Jekyll content uses them for spacing
+  "MD013", # line length — prose and frontmatter run long
+  "MD033", # inline HTML — pages embed Liquid and HTML by design
+  "MD041", # first line H1 — frontmatter precedes the heading
+  "MD034", # bare URLs — appear in sermon descriptions
+  "MD036", # bold-as-heading — intentional in prayer/scripture content
+]
