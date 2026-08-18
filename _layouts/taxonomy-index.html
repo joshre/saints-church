@@ -25,84 +25,50 @@ layout: default
 }
 </script>
 
-<div class="bg-wallpaper dark:bg-wallpaper-dark relative">
-  <!-- Single noise texture layer covering the entire page -->
-  {% include noise-overlay.html %}
+{% assign all_sermons = site.posts | where: "category", "sermon" %}
+{% assign newest_overall = all_sermons | sort: "date" | last %}
 
-  <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
-    <!-- Header gradient overlay (no separate noise) -->
-    <div class="relative overflow-hidden">
-      <div class="from-wallpaper-light dark:from-wallpaper-dark-light absolute inset-0 bg-linear-to-b to-transparent dark:to-transparent"></div>
-      <div class="relative">
-        <header role="banner" class="relative mx-auto max-w-7xl animate-children px-6 pt-28 pb-8 lg:px-8">
-          <div class="mx-auto max-w-4xl text-center">
-            <!-- Breadcrumb -->
-            <nav aria-label="Breadcrumb" class="child mb-3">
-              <ol class="flex items-center justify-center gap-2 text-xs tracking-wider text-white/50">
-                <li><a href="/sermons/" class="transition-colors hover:text-white/80">Sermons</a></li>
-              </ol>
-            </nav>
+<main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="mx-auto max-w-7xl px-6 pt-24 pb-28 lg:px-8">
+  <nav aria-label="Breadcrumb">
+    <ol class="text-2xs flex flex-wrap items-center gap-2.5 font-display font-bold tracking-eyebrow text-stone-400 uppercase dark:text-stone-500">
+      <li><a href="/sermons/" class="text-stone-500 transition-colors duration-200 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white">Sermons</a></li>
+      <li aria-hidden="true">&middot;</li>
+      <li>{% if page.taxonomy_type == "series" %}Series{% else %}Preachers{% endif %}</li>
+    </ol>
+  </nav>
 
-            <h1 itemprop="name" class="child mb-3 font-display text-4xl font-semibold tracking-tight text-white [--delay:0.1s] sm:text-5xl dark:text-white" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
-              {{ page.title }}
-            </h1>
-            <p class="child mx-auto max-w-2xl text-base text-white/55 [--delay:0.2s]">{{ page.description }}</p>
-          </div>
-        </header>
-      </div>
-    </div>
+  <h1 itemprop="name" class="mt-6 font-display text-5xl leading-none font-bold tracking-tight text-stone-900 sm:text-6xl dark:text-white">{{ page.title }}</h1>
+  <p class="mt-5 max-w-xl text-lg leading-relaxed text-stone-600 dark:text-stone-400">{{ page.description }}</p>
 
-    <!-- Taxonomy listing -->
-    <div class="relative">
-      <section class="relative pt-8 pb-20">
-        <div class="mx-auto max-w-4xl px-6 lg:px-8">
+  <div class="mt-14 border-t border-stone-900/10 dark:border-white/10">
+    {% if page.taxonomy_type == "preachers" %}
+      {% assign all_preachers = all_sermons | map: "pastor" | compact | uniq | sort %}
+      {% for preacher_key in all_preachers %}
+        {% assign preacher = site.data.preachers | where: "key", preacher_key | first %}
+        {% assign preacher_posts = all_sermons | where: "pastor", preacher_key %}
+        {% assign preacher_latest = preacher_posts | sort: "date" | last %}
+        <a href="/sermons/preachers/{{ preacher_key | slugify }}/" class="-mx-4 flex flex-wrap items-center gap-x-6 gap-y-2.5 rounded-lg border-b border-stone-900/5 px-4 py-6 transition-colors duration-200 hover:bg-stone-900/3 dark:border-white/5 dark:hover:bg-white/5">
+          {% include pastor-image.html class="size-12 shrink-0 rounded-full" preacher=preacher_key %}
+          <h2 class="min-w-44 flex-1 font-display text-3xl leading-tight font-bold tracking-tight text-stone-900 dark:text-white">{{ preacher.name }}</h2>
+          <span class="min-w-24 text-sm text-stone-500 tabular-nums dark:text-stone-400">{{ preacher_posts.size }} sermon{% unless preacher_posts.size == 1 %}s{% endunless %}</span>
+          <span class="min-w-64 text-sm text-stone-500 tabular-nums sm:text-right dark:text-stone-400">Latest: {{ preacher_latest.title | escape }}</span>
+        </a>
+      {% endfor %}
 
-          {% if page.taxonomy_type == "preachers" %}
-            {% assign all_sermons = site.posts | where: "category", "sermon" %}
-            {% assign all_preachers = all_sermons | map: "pastor" | compact | uniq | sort %}
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              {% for sp in all_preachers %}
-                {% assign sp_slug = sp | slugify %}
-                {% assign sp_posts = all_sermons | where: "pastor", sp %}
-                {% assign sp_latest = sp_posts | sort: "date" | reverse | first %}
-                <a href="/sermons/preachers/{{ sp_slug }}/"
-                   class="group flex items-center gap-4 rounded-xl border border-white/[0.07] bg-white/[0.04] px-5 py-5 transition-all duration-200 hover:-translate-y-px hover:border-white/[0.14] hover:bg-white/[0.08]">
-                  {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" preacher=sp %}
-                  <div class="min-w-0">
-                    <h2 class="font-display text-lg font-medium text-white transition-colors group-hover:text-white/90" style="letter-spacing: -0.01em;">{{ sp | remove: "Pastor " }}</h2>
-                    <p class="mt-0.5 text-sm leading-tight text-white/45">{{ sp_posts.size }} sermons</p>
-                    {% if sp_latest %}
-                      <p class="mt-1.5 truncate text-xs text-white/20"><span class="text-white/15">Latest:</span> {{ sp_latest.title }}</p>
-                    {% endif %}
-                  </div>
-                </a>
-              {% endfor %}
-            </div>
-
-          {% elsif page.taxonomy_type == "series" %}
-            {% assign all_sermons = site.posts | where: "category", "sermon" %}
-            {% assign all_series = all_sermons | map: "series" | compact | uniq | sort %}
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              {% for s in all_series %}
-                {% assign series_slug = s | slugify %}
-                {% assign series_posts = all_sermons | where: "series", s %}
-                {% assign latest = series_posts | sort: "date" | reverse | first %}
-                {% assign earliest = series_posts | sort: "date" | first %}
-                <a href="/sermons/series/{{ series_slug }}/"
-                   class="group flex flex-col rounded-xl border border-white/[0.06] bg-white/[0.04] px-6 pt-6 pb-5 transition-all duration-200 hover:-translate-y-px hover:border-white/[0.14] hover:bg-white/[0.08]">
-                  <h2 class="mb-1.5 font-display text-lg font-semibold text-white" style="letter-spacing: -0.01em;">{{ s }}</h2>
-                  <p class="text-sm text-white/45 transition-colors group-hover:text-white/55">{{ series_posts.size }} sermons</p>
-                  <p class="mt-2.5 text-[0.6875rem] leading-tight tracking-wide text-white/30 uppercase">
-                    {{ earliest.date | date: "%b %Y" }}{% if earliest.date != latest.date %} – {{ latest.date | date: "%b %Y" }}{% endif %}
-                  </p>
-                </a>
-              {% endfor %}
-            </div>
-          {% endif %}
-
-        </div>
-      </section>
-    </div>
-
-  </main>
-</div>
+    {% elsif page.taxonomy_type == "series" %}
+      {% assign all_series = all_sermons | map: "series" | compact | uniq | sort %}
+      {% for series_name in all_series %}
+        {% assign series_posts = all_sermons | where: "series", series_name | sort: "date" %}
+        {% assign series_earliest = series_posts | first %}
+        {% assign series_latest = series_posts | last %}
+        <a href="/sermons/series/{{ series_name | slugify }}/" class="-mx-4 flex flex-wrap items-baseline gap-x-6 gap-y-2.5 rounded-lg border-b border-stone-900/5 px-4 py-7 transition-colors duration-200 hover:bg-stone-900/3 dark:border-white/5 dark:hover:bg-white/5">
+          <h2 class="min-w-44 flex-1 font-display text-3xl leading-tight font-bold tracking-tight text-stone-900 sm:text-4xl dark:text-white">{{ series_name }}</h2>
+          <span class="min-w-24 text-sm text-stone-500 tabular-nums dark:text-stone-400">{{ series_posts.size }} sermon{% unless series_posts.size == 1 %}s{% endunless %}</span>
+          <span class="min-w-64 text-sm text-stone-500 tabular-nums sm:text-right dark:text-stone-400">
+            {{ series_earliest.date | date: "%B %Y" }} &ndash; {% if newest_overall.series == series_name %}current{% else %}{{ series_latest.date | date: "%B %Y" }}{% endif %}
+          </span>
+        </a>
+      {% endfor %}
+    {% endif %}
+  </div>
+</main>

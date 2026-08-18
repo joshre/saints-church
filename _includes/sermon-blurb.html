@@ -1,0 +1,28 @@
+{%- comment -%}
+Feed descriptions are boilerplate-heavy: drop the stock lead-in, blank the ones
+that say nothing, sentence-case what's left. Outputs text only — capture it.
+{%- endcomment -%}
+{%- comment -%}newline_to_br is the only way to reach a bare newline from a Liquid filter chain{%- endcomment -%}
+{%- assign blurb = include.post.description | default: "" | strip_html | newline_to_br | replace: "<br />", " " | strip_newlines | replace: "  ", " " | replace: "  ", " " | strip -%}
+{%- if blurb contains "Preaching through the book of" -%}
+  {%- assign blurb_sentences = blurb | split: ". " -%}
+  {%- if blurb_sentences.size > 1 -%}
+    {%- assign blurb = blurb_sentences | slice: 1, 40 | join: ". " -%}
+  {%- else -%}
+    {%- assign blurb = "" -%}
+  {%- endif -%}
+{%- endif -%}
+{%- comment -%}longest lead-in first so a prefix never wins over its own extension{%- endcomment -%}
+{%- assign leadins = "In this week’s sermon we are looking at |In this week's sermon we are looking at |In this week’s sermon we look at |In this week's sermon we look at |In this week’s sermon we cover |In this week's sermon we cover |In this sermon, we are looking at |In this sermon, we look at |In this sermon, we cover |In this sermon we look at |In this sermon we cover |In this sermon we look |In this message we look at |In this message we cover " | split: "|" -%}
+{%- for leadin in leadins -%}
+  {%- assign blurb_head = blurb | slice: 0, leadin.size -%}
+  {%- if blurb_head == leadin -%}
+    {%- assign blurb = blurb | remove_first: leadin -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if blurb != "" -%}
+  {%- assign blurb_first = blurb | slice: 0 | upcase -%}
+  {%- assign blurb_rest = blurb | slice: 1, 4000 -%}
+  {{- blurb_first | escape }}{{ blurb_rest | escape -}}
+{%- endif -%}
