@@ -139,16 +139,21 @@ function splitFrontmatter(content) {
   return { frontmatterText: match[1], body: match[2] };
 }
 
+// a line-based reader truncated multi-line values and harvested body lines as keys;
+// js-yaml also decodes the \n that escapeYaml writes, which nothing here used to reverse
 function parseFrontmatter(text) {
+  let loaded;
+  try {
+    loaded = yaml.load(text);
+  } catch {
+    return {};
+  }
+  if (!loaded || typeof loaded !== 'object' || Array.isArray(loaded)) return {};
+
   const result = {};
-  for (const line of text.split('\n')) {
-    const m = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*):\s*(.*)$/);
-    if (!m) continue;
-    let value = m[2].trim();
-    if (value.startsWith('"') && value.endsWith('"')) {
-      value = value.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-    }
-    result[m[1]] = value;
+  for (const [key, value] of Object.entries(loaded)) {
+    if (value === null || value === undefined) continue;
+    result[key] = value instanceof Date ? value.toISOString() : String(value);
   }
   return result;
 }
@@ -162,6 +167,10 @@ function yamlNeedsQuotes(value) {
   // YAML 1.1 parses all-numeric colon-separated segments (e.g. "34:22") as sexagesimal,
   // which silently turns a MM:SS duration string into an integer.
   if (/^\d+(:\d+){1,2}$/.test(value)) return true;
+  // YAML 1.1 reads these bare words as booleans or null, so a title of "No" returns as false
+  if (/^(y|n|yes|no|true|false|on|off|null|~)$/i.test(value)) return true;
+  // an all-numeric value would round-trip as a number rather than the string it is
+  if (/^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/.test(value)) return true;
   // Leading chars that have special meaning in YAML.
   if (/^[-?:,[\]{}#&*!|>'"%@`]/.test(value)) return true;
   // Pipe mid-value is technically legal as a plain scalar, but quoting it avoids
@@ -243,10 +252,9 @@ function buildFields(item, bookCounts, existingFields = {}) {
     episode_id: episodeHash,
   };
 
-  // Preserve custom fields that aren't sourced from RSS (transcription_model, etc.)
-  const preservedKeys = ['transcription_model'];
-  for (const key of preservedKeys) {
-    if (existingFields[key]) fields[key] = existingFields[key];
+  // carry over anything hand-added to the post; an allowlist silently dropped keys nobody remembered to list
+  for (const [key, value] of Object.entries(existingFields)) {
+    if (!(key in fields) && value !== '') fields[key] = value;
   }
 
   return fields;
@@ -270,6 +278,7 @@ async function sync({ updateExisting = false } = {}) {
 
   const processedMap = new Map(processed.map((p) => [p.guid, p]));
   const existingFiles = new Set(fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith('.md')));
+  const claimedFilenames = new Set();
 
   const bookCounts = {};
   for (const item of feed.items) {
@@ -300,8 +309,33 @@ async function sync({ updateExisting = false } = {}) {
       continue;
     }
 
+    if (!item.title) {
+      console.warn(`Skipping episode with no title: ${guid}`);
+      continue;
+    }
+
     const sermonDate = getSermonSunday(pubDate);
-    const filename = generateFilename(sermonDate, item.title);
+    let filename = generateFilename(sermonDate, item.title);
+
+    // the post's identity is its guid, not its title; a retitled episode must move, not duplicate
+    const trackedFilename = processedMap.get(guid)?.filename;
+    if (trackedFilename && trackedFilename !== filename && existingFiles.has(trackedFilename)) {
+      fs.renameSync(path.join(POSTS_DIR, trackedFilename), path.join(POSTS_DIR, filename));
+      existingFiles.delete(trackedFilename);
+      existingFiles.add(filename);
+      console.log(`Renamed: ${trackedFilename} -> ${filename}`);
+    }
+
+    // two episodes in one week whose titles slugify identically would otherwise overwrite each other
+    if (!existingFiles.has(filename) && claimedFilenames.has(filename)) {
+      filename = filename.replace(
+        /\.md$/,
+        `-${crypto.createHash('sha256').update(guid).digest('hex').slice(0, 6)}.md`,
+      );
+      console.warn(`Filename collision resolved as: ${filename}`);
+    }
+    claimedFilenames.add(filename);
+
     const filepath = path.join(POSTS_DIR, filename);
     const fileExists = existingFiles.has(filename);
 
@@ -312,9 +346,8 @@ async function sync({ updateExisting = false } = {}) {
       const split = splitFrontmatter(existingContent);
       if (split) {
         existingFields = parseFrontmatter(split.frontmatterText);
-        // splitFrontmatter's regex already consumes one \n after the closing ---,
-        // so strip further leading blank lines to avoid growing them on rewrite.
-        existingBody = split.body.replace(/^\n+/, '\n');
+        // the write below re-adds the single separating blank line, so leaving any here grows one per rewrite
+        existingBody = split.body.replace(/^\n+/, '');
       }
     }
 
@@ -345,7 +378,8 @@ async function sync({ updateExisting = false } = {}) {
       guid,
       title: item.title,
       filename,
-      processed_at: new Date().toISOString(),
+      // first-processed time; restamping every run rewrote all 114 entries on every sync
+      processed_at: processedMap.get(guid)?.processed_at ?? new Date().toISOString(),
     });
   }
 
