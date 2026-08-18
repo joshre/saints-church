@@ -47,10 +47,6 @@ pids
 *.seed
 *.pid.lock
 
-# CSS output
-assets/css/style.css
-assets/css/style.css.map
-
 # Temporary files
 *.tmp
 *.temp
