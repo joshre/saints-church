@@ -53,10 +53,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: yarn install --frozen-lockfile
 
       - name: Create processed episodes tracking file
         run: |
@@ -72,7 +73,7 @@ jobs:
         run: node scripts/sync-feed.js --update
 
       - name: Regenerate taxonomy pages
-        run: npx tsx scripts/generate-taxonomies.ts
+        run: yarn generate-taxonomies
 
       - name: Commit episode changes
         run: |

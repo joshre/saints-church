@@ -9,6 +9,9 @@ vendor/
 # Node modules
 node_modules/
 
+# npm — this repo uses yarn
+package-lock.json
+
 # OS generated files
 .DS_Store
 .DS_Store?
