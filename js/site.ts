@@ -1,10 +1,10 @@
 import '@tailwindplus/elements';
 
 import { initScrollAnimations } from './animations';
-import { initMobileNav } from './nav';
 import { initAudioPlayers } from './audio-player';
-import { initTranscriptionEnhancements } from './transcription';
 import { initCatechism } from './catechism';
+import { initMobileNav } from './nav';
+import { initTranscriptionEnhancements } from './transcription';
 
 function initAll(): void {
   initScrollAnimations();

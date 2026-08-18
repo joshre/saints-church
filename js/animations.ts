@@ -2,7 +2,7 @@ import { CONFIG } from './config';
 
 export function initScrollAnimations(): void {
   const animatedElements = document.querySelectorAll<HTMLElement>(
-    '.animate-reveal, .animate-fade-in, .animate-children'
+    '.animate-reveal, .animate-fade-in, .animate-children',
   );
 
   const run = (el: Element): void => {
@@ -19,7 +19,7 @@ export function initScrollAnimations(): void {
     {
       threshold: CONFIG.animation.thresholds,
       rootMargin: CONFIG.animation.rootMargin,
-    }
+    },
   );
 
   animatedElements.forEach((el) => {
@@ -46,6 +46,6 @@ export function initScrollAnimations(): void {
         }
       });
     },
-    { once: true }
+    { once: true },
   );
 }

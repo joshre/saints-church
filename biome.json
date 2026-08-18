@@ -1,0 +1,138 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": [
+      "js/**/*.ts",
+      "scripts/**/*.ts",
+      "build.js",
+      "scripts/*.js",
+      "!**/node_modules",
+      "!**/_site",
+      "!**/assets/heroicons",
+      "!**/js/site.min.js",
+      "!**/js/site.min.js.map",
+      "!**/*.d.ts"
+    ]
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedKeys": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf",
+    "attributePosition": "auto"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "all",
+      "complexity": {
+        "noForEach": "off",
+        "noVoid": "off",
+        "useMaxParams": "off",
+        "noExcessiveCognitiveComplexity": "off",
+        "noExcessiveLinesPerFunction": "off"
+      },
+      "correctness": {
+        "useImportExtensions": "off",
+        "noUndeclaredVariables": "off",
+        "noNodejsModules": "off",
+        "useQwikValidLexicalScope": "off"
+      },
+      "nursery": {
+        "recommended": false
+      },
+      "performance": {
+        "noBarrelFile": "off",
+        "noReExportAll": "off",
+        "noNamespaceImport": "off"
+      },
+      "security": {
+        "noSecrets": "off"
+      },
+      "style": {
+        "noDefaultExport": "off",
+        "noTernary": "off",
+        "noContinue": "off",
+        "noHexColors": "off",
+        "noProcessEnv": "off",
+        "noImplicitBoolean": "off",
+        "noNegationElse": "off",
+        "useExportsLast": "off",
+        "useDestructuring": "off",
+        "useGlobalThis": "off",
+        "useNamingConvention": "off",
+        "useFilenamingConvention": "off",
+        "noMagicNumbers": "off",
+        "useSingleVarDeclarator": "off",
+        "useBlockStatements": "off",
+        "noExcessiveLinesPerFile": "off",
+        "noNonNullAssertion": "warn",
+        "noCommonJs": "warn",
+        "useTemplate": "warn",
+        "noUnusedTemplateLiteral": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noAssignInExpressions": "warn",
+        "noConsole": "warn",
+        "useAwait": "warn",
+        "noShadow": "warn",
+        "noEmptyBlockStatements": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "quoteProperties": "asNeeded"
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      "trailingCommas": "none"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["build.js", "scripts/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noProcessGlobal": "off"
+          },
+          "performance": {
+            "useTopLevelRegex": "off"
+          },
+          "style": {
+            "noCommonJs": "off",
+            "noIncrementDecrement": "off"
+          },
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    }
+  ]
+}

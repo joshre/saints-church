@@ -9,7 +9,7 @@ export function initMobileNav(): void {
   const menuIcon = document.getElementById('menu-icon');
   const closeIcon = document.getElementById('close-icon');
 
-  if (!button || !menu || !panel || !menuIcon || !closeIcon) return;
+  if (!(button && menu && panel && menuIcon && closeIcon)) return;
 
   const toggleMenu = (show: boolean): void => {
     if (show) {

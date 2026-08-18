@@ -9,21 +9,21 @@ interface PlayerState {
 }
 
 class SermonPlayer {
-  private container: HTMLElement;
-  private audio!: HTMLAudioElement;
+  private readonly container: HTMLElement;
+  private readonly audio!: HTMLAudioElement;
   private currentSpeedIndex = 0;
   private savedState: PlayerState | null = null;
-  private playerId!: string;
+  private readonly playerId!: string;
 
-  private playPauseBtns!: NodeListOf<HTMLElement>;
-  private currentTimeElements!: NodeListOf<HTMLElement>;
-  private durationElements!: NodeListOf<HTMLElement>;
-  private scrubberElements!: NodeListOf<HTMLInputElement>;
-  private progressFillElements!: NodeListOf<HTMLElement>;
-  private skipBackBtns!: NodeListOf<HTMLElement>;
-  private skipForwardBtns!: NodeListOf<HTMLElement>;
-  private speedBtns!: NodeListOf<HTMLElement>;
-  private speedTextElements!: NodeListOf<HTMLElement>;
+  private readonly playPauseBtns!: NodeListOf<HTMLElement>;
+  private readonly currentTimeElements!: NodeListOf<HTMLElement>;
+  private readonly durationElements!: NodeListOf<HTMLElement>;
+  private readonly scrubberElements!: NodeListOf<HTMLInputElement>;
+  private readonly progressFillElements!: NodeListOf<HTMLElement>;
+  private readonly skipBackBtns!: NodeListOf<HTMLElement>;
+  private readonly skipForwardBtns!: NodeListOf<HTMLElement>;
+  private readonly speedBtns!: NodeListOf<HTMLElement>;
+  private readonly speedTextElements!: NodeListOf<HTMLElement>;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -48,16 +48,24 @@ class SermonPlayer {
   }
 
   private setupEventListeners(): void {
-    this.playPauseBtns.forEach((el) => el.addEventListener('click', () => this.togglePlayPause()));
-    this.scrubberElements.forEach((el) => el.addEventListener('input', (e) => this.seek(e)));
-    this.scrubberElements.forEach((el) => el.addEventListener('change', (e) => this.seek(e)));
-    this.skipBackBtns.forEach((el) =>
-      el.addEventListener('click', () => this.skip(CONFIG.skip.backward))
-    );
-    this.skipForwardBtns.forEach((el) =>
-      el.addEventListener('click', () => this.skip(CONFIG.skip.forward))
-    );
-    this.speedBtns.forEach((el) => el.addEventListener('click', () => this.toggleSpeed()));
+    this.playPauseBtns.forEach((el) => {
+      el.addEventListener('click', () => this.togglePlayPause());
+    });
+    this.scrubberElements.forEach((el) => {
+      el.addEventListener('input', (e) => this.seek(e));
+    });
+    this.scrubberElements.forEach((el) => {
+      el.addEventListener('change', (e) => this.seek(e));
+    });
+    this.skipBackBtns.forEach((el) => {
+      el.addEventListener('click', () => this.skip(CONFIG.skip.backward));
+    });
+    this.skipForwardBtns.forEach((el) => {
+      el.addEventListener('click', () => this.skip(CONFIG.skip.forward));
+    });
+    this.speedBtns.forEach((el) => {
+      el.addEventListener('click', () => this.toggleSpeed());
+    });
 
     this.audio.addEventListener('loadedmetadata', () => this.onLoadedMetadata());
     this.audio.addEventListener('timeupdate', () => this.onTimeUpdate());
@@ -84,8 +92,7 @@ class SermonPlayer {
       await this.audio.play();
       this.updatePlayPauseButton('playing');
       this.saveState();
-    } catch (error) {
-      console.error('Error playing audio:', error);
+    } catch {
       this.onError();
     }
   }
@@ -100,7 +107,7 @@ class SermonPlayer {
     const scrubber = event.target as HTMLInputElement;
     const percent = Number(scrubber.value) / 100;
     const time = percent * this.audio.duration;
-    if (isFinite(time)) {
+    if (Number.isFinite(time)) {
       this.audio.currentTime = time;
       this.saveState();
     }
@@ -110,7 +117,7 @@ class SermonPlayer {
     if (this.audio.duration) {
       this.audio.currentTime = Math.max(
         0,
-        Math.min(this.audio.currentTime + seconds, this.audio.duration)
+        Math.min(this.audio.currentTime + seconds, this.audio.duration),
       );
       this.saveState();
     }
@@ -186,9 +193,8 @@ class SermonPlayer {
     this.updateProgress();
   }
 
-  private onError(): void {
-    console.error('Audio playback error');
-  }
+  // biome-ignore lint/suspicious/noEmptyBlockStatements: deliberate no-op; swallows audio errors so a failed load stays silent
+  private onError(): void {}
 
   private saveState(): void {
     const state: PlayerState = {
@@ -292,7 +298,11 @@ class SermonPlayer {
   }
 }
 
+const activePlayers: SermonPlayer[] = [];
+
 export function initAudioPlayers(): void {
   const players = document.querySelectorAll<HTMLElement>('.sermon-player');
-  players.forEach((player) => new SermonPlayer(player));
+  for (const player of players) {
+    activePlayers.push(new SermonPlayer(player));
+  }
 }

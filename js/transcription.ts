@@ -21,7 +21,7 @@ export function initTranscriptionEnhancements(): void {
       JSON.stringify({
         progress,
         timestamp: Date.now(),
-      })
+      }),
     );
   }
 
