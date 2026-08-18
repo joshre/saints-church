@@ -31,6 +31,11 @@
 @theme {
   --font-display: "PP Formula", sans-serif;
   --font-sans: "Inter", sans-serif;
+
+  /* Eyebrow scale - tracked uppercase labels sit below Tailwind's text-xs */
+  --text-2xs: 0.6875rem;
+  --tracking-eyebrow: 0.2em;
+
   --color-saints-black: oklch(20.5% 0.008 17);   /* was #231f20 */
   --color-saints-white: oklch(97.4% 0.004 90);   /* was #f7f6f3 */
   
@@ -344,11 +349,6 @@ a:focus-visible,
     @apply min-h-11 min-w-11;
   }
 
-  /* Improved spacing for touch */
-  .sermon-card {
-    @apply p-6 mb-2;
-  }
-
   /* Better progress bar for touch */
   .progress-bar {
     @apply h-4 rounded-lg;
@@ -401,13 +401,13 @@ a:focus-visible,
 
 /* Refined sermon card styles with perfect proportions and enhanced interactions */
 .sermon-card {
-  @apply relative h-full w-full rounded-xl bg-white p-7 transition-all duration-300 ease-out dark:bg-stone-900;
+  @apply relative w-full rounded-2xl bg-white transition-all duration-300 ease-out dark:bg-stone-900;
 
   box-shadow: var(--card-shadow);
 }
 
 .sermon-card::before {
-  @apply dark:pointer-events-none dark:absolute dark:rounded-xl dark:content-[''];
+  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
   inset: -1px;
   box-shadow: var(--card-inset-glow);
@@ -422,32 +422,6 @@ a:focus-visible,
 
 .sermon-card:hover {
   @apply border-saints-500/30 dark:border-saints-400/30;
-}
-
-.sermon-card-content {
-  @apply flex flex-col h-full;
-}
-
-.sermon-card-title {
-  @apply font-display font-bold text-stone-900 dark:text-white text-lg leading-tight mb-5 line-clamp-3;
-
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
-}
-
-.sermon-scripture {
-  @apply text-sm font-bold text-saints-600 dark:text-saints-400 mb-6 tracking-wide;
-
-  font-weight: 600;
-  letter-spacing: 0.025em;
-}
-
-.sermon-meta {
-  @apply text-xs text-stone-500 dark:text-stone-400 font-semibold mt-auto;
-
-  font-weight: 600;
-  letter-spacing: 0.025em;
 }
 
 /* Featured sermon styles with enhanced visual depth */
@@ -697,17 +671,17 @@ input.audio-scrubber::-moz-range-progress {
 
 /* Thumb/handle styling - always visible and properly centered */
 input.audio-scrubber::-webkit-slider-thumb {
-  @apply size-4 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
+  @apply size-3.5 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
 
   appearance: none;
-  background: oklch(58.2% 0.054 129.1); /* saints-500 */
-  margin-top: -5px; /* Center vertically relative to track */
+  background: var(--color-saints-600);
+  margin-top: -4px; /* Center vertically relative to track */
 }
 
 input.audio-scrubber::-moz-range-thumb {
-  @apply size-4 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
+  @apply size-3.5 rounded-full cursor-pointer border-2 border-white opacity-100 transition-transform duration-200 ease-out shadow-sm;
 
-  background: oklch(58.2% 0.054 129.1); /* saints-500 */
+  background: var(--color-saints-600);
 }
 
 /* Hover effects */
@@ -726,70 +700,6 @@ input.audio-scrubber:active::-webkit-slider-thumb {
 
 input.audio-scrubber:active::-moz-range-thumb {
   @apply scale-125;
-}
-
-/* Sermon Card Background Variations */
-
-/* Use nth-child on the parent containers to create different rotations */
-
-/* Card 1, 5, 9, etc. - subtle positive rotation */
-.group:nth-child(4n+1) .sermon-card-bg-1 {
-  @apply rotate-1 -translate-y-2;
-}
-.group:nth-child(4n+1):hover .sermon-card-bg-1 {
-  @apply rotate-2 -translate-y-3 -translate-x-1;
-}
-
-.group:nth-child(4n+1) .sermon-card-bg-2 {
-  @apply -rotate-2 translate-y-2;
-}
-.group:nth-child(4n+1):hover .sermon-card-bg-2 {
-  @apply -rotate-3 translate-y-1 -translate-x-1;
-}
-
-/* Card 2, 6, 10, etc. - larger positive rotation */
-.group:nth-child(4n+2) .sermon-card-bg-1 {
-  @apply rotate-2 -translate-y-2;
-}
-.group:nth-child(4n+2):hover .sermon-card-bg-1 {
-  @apply rotate-3 -translate-y-3 -translate-x-1;
-}
-
-.group:nth-child(4n+2) .sermon-card-bg-2 {
-  @apply -rotate-1 translate-y-2;
-}
-.group:nth-child(4n+2):hover .sermon-card-bg-2 {
-  @apply -rotate-2 translate-y-1 -translate-x-1;
-}
-
-/* Card 3, 7, 11, etc. - negative rotation */
-.group:nth-child(4n+3) .sermon-card-bg-1 {
-  @apply -rotate-1 -translate-y-2;
-}
-.group:nth-child(4n+3):hover .sermon-card-bg-1 {
-  @apply -rotate-2 -translate-y-3 -translate-x-1;
-}
-
-.group:nth-child(4n+3) .sermon-card-bg-2 {
-  @apply rotate-3 translate-y-2;
-}
-.group:nth-child(4n+3):hover .sermon-card-bg-2 {
-  @apply rotate-4 translate-y-1 -translate-x-1;
-}
-
-/* Card 4, 8, 12, etc. - mixed rotation */
-.group:nth-child(4n) .sermon-card-bg-1 {
-  @apply rotate-3 -translate-y-2;
-}
-.group:nth-child(4n):hover .sermon-card-bg-1 {
-  @apply rotate-4 -translate-y-3 -translate-x-1;
-}
-
-.group:nth-child(4n) .sermon-card-bg-2 {
-  @apply -rotate-3 translate-y-2;
-}
-.group:nth-child(4n):hover .sermon-card-bg-2 {
-  @apply -rotate-4 translate-y-1 -translate-x-1;
 }
 
 /* Enhanced Sermon Transcription Styling - Zero Maintenance Implementation */
@@ -902,4 +812,21 @@ input.audio-scrubber:active::-moz-range-thumb {
   @apply text-saints-600 dark:text-saints-400 font-medium;
 }
 
+/* Sermon hero - the dark plate the audio card lifts off of */
+.sermon-hero {
+  background: linear-gradient(175deg, var(--color-wallpaper) 0%, var(--color-wallpaper-footer) 100%);
+}
 
+.sermon-hero-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 3.2%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 3.2%) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 70% at 30% 20%, black, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sermon-hero {
+    background: linear-gradient(175deg, var(--color-wallpaper-dark-light) 0%, var(--color-wallpaper-dark-footer) 100%);
+  }
+}

@@ -2,201 +2,146 @@
 layout: default
 ---
 
-<div class="bg-wallpaper dark:bg-wallpaper-dark relative">
-  <!-- Single noise texture layer covering the entire page -->
-  {% include noise-overlay.html %}
+{% assign preacher = site.data.preachers | where: "key", page.pastor | first %}
+{% comment %}page.previous is collection order, so a same-day sermon would read as last Sunday{% endcomment %}
+{% assign current_day = page.date | date: "%Y%m%d" | plus: 0 %}
+{% assign newer_first = site.posts | where: "category", "sermon" | sort: "date" | reverse %}
+{% assign previous_sermon = nil %}
+{% for candidate in newer_first %}
+  {% assign candidate_day = candidate.date | date: "%Y%m%d" | plus: 0 %}
+  {% if candidate_day < current_day %}
+    {% assign previous_sermon = candidate %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% assign duration_parts = page.duration | split: ":" %}
+{% if duration_parts.size > 2 %}
+  {% assign minutes = duration_parts[0] | times: 60 | plus: duration_parts[1] %}
+{% else %}
+  {% assign minutes = duration_parts[0] | plus: 0 %}
+{% endif %}
 
-  <main tabindex="-1" id="main-content" class="relative">
-    <!-- Header gradient overlay (no separate noise) -->
-    <div class="relative overflow-hidden">
-      <div class="from-wallpaper-light dark:from-wallpaper-dark-light absolute inset-0 bg-linear-to-b to-transparent dark:to-transparent"></div>
-      <div class="relative">
-        <div class="mx-auto max-w-7xl animate-children px-6 pt-24 pb-20 lg:px-8">
-          <!-- Breadcrumb -->
-          <div class="child mb-8">
-            {% include breadcrumbs.html %}
+<main tabindex="-1" id="main-content">
+  {% include breadcrumbs.html %}
+
+  <article itemscope itemtype="https://schema.org/Article">
+    <header class="sermon-hero relative overflow-hidden pt-20 pb-32">
+      <div aria-hidden="true" class="sermon-hero-grid absolute inset-0"></div>
+
+      <div class="relative mx-auto max-w-7xl animate-children px-6 lg:px-8">
+        <div class="child flex items-center justify-between gap-6">
+          <a href="/sermons/" class="text-2xs inline-flex items-center gap-2 font-display font-bold tracking-eyebrow text-white/55 uppercase transition-colors duration-200 hover:text-white/90">&larr; All sermons</a>
+          {% include subscribe-menu.html theme="dark" %}
+        </div>
+
+        {% if page.series %}
+          <p class="child mt-11 [--delay:0.1s]">
+            <a href="/sermons/series/{{ page.series | slugify }}/" class="text-2xs font-display font-bold tracking-eyebrow text-white/50 uppercase transition-colors duration-200 hover:text-white/90">{{ page.series }} series</a>
+          </p>
+        {% endif %}
+
+        <h1 itemprop="headline name" class="child mt-4 max-w-2xl font-display text-5xl leading-none font-bold tracking-tight text-white [--delay:0.15s] sm:text-6xl lg:text-7xl">
+          {{ page.title | escape }}
+        </h1>
+
+        {% if page.description %}
+          <p itemprop="description" class="child mt-6 max-w-md text-xl leading-snug text-pretty text-white/80 [--delay:0.2s]">
+            {{ page.description | strip_html | escape }}
+          </p>
+        {% endif %}
+
+        <div class="child mt-9 flex flex-wrap items-center gap-3 text-sm text-white/70 tabular-nums [--delay:0.25s]">
+          {% if page.pastor %}
+            <address itemscope itemtype="https://schema.org/Person" class="flex items-center gap-3 not-italic">
+              {% include pastor-image.html class="size-8 rounded-full" preacher=page.pastor %}
+              <a href="/sermons/preachers/{{ page.pastor | slugify }}/" itemprop="name" class="text-white/90 transition-colors duration-200 hover:text-white">{{ preacher.name }}, {{ preacher.role }}</a>
+            </address>
+            <span aria-hidden="true" class="text-white/40">&middot;</span>
+          {% endif %}
+          <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%B %-d, %Y" }}</time>
+          {% if page.duration %}
+            <span aria-hidden="true" class="text-white/40">&middot;</span>
+            <data value="{{ page.duration }}" itemprop="duration">{{ minutes }} min</data>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    {% if page.audio_url %}
+      <section aria-labelledby="sermon-audio-caption" class="relative z-10 mx-auto -mt-18 max-w-7xl px-6 lg:px-8">
+        <h2 id="sermon-audio-caption" class="sr-only">{{ page.title | escape }} audio</h2>
+        {% include audio-player.html audio_url=page.audio_url title=page.title episode_id=page.episode_id %}
+      </section>
+    {% endif %}
+
+    {% comment %}Transcriptions arrive under a heading the whisper pipeline writes; fall back to the raw body{% endcomment %}
+    {% assign transcription_content = "" %}
+    {% assign md_parts = content | split: "## Transcription" %}
+    {% if md_parts.size > 1 %}
+      {% assign transcription_content = md_parts[1] | strip %}
+    {% else %}
+      {% assign html_parts = content | split: "Transcription</h2>" %}
+      {% if html_parts.size > 1 %}
+        {% assign transcription_content = html_parts[1] | strip %}
+      {% elsif content contains "Transcription" %}
+        {% assign transcription_content = content | strip %}
+      {% endif %}
+    {% endif %}
+
+    <section class="mx-auto max-w-3xl px-6 pt-22 lg:px-8">
+      {% if transcription_content != "" %}
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 class="text-2xs font-display font-bold tracking-eyebrow text-stone-500 uppercase dark:text-stone-400">Transcription</h2>
+          <p class="text-xs text-stone-400 dark:text-stone-500">Auto-generated, unedited</p>
+        </div>
+
+        <details class="transcript-details group mt-4">
+          <summary class="page-content-card flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 transition-colors duration-200 hover:bg-stone-900/2 dark:hover:bg-white/5 [&::-webkit-details-marker]:hidden">
+            <span class="font-display text-lg text-stone-900 dark:text-white">Full transcription</span>
+            <span class="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-400">
+              <span class="group-open:hidden">Show</span>
+              <span class="hidden group-open:inline">Hide</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 transition-transform duration-200 group-open:-scale-y-100">
+                <path d="M6 9.5 12 15.5 18 9.5"></path>
+              </svg>
+            </span>
+          </summary>
+
+          <div class="prose-stone mt-7 max-w-none prose dark:prose-invert [&_p:has(br:only-child)]:hidden" itemprop="articleBody" id="sermon-transcription">
+            {{ transcription_content }}
           </div>
+        </details>
+      {% else %}
+        <p class="text-center text-sm text-stone-500 dark:text-stone-400">Transcription coming soon.</p>
+      {% endif %}
+    </section>
 
-          <article itemscope itemtype="https://schema.org/Article">
-            <!-- Title and Subscribe Section -->
-            <div class="child mb-8 flex flex-col gap-6 [--delay:0.1s] lg:flex-row lg:items-center lg:justify-between">
-              <!-- Title Section -->
-              <div class="flex-1">
-                <h1 class="mb-4 font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;" itemprop="headline name">
-                  {{ page.title | escape }}
-                </h1>
-                {% if page.scripture != page.title %}
-                  <p class="text-lg text-white/60" style="text-shadow: 0 1px 2px rgba(0,0,0,0.06);">
-                    <cite itemprop="about citation">{{ page.scripture }}</cite>
-                  </p>
-                {% endif %}
-              </div>
+    <nav aria-label="Nearby sermons" class="mx-auto max-w-3xl px-6 pt-18 lg:px-8">
+      <div class="grid grid-cols-1 border-t border-stone-900/10 sm:grid-cols-2 dark:border-white/10">
+        {% if previous_sermon %}
+          <a href="{{ previous_sermon.url }}" class="border-b border-stone-900/5 py-7 pr-6 transition-colors duration-200 hover:bg-stone-900/2 sm:border-r sm:border-b-0 dark:border-white/10 dark:hover:bg-white/5">
+            <span class="text-2xs block font-display font-bold tracking-eyebrow text-stone-400 uppercase dark:text-stone-500">&larr; Previous Sunday</span>
+            <span class="mt-2.5 block font-display text-xl text-stone-900 dark:text-white">{{ previous_sermon.title | escape }}</span>
+            <span class="mt-1.5 block text-sm text-stone-500 tabular-nums dark:text-stone-400">{{ previous_sermon.date | date: "%B %-d, %Y" }} &middot; {{ previous_sermon.pastor | remove: "Pastor " }} &middot; {{ previous_sermon.duration }}</span>
+          </a>
+        {% endif %}
+        {% if page.series %}
+          <a href="/sermons/series/{{ page.series | slugify }}/" class="py-7 text-left transition-colors duration-200 hover:bg-stone-900/2 sm:pl-6 sm:text-right dark:hover:bg-white/5">
+            <span class="text-2xs block font-display font-bold tracking-eyebrow text-stone-400 uppercase dark:text-stone-500">Series</span>
+            <span class="mt-2.5 block font-display text-xl text-stone-900 dark:text-white">All {{ page.series }} sermons &rarr;</span>
+          </a>
+        {% endif %}
+      </div>
+    </nav>
 
-              <!-- Subscribe Buttons -->
-              <div class="child flex flex-col gap-3 [--delay:0.2s] lg:min-w-[300px]">
-                {% include subscribe-buttons.html %}
-              </div>
-            </div>
-
-            <!-- Audio Player Section -->
-            {% if page.audio_url %}
-              <section aria-labelledby="sermon-audio-caption" class="child [--delay:0.25s]">
-                <h2 id="sermon-audio-caption" class="sr-only">{{ page.title | escape }} Audio</h2>
-                {% include audio-player.html audio_url=page.audio_url title=page.title episode_id=page.episode_id %}
-              </section>
-            {% endif %}
-          </article>
+    <aside class="mx-auto max-w-3xl px-6 pt-14 pb-24 text-center lg:px-8">
+      <div class="border-t border-stone-900/10 pt-14 dark:border-white/10">
+        <p class="mx-auto max-w-lg text-lg text-pretty text-stone-600 dark:text-stone-400">{{ site.data.content.sermons.cta.episode_page.description }}</p>
+        <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+          {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
+          {% include button.html href="/beliefs/" text="Our Beliefs" variant="secondary" class="w-full sm:w-auto" %}
         </div>
       </div>
-    </div>
-
-    <!-- Content area -->
-    <div class="relative mx-auto max-w-7xl px-6 pb-12 lg:px-8">
-      <!-- White content card -->
-      <div class="page-content-card">
-        <div class="animate-reveal p-8 lg:p-10">
-          <article itemscope itemtype="https://schema.org/Article">
-            <!-- Main Content Grid -->
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
-              <!-- Metadata Sidebar -->
-              <div class="lg:border-saints-100 order-1 lg:order-1 lg:col-span-1 lg:border-r lg:pr-8 lg:dark:border-stone-800">
-                <div class="space-y-6">
-                  <!-- Preacher Section -->
-                  {% if page.pastor %}
-                    <div>
-                      <h3 class="text-saints-600 mb-2.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Preacher</h3>
-                      <div class="flex items-center gap-3">
-                        {% include pastor-image.html class="flex-shrink-0 rounded-full size-12" preacher=page.pastor %}
-                        <address itemscope itemtype="https://schema.org/Person" class="not-italic">
-                          <a href="/sermons/preachers/{{ page.pastor | slugify }}/" class="hover:decoration-saints-500 text-sm text-stone-900 underline decoration-stone-300 underline-offset-2 transition-colors dark:text-white dark:decoration-stone-600" itemprop="name">{{ page.pastor | remove: "Pastor " }}</a>
-                        </address>
-                      </div>
-                    </div>
-                  {% endif %}
-
-                  <!-- Metadata -->
-                  <div class="space-y-5 border-t border-stone-100 pt-5 dark:border-stone-800">
-                    <div>
-                      <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Published</dt>
-                      <dd>
-                        <time datetime="{{ page.date | date_to_xmlschema }}" pubdate itemprop="datePublished" class="text-sm text-stone-900 dark:text-white">
-                          {{ page.date | date: "%B %d, %Y" }}
-                        </time>
-                      </dd>
-                    </div>
-
-                    {% if page.duration %}
-                      <div>
-                        <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Duration</dt>
-                        <dd>
-                          <data value="{{ page.duration }}" itemprop="duration" class="text-sm text-stone-900 tabular-nums dark:text-white">{{ page.duration }}</data>
-                        </dd>
-                      </div>
-                    {% endif %}
-
-                    {% if page.scripture %}
-                      <div>
-                        <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Scripture</dt>
-                        <dd>
-                          <cite itemprop="about citation" class="text-sm text-stone-900 not-italic dark:text-white">{{ page.scripture }}</cite>
-                        </dd>
-                      </div>
-                    {% endif %}
-
-                    {% if page.series %}
-                      <div>
-                        <dt class="text-saints-600 mb-1.5 font-display text-[0.6rem] font-medium tracking-[1px] uppercase dark:text-stone-400">Series</dt>
-                        <dd>
-                          <span itemscope itemtype="https://schema.org/CreativeWorkSeries" class="text-sm text-stone-900 dark:text-white">
-                            <a href="/sermons/series/{{ page.series | slugify }}/" itemprop="name" class="hover:decoration-saints-500 underline decoration-stone-300 underline-offset-2 transition-colors dark:decoration-stone-600">{{ page.series }}</a>
-                          </span>
-                        </dd>
-                      </div>
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Sermon Content -->
-              <div class="order-2 lg:order-2 lg:col-span-3">
-                <div class="relative">
-
-                  {% if page.description %}
-                    <!-- Always show description first for SEO and user experience -->
-                    <div class="prose-stone mb-6 max-w-none prose prose-base leading-relaxed text-stone-700 dark:prose-invert dark:text-stone-300 [&_p:has(br:only-child)]:hidden">
-                      {{ page.description | markdownify }}
-                    </div>
-                  {% endif %}
-
-                  {% comment %}Check for transcription content - try multiple approaches{% endcomment %}
-                  {% assign has_transcription = false %}
-                  {% assign transcription_content = "" %}
-
-                  {% comment %}Method 1: Try markdown header{% endcomment %}
-                  {% assign md_parts = content | split: "## Transcription" %}
-                  {% if md_parts.size > 1 %}
-                    {% assign transcription_content = md_parts[1] | strip %}
-                    {% assign has_transcription = true %}
-                  {% endif %}
-
-                  {% comment %}Method 2: Try HTML header if markdown didn't work{% endcomment %}
-                  {% unless has_transcription %}
-                    {% if content contains "<h2" and content contains "Transcription" %}
-                      {% assign html_parts = content | split: "Transcription</h2>" %}
-                      {% if html_parts.size > 1 %}
-                        {% assign transcription_content = html_parts[1] | strip %}
-                        {% assign has_transcription = true %}
-                      {% endif %}
-                    {% endif %}
-                  {% endunless %}
-
-                  {% comment %}Method 3: Simple contains check{% endcomment %}
-                  {% unless has_transcription %}
-                    {% if content contains "Transcription" %}
-                      {% assign transcription_content = content %}
-                      {% assign has_transcription = true %}
-                    {% endif %}
-                  {% endunless %}
-
-                  {% if has_transcription and transcription_content != "" %}
-                        <!-- Collapsible transcription content -->
-                      <details class="transcript-details group">
-                        <summary class="mb-6 flex cursor-pointer list-none items-center gap-3 rounded-lg border border-stone-200/80 bg-stone-50/70 p-4 transition-colors duration-200 hover:bg-stone-100/80 dark:border-stone-700 dark:bg-stone-800/50 dark:hover:bg-stone-800">
-                          <svg class="text-saints-500 dark:text-saints-400 size-5 transition-transform duration-200 group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                          </svg>
-                          <div class="flex-1">
-                            <h3 class="font-display text-sm font-medium text-stone-900 dark:text-white">Full Transcription</h3>
-                          </div>
-                        </summary>
-
-                        <div class="prose-stone mt-6 max-w-none prose prose-base dark:prose-invert [&_p:has(br:only-child)]:hidden" itemprop="articleBody" id="sermon-transcription">
-                          {{ transcription_content }}
-                        </div>
-                      </details>
-                  {% elsif page.description == nil or page.description == "" %}
-                    <!-- Fallback if neither content nor description exists -->
-                    <div class="prose-stone max-w-none py-8 text-center prose prose-base dark:prose-invert">
-                      <p class="text-stone-600 dark:text-stone-400">Transcription coming soon...</p>
-                    </div>
-                  {% endif %}
-
-                </div>
-              </div>
-            </div>
-
-            <!-- CTA Section -->
-            <div class="mx-auto mt-8 max-w-2xl border-t border-stone-200/70 pt-8 text-center dark:border-stone-800/60">
-              <p class="mb-6 text-[13px] text-stone-500 dark:text-stone-400">{{ site.data.content.sermons.cta.episode_page.description }}</p>
-              <div class="mx-auto flex max-w-sm flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center">
-                {% include button.html href="/beliefs/" text="Our Beliefs" class="w-full sm:w-auto" %}
-                {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" class="w-full sm:w-auto" %}
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </div>
-
-  </main>
-</div>
+    </aside>
+  </article>
+</main>

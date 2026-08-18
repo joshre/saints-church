@@ -222,7 +222,10 @@ page_cta:
 
 sermons:
   title: "Sermons"
-  subtitle: "Our church's Sunday morning sermon archive"
+  subtitle: "Our church's Sunday morning sermon archive — verse by verse, through books of the Bible."
+  eyebrow: "Sermon archive"
+  latest_label: "Latest sermon"
+  page_size: 12
   description: ""
   details: ""
   latest_title: "Latest Sermons"

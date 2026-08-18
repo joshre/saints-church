@@ -1,0 +1,51 @@
+{%- comment -%}
+Editorial sermon index. Params:
+  sermons          — array, already sorted newest first
+  group_by_series  — insert a series rule whenever the series changes
+  paginate         — hide everything past the first page for the load-more control
+{%- endcomment -%}
+{% assign page_size = site.data.content.sermons.page_size %}
+
+<div class="mt-14 border-t border-stone-900/10 dark:border-white/10" id="sermon-list" data-page-size="{{ page_size }}">
+  <div class="text-2xs hidden gap-6 px-4 pt-4 pb-2 font-display font-bold tracking-eyebrow text-stone-400 uppercase lg:grid lg:grid-cols-12 dark:text-stone-500">
+    <span class="lg:col-span-2">Date</span>
+    <span class="lg:col-span-7">Passage</span>
+    <span class="lg:col-span-2">Preached by</span>
+    <span class="text-right lg:col-span-1">Length</span>
+  </div>
+
+  {% assign previous_series = "" %}
+  {% for sermon in include.sermons %}
+    {% assign series_label = sermon.series | default: "Standalone Sundays" %}
+    {% capture sermon_blurb %}{% include sermon-blurb.html post=sermon %}{% endcapture %}
+
+    <div class="sermon-item{% if include.paginate and forloop.index > page_size %} hidden{% endif %}">
+      {% if include.group_by_series and series_label != previous_series %}
+        <div class="flex items-center gap-4 pt-9 pb-3">
+          {% if sermon.series %}
+            <a href="/sermons/series/{{ sermon.series | slugify }}/" class="text-2xs font-display font-bold tracking-eyebrow whitespace-nowrap text-stone-500 uppercase transition-colors duration-200 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white">{{ series_label }}</a>
+          {% else %}
+            <span class="text-2xs font-display font-bold tracking-eyebrow whitespace-nowrap text-stone-500 uppercase dark:text-stone-400">{{ series_label }}</span>
+          {% endif %}
+          <span class="h-px flex-1 bg-stone-900/5 dark:bg-white/10"></span>
+        </div>
+      {% endif %}
+
+      <a href="{{ sermon.url }}" class="-mx-4 hidden items-baseline gap-6 rounded-lg border-b border-stone-900/5 px-4 py-5 transition-colors duration-200 hover:bg-stone-900/3 lg:grid lg:grid-cols-12 dark:border-white/5 dark:hover:bg-white/5">
+        <span class="text-sm text-stone-400 tabular-nums lg:col-span-2 dark:text-stone-500">{{ sermon.date | date: "%b %-d, %Y" }}</span>
+        <span class="min-w-0 lg:col-span-7">
+          <span class="block font-display text-lg leading-snug tracking-tight text-stone-900 dark:text-white">{{ sermon.title | escape }}</span>
+          {% if sermon_blurb != "" %}
+            <span class="line-clamp-2 mt-1.5 max-w-prose text-sm leading-normal text-pretty text-stone-600 dark:text-stone-400">{{ sermon_blurb }}</span>
+          {% endif %}
+        </span>
+        <span class="text-sm text-stone-500 lg:col-span-2 dark:text-stone-400">{{ sermon.pastor | remove: "Pastor " }}</span>
+        <span class="text-right text-sm text-stone-500 tabular-nums lg:col-span-1 dark:text-stone-400">{{ sermon.duration }}</span>
+      </a>
+
+      {% include sermon-card.html post=sermon class="mb-4 lg:hidden" %}
+    </div>
+
+    {% assign previous_series = series_label %}
+  {% endfor %}
+</div>

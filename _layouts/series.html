@@ -3,6 +3,11 @@ layout: default
 ---
 
 {% assign series_sermons = site.posts | where: "series", page.series | sort: "date" %}
+{% assign earliest = series_sermons | first %}
+{% assign latest = series_sermons | last %}
+{% assign newest_overall = site.posts | where: "category", "sermon" | sort: "date" | last %}
+{% assign is_current = false %}
+{% if newest_overall.series == page.series %}{% assign is_current = true %}{% endif %}
 
 <script type="application/ld+json">
 {
@@ -42,63 +47,42 @@ layout: default
 }
 </script>
 
-<div class="bg-wallpaper dark:bg-wallpaper-dark relative">
-  <!-- Single noise texture layer covering the entire page -->
-  {% include noise-overlay.html %}
+<main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="mx-auto max-w-7xl px-6 pt-24 pb-28 lg:px-8">
+  <nav aria-label="Breadcrumb">
+    <ol class="text-2xs flex flex-wrap items-center gap-2.5 font-display font-bold tracking-eyebrow text-stone-400 uppercase dark:text-stone-500">
+      <li><a href="/sermons/" class="text-stone-500 transition-colors duration-200 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white">Sermons</a></li>
+      <li aria-hidden="true">&middot;</li>
+      <li><a href="/sermons/series/" class="text-stone-500 transition-colors duration-200 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white">Series</a></li>
+      <li aria-hidden="true">&middot;</li>
+      <li>{{ page.series }}</li>
+    </ol>
+  </nav>
 
-  <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
-    <!-- Header gradient overlay (no separate noise) -->
-    <div class="relative overflow-hidden">
-      <div class="from-wallpaper-light dark:from-wallpaper-dark-light absolute inset-0 bg-linear-to-b to-transparent dark:to-transparent"></div>
-      <div class="relative">
-        <header role="banner" class="relative mx-auto max-w-7xl animate-children px-6 pt-28 pb-10 lg:px-8">
-          <div class="mx-auto max-w-4xl text-center">
-            <!-- Breadcrumb -->
-            <nav aria-label="Breadcrumb" class="child mb-5">
-              <ol class="flex items-center justify-center gap-1.5 text-[0.6875rem] font-medium tracking-[0.1em] text-white/50 uppercase">
-                <li><a href="/sermons/" class="transition-all duration-200 hover:text-white/70">Sermons</a></li>
-                <li class="text-white/25 select-none" aria-hidden="true">&middot;</li>
-                <li><a href="/sermons/series/" class="transition-all duration-200 hover:text-white/70">Series</a></li>
-              </ol>
-            </nav>
-
-            <h1 itemprop="name" class="child mb-2 font-display text-4xl font-semibold tracking-tight text-white [--delay:0.1s] sm:text-5xl dark:text-white" style="text-shadow: 0 1px 2px rgba(0,0,0,0.08); letter-spacing: -0.02em;">
-              {{ page.series }}
-            </h1>
-            <p class="child text-[0.9375rem] font-light tracking-wider text-white/40 [--delay:0.2s]">
-              {{ series_sermons.size }} sermons
-            </p>
-          </div>
-        </header>
-      </div>
+  <div class="mt-6 flex flex-wrap items-end justify-between gap-8">
+    <div>
+      <h1 itemprop="name" class="font-display text-5xl leading-none font-bold tracking-tight text-stone-900 sm:text-6xl dark:text-white">{{ page.series }}</h1>
+      <p class="mt-5 flex flex-wrap items-center gap-3 text-base text-stone-500 tabular-nums dark:text-stone-400">
+        <span>{{ series_sermons.size }} sermon{% unless series_sermons.size == 1 %}s{% endunless %}</span>
+        <span aria-hidden="true" class="text-stone-300 dark:text-stone-600">&middot;</span>
+        <span>{{ earliest.date | date: "%B %Y" }} &ndash; {% if is_current %}current{% else %}{{ latest.date | date: "%B %Y" }}{% endif %}</span>
+      </p>
     </div>
 
-    <!-- Sermon grid -->
-    {% assign series_sermons = series_sermons | sort: "date" | reverse %}
-    {% if series_sermons.size > 0 %}
-    <div class="relative">
-      <section class="relative pt-8 pb-16">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8 xl:px-12">
-          <!-- Preacher filter chips -->
-          {% assign series_preachers = series_sermons | map: "pastor" | compact | uniq | sort %}
-          {% if series_preachers.size > 1 %}
-            <div class="mb-8 flex flex-wrap justify-center gap-2.5">
-              {% for sp in series_preachers %}
-                {% assign preacher_slug = sp | slugify %}
-                <a href="/sermons/preachers/{{ preacher_slug }}/" class="rounded-full border border-white/[0.08] bg-white/[0.07] px-3.5 py-1.5 text-[0.6875rem] font-medium tracking-[0.05em] text-white/50 transition-all duration-200 hover:border-white/[0.14] hover:bg-white/[0.14] hover:text-white/80">{{ sp | remove: "Pastor " }}</a>
-              {% endfor %}
-            </div>
-          {% endif %}
-
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {% for sermon in series_sermons %}
-              {% include sermon-card.html post=sermon %}
-            {% endfor %}
-          </div>
-        </div>
-      </section>
+    <div class="flex flex-wrap gap-3 pb-1.5">
+      <a href="{{ earliest.url }}" class="inline-flex h-11 items-center gap-2.5 rounded-lg bg-stone-900 px-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-stone-800 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-100">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="size-3.5">
+          <path d="M8 4.5 19 12 8 19.5Z" fill="currentColor"></path>
+        </svg>
+        Start at {{ earliest.title | escape }}
+      </a>
+      <a href="{{ latest.url }}" class="inline-flex h-11 items-center rounded-lg px-5 text-sm font-medium text-stone-900 ring-1 ring-stone-900/10 transition-colors duration-200 hover:bg-stone-900/5 dark:text-white dark:ring-white/15 dark:hover:bg-white/10">Latest sermon</a>
     </div>
-    {% endif %}
+  </div>
 
-  </main>
-</div>
+  {% assign series_sermons_desc = series_sermons | reverse %}
+  {% include sermon-list.html sermons=series_sermons_desc %}
+
+  {% if is_current %}
+    <p class="mt-8 text-sm text-stone-400 dark:text-stone-500">Currently preaching through {{ page.series }}.</p>
+  {% endif %}
+</main>

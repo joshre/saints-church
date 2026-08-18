@@ -3,6 +3,7 @@ layout: default
 ---
 
 {% assign preacher_sermons = site.posts | where: "pastor", page.preacher | sort: "date" %}
+{% assign preacher = site.data.preachers | where: "key", page.preacher | first %}
 
 <script type="application/ld+json">
 {
@@ -42,65 +43,40 @@ layout: default
 }
 </script>
 
-<div class="bg-wallpaper dark:bg-wallpaper-dark relative">
-  <!-- Single noise texture layer covering the entire page -->
-  {% include noise-overlay.html %}
+<main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="mx-auto max-w-7xl px-6 pt-24 pb-28 lg:px-8">
+  <nav aria-label="Breadcrumb">
+    <ol class="text-2xs flex flex-wrap items-center gap-2.5 font-display font-bold tracking-eyebrow text-stone-400 uppercase dark:text-stone-500">
+      <li><a href="/sermons/" class="text-stone-500 transition-colors duration-200 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white">Sermons</a></li>
+      <li aria-hidden="true">&middot;</li>
+      <li><a href="/sermons/preachers/" class="text-stone-500 transition-colors duration-200 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white">Preachers</a></li>
+      <li aria-hidden="true">&middot;</li>
+      <li>{{ preacher.name }}</li>
+    </ol>
+  </nav>
 
-  <main itemscope itemtype="https://schema.org/CollectionPage" tabindex="-1" id="main-content" class="relative">
-    <!-- Header gradient overlay (no separate noise) -->
-    <div class="relative overflow-hidden">
-      <div class="from-wallpaper-light dark:from-wallpaper-dark-light absolute inset-0 bg-linear-to-b to-transparent dark:to-transparent"></div>
-      <div class="relative">
-        <header role="banner" class="relative mx-auto max-w-7xl animate-children px-6 pt-28 pb-10 lg:px-8">
-          <div class="mx-auto max-w-4xl text-center">
-            <!-- Breadcrumb -->
-            <nav aria-label="Breadcrumb" class="child mb-6">
-              <ol class="flex items-center justify-center gap-2 text-sm text-white/60">
-                <li><a href="/sermons/" class="transition-colors hover:text-white/80">Sermons</a></li>
-                <li class="text-white/30 select-none">/</li>
-                <li><a href="/sermons/preachers/" class="transition-colors hover:text-white/80">Preachers</a></li>
-              </ol>
-            </nav>
-
-            {% include pastor-image.html class="mx-auto mb-6 rounded-full size-20 child [--delay:0.1s]" preacher=page.preacher %}
-
-            <h1 itemprop="name" class="child mb-2 font-display text-4xl font-semibold tracking-tight text-white [--delay:0.15s] sm:text-5xl dark:text-white" style="text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06); letter-spacing: -0.02em;">
-              {{ page.preacher | remove: "Pastor " }}
-            </h1>
-            <p class="child text-base tracking-wide text-white/45 [--delay:0.25s]">
-              {{ preacher_sermons.size }} sermons
-            </p>
-          </div>
-        </header>
+  <div class="mt-6 flex flex-wrap items-end justify-between gap-8">
+    <div class="flex items-center gap-5">
+      {% include pastor-image.html class="size-16 rounded-full" preacher=page.preacher %}
+      <div>
+        <h1 itemprop="name" class="font-display text-5xl leading-none font-bold tracking-tight text-stone-900 sm:text-6xl dark:text-white">{{ preacher.name }}</h1>
+        <p class="mt-4 flex flex-wrap items-center gap-3 text-base text-stone-500 tabular-nums dark:text-stone-400">
+          <span>{{ preacher.role }}</span>
+          <span aria-hidden="true" class="text-stone-300 dark:text-stone-600">&middot;</span>
+          <span>{{ preacher_sermons.size }} sermon{% unless preacher_sermons.size == 1 %}s{% endunless %}</span>
+        </p>
       </div>
     </div>
 
-    <!-- Sermon grid -->
-    {% assign preacher_sermons = preacher_sermons | sort: "date" | reverse %}
-    {% if preacher_sermons.size > 0 %}
-    <div class="relative">
-      <section class="relative pt-12 pb-16">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-          <!-- Series filter chips -->
-          {% assign preacher_series = preacher_sermons | map: "series" | compact | uniq | sort %}
-          {% if preacher_series.size > 1 %}
-            <div class="mb-10 flex flex-wrap justify-center gap-2">
-              {% for s in preacher_series %}
-                {% assign series_slug = s | slugify %}
-                <a href="/sermons/series/{{ series_slug }}/" class="rounded-full bg-white/[0.07] px-3 py-1 text-xs font-medium tracking-wide text-white/55 transition-colors hover:bg-white/[0.14] hover:text-white/85">{{ s }}</a>
-              {% endfor %}
-            </div>
-          {% endif %}
-
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {% for sermon in preacher_sermons %}
-              {% include sermon-card.html post=sermon %}
-            {% endfor %}
-          </div>
-        </div>
-      </section>
-    </div>
+    {% assign preacher_series = preacher_sermons | map: "series" | compact | uniq | sort %}
+    {% if preacher_series.size > 1 %}
+      <div class="flex flex-wrap gap-2 pb-1.5">
+        {% for series_name in preacher_series %}
+          <a href="/sermons/series/{{ series_name | slugify }}/" class="rounded-full px-4 py-1.5 text-sm text-stone-600 ring-1 ring-stone-900/10 transition-colors duration-200 hover:bg-stone-900/5 hover:text-stone-900 dark:text-stone-400 dark:ring-white/15 dark:hover:bg-white/10 dark:hover:text-white">{{ series_name }}</a>
+        {% endfor %}
+      </div>
     {% endif %}
+  </div>
 
-  </main>
-</div>
+  {% assign preacher_sermons_desc = preacher_sermons | reverse %}
+  {% include sermon-list.html sermons=preacher_sermons_desc group_by_series=true %}
+</main>

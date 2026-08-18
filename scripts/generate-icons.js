@@ -158,12 +158,12 @@ Generated from SVG files in assets/heroicons/optimized/
 Run 'node scripts/generate-icons.js' to regenerate after updating Heroicons
 
 Usage:
-  {% include icon.html name="arrow-uturn-left" class="size-4" %}
-  {% include icon.html name="arrow-uturn-left" type="micro" class="size-4" %}
-  {% include icon.html name="play" type="solid" class="size-6" %}
+  {% include icon.html name="clock" class="size-4" %}
+  {% include icon.html name="map-pin" type="micro" class="size-4" %}
+  {% include icon.html name="rss" type="solid" class="size-6" %}
 
 Parameters:
-- name: Icon name (e.g., "arrow-uturn-left", "play", "pause")
+- name: Icon name (e.g., "clock", "map-pin", "rss")
 - type: "outline" (default), "solid", "micro" (for 16px icons)
 - class: CSS classes (default: "size-6")
 - size: Icon size - "16", "20", "24" (default: "24")
