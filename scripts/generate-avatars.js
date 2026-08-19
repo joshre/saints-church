@@ -5,8 +5,8 @@
  *
  * For every preacher in _data/preachers.yml, emits from assets/images/<image>.jpg:
  *   - <image>-16w.jpg    the low-res base the <img> carries
- *   - <image>-64w.webp   (1x for the largest on-page use)
- *   - <image>-128w.webp  (2x)
+ *   - <image>-64w.webp / -128w.webp / -256w.webp  (256w covers the 128px
+ *     letter avatar on a 2x display)
  *
  * The <img> carries the 16w jpg and the <source> steps up to WebP. AVIF is
  * deliberately absent: its fixed container overhead makes it 5-50x larger than
@@ -26,7 +26,7 @@ const yaml = require('js-yaml');
 const ROOT = path.join(__dirname, '..');
 const IMAGES_DIR = path.join(ROOT, 'assets', 'images');
 const PREACHERS = path.join(ROOT, '_data', 'preachers.yml');
-const WIDTHS = [64, 128];
+const WIDTHS = [64, 128, 256];
 const LOWRES_WIDTH = 16;
 
 function magick(src, dest, width, quality) {
