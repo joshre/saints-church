@@ -48,6 +48,21 @@ exclude:
   - scripts
   - assets/heroicons
 
+  # full-size masters: kept in the repo for future reformatting, never shipped
+  - assets/images/fellowship-conversation.jpg
+  - assets/images/fellowship-embrace.jpg
+  - assets/images/fellowship-hug.jpg
+  - assets/images/fellowship-joyful.jpg
+  - assets/images/fellowship-kitchen.jpg
+  - assets/images/fellowship-men.jpg
+  - assets/images/fellowship-mother-baby.jpg
+  - assets/images/fellowship-mothers.jpg
+  - assets/images/fellowship-play.jpg
+  - assets/images/prayer-communal-1.jpg
+  - assets/images/prayer-family-1.jpg
+  - assets/images/prayer-family-2.jpg
+  - assets/images/prayer-teaching.jpg
+
 # Plugins (GitHub Pages compatible)
 plugins:
   - jekyll-feed
