@@ -4,6 +4,7 @@ layout: default
 
 {% assign preacher_sermons = site.posts | where: "pastor", page.preacher | sort: "date" %}
 {% assign preacher = site.data.preachers | where: "key", page.preacher | first %}
+{% assign preacher_name = preacher.name | default: page.preacher | remove: "Pastor " %}
 
 <script type="application/ld+json">
 {
@@ -50,7 +51,7 @@ layout: default
       <li aria-hidden="true">&middot;</li>
       <li><a href="/sermons/preachers/" class="text-stone-500 transition-colors duration-200 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white">Preachers</a></li>
       <li aria-hidden="true">&middot;</li>
-      <li>{{ preacher.name }}</li>
+      <li>{{ preacher_name }}</li>
     </ol>
   </nav>
 
@@ -58,10 +59,12 @@ layout: default
     <div class="flex items-center gap-5">
       {% include pastor-image.html class="size-16 rounded-full" px=64 loading="eager" preacher=page.preacher %}
       <div>
-        <h1 itemprop="name" class="font-display text-5xl leading-none font-bold tracking-tight text-stone-900 sm:text-6xl dark:text-white">{{ preacher.name }}</h1>
+        <h1 itemprop="name" class="font-display text-5xl leading-none font-bold tracking-tight text-stone-900 sm:text-6xl dark:text-white">{{ preacher_name }}</h1>
         <p class="mt-4 flex flex-wrap items-center gap-3 text-base text-stone-500 tabular-nums dark:text-stone-400">
-          <span>{{ preacher.role }}</span>
-          <span aria-hidden="true" class="text-stone-300 dark:text-stone-600">&middot;</span>
+          {% if preacher.role %}
+            <span>{{ preacher.role }}</span>
+            <span aria-hidden="true" class="text-stone-300 dark:text-stone-600">&middot;</span>
+          {% endif %}
           <span>{{ preacher_sermons.size }} sermon{% unless preacher_sermons.size == 1 %}s{% endunless %}</span>
         </p>
       </div>
