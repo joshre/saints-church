@@ -4,12 +4,11 @@ class, loading ("eager" above the fold). The img carries the low-res base and
 the source steps up to the WebP the browser actually paints.
 {%- endcomment -%}
 {% assign preacher = site.data.preachers | where: "key", include.preacher | first %}
-{% unless preacher %}
-  {% assign preacher = site.data.preachers | first %}
-{% endunless %}
 {% assign px = include.px | default: 128 %}
 {% assign image_class = include.class | default: "size-32 rounded-full" %}
 
+{% comment %}a preacher absent from preachers.yml gets no portrait, never someone else's{% endcomment %}
+{% if preacher %}
 <picture class="block">
   <source
     type="image/webp"
@@ -25,3 +24,4 @@ the source steps up to the WebP the browser actually paints.
     decoding="async"
   />
 </picture>
+{% endif %}

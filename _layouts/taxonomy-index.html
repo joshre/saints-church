@@ -45,11 +45,12 @@ layout: default
       {% assign all_preachers = all_sermons | map: "pastor" | compact | uniq | sort %}
       {% for preacher_key in all_preachers %}
         {% assign preacher = site.data.preachers | where: "key", preacher_key | first %}
+        {% assign preacher_name = preacher.name | default: preacher_key | remove: "Pastor " %}
         {% assign preacher_posts = all_sermons | where: "pastor", preacher_key %}
         {% assign preacher_latest = preacher_posts | sort: "date" | last %}
         <a href="/sermons/preachers/{{ preacher_key | slugify }}/" class="-mx-4 flex flex-wrap items-center gap-x-6 gap-y-2.5 rounded-lg border-b border-stone-900/5 px-4 py-6 transition-colors duration-200 hover:bg-stone-900/3 dark:border-white/5 dark:hover:bg-white/5">
           {% include pastor-image.html class="size-12 shrink-0 rounded-full" px=48 preacher=preacher_key %}
-          <h2 class="min-w-44 flex-1 font-display text-3xl leading-tight font-bold tracking-tight text-stone-900 dark:text-white">{{ preacher.name }}</h2>
+          <h2 class="min-w-44 flex-1 font-display text-3xl leading-tight font-bold tracking-tight text-stone-900 dark:text-white">{{ preacher_name }}</h2>
           <span class="min-w-24 text-sm text-stone-500 tabular-nums dark:text-stone-400">{{ preacher_posts.size }} sermon{% unless preacher_posts.size == 1 %}s{% endunless %}</span>
           <span class="min-w-64 text-sm text-stone-500 tabular-nums sm:text-right dark:text-stone-400">Latest: {{ preacher_latest.title | escape }}</span>
         </a>

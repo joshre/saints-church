@@ -3,6 +3,7 @@ layout: default
 ---
 
 {% assign preacher = site.data.preachers | where: "key", page.pastor | first %}
+{% assign preacher_name = preacher.name | default: page.pastor | remove: "Pastor " %}
 {% comment %}page.previous is collection order, so a same-day sermon would read as last Sunday{% endcomment %}
 {% assign current_day = page.date | date: "%Y%m%d" | plus: 0 %}
 {% assign newer_first = site.posts | where: "category", "sermon" | sort: "date" | reverse %}
@@ -54,7 +55,7 @@ layout: default
           {% if page.pastor %}
             <address itemscope itemtype="https://schema.org/Person" class="flex items-center gap-3 not-italic">
               {% include pastor-image.html class="size-8 rounded-full" px=32 loading="eager" preacher=page.pastor %}
-              <a href="/sermons/preachers/{{ page.pastor | slugify }}/" itemprop="name" class="text-white/90 transition-colors duration-200 hover:text-white">{{ preacher.name }}, {{ preacher.role }}</a>
+              <a href="/sermons/preachers/{{ page.pastor | slugify }}/" itemprop="name" class="text-white/90 transition-colors duration-200 hover:text-white">{{ preacher_name }}{% if preacher.role %}, {{ preacher.role }}{% endif %}</a>
             </address>
             <span aria-hidden="true" class="text-white/40">&middot;</span>
           {% endif %}
