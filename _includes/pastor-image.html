@@ -1,7 +1,7 @@
 {%- comment -%}
 Preacher avatar. Params: preacher (key), px (rendered size, default 128),
-class, loading ("eager" above the fold). The 16px placeholder is inlined so the
-circle paints with no request; the real WebP loads over it.
+class, loading ("eager" above the fold). The img carries the low-res base and
+the source steps up to the WebP the browser actually paints.
 {%- endcomment -%}
 {% assign preacher = site.data.preachers | where: "key", include.preacher | first %}
 {% unless preacher %}
@@ -16,10 +16,9 @@ circle paints with no request; the real WebP loads over it.
     srcset="/assets/images/{{ preacher.image }}-64w.webp 64w, /assets/images/{{ preacher.image }}-128w.webp 128w"
     sizes="{{ px }}px">
   <img
-    src="/assets/images/{{ preacher.image }}.jpg"
+    src="/assets/images/{{ preacher.image }}-16w.jpg"
     alt="{{ preacher.name }}, {{ preacher.role }} at Saints Church Knoxville"
     class="mx-auto object-cover ring-2 ring-white/10 transition-transform hover:scale-105 dark:ring-white/10 {{ image_class }}"
-    style="background-image:url({{ site.data.avatars.lqip[preacher.image] }});background-size:cover;background-position:center"
     width="{{ px }}"
     height="{{ px }}"
     loading="{{ include.loading | default: 'lazy' }}"
