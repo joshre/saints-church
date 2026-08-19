@@ -53,7 +53,7 @@ layout: default
         <div class="child mt-9 flex flex-wrap items-center gap-3 text-sm text-white/70 tabular-nums [--delay:0.25s]">
           {% if page.pastor %}
             <address itemscope itemtype="https://schema.org/Person" class="flex items-center gap-3 not-italic">
-              {% include pastor-image.html class="size-8 rounded-full" preacher=page.pastor %}
+              {% include pastor-image.html class="size-8 rounded-full" px=32 loading="eager" preacher=page.pastor %}
               <a href="/sermons/preachers/{{ page.pastor | slugify }}/" itemprop="name" class="text-white/90 transition-colors duration-200 hover:text-white">{{ preacher.name }}, {{ preacher.role }}</a>
             </address>
             <span aria-hidden="true" class="text-white/40">&middot;</span>
