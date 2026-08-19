@@ -56,7 +56,7 @@ layout: default
 
   <div class="mt-6 flex flex-wrap items-end justify-between gap-8">
     <div class="flex items-center gap-5">
-      {% include pastor-image.html class="size-16 rounded-full" preacher=page.preacher %}
+      {% include pastor-image.html class="size-16 rounded-full" px=64 loading="eager" preacher=page.preacher %}
       <div>
         <h1 itemprop="name" class="font-display text-5xl leading-none font-bold tracking-tight text-stone-900 sm:text-6xl dark:text-white">{{ preacher.name }}</h1>
         <p class="mt-4 flex flex-wrap items-center gap-3 text-base text-stone-500 tabular-nums dark:text-stone-400">

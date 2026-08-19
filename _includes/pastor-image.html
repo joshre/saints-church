@@ -1,16 +1,28 @@
+{%- comment -%}
+Preacher avatar. Params: preacher (key), px (rendered size, default 128),
+class, loading ("eager" above the fold). The 16px placeholder is inlined so the
+circle paints with no request; the real WebP loads over it.
+{%- endcomment -%}
 {% assign preacher = site.data.preachers | where: "key", include.preacher | first %}
 {% unless preacher %}
   {% assign preacher = site.data.preachers | first %}
 {% endunless %}
+{% assign px = include.px | default: 128 %}
+{% assign image_class = include.class | default: "size-32 rounded-full" %}
+
 <picture class="block">
-  <source srcset="/assets/images/{{ preacher.image }}.avif" type="image/avif">
-  <source srcset="/assets/images/{{ preacher.image }}.webp" type="image/webp">
+  <source
+    type="image/webp"
+    srcset="/assets/images/{{ preacher.image }}-64w.webp 64w, /assets/images/{{ preacher.image }}-128w.webp 128w"
+    sizes="{{ px }}px">
   <img
     src="/assets/images/{{ preacher.image }}.jpg"
     alt="{{ preacher.name }}, {{ preacher.role }} at Saints Church Knoxville"
-    class="object-cover mx-auto {% if include.class %}{{ include.class }}{% else %}size-32 rounded-full{% endif %} ring-2 transition-transform hover:scale-105 ring-white/10 will-animate var(--animation-fast) var(--smooth-bezier) dark:ring-white/10"
-    width="{% if include.class %}64{% else %}128{% endif %}"
-    height="{% if include.class %}64{% else %}128{% endif %}"
-    loading="lazy"
+    class="mx-auto object-cover ring-2 ring-white/10 transition-transform hover:scale-105 dark:ring-white/10 {{ image_class }}"
+    style="background-image:url({{ site.data.avatars.lqip[preacher.image] }});background-size:cover;background-position:center"
+    width="{{ px }}"
+    height="{{ px }}"
+    loading="{{ include.loading | default: 'lazy' }}"
+    decoding="async"
   />
 </picture>
