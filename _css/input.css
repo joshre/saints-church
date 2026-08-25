@@ -611,23 +611,25 @@ a:focus-visible,
   }
 }
 
-/* Page Content Card (beliefs, pastor-letter) */
-.page-content-card {
-  @apply relative bg-white dark:bg-stone-900 rounded-2xl;
-
-  box-shadow: var(--card-shadow-soft);
-}
-
-.page-content-card::before {
-  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
-
-  inset: -1px;
-  box-shadow: var(--card-inset-glow);
-}
-
-@media (prefers-color-scheme: dark) {
+/* Page Content Card (beliefs, pastor-letter) — layered so `absolute` on the subscribe-menu dropdown can override this card's default `relative` */
+@layer components {
   .page-content-card {
-    box-shadow: var(--card-shadow-dark);
+    @apply relative bg-white dark:bg-stone-900 rounded-2xl;
+
+    box-shadow: var(--card-shadow-soft);
+  }
+
+  .page-content-card::before {
+    @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+
+    inset: -1px;
+    box-shadow: var(--card-inset-glow);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .page-content-card {
+      box-shadow: var(--card-shadow-dark);
+    }
   }
 }
 
