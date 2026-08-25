@@ -74,6 +74,16 @@ jobs:
       - name: Regenerate taxonomy pages
         run: yarn generate-taxonomies
 
+      # the pre-commit hook (core.hooksPath, set by `yarn install`'s prepare script) runs
+      # yarn format on any staged changes, which needs these on PATH — same pin as ci.yml
+      - name: Install rumdl and rustywind
+        env:
+          RUMDL_VERSION: v0.2.56
+          RUSTYWIND_VERSION: v0.27.0
+        run: |
+          curl -fsSL "https://github.com/rvben/rumdl/releases/download/${RUMDL_VERSION}/rumdl-${RUMDL_VERSION}-x86_64-unknown-linux-gnu.tar.gz" | sudo tar -xz -C /usr/local/bin
+          curl -fsSL "https://github.com/avencera/rustywind/releases/download/${RUSTYWIND_VERSION}/rustywind-${RUSTYWIND_VERSION}-x86_64-unknown-linux-musl.tar.gz" | sudo tar -xz -C /usr/local/bin
+
       - name: Commit episode changes
         run: |
           git config --local user.email "action@github.com"
