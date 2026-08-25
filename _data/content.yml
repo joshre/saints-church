@@ -102,12 +102,12 @@ schedule:
 
 about_us:
   title: "About Us"
-  story: "Our church started in the fall of 2022 when a few families realized that their friendship was meant for more than just us. We started meeting weekly in a home and our kids quickly outgrew the 2 bedrooms they were sharing."
-  growth: "We thought and prayed about doing the home church thing and starting another house church, but we felt like the community of people that God was leading us to was not ready for that kind of split. So one of our elders opened up his business office for us to meet in. We still meet there weekly, and guess what? There's room for you."
+  story: "Our Church started in the fall of 2022 with a few families. We started meeting weekly in a home, and our kids quickly outgrew the two bedrooms they were sharing."
+  growth: "We thought and prayed about starting another house church. So one of our elders opened up his business office for us to meet in. We still meet there weekly, and there's room for you."
   family_church:
     title: "Family Church"
     description: "In family church we gather our whole church together to review our weekly catechism, a teaching on that catechism at an age appropriate level, then spend some time worshipping all together as a community."
-    children: "Our Sunday children's program is for babies to about 10. We believe that our children can handle \"adult church\" and we encourage you as a parent to make the decision when your child is ready to sit in service with you."
+    children: "Our Sunday children's program is for babies to around 10. We think that our children can handle the regular Sunday service, and we encourage you as a parent to make the decision when your child is ready to sit in service with you."
 
 visit_modal:
   title: "Visit Us"
@@ -121,7 +121,7 @@ beliefs:
   title: "What We Believe"
   intro: "As a church we are confessional baptists. Before you click away or think 'another baptist church?!' Let us explain."
   content_html: |
-    <p>We love the London Baptist Confession of Faith written in 1689. It's a document that articulates what we see taught in scripture.</p>
+    <p>We love the <a href="https://founders.org/library-book/1689-confession/">London Baptist Confession of Faith</a> written in 1689. It's a document that articulates what we see taught in scripture.</p>
 
     <p>When we say we are "confessional" we mean that we gladly and publicly confess what we believe the Bible teaches about God, salvation, the church, and Christian living. We find great wisdom in learning from those who have gone before us.</p>
 
