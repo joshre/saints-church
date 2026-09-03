@@ -46,12 +46,14 @@
     {% endcase %}
 {% endcapture %}
 
+{% capture event_attr %}{% if include.event %} onclick="window.plausible&&plausible('{{ include.event }}'{% if include.event_props %},{props:{{ include.event_props }}}{% endif %})"{% endif %}{% endcapture %}
+
 {% if include.href %}
-  <a href="{{ include.href }}"{% if include.href contains "mailto:" or include.href contains "http" %} target="_blank" rel="noopener"{% endif %} class="{{ all_classes }}">
+  <a href="{{ include.href }}"{% if include.href contains "mailto:" or include.href contains "http" %} target="_blank" rel="noopener"{% endif %}{{ event_attr }} class="{{ all_classes }}">
     {{ icon_markup }}{{ include.text }}
   </a>
 {% else %}
-  <button type="button"{% if include.command %} command="{{ include.command }}"{% endif %}{% if include.commandfor %} commandfor="{{ include.commandfor }}"{% endif %} class="{{ all_classes }}">
+  <button type="button"{% if include.command %} command="{{ include.command }}"{% endif %}{% if include.commandfor %} commandfor="{{ include.commandfor }}"{% endif %}{{ event_attr }} class="{{ all_classes }}">
     {{ icon_markup }}{{ include.text }}
   </button>
 {% endif %}

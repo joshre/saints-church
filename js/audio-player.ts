@@ -1,6 +1,12 @@
 import { CONFIG } from './config';
 import { formatTime, parseUrl } from './utils';
 
+declare global {
+  interface Window {
+    plausible?: (event: string, options?: { props?: Record<string, string> }) => void;
+  }
+}
+
 interface PlayerState {
   currentTime: number;
   playbackRate: number;
@@ -101,10 +107,20 @@ class SermonPlayer {
       }
       await this.audio.play();
       this.updatePlayPauseButton('playing');
+      this.trackFirstPlay();
       this.saveState();
     } catch {
       this.onError();
     }
+  }
+
+  private trackFirstPlay(): void {
+    // resuming after a pause is not a second sermon play
+    if (this.container.dataset.playTracked) return;
+    this.container.dataset.playTracked = 'true';
+    window.plausible?.('Play Sermon', {
+      props: { sermon: this.container.dataset.title || 'Sermon' },
+    });
   }
 
   pauseIfPlaying(): void {
@@ -205,6 +221,9 @@ class SermonPlayer {
 
   private onEnded(): void {
     this.updatePlayPauseButton('paused');
+    window.plausible?.('Sermon Completed', {
+      props: { sermon: this.container.dataset.title || 'Sermon' },
+    });
     this.audio.currentTime = 0;
     this.updateProgress();
   }

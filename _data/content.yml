@@ -7,6 +7,8 @@ church:
   name: "Saints Church"
   address: "11213 Outlet Dr, Knoxville, TN"
   service_time: "Sundays 9:30 AM"
+  # one canonical string for every maps link, so Plausible does not split the metric
+  maps_query: "11213 Outlet Dr, Knoxville, TN 37932"
 
 navigation:
   site_name_aria: "Saints Church homepage"

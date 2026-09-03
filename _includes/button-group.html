@@ -9,17 +9,17 @@ Parameters:
 {% if include.type == 'visit_contact' %}
   <div class="{{ include.container_class }}">
     {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-    {% include button.html text=site.data.content.navigation.buttons.visit_us command="show-modal" commandfor="visit-modal" icon="location" %}
-    {% include button.html text=site.data.content.navigation.buttons.reach_out href=email_link variant="secondary" icon="email" %}
+    {% include button.html text=site.data.content.navigation.buttons.visit_us command="show-modal" commandfor="visit-modal" icon="location" event="Plan a Visit" %}
+    {% include button.html text=site.data.content.navigation.buttons.reach_out href=email_link variant="secondary" icon="email" event="Contact" %}
   </div>
 
 {% elsif include.type == 'maps' %}
   <div class="{{ include.container_class }}">
-    {% assign address_query = site.data.content.modal.visit.address_full | append: ' ' | append: site.data.content.modal.visit.city_state | replace: ' ', '+' | replace: ',', '%2C' %}
+    {% assign address_query = site.data.content.church.maps_query | replace: ' ', '+' | replace: ',', '%2C' %}
     {% assign google_maps_url = 'https://maps.google.com/?q=' | append: address_query %}
     {% assign apple_maps_url = 'https://maps.apple.com/?q=' | append: address_query %}
-    {% include button.html text=site.data.content.modal.visit.google_maps href=google_maps_url icon="map" class=include.button_class %}
-    {% include button.html text=site.data.content.modal.visit.apple_maps href=apple_maps_url icon="location" class=include.button_class %}
+    {% include button.html text=site.data.content.modal.visit.google_maps href=google_maps_url icon="map" class=include.button_class event="Get Directions" event_props="{platform:'google'}" %}
+    {% include button.html text=site.data.content.modal.visit.apple_maps href=apple_maps_url icon="location" class=include.button_class event="Get Directions" event_props="{platform:'apple'}" %}
   </div>
 
 {% endif %}

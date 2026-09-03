@@ -31,7 +31,7 @@
         {% when "youtube" %}{% assign platform_name = "YouTube" %}{% assign platform_href = site.podcast.platforms.youtube %}
         {% when "rss" %}{% assign platform_name = "RSS feed" %}{% assign platform_href = site.podcast.rss_url %}
       {% endcase %}
-      <a href="{{ platform_href }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-stone-900 transition-colors duration-200 hover:bg-stone-900/5 dark:text-white dark:hover:bg-white/10">
+      <a href="{{ platform_href }}" target="_blank" rel="noopener" onclick="window.plausible&&plausible('Subscribe',{props:{platform:'{{ platform }}'}})" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-stone-900 transition-colors duration-200 hover:bg-stone-900/5 dark:text-white dark:hover:bg-white/10">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-6 shrink-0">
           {% case platform %}
             {% when "apple" %}
