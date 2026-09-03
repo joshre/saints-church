@@ -59,7 +59,7 @@
                 </a>
               </div>
               <div>
-                <a href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
+                <a href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf" target="_blank" rel="noopener noreferrer" onclick="window.plausible&&plausible('Give')" class="inline-flex items-center gap-1 text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
                   Give
                   {% include external-link-icon.html class="w-3.5 h-3.5" %}
                 </a>
@@ -74,7 +74,7 @@
 
           <div>
             {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-            {% include button.html href=email_link text="Reach Out" icon="email" %}
+            {% include button.html href=email_link text="Reach Out" icon="email" event="Contact" %}
           </div>
         </div>
 

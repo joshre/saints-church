@@ -24,7 +24,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1 1 15 0Z" />
               </svg>
-              <a href="https://maps.google.com/?q={{ site.data.content.header.address | replace: ' ', '+' | replace: ',', '%2C' }}" class="transition-colors duration-200 ease-out hover:text-stone-900 dark:hover:text-white" target="_blank" rel="noopener external" itemscope itemtype="https://schema.org/PostalAddress">
+              <a href="https://maps.google.com/?q={{ site.data.content.church.maps_query | replace: ' ', '+' | replace: ',', '%2C' }}" onclick="window.plausible&&plausible('Get Directions',{props:{platform:'google'}})" class="transition-colors duration-200 ease-out hover:text-stone-900 dark:hover:text-white" target="_blank" rel="noopener external" itemscope itemtype="https://schema.org/PostalAddress">
                 <span itemprop="streetAddress">{{ site.data.content.header.address }}</span>
               </a>
             </div>
