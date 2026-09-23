@@ -69,6 +69,12 @@ function readSVGContent(filePath) {
 }
 
 function generateIconCases(icons) {
+  if (!fs.existsSync(HEROICONS_DIR)) {
+    throw new Error(
+      `${HEROICONS_DIR} not found; run 'git submodule update --init' instead of generating an empty icon set`,
+    );
+  }
+
   const sizes = ['16', '20', '24'];
   const types = ['outline', 'solid'];
   const iconData = {};
