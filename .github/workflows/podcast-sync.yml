@@ -7,7 +7,7 @@
 # - Parses RSS feed for episode metadata (title, description, audio URL, duration, GUID)
 # - Creates Jekyll posts with proper frontmatter (layout: sermon, scripture references, series detection)
 # - Prevents duplicates using GUID tracking in _data/processed_episodes.json
-# - Scheduled to run daily at 2:00 AM UTC (after sermon uploads)
+# - Scheduled every 6 hours; new episodes can reach the feed a day or two after their pubDate
 # - Optimized for Reformed Baptist context with enhanced scripture reference extraction
 # - Automated commits with descriptive messages including episode titles
 #
@@ -27,8 +27,8 @@ name: Sync Podcast Episodes
 
 on:
   schedule:
-    # runs after the 12:00-00:00 UTC upload window; the old Sunday 09:00 slot fired before it and missed every sermon by a week
-    - cron: '0 2 * * *'
+    # episodes land in the feed 1-2 days after their pubDate, so poll often; off the hour because GitHub delays :00 schedules by hours
+    - cron: '17 */6 * * *'
   workflow_dispatch: # Allow manual triggering
 
 permissions:
@@ -45,13 +45,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: true
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
