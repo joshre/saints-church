@@ -27,8 +27,8 @@ name: Sync Podcast Episodes
 
 on:
   schedule:
-    # episodes land in the feed 1-2 days after their pubDate, so poll often; off the hour because GitHub delays :00 schedules by hours
-    - cron: '17 */6 * * *'
+    # episodes land in the feed 1-2 days after Sunday's pubDate, so poll often Sun-Thu only; off the hour because GitHub delays :00 schedules by hours
+    - cron: '17 */6 * * 0-4'
   workflow_dispatch: # Allow manual triggering
 
 permissions:
