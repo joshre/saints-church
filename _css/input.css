@@ -861,6 +861,12 @@ input.audio-scrubber:active::-moz-range-thumb {
   corner-shape: round;
 }
 
+@utility rounded-* {
+  --tw-squircle: --value(--radius-*, [*]);
+
+  corner-shape: squircle;
+}
+
 @utility squircle {
   corner-shape: squircle;
 }
