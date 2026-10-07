@@ -68,6 +68,7 @@
   
   /* Standard spacing unit for consistent button sizing */
   --spacing: 0.25rem;
+  --radius: 0.25rem;
 }
 
 :root {
@@ -351,7 +352,7 @@ a:focus-visible,
 
   /* Better progress bar for touch */
   .progress-bar {
-    @apply h-4 rounded-lg;
+    @apply squircle h-4 rounded-lg;
   }
 
   .progress-handle {
@@ -401,13 +402,13 @@ a:focus-visible,
 
 /* Refined sermon card styles with perfect proportions and enhanced interactions */
 .sermon-card {
-  @apply relative w-full rounded-2xl bg-white transition-all duration-300 ease-out dark:bg-stone-900;
+  @apply squircle relative w-full rounded-2xl bg-white transition-all duration-300 ease-out dark:bg-stone-900;
 
   box-shadow: var(--card-shadow);
 }
 
 .sermon-card::before {
-  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+  @apply squircle dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
   inset: -1px;
   box-shadow: var(--card-inset-glow);
@@ -562,13 +563,13 @@ a:focus-visible,
 }
 
 .sermon-content {
-  @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-8 dark:bg-stone-900;
+  @apply squircle relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-8 dark:bg-stone-900;
 
   box-shadow: var(--card-shadow);
 }
 
 .sermon-content::before {
-  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+  @apply squircle dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
   inset: -1px;
   box-shadow: var(--card-inset-glow);
@@ -593,13 +594,13 @@ a:focus-visible,
 }
 
 .featured-sermon-container {
-  @apply relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-16 dark:bg-stone-900;
+  @apply squircle relative h-full w-full rounded-2xl bg-white p-8 sm:p-12 mb-16 dark:bg-stone-900;
 
   box-shadow: var(--card-shadow);
 }
 
 .featured-sermon-container::before {
-  @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+  @apply squircle dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
   inset: -1px;
   box-shadow: var(--card-inset-glow);
@@ -614,13 +615,13 @@ a:focus-visible,
 /* Page Content Card (beliefs, pastor-letter) — layered so `absolute` on the subscribe-menu dropdown can override this card's default `relative` */
 @layer components {
   .page-content-card {
-    @apply relative bg-white dark:bg-stone-900 rounded-2xl;
+    @apply squircle relative bg-white dark:bg-stone-900 rounded-2xl;
 
     box-shadow: var(--card-shadow-soft);
   }
 
   .page-content-card::before {
-    @apply dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
+    @apply squircle dark:pointer-events-none dark:absolute dark:rounded-2xl dark:content-[''];
 
     inset: -1px;
     box-shadow: var(--card-inset-glow);
@@ -831,4 +832,35 @@ input.audio-scrubber:active::-moz-range-thumb {
   .sermon-hero {
     background: linear-gradient(175deg, var(--color-wallpaper-dark-light) 0%, var(--color-wallpaper-dark-footer) 100%);
   }
+}
+
+@supports (corner-shape: squircle) {
+  @layer base {
+    :root {
+      --radius: 0.4375rem;
+      --radius-xs: 0.25rem;
+      --radius-sm: 0.4375rem;
+      --radius-md: 0.625rem;
+      --radius-lg: 0.875rem;
+      --radius-xl: 1.25rem;
+      --radius-2xl: 1.75rem;
+      --radius-3xl: 2.5rem;
+      --radius-4xl: 3.25rem;
+    }
+
+    :where([class*="rounded"]),
+    :where([class*="rounded"])::before,
+    :where([class*="rounded"])::after {
+      corner-shape: squircle;
+    }
+  }
+}
+
+/* extends the built-in utility so sm:, before: and other variants stay round too */
+@utility rounded-full {
+  corner-shape: round;
+}
+
+@utility squircle {
+  corner-shape: squircle;
 }
