@@ -43,7 +43,15 @@ layout: default
   <div class="mt-14 border-t border-stone-900/10 dark:border-white/10">
     {% if page.taxonomy_type == "preachers" %}
       {% assign all_preachers = all_sermons | map: "pastor" | compact | uniq | sort %}
+      {% assign ranked_rows = "" | split: "" %}
       {% for preacher_key in all_preachers %}
+        {% assign key_count = all_sermons | where: "pastor", preacher_key | size | prepend: "00000" | slice: -5, 5 %}
+        {% assign ranked_row = key_count | append: "~~" | append: preacher_key %}
+        {% assign ranked_rows = ranked_rows | push: ranked_row %}
+      {% endfor %}
+      {% assign ranked_rows = ranked_rows | sort | reverse %}
+      {% for ranked_row in ranked_rows %}
+        {% assign preacher_key = ranked_row | split: "~~" | last %}
         {% assign preacher = site.data.preachers | where: "key", preacher_key | first %}
         {% assign preacher_name = preacher.name | default: preacher_key | remove: "Pastor " %}
         {% assign preacher_posts = all_sermons | where: "pastor", preacher_key %}
