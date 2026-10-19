@@ -169,7 +169,7 @@
     {% include footer.html %}
     {% include visit-modal.html %}
     {%- if moved_on %}
-    <script>if(Date.now()>=Date.parse("{{ site.data.content.moved.until }}T00:00:00-05:00"))document.querySelectorAll("[data-moved]").forEach(e=>e.remove())</script>
+    <script>if(Date.now()>=Date.parse("{{ site.data.content.moved.until }}T00:00:00-05:00")){document.querySelectorAll("[data-moved]").forEach(e=>e.remove());document.querySelectorAll("[data-moved-fallback]").forEach(e=>{e.hidden=false})}</script>
     {%- endif %}
     
     <!-- Bundled JS with Tailwind Elements and animations -->

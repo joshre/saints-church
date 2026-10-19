@@ -24,7 +24,7 @@
         <div class="flex flex-col gap-5 px-3.5 pt-[22px] pb-3.5">
           <div class="flex flex-col gap-2">
             <h2 id="visit-modal-title" class="font-display text-[22px]/[1.2] font-bold tracking-[-0.01em] text-stone-900 dark:text-white">{{ visit.title }}</h2>
-            <p class="text-[15px]/[1.6] text-pretty text-stone-600 dark:text-stone-400">{% if moved_on %}{{ site.data.content.moved.visit_note }}{% else %}{{ visit.subtitle }}{% endif %}</p>
+            <p class="text-[15px]/[1.6] text-pretty text-stone-600 dark:text-stone-400">{% if moved_on %}<span data-moved>{{ site.data.content.moved.visit_note }}</span><span data-moved-fallback hidden>{{ visit.subtitle }}</span>{% else %}{{ visit.subtitle }}{% endif %}</p>
           </div>
 
           <dl class="border-t border-stone-900/8 text-[15px]/[22px] dark:border-white/10">
