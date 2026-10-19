@@ -1,0 +1,20 @@
+{%- assign moved = site.data.content.moved -%}
+<div data-moved id="moved-banner" class="moved-banner bg-wallpaper-footer dark:bg-wallpaper-dark-footer relative overflow-hidden text-sm/5 text-white/85 shadow-[inset_0_-1px_rgb(0_0_0/0.12)]">
+  <div class="relative mx-auto flex min-h-11 max-w-7xl flex-wrap items-center justify-start gap-x-3 gap-y-1.5 py-3 pr-14 pl-6 sm:flex-nowrap sm:justify-center sm:gap-4 sm:py-2 sm:pr-14 sm:pl-14 lg:px-14">
+    <span class="text-saints-200 basis-full font-display text-[10px]/5 tracking-[0.2em] uppercase sm:basis-auto">{{ moved.label }}</span>
+    <span aria-hidden="true" class="hidden h-3.5 w-px bg-white/20 sm:block"></span>
+    <span class="text-pretty"><span class="whitespace-nowrap">{{ moved.starting }}</span><span aria-hidden="true" class="px-1.5 text-white/40">·</span> <strong class="font-semibold whitespace-nowrap text-white">{{ site.church.address.street }}</strong><span aria-hidden="true" class="px-1.5 text-white/40">·</span> <span class="whitespace-nowrap">{{ moved.time }}</span></span>
+    <a href="https://maps.google.com/?q={{ site.data.content.church.maps_query | replace: ' ', '+' | replace: ',', '%2C' }}" onclick="window.plausible&&plausible('Get Directions',{props:{platform:'google',source:'moved-banner'}})" class="group/dir inline-flex items-center gap-1 rounded-full bg-white/10 py-0.5 pr-2.5 pl-3 font-medium whitespace-nowrap text-white ring-1 ring-white/12 transition-colors duration-200 ring-inset hover:bg-white/16 hover:text-white">
+      {{ moved.cta }}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="size-4 transition-transform duration-200 group-hover/dir:translate-x-0.5">
+        <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+      </svg>
+    </a>
+    <button type="button" aria-label="{{ moved.dismiss_aria }}" class="absolute top-1/2 right-5 grid size-7 -translate-y-1/2 place-items-center rounded-md text-white/60 transition-colors duration-200 hover:bg-white/10 hover:text-white" onclick="try{localStorage.setItem('moved-banner-dismissed','1')}catch(e){}this.closest('#moved-banner').remove()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="size-4">
+        <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+<script>try{if(localStorage.getItem("moved-banner-dismissed"))document.getElementById("moved-banner").remove()}catch(e){}</script>
