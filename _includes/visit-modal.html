@@ -1,62 +1,45 @@
+{%- include moved-active.html -%}
+{%- assign visit = site.data.content.modal.visit -%}
 <el-dialog>
   <dialog id="visit-modal" aria-labelledby="visit-modal-title" class="fixed inset-0 m-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent p-0 backdrop:bg-transparent">
-    <el-dialog-backdrop class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity data-[closed]:opacity-0 data-[enter]:duration-200 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in"></el-dialog-backdrop>
+    <el-dialog-backdrop class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity data-[closed]:opacity-0 data-[enter]:duration-200 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in dark:bg-black/50"></el-dialog-backdrop>
 
-    <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline focus:outline-0 sm:items-center sm:p-0">
-      <el-dialog-panel class="dialog-panel-shadow relative h-full w-full transform overflow-hidden rounded-xl bg-white p-6 text-left transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-200 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95 dark:bg-stone-900 dark:before:rounded-xl">
+    <div tabindex="0" class="flex min-h-full items-end justify-center p-3 text-center focus:outline focus:outline-0 sm:items-center sm:p-6">
+      <el-dialog-panel class="relative w-full max-w-[440px] transform rounded-[20px] bg-white p-2.5 text-left shadow-[0_0_0_1px_rgb(9_9_11/0.07),0_2px_2px_rgb(9_9_11/0.05),0_24px_48px_-12px_rgb(9_9_11/0.16)] transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95 data-[enter]:duration-200 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in dark:bg-stone-900 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1)]">
+        <button type="button" command="close" commandfor="visit-modal" aria-label="{{ site.data.content.ui.labels.close_modal }}" class="focus-visible:ring-saints-500 absolute top-5 right-5 z-10 grid size-8 cursor-pointer place-items-center rounded-lg bg-white/92 text-stone-700 shadow-[0_0_0_1px_rgb(9_9_11/0.07),0_1px_2px_rgb(9_9_11/0.06)] transition-colors duration-200 hover:bg-white hover:text-stone-900 focus-visible:ring-2 focus-visible:outline-none">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="size-4">
+            <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"></path>
+          </svg>
+        </button>
 
-        <div class="flex items-start justify-between">
-          <div>
-            <h3 id="visit-modal-title" class="text-lg font-semibold text-stone-900 dark:text-white">{{ site.data.content.modal.visit.title }}</h3>
-            <p class="mt-1 text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.modal.visit.subtitle }}</p>
+        <div class="relative aspect-square overflow-hidden rounded-xl bg-stone-100 after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:shadow-[inset_0_0_0_1px_rgb(9_9_11/0.08)] dark:bg-stone-800">
+          {%- assign building = site.data.content.images.placeholders.church_building -%}
+          <picture>
+            <source type="image/avif" srcset="{{ building }}-440w.avif 440w, {{ building }}-880w.avif 880w" sizes="(min-width: 480px) 420px, calc(100vw - 44px)">
+            <source type="image/webp" srcset="{{ building }}-440w.webp 440w, {{ building }}-880w.webp 880w" sizes="(min-width: 480px) 420px, calc(100vw - 44px)">
+            <img src="{{ building }}-880w.jpg" srcset="{{ building }}-440w.jpg 440w, {{ building }}-880w.jpg 880w" sizes="(min-width: 480px) 420px, calc(100vw - 44px)" alt="{{ site.data.content.images.alt_text.church_building }}" width="880" height="880" loading="lazy" decoding="async" class="block size-full object-cover" />
+          </picture>
+        </div>
+
+        <div class="flex flex-col gap-5 px-3.5 pt-[22px] pb-3.5">
+          <div class="flex flex-col gap-2">
+            <h2 id="visit-modal-title" class="font-display text-[22px]/[1.2] font-bold tracking-[-0.01em] text-stone-900 dark:text-white">{{ visit.title }}</h2>
+            <p class="text-[15px]/[1.6] text-pretty text-stone-600 dark:text-stone-400">{% if moved_on %}<span data-moved>{{ site.data.content.moved.visit_note }}</span><span data-moved-fallback hidden>{{ visit.subtitle }}</span>{% else %}{{ visit.subtitle }}{% endif %}</p>
           </div>
-          <button type="button" command="close" commandfor="visit-modal" class="dark:hover:bg-saints-500/20 dark:hover:text-saints-500 hover:bg-saints-500/10 hover:text-saints-500 focus-visible:ring-saints-500/50 rounded-md p-1 text-stone-400 transition-all duration-200 ease-smooth focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none" aria-label="{{ site.data.content.ui.labels.close_modal }}">
-            <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
-        </div>
 
-        <div class="mt-6">
-          <div class="aspect-[3/2] overflow-hidden rounded-lg bg-stone-100 dark:bg-stone-800">
-            <img src="{{ site.data.content.images.placeholders.church_building }}" alt="{{ site.data.content.images.alt_text.church_building }}" class="h-full w-full object-cover" />
-          </div>
-        </div>
-
-        <div class="bg-saints-500/8 ring-saints-500/20 dark:bg-saints-500/10 mt-6 rounded-lg p-4 ring-1">
-          <div class="flex items-center gap-3">
-            <div class="bg-saints-500/20 dark:bg-saints-500/30 flex size-8 items-center justify-center rounded-full">
-              <svg class="text-saints-500 dark:text-saints-500 size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
+          <dl class="border-t border-stone-900/8 text-[15px]/[22px] dark:border-white/10">
+            <div class="grid grid-cols-[3.25rem_minmax(0,1fr)] gap-x-5 border-b border-stone-900/8 py-3 dark:border-white/10">
+              <dt class="text-stone-500 dark:text-stone-400">{{ visit.when_label }}</dt>
+              <dd class="text-stone-900 dark:text-white">{{ visit.when }}</dd>
             </div>
-            <div>
-              <p class="text-sm font-medium text-stone-900 dark:text-stone-100">{{ site.data.content.modal.visit.service_label }}</p>
-              <p class="text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.modal.visit.service_time }}</p>
+            <div class="grid grid-cols-[3.25rem_minmax(0,1fr)] gap-x-5 border-b border-stone-900/8 py-3 dark:border-white/10">
+              <dt class="text-stone-500 dark:text-stone-400">{{ visit.where_label }}</dt>
+              <dd class="text-stone-900 dark:text-white">{{ visit.address_full }}, {{ visit.city_state }}</dd>
             </div>
-          </div>
-        </div>
+          </dl>
 
-        <div class="mt-6">
-          <div class="flex items-start gap-3">
-            <div class="bg-saints-500/10 dark:bg-saints-500/20 flex size-8 items-center justify-center rounded-full">
-              <svg class="text-saints-500 dark:text-saints-500 size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="font-medium text-stone-900 dark:text-white">{{ site.data.content.modal.visit.address_full }}</p>
-              <p class="text-sm text-stone-600 dark:text-stone-400">{{ site.data.content.modal.visit.city_state }}</p>
-            </div>
-          </div>
+          {% include button-group.html type="maps" container_class="grid grid-cols-1 gap-2 min-[480px]:grid-cols-2" button_class="w-full" %}
         </div>
-
-        <div class="mt-8 flex flex-col gap-3">
-          {% include button-group.html type="maps" container_class="grid grid-cols-2 gap-3" button_class="justify-center w-full" %}
-          {% include button.html text=site.data.content.modal.visit.close_button command="close" commandfor="visit-modal" variant="secondary" class="w-full" %}
-        </div>
-
       </el-dialog-panel>
     </div>
   </dialog>

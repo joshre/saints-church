@@ -1,14 +1,14 @@
 site:
   title: "Saints Church"
-  description: "Saints Church, Knoxville TN—Bible-centered, Reformed Baptist. Expository preaching, 1689 Confession, Acts 2:42–47 fellowship. Sundays 9:30 AM at 11213 Outlet Dr."
+  description: "Saints Church, Knoxville TN—Bible-centered, Reformed Baptist. Expository preaching, 1689 Confession, Acts 2:42–47 fellowship. Sundays 9:30 AM at 10756 Dutchtown Rd."
   tagline: "We started as families in Knoxville whose friendship was meant for more than just us. Every Sunday at 9:30 AM, we gather for family church, communion, and faithful teaching from God's Word. Then we live as disciples in our homes, workplaces, and communities. We're small but purposeful, and there's room for you."
 
 church:
   name: "Saints Church"
-  address: "11213 Outlet Dr, Knoxville, TN"
+  address: "10756 Dutchtown Rd, Knoxville, TN"
   service_time: "Sundays 9:30 AM"
   # one canonical string for every maps link, so Plausible does not split the metric
-  maps_query: "11213 Outlet Dr, Knoxville, TN 37932"
+  maps_query: "10756 Dutchtown Rd, Knoxville, TN 37932"
 
 navigation:
   site_name_aria: "Saints Church homepage"
@@ -26,11 +26,21 @@ navigation:
     text: "Letter from the pastor"
     href: "/pastor-letter"
 
+moved:
+  enabled: true
+  until: "2026-12-06"
+  label: "New location"
+  starting: "Starting Sunday, Oct 25"
+  time: "9:30 AM"
+  cta: "Visit Us"
+  dismiss_aria: "Dismiss"
+  visit_note: "We've moved to the Concord Mennonite Church building at the end of Dutchtown Road. We'd love for you to join us!"
+
 header:
   title: '<span class="child">Where Jesus followers</span> Gather and Go'
-  address: "11213 Outlet Dr, Knoxville, TN"
+  address: "10756 Dutchtown Rd, Knoxville, TN"
   service_time: "Sundays 9:30 AM"
-  description: "We are a local Church in Knoxville, Tennessee. Every Sunday at 9:30 AM, we gather for Church, the Lord's Supper, and faithful teaching from God's Word. Then we live as disciples in our homes, workplaces, and communities."
+  description: "We are a local Church in Knoxville, Tennessee. Every Sunday, we gather for Church, the Lord's Supper, and faithful teaching from God's Word. Then we live as disciples in our homes, workplaces, and communities."
 
 mission:
   title: "Acts 2"
@@ -75,7 +85,7 @@ values:
   subtitle: "Where Jesus followers gather and go."
   items:
   - title: "Sunday service"
-    description: "We gather weekly for worship, teaching, and fellowship in a business office. There's room for you."
+    description: "We gather weekly for worship, teaching, and fellowship in the Concord Mennonite Church building. There's room for you."
   - title: "Membership"
     description: "Membership is for those who profess repentance towards God and faith in Jesus Christ."
   - title: "Monthly prayer gathering"
@@ -105,7 +115,7 @@ schedule:
 about_us:
   title: "About Us"
   story: "Our Church started in the fall of 2022 with a few families. We started meeting weekly in a home, and our kids quickly outgrew the two bedrooms they were sharing."
-  growth: "We thought and prayed about starting another house church. So one of our elders opened up his business office for us to meet in. We still meet there weekly, and there's room for you."
+  growth: "We expanded into an office space that we used for a few years, and have recently moved to the Concord Mennonite Church building at 10756 Dutchtown Rd."
   family_church:
     title: "Family Church"
     description: "In family church we gather our whole church together to review our weekly catechism, a teaching on that catechism at an age appropriate level, then spend some time worshipping all together as a community."
@@ -113,7 +123,7 @@ about_us:
 
 visit_modal:
   title: "Visit Us"
-  address: "11213 Outlet Dr"
+  address: "10756 Dutchtown Rd"
   city_state: "Knoxville, TN 37932"
   service_time: "Sundays at 9:30 AM"
   directions: "Get Directions"
@@ -157,7 +167,7 @@ pastor_letter:
 
     <h2>Who we are</h2>
 
-    <p>We are a church that is trying to be as intentional with what God has given us. That starts with the way we treat the Word of God and goes all the way down to the facility we meet at. We started meeting as a congregation in September of 2022 in a home and moved to the facility we meet at now in June of 2024.</p>
+    <p>We are a church that is trying to be as intentional with what God has given us. That starts with the way we treat the Word of God and goes all the way down to the facility we meet at. We started meeting as a congregation in September of 2022 in a home, moved to an office space in June of 2024, and moved to the facility we meet at now in October of 2026.</p>
 
     <p>We are a smaller congregation with a heavy emphasis on the Word and Work of Jesus Christ. As well as community, family, service to one another and the community around us. We're not perfect - we're sinners saved by grace, learning to love God and each other better. But we're committed to growing together in Christ.</p>
 
@@ -176,7 +186,7 @@ pastor_letter:
     <p>God bless!<br>Nate Ellis</p>
 
 footer:
-  address: "11213 Outlet Dr, Knoxville, TN 37932"
+  address: "10756 Dutchtown Rd, Knoxville, TN 37932"
   service_time: "Sundays 9:30 AM"
   sections:
     local_church: "Local Church"
@@ -185,23 +195,27 @@ footer:
     acts_text: "And they devoted themselves to the apostles' teaching and the fellowship, to the breaking of bread and the prayers."
     sola_deo_gloria: "Sola Deo Gloria"
     copyright: "Saints Church"
+    gather: "Gather with Us"
+    explore: "Explore"
   links:
     beliefs: "Our Beliefs"
+    sermons: "Sermons"
     resources: "Resources"
+    give: "Give"
     pastor_letter: "Letter from the Pastor"
 
 modal:
   visit:
     title: "Visit Us"
-    subtitle: "Join us for Sunday worship"
+    subtitle: "Join us for Sunday worship."
     close_aria: "Close modal"
-    service_label: "Sunday Service"
-    service_time: "9:30 AM"
-    address_full: "11213 Outlet Dr"
+    when_label: "When"
+    when: "Sundays at 9:30 AM"
+    where_label: "Where"
+    address_full: "10756 Dutchtown Rd"
     city_state: "Knoxville, TN 37932"
-    google_maps: "Google"
-    apple_maps: "Apple"
-    close_button: "Close"
+    google_maps: "Google Maps"
+    apple_maps: "Apple Maps"
 
 cta:
   title: "Come Worship with Us"
@@ -271,8 +285,8 @@ error_pages:
 
 seo:
   coordinates:
-    lat: "35.9373"
-    lng: "-84.0742"
+    lat: "35.9073"
+    lng: "-84.1456"
   service_type: "Sunday Worship Service"
   meta:
     theme_color: "#231f20"
@@ -286,7 +300,7 @@ seo:
   pages:
     home:
       title: "Home"
-      description: "Saints Church, Knoxville TN—Bible-centered, Reformed Baptist. Expository preaching, 1689 Confession, Acts 2:42–47 fellowship. Sundays 9:30 AM at 11213 Outlet Dr."
+      description: "Saints Church, Knoxville TN—Bible-centered, Reformed Baptist. Expository preaching, 1689 Confession, Acts 2:42–47 fellowship. Sundays 9:30 AM at 10756 Dutchtown Rd."
     beliefs:
       title: "Our Beliefs"
       description: "Our Reformed Baptist beliefs and doctrinal distinctives based on the London Baptist Confession of 1689. Learn what Saints Church in Knoxville, TN believes about Scripture, salvation, baptism, and church life."
@@ -334,7 +348,7 @@ reformed_baptist_knoxville:
 
     <h2>What to expect on Sunday</h2>
 
-    <p>We meet at 11213 Outlet Dr, Knoxville, TN 37932. Here's what a Sunday morning looks like:</p>
+    <p>We meet at 10756 Dutchtown Rd, Knoxville, TN 37932. Here's what a Sunday morning looks like:</p>
 
     <ul>
       <li><strong>9:30 AM</strong> — Fellowship, coffee, and light snacks</li>
@@ -361,7 +375,7 @@ reformed_baptist_knoxville:
 
     <h2>Our story</h2>
 
-    <p>Our church started in the fall of 2022 when a few families realized that their friendship was meant for more than just us. We started meeting weekly in a home and our kids quickly outgrew the 2 bedrooms they were sharing. One of our elders opened up his business office for us to meet in. We still meet there weekly, and there's room for you.</p>
+    <p>Our church started in the fall of 2022 when a few families realized that their friendship was meant for more than just us. We started meeting weekly in a home and our kids quickly outgrew the 2 bedrooms they were sharing. We expanded into an office space that we used for a few years, and have recently moved to the Concord Mennonite Church building at 10756 Dutchtown Rd. There's room for you.</p>
 
     <p><a href="/pastor-letter/">Read a letter from Pastor Nate Ellis →</a></p>
 
@@ -371,10 +385,10 @@ reformed_baptist_knoxville:
 
 images:
   placeholders:
-    church_building: "/assets/images/building.webp"
+    church_building: "/assets/images/concord-building"
     church_community: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80"
   alt_text:
-    church_building: "Saints Church Knoxville meeting location at 11213 Outlet Dr, an industrial building with MxU HQ signage in Knoxville, Tennessee"
+    church_building: "Saints Church meeting location at 10756 Dutchtown Rd in Knoxville, Tennessee: a white clapboard church with a steeple, a covered front porch and a Concord Mennonite Church sign"
     church_community: "Saints Church Knoxville congregation gathered in worship and fellowship, a Reformed Baptist church community in Knoxville, TN"
     pastor: "Pastor Nate Ellis of Saints Church, a Reformed Baptist church in Knoxville, Tennessee"
     fellowship:

@@ -18,8 +18,8 @@ Parameters:
     {% assign address_query = site.data.content.church.maps_query | replace: ' ', '+' | replace: ',', '%2C' %}
     {% assign google_maps_url = 'https://maps.google.com/?q=' | append: address_query %}
     {% assign apple_maps_url = 'https://maps.apple.com/?q=' | append: address_query %}
-    {% include button.html text=site.data.content.modal.visit.google_maps href=google_maps_url icon="map" class=include.button_class event="Get Directions" event_props="{platform:'google'}" %}
-    {% include button.html text=site.data.content.modal.visit.apple_maps href=apple_maps_url icon="location" class=include.button_class event="Get Directions" event_props="{platform:'apple'}" %}
+    {% include button.html text=site.data.content.modal.visit.google_maps href=google_maps_url class=include.button_class event="Get Directions" event_props="{platform:'google'}" %}
+    {% include button.html text=site.data.content.modal.visit.apple_maps href=apple_maps_url variant="secondary" class=include.button_class event="Get Directions" event_props="{platform:'apple'}" %}
   </div>
 
 {% endif %}

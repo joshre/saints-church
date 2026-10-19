@@ -163,10 +163,14 @@
     </style></noscript>
 </head>
 <body class="bg-saints-white dark:bg-saints-black antialiased" itemscope itemtype="https://schema.org/WebPage">
+    {% include moved-active.html %}{% if moved_on %}{% include moved-banner.html %}{% endif %}
     {% include nav.html %}
     {{ content }}
     {% include footer.html %}
     {% include visit-modal.html %}
+    {%- if moved_on %}
+    <script>if(Date.now()>=Date.parse("{{ site.data.content.moved.until }}T00:00:00-05:00")){document.querySelectorAll("[data-moved]").forEach(e=>e.remove());document.querySelectorAll("[data-moved-fallback]").forEach(e=>{e.hidden=false})}</script>
+    {%- endif %}
     
     <!-- Bundled JS with Tailwind Elements and animations -->
     <script src="{{ '/js/site.min.js?v=' | append: build_time }}"></script>
