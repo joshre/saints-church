@@ -195,9 +195,13 @@ footer:
     acts_text: "And they devoted themselves to the apostles' teaching and the fellowship, to the breaking of bread and the prayers."
     sola_deo_gloria: "Sola Deo Gloria"
     copyright: "Saints Church"
+    gather: "Gather with Us"
+    explore: "Explore"
   links:
     beliefs: "Our Beliefs"
+    sermons: "Sermons"
     resources: "Resources"
+    give: "Give"
     pastor_letter: "Letter from the Pastor"
 
 modal:

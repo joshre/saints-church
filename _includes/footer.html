@@ -16,7 +16,7 @@
       <div class="flex flex-col items-start lg:row-span-3 lg:grid lg:grid-rows-subgrid" itemscope itemtype="https://schema.org/Church">
         <meta itemprop="name" content="{{ site.church.name }}">
         <meta itemprop="denomination" content="{{ site.church.denomination }}">
-        <h3 class="mb-6 font-display text-[0.6875rem]/none tracking-[0.2em] text-white/62 uppercase">Gather with Us</h3>
+        <h3 class="mb-6 font-display text-[0.6875rem]/none tracking-[0.2em] text-white/62 uppercase">{{ site.data.content.footer.sections.gather }}</h3>
         <div class="flex flex-col gap-3">
           <div class="mb-1 flex flex-col gap-0.5" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
             <div class="text-lg/7 font-medium text-white" itemprop="streetAddress">{{ site.church.address.street }}</div>
@@ -26,19 +26,19 @@
           <div class="text-[15px]/[22px] text-white/75"><a href="mailto:{{ site.email }}" class="transition-colors duration-200 hover:text-white" itemprop="email">{{ site.email }}</a></div>
         </div>
         <div class="mt-7 lg:mt-10">
-          {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" icon="location" variant="secondary" event="Plan a Visit" %}
+          {% include button.html text=site.data.content.navigation.buttons.visit_us command="show-modal" commandfor="visit-modal" icon="location" variant="secondary" event="Plan a Visit" %}
         </div>
       </div>
 
       <div class="flex flex-col items-start lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-        <h3 class="mb-6 font-display text-[0.6875rem]/none tracking-[0.2em] text-white/62 uppercase">Explore</h3>
+        <h3 class="mb-6 font-display text-[0.6875rem]/none tracking-[0.2em] text-white/62 uppercase">{{ site.data.content.footer.sections.explore }}</h3>
         <div class="flex flex-col gap-3">
           <div><a href="/beliefs/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">{{ site.data.content.footer.links.beliefs }}</a></div>
-          <div><a href="/sermons/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">Sermons</a></div>
+          <div><a href="/sermons/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">{{ site.data.content.footer.links.sermons }}</a></div>
           <div><a href="/resources/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">{{ site.data.content.footer.links.resources }}</a></div>
           <div>
             <a href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf" target="_blank" rel="noopener noreferrer" onclick="window.plausible&&plausible('Give')" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
-              Give
+              {{ site.data.content.footer.links.give }}
               {% include external-link-icon.html class="size-3.5 opacity-70" %}
             </a>
           </div>
@@ -46,7 +46,7 @@
         </div>
         <div class="mt-7 lg:mt-10">
           {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-          {% include button.html href=email_link text="Reach Out" icon="email" variant="secondary" event="Contact" %}
+          {% include button.html href=email_link text=site.data.content.navigation.buttons.reach_out icon="email" variant="secondary" event="Contact" %}
         </div>
       </div>
 
