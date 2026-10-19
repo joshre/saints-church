@@ -59,9 +59,9 @@ guid: "unique-episode-identifier"
 
 ### Schedule
 
-**Primary Schedule**: Daily at 2:00 AM UTC (9:00 PM EST / 10:00 PM EDT the previous evening)
+**Primary Schedule**: every 6 hours at :17 past the hour (00:17, 06:17, 12:17, 18:17 UTC), Sunday through Thursday UTC, plus one Friday run at 18:17 UTC
 
-Looking at all 114 published episodes, uploads cluster between 12:00 and 00:00 UTC – 61% land on Monday, 35% on Sunday. Running the job daily just after that window closes means a sermon gets picked up within hours rather than sitting around waiting on a weekly slot.
+Looking at all 114 published episodes, uploads cluster between 12:00 and 00:00 UTC – 61% land on Monday, 35% on Sunday. Episodes reach the feed a day or two after upload, and recent ones all landed Monday through Wednesday, so polling every 6 hours Sunday through Thursday picks a sermon up within hours without wasted Friday and Saturday runs. Anything published later than that waits for the Friday run or the next Sunday; use the manual trigger for an urgent sync.
 
 The old setup ran weekly on Sundays at 9:00 AM UTC, which fired roughly four hours before the 9:30 AM service even started. Every single sermon was missed on the day and only collected by the following week's run.
 

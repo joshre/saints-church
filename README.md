@@ -31,7 +31,7 @@ Page copy lives in `_data/content.yml` instead of scattered through the template
 
 ## Sermons
 
-Sermons sync themselves. A scheduled workflow hits the podcast RSS feed every day, writes a post for anything new, pulls out the scripture reference and series, and then regenerates both the preacher and series index pages. Duplicates get caught by tracking episode GUIDs in `_data/processed_episodes.json`.
+Sermons sync themselves. A scheduled workflow hits the podcast RSS feed every 6 hours from Sunday through Thursday (plus once on Friday), writes a post for anything new, pulls out the scripture reference and series, and then regenerates both the preacher and series index pages. Duplicates get caught by tracking episode GUIDs in `_data/processed_episodes.json`.
 
 Transcriptions are added separately and rendered in a collapsible section on the sermon page.
 
