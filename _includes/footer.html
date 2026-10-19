@@ -1,4 +1,4 @@
-<footer class="bg-wallpaper-footer dark:bg-wallpaper-dark-footer relative overflow-hidden">
+<footer class="bg-saints-black dark:bg-wallpaper-dark-footer relative overflow-hidden">
   <!-- Bottom vignette for depth -->
   <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32" style="background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.12));"></div>
   <!-- Noise texture overlay -->
@@ -6,96 +6,61 @@
   <!-- Subtle dot pattern overlay (distinct from sermons archive grid) -->
   <div class="absolute inset-0" style="background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 24px 24px;"></div>
   <!-- Large Saints Church Logo Watermark -->
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 flex translate-y-1/4 justify-center opacity-[0.05] select-none dark:opacity-[0.03]">
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 flex translate-y-1/4 justify-center text-white opacity-[0.05] select-none dark:opacity-[0.03]">
     {% include logo.html class="overflow-visible h-32 lg:h-64" %}
   </div>
 
-  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="pt-14 pb-16 lg:pt-20 lg:pb-24">
-      <!-- Main Content Grid -->
-      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+  <div class="relative mx-auto max-w-7xl px-6 pt-14 pb-[72px] lg:px-8 lg:pt-[88px] lg:pb-28">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:grid-rows-[auto_1fr_auto] lg:gap-x-16 lg:gap-y-0">
 
-        <!-- Left Section - Church Info -->
-        <div class="flex flex-col gap-8">
-          <div itemscope itemtype="https://schema.org/Church">
-            <meta itemprop="name" content="{{ site.church.name }}">
-            <meta itemprop="denomination" content="{{ site.church.denomination }}">
-            <h3 class="mb-5 font-display text-[0.6875rem] tracking-[0.2em] text-white/40 uppercase">Gather with Us</h3>
-            <div class="flex flex-col gap-2.5">
-              <div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-                <div class="text-lg font-medium text-white/95" itemprop="streetAddress">{{ site.church.address.street }}</div>
-                <div class="text-base text-white/70"><span itemprop="addressLocality">{{ site.church.address.city }}</span>, <span itemprop="addressRegion">{{ site.church.address.state }}</span> <span itemprop="postalCode">{{ site.church.address.zip }}</span></div>
-              </div>
-              <div class="text-sm text-white/50">{{ site.data.content.footer.service_time }}</div>
-              <div class="text-sm text-white/50"><a href="mailto:{{ site.email }}" class="transition-colors duration-200 hover:text-white/70" itemprop="email">{{ site.email }}</a></div>
-            </div>
+      <div class="flex flex-col items-start lg:row-span-3 lg:grid lg:grid-rows-subgrid" itemscope itemtype="https://schema.org/Church">
+        <meta itemprop="name" content="{{ site.church.name }}">
+        <meta itemprop="denomination" content="{{ site.church.denomination }}">
+        <h3 class="mb-6 font-display text-[0.6875rem]/none tracking-[0.2em] text-white/62 uppercase">Gather with Us</h3>
+        <div class="flex flex-col gap-3">
+          <div class="mb-1 flex flex-col gap-0.5" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+            <div class="text-lg/7 font-medium text-white" itemprop="streetAddress">{{ site.church.address.street }}</div>
+            <div class="text-base/6 text-white/82"><span itemprop="addressLocality">{{ site.church.address.city }}</span>, <span itemprop="addressRegion">{{ site.church.address.state }}</span> <span itemprop="postalCode">{{ site.church.address.zip }}</span></div>
           </div>
-
-          <div class="flex flex-col items-start gap-8">
-            {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" icon="location" %}
-
-            {% include social-links.html %}
-          </div>
+          <div class="text-[15px]/[22px] text-white/75">{{ site.data.content.footer.service_time }}</div>
+          <div class="text-[15px]/[22px] text-white/75"><a href="mailto:{{ site.email }}" class="transition-colors duration-200 hover:text-white" itemprop="email">{{ site.email }}</a></div>
         </div>
-
-        <!-- Right Section - Navigation -->
-        <div class="flex flex-col gap-8">
-          <div>
-            <h3 class="mb-5 font-display text-[0.6875rem] tracking-[0.2em] text-white/40 uppercase">Explore</h3>
-            <div class="flex flex-col gap-2.5">
-              <div>
-                <a href="/beliefs/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
-                  {{ site.data.content.footer.links.beliefs }}
-                </a>
-              </div>
-              <div>
-                <a href="/sermons/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
-                  Sermons
-                </a>
-              </div>
-              <div>
-                <a href="/resources/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
-                  Resources
-                </a>
-              </div>
-              <div>
-                <a href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf" target="_blank" rel="noopener noreferrer" onclick="window.plausible&&plausible('Give')" class="inline-flex items-center gap-1 text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
-                  Give
-                  {% include external-link-icon.html class="w-3.5 h-3.5" %}
-                </a>
-              </div>
-              <div>
-                <a href="/pastor-letter/" class="inline-block text-base font-medium text-white/85 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
-                  {{ site.data.content.footer.links.pastor_letter }}
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
-            {% include button.html href=email_link text="Reach Out" icon="email" event="Contact" %}
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Bottom Section -->
-      <div class="mt-10 border-t border-white/[0.06] pt-10" style="border-image: linear-gradient(to right, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent) 1;">
-        <div class="flex flex-col items-center gap-5 text-center lg:flex-row lg:justify-between lg:gap-0">
-          <!-- Scripture Quote -->
-          <div class="text-[0.8125rem] leading-relaxed text-white/40 italic lg:text-sm" style="letter-spacing: 0.01em;">
-            {{ site.data.content.footer.sections.acts_text }}
-          </div>
-
-          <!-- Copyright & Sola Deo Gloria -->
-          <div class="flex flex-col items-center gap-1.5 text-xs text-white/30 lg:items-end">
-            <div>&copy; <script>document.write(new Date().getFullYear())</script> {{ site.data.content.footer.sections.copyright }}</div>
-            <div class="font-display text-[0.6875rem] tracking-[0.2em] text-white/40 uppercase">{{ site.data.content.footer.sections.sola_deo_gloria }}</div>
-          </div>
+        <div class="mt-7 lg:mt-10">
+          {% include button.html text="Visit Us" command="show-modal" commandfor="visit-modal" icon="location" variant="secondary" event="Plan a Visit" %}
         </div>
       </div>
 
+      <div class="flex flex-col items-start lg:row-span-3 lg:grid lg:grid-rows-subgrid">
+        <h3 class="mb-6 font-display text-[0.6875rem]/none tracking-[0.2em] text-white/62 uppercase">Explore</h3>
+        <div class="flex flex-col gap-3">
+          <div><a href="/beliefs/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">{{ site.data.content.footer.links.beliefs }}</a></div>
+          <div><a href="/sermons/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">Sermons</a></div>
+          <div><a href="/resources/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">{{ site.data.content.footer.links.resources }}</a></div>
+          <div>
+            <a href="https://give.tithe.ly/?formId=fdee706a-1e3c-4840-ab69-0d56f28192bf" target="_blank" rel="noopener noreferrer" onclick="window.plausible&&plausible('Give')" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">
+              Give
+              {% include external-link-icon.html class="size-3.5 opacity-70" %}
+            </a>
+          </div>
+          <div><a href="/pastor-letter/" class="inline-flex items-center gap-1 text-base/6 font-medium text-white/90 transition-all duration-200 hover:translate-x-0.5 hover:text-white">{{ site.data.content.footer.links.pastor_letter }}</a></div>
+        </div>
+        <div class="mt-7 lg:mt-10">
+          {% assign email_link = 'mailto:' | append: site.data.content.navigation.email %}
+          {% include button.html href=email_link text="Reach Out" icon="email" variant="secondary" event="Contact" %}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 items-center gap-y-6 border-t pt-8 [border-image:linear-gradient(to_right,rgb(255_255_255/0.12),rgb(255_255_255/0.12)_80%,transparent)_1] lg:mt-16 lg:grid-cols-2 lg:gap-x-16">
+      <p class="max-w-[440px] text-sm/[1.6] text-pretty text-white/72">{{ site.data.content.footer.sections.acts_text }}</p>
+      <div class="flex flex-col items-start gap-6 min-[481px]:flex-row min-[481px]:items-center min-[481px]:justify-between">
+        {% include social-links.html %}
+        <div class="flex flex-col items-start gap-2 text-[13px]/none text-white/62 min-[481px]:items-end">
+          <span>&copy; <script>document.write(new Date().getFullYear())</script> {{ site.data.content.footer.sections.copyright }}</span>
+          <span class="font-display text-[0.6875rem]/none tracking-[0.2em] text-white/72 uppercase">{{ site.data.content.footer.sections.sola_deo_gloria }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </footer>

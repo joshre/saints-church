@@ -5,9 +5,9 @@ Each key there needs a matching `_includes/<key>-icon.html`.
 Usage: {% include social-links.html class="justify-center" %}
 {% endcomment %}
 
-{% assign link_class = "inline-flex justify-center items-center transition-colors duration-200 hover:text-white text-white/60" %}
+{% assign link_class = "grid size-10 place-items-center rounded-lg text-white/75 transition-colors duration-200 hover:bg-white/8 hover:text-white" %}
 
-<ul class="flex gap-4 items-center p-0 m-0 list-none {{ include.class }}">
+<ul class="-ml-2.5 flex list-none items-center gap-1 p-0 {{ include.class }}">
   {% for network in site.social %}
     {% assign name = network[0] %}
     {% assign url = network[1] %}
