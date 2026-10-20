@@ -2,7 +2,7 @@
 
 The website for [Saints Church](https://saintschurchknox.com), a Reformed Baptist church in Knoxville, TN.
 
-Jekyll and Tailwind CSS, deployed by GitHub Pages from `master`.
+Jekyll and Tailwind CSS. The Pages workflow (`.github/workflows/pages.yml`) builds the CSS, JS, and site and deploys every push to `master`, so the repo's Pages source needs to be set to "GitHub Actions".
 
 ## Running it locally
 
@@ -14,7 +14,7 @@ yarn install
 yarn watch
 ```
 
-`yarn watch` runs the JS bundler, the Tailwind compiler, and `jekyll serve` together with live reload.
+`yarn watch` runs the JS bundler, the Tailwind compiler, and `jekyll serve` together with live reload. The built CSS and JS aren't committed, so if you'd rather run `bundle exec jekyll serve` on its own, run `yarn build:prod` first.
 
 ## How content is organized
 
@@ -39,9 +39,9 @@ See `.github/workflows/README.md` for the details, including how to trigger a sy
 
 ## Generated files
 
-Four files get generated and committed directly – GitHub Pages serves them as-is: `_includes/icon.html`, `css/output.css`, `js/site.min.js`, and the taxonomy pages under `sermons/`.
+Two sets of generated files are committed: `_includes/icon.html` and the taxonomy pages under `sermons/`. `css/output.css` and `js/site.min.js` are built by the Pages workflow and gitignored.
 
-You shouldn't need to build any of them by hand. The pre-commit hook regenerates them automatically, and CI fails if what's committed doesn't match a fresh build.
+You shouldn't need to build the committed ones by hand. The pre-commit hook regenerates them automatically, and CI fails if what's committed doesn't match a fresh run.
 
 `_includes/icon.html` only holds the Heroicons actually used on the site, not the full set. Add an icon to a template and you'll need to run `yarn generate-icons` afterward – skip that step and it falls back to a default.
 

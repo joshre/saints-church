@@ -77,3 +77,7 @@ sermon_audio_*/
 /.worktrees/
 CLAUDE.md
 AGENTS.md
+
+# Built by the Pages workflow, never committed
+css/output.css
+js/site.min.js
