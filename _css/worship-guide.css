@@ -1,0 +1,376 @@
+.wg {
+  --wg-ink: var(--color-saints-black);
+  --wg-ink-2: var(--color-stone-600);
+  --wg-ink-3: var(--color-stone-500);
+  --wg-accent: var(--color-saints-500);
+  --wg-link: var(--color-saints-700);
+  --wg-link-hover: var(--color-saints-800);
+  --wg-card: white;
+  --wg-page: var(--color-stone-100);
+  --wg-stanza-gap: 24px;
+  --wg-item-gap: 48px;
+
+  min-height: 100dvh;
+  background: var(--wg-card);
+
+  @media (width > 700px) {
+    padding: 56px 16px;
+    background: var(--wg-page);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    --wg-ink: var(--color-saints-white);
+    --wg-ink-2: var(--color-stone-300);
+    --wg-ink-3: var(--color-stone-400);
+    --wg-accent: var(--color-saints-300);
+    --wg-link: var(--color-saints-300);
+    --wg-link-hover: var(--color-saints-200);
+    --wg-card: var(--color-saints-black);
+    --wg-page: var(--color-saints-950);
+  }
+}
+
+.wg-card {
+  max-width: 460px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--wg-card);
+  color: var(--wg-ink);
+  font-family: var(--font-guardian);
+  font-kerning: normal;
+
+  @media (width > 700px) {
+    @apply squircle rounded-3xl;
+
+    box-shadow: var(--card-shadow-soft);
+  }
+}
+
+.wg :where(h1, h2, h3, h4, p, strong, b) {
+  color: inherit;
+}
+
+.wg-cover {
+  container-type: inline-size;
+  padding: 28px 24px 24px;
+  background: var(--color-wallpaper);
+  color: var(--color-saints-white);
+
+  --wg-cover-2: var(--color-saints-200);
+  --wg-cover-rule: color-mix(in oklch, var(--color-saints-white) 30%, transparent);
+}
+
+.wg-cover-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 0.5px solid var(--wg-cover-rule);
+}
+
+.wg-wordmark {
+  display: block;
+  flex: none;
+  height: 15px;
+  aspect-ratio: 690 / 89;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.wg-date {
+  font: 500 8.5px/12px var(--font-grotesk-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.wg-hero {
+  margin-top: 40px;
+}
+
+/* font size fits the line to the cover width from --wg-chars, set inline by the template */
+.wg-hero-book {
+  font: 700 min(56px, calc(100cqi / var(--wg-chars, 8) * 1.25)) / 1 var(--font-display);
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+}
+
+.wg-hero-verse {
+  margin: 0.06em 0 0 -0.05em;
+  font: 700 min(240px, calc(100cqi / var(--wg-chars, 3) * 1.3)) / 0.8 var(--font-display);
+  letter-spacing: -0.065em;
+  white-space: nowrap;
+}
+
+.wg-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 40px;
+}
+
+.wg-toc-label {
+  padding-bottom: 5px;
+  color: var(--wg-cover-2);
+  font: 500 10px/14px var(--font-grotesk-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.wg-toc-row {
+  display: block;
+  padding: 9px 0 10px;
+  color: inherit;
+  font: 500 15px/20px var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  text-wrap: pretty;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.wg-body {
+  padding: 0 24px 56px;
+}
+
+.wg-section {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 56px 0 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--wg-ink);
+  font: 700 26px/30px var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.wg-block {
+  position: relative;
+  margin-top: var(--wg-item-gap);
+  scroll-margin-top: 24px;
+}
+
+.wg-section + .wg-block {
+  margin-top: 28px;
+}
+
+.wg-title {
+  margin: 0;
+  font: 700 17px/22px var(--font-display);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.wg-meta {
+  margin-top: 4px;
+  color: var(--wg-ink-2);
+  font: 400 11px/15px var(--font-grotesk-mono);
+  letter-spacing: 0.01em;
+  text-wrap: pretty;
+}
+
+.wg-question {
+  margin: 8px 0 0;
+  font: normal 600 17px/27px var(--font-sans);
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+}
+
+.wg-said {
+  margin: 8px 0 0;
+  font-size: 17px;
+  line-height: 27px;
+  text-wrap: pretty;
+}
+
+.wg-question + .wg-said {
+  margin-top: 4px;
+}
+
+.wg-big {
+  margin-top: 6px;
+  font: 700 34px/38px var(--font-display);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.wg-stanza {
+  position: relative;
+  font-size: 16.32px;
+  line-height: 25px;
+}
+
+.wg-stanza + .wg-stanza {
+  margin-top: var(--wg-stanza-gap);
+}
+
+.wg-refrain {
+  font-weight: 500;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: -11px;
+    width: 1.5px;
+    background: var(--wg-accent);
+  }
+}
+
+.wg-line {
+  padding-left: 1em;
+  text-indent: -1em;
+  text-wrap: pretty;
+  hanging-punctuation: first;
+}
+
+/* only where hanging-punctuation is unsupported, or Safari hangs the mark twice */
+@supports not (hanging-punctuation: first) {
+  .wg-hang {
+    margin-left: -0.53em;
+  }
+
+  .wg-hang-single {
+    margin-left: -0.3em;
+  }
+}
+
+.wg-head + .wg-stanza,
+.wg-head + .wg-question,
+.wg-head + .wg-prose {
+  margin-top: 10px;
+}
+
+.wg-fill {
+  border-bottom: 1px dashed var(--wg-ink-3);
+  color: var(--wg-ink-3);
+}
+
+.wg-cover .wg-fill {
+  border-color: currentcolor;
+  color: inherit;
+}
+
+.wg-prose {
+  margin-top: 8px;
+  font-size: 17px;
+  line-height: 27px;
+  text-wrap: pretty;
+
+  > * + * {
+    margin-top: 12px;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li + li {
+    margin-top: 4px;
+  }
+
+  li::marker {
+    color: var(--wg-ink-2);
+  }
+
+  a {
+    color: var(--wg-link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+
+    &:hover {
+      color: var(--wg-link-hover);
+    }
+  }
+
+  strong,
+  b {
+    font-weight: 500;
+  }
+
+  blockquote {
+    position: relative;
+    padding-left: 12px;
+    border-left: 1.5px solid var(--wg-accent);
+    color: var(--wg-ink-2);
+  }
+}
+
+.wg-resources {
+  margin-top: 64px;
+}
+
+.wg-button {
+  @apply squircle rounded-lg;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  height: 52px;
+  padding: 0 18px;
+  background: var(--wg-ink);
+  color: var(--color-saints-white);
+  font: 600 16px/1 var(--font-sans);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: background 0.2s var(--ease-smooth);
+
+  svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s var(--ease-smooth);
+  }
+
+  &:hover {
+    background: var(--color-stone-800);
+
+    svg {
+      transform: translateX(2px);
+    }
+  }
+
+  @media (pointer: coarse) {
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--color-saints-black);
+
+    &:hover {
+      background: var(--color-stone-200);
+    }
+  }
+}
+
+.wg-resource-list {
+  margin-top: 12px;
+  color: var(--wg-ink-2);
+  font: 400 10px/15px var(--font-grotesk-mono);
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
