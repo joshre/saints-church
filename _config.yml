@@ -125,3 +125,10 @@ defaults:
       noindex: true
       sitemap: false
       theme_color: "#465742"
+  - scope:
+      path: "worship-guide.html"
+    values:
+      chrome: false
+      noindex: true
+      sitemap: false
+      theme_color: "#465742"
