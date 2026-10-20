@@ -9,8 +9,10 @@ layout: default
     {%- assign g_day = g.sunday | date: "%Y-%m-%d" -%}
     {%- if g_day >= build_day -%}{%- assign guide = g -%}{%- break -%}{%- endif -%}
   {%- endfor -%}
+  {%- if guides.size > 0 -%}
   {%- capture guide_list -%}[{% for g in guides %}["{{ g.sunday | date: "%Y-%m-%d" }}","{{ g.url }}"]{% unless forloop.last %},{% endunless %}{% endfor %}]{%- endcapture %}
 <script>(function(){var g={{ guide_list }},d=new Date(),t=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"),c=g[g.length-1];for(var i=0;i<g.length;i++)if(g[i][0]>=t){c=g[i];break}if(c[1]!=={{ guide.url | jsonify }})location.replace(c[1])})()</script>
+  {%- endif -%}
 {%- else -%}
   {%- assign guide = page -%}
 {%- endif %}

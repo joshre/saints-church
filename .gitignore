@@ -81,3 +81,4 @@ AGENTS.md
 # Built by the Pages workflow, never committed
 css/output.css
 js/site.min.js
+js/site.min.js.map

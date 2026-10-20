@@ -7,10 +7,14 @@
 {%- assign wg_blank = wg_nl | append: wg_nl -%}
 <section class="wg-block" id="t{{ include.n }}">
   {%- if wg_song %}
+  {%- if wg_song.writers %}
   <div class="wg-head">
     <h3 class="wg-title">{{ wg_song.title | escape }}</h3>
-    <div class="wg-meta">{% if wg_song.writers %}{{ wg_song.writers | escape }}{% else %}<span class="wg-fill">[writers]</span>{% endif %}</div>
+    <div class="wg-meta">{{ wg_song.writers | escape }}</div>
   </div>
+  {%- else %}
+  <h3 class="wg-title">{{ wg_song.title | escape }}</h3>
+  {%- endif %}
   {%- for wg_stanza in wg_song.stanzas -%}
     {%- assign wg_subs = wg_stanza.lines | strip | split: wg_blank -%}
     {%- for wg_sub in wg_subs %}

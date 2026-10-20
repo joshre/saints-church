@@ -30,7 +30,7 @@
     <div class="wg-hero-verse" style="--wg-chars: {{ wg_verse.size }}">{{ wg_verse | escape }}</div>
     {%- endif %}
   </div>
-  <nav class="wg-toc" aria-label="Order of service">
+  <nav class="wg-toc" aria-label="{{ site.data.content.worship_guide.order_of_service }}">
     {%- assign wg_n = 0 -%}
     {%- for wg_section in wg_guide.sections %}
     <div>
