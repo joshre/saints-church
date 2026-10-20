@@ -41,6 +41,8 @@ To add a week:
 2. Change `title`, `description` and `sunday`, then swap the items.
 3. Add any song that isn't in `_data/songs/` yet as `_data/songs/<slug>.yml`, with each stanza pasted as-is (a blank line inside a stanza starts a new block).
 
+The sermon schedule lives in `_data/sermon_schedule.yml` (Sunday date to sermon text). When next Sunday is on it, the guide ends the sermon with a "Next Sunday" line, so keep it a few weeks ahead.
+
 Items are `song: <slug>`, `catechism: <number>`, `creed: <key from _data/creeds.yml>`, `prayer: <reference>`, `communion: <title>`, `sermon: <text>`, `custom:` (with `title`, optional `meta`, and a Markdown `body`), or `include: <path>` for a one-off template. A section with `catechism_answer: kids` shows the kids' answer. A reference that doesn't resolve shows a dashed placeholder like `[song: slug]`, so preview the page before Sunday.
 
 ## Sermons
