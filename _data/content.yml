@@ -340,6 +340,15 @@ resources:
     title: "Documents"
     description: "Additional resources and documents will be added here soon."
 
+worship_guide:
+  order_of_service: "Order of service"
+  catechism: "Catechism"
+  question: "Question"
+  prayer: "Prayer"
+  sermon: "Sermon"
+  resources_button: "Resources"
+  resources_list: "Catechism · Sermons · Giving · Playlists"
+
 reformed_baptist_knoxville:
   title: "Reformed Baptist Church in Knoxville, TN"
   intro: "A confessional Baptist church holding to the 1689 London Baptist Confession of Faith."

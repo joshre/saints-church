@@ -1,0 +1,9 @@
+{%- assign wg_text = include.text | strip -%}
+{%- assign wg_mark = wg_text | slice: 0 -%}
+{%- if wg_mark == "“" -%}
+<div class="wg-line"><span class="wg-hang">“</span>{{ wg_text | remove_first: "“" | escape }}</div>
+{%- elsif wg_mark == "‘" -%}
+<div class="wg-line"><span class="wg-hang wg-hang-single">‘</span>{{ wg_text | remove_first: "‘" | escape }}</div>
+{%- else -%}
+<div class="wg-line">{{ wg_text | escape }}</div>
+{%- endif -%}

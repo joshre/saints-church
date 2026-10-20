@@ -1,0 +1,18 @@
+{%- assign wg_copy = site.data.content.worship_guide -%}
+{%- assign wg_q = site.data.catechism | where: "number", include.item.catechism | first -%}
+{%- if include.mode == "toc" -%}
+  {%- if wg_q -%}{{ wg_copy.catechism }}, {{ wg_copy.question }} {{ wg_q.number }}{%- else -%}<span class="wg-fill">[catechism: {{ include.item.catechism | escape }}]</span>{%- endif -%}
+{%- else -%}
+<section class="wg-block" id="t{{ include.n }}">
+  {%- if wg_q %}
+  <div class="wg-head">
+    <h3 class="wg-title">{{ wg_copy.catechism }}</h3>
+    <div class="wg-meta">{{ wg_copy.question }} {{ wg_q.number }}</div>
+  </div>
+  <p class="wg-question">{{ wg_q.question | smartify }}</p>
+  <p class="wg-said">{% if include.section.catechism_answer == "kids" %}{{ wg_q.kids_answer | smartify }}{% else %}{{ wg_q.answer | smartify }}{% endif %}</p>
+  {%- else %}
+  <h3 class="wg-title"><span class="wg-fill">[catechism: {{ include.item.catechism | escape }}]</span></h3>
+  {%- endif %}
+</section>
+{%- endif -%}

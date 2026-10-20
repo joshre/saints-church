@@ -97,6 +97,9 @@ collections:
   prayer_gatherings:
     output: true
     permalink: /resources/prayer-gatherings/:title/
+  worship_guides:
+    output: true
+    permalink: /worship-guide/:name/
 
 # Post defaults for sermons
 defaults:
@@ -113,3 +116,19 @@ defaults:
     values:
       layout: "resource"
       category: "prayer-gathering"
+  - scope:
+      path: "_worship_guides"
+      type: "worship_guides"
+    values:
+      layout: "worship-guide"
+      chrome: false
+      noindex: true
+      sitemap: false
+      theme_color: "#465742"
+  - scope:
+      path: "worship-guide.html"
+    values:
+      chrome: false
+      noindex: true
+      sitemap: false
+      theme_color: "#465742"

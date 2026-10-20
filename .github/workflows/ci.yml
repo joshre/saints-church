@@ -56,19 +56,17 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
-      # every one of these is a committed build artifact GitHub Pages serves as-is,
-      # so drift ships silently — a stale css/output.css already dropped a modal shadow
-      - name: Regenerate committed artifacts
+      # icons and taxonomy pages are committed source the templates include, so drift ships silently
+      - name: Regenerate committed icons and taxonomies
         run: |
           yarn generate-icons
           yarn generate-taxonomies
-          yarn build:prod
 
       # porcelain, not git diff: a brand-new taxonomy page is untracked and git diff cannot see it
       - name: Fail if generated output is stale
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-            echo "Generated files are out of date. Run 'yarn generate-icons', 'yarn generate-taxonomies', and 'yarn build:prod', then commit the result."
+            echo "Generated files are out of date. Run 'yarn generate-icons' and 'yarn generate-taxonomies', then commit the result."
             git status --porcelain
             exit 1
           fi

@@ -20,9 +20,9 @@ if [ -n "$STAGED" ]; then
     exit 1
   }
 
-  # committed artifacts GitHub Pages serves as-is; regenerating here is what keeps them from shipping stale
-  echo "Regenerating icons, taxonomies, and assets..."
-  for gen in generate-icons generate-taxonomies build:prod; do
+  # icons and taxonomy pages are committed source the templates include; regenerating here keeps them from going stale
+  echo "Regenerating icons and taxonomies..."
+  for gen in generate-icons generate-taxonomies; do
     yarn --silent "$gen" >/dev/null 2>&1 || {
       echo "$gen failed — running it directly to show the error:"
       yarn "$gen"
@@ -30,7 +30,7 @@ if [ -n "$STAGED" ]; then
     }
   done
 
-  GENERATED="_includes/icon.html css/output.css js/site.min.js sermons/preachers sermons/series"
+  GENERATED="_includes/icon.html sermons/preachers sermons/series"
 
   RESTAGED=""
   for f in $STAGED $GENERATED; do

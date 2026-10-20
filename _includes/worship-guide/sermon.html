@@ -1,0 +1,9 @@
+{%- assign wg_copy = site.data.content.worship_guide -%}
+{%- if include.mode == "toc" -%}
+{{ wg_copy.sermon }}, {{ include.item.sermon | escape }}
+{%- else -%}
+<section class="wg-block" id="t{{ include.n }}">
+  <h3 class="wg-title">{{ wg_copy.sermon }}</h3>
+  <div class="wg-big">{{ include.item.sermon | escape }}</div>
+</section>
+{%- endif -%}

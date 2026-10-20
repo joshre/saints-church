@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+  # the sync and icon workflows push with GITHUB_TOKEN, which never triggers a push workflow
+  workflow_run:
+    workflows: [Sync Podcast Episodes, Update Heroicons]
+    types: [completed]
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# pull requests get their own group so a queued PR build can't displace a pending deploy
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # workflow_run would otherwise check out the triggering SHA, missing the commit it just pushed
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          ref: ${{ github.event_name == 'workflow_run' && 'master' || '' }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn generate-icons
+      - run: yarn generate-taxonomies
+      - run: yarn build:prod
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production
+
+      - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
+
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: |
+      github.event_name != 'pull_request' &&
+      github.ref == 'refs/heads/master' &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

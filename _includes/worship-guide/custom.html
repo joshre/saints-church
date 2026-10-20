@@ -1,0 +1,18 @@
+{%- assign wg_custom = include.item.custom -%}
+{%- if include.mode == "toc" -%}
+  {%- if wg_custom.title -%}{{ wg_custom.title | escape }}{%- else -%}<span class="wg-fill">[custom: title]</span>{%- endif -%}
+{%- else -%}
+<section class="wg-block" id="t{{ include.n }}">
+  {%- if wg_custom.meta %}
+  <div class="wg-head">
+    <h3 class="wg-title">{{ wg_custom.title | escape }}</h3>
+    <div class="wg-meta">{{ wg_custom.meta | escape }}</div>
+  </div>
+  {%- else %}
+  <h3 class="wg-title">{% if wg_custom.title %}{{ wg_custom.title | escape }}{% else %}<span class="wg-fill">[custom: title]</span>{% endif %}</h3>
+  {%- endif -%}
+  {%- if wg_custom.body %}
+  <div class="wg-prose">{{ wg_custom.body | markdownify }}</div>
+  {%- endif %}
+</section>
+{%- endif -%}

@@ -1,0 +1,34 @@
+---
+layout: default
+---
+{%- if page.current_guide -%}
+  {%- assign guides = site.worship_guides | sort: "sunday" -%}
+  {%- assign build_day = site.time | date: "%Y-%m-%d" -%}
+  {%- assign guide = guides | last -%}
+  {%- for g in guides -%}
+    {%- assign g_day = g.sunday | date: "%Y-%m-%d" -%}
+    {%- if g_day >= build_day -%}{%- assign guide = g -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+  {%- if guides.size > 0 -%}
+  {%- capture guide_list -%}[{% for g in guides %}["{{ g.sunday | date: "%Y-%m-%d" }}","{{ g.url }}"]{% unless forloop.last %},{% endunless %}{% endfor %}]{%- endcapture %}
+<script>(function(){var g={{ guide_list }},d=new Date(),t=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"),c=g[g.length-1];for(var i=0;i<g.length;i++)if(g[i][0]>=t){c=g[i];break}if(c[1]!=={{ guide.url | jsonify }})location.replace(c[1])})()</script>
+  {%- endif -%}
+{%- else -%}
+  {%- assign guide = page -%}
+{%- endif %}
+<main class="wg">
+  <article class="wg-card">
+    {% include worship-guide/cover.html guide=guide %}
+    <div class="wg-body">
+      {%- assign n = 0 -%}
+      {%- for section in guide.sections %}
+      <h2 class="wg-section">{{ section.name | escape }}</h2>
+      {%- for item in section.items -%}
+        {%- assign n = n | plus: 1 %}
+      {% include worship-guide/item.html item=item n=n section=section mode="body" %}
+      {%- endfor -%}
+      {%- endfor %}
+      {% include worship-guide/resources.html guide=guide %}
+    </div>
+  </article>
+</main>

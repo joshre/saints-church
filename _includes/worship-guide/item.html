@@ -1,0 +1,26 @@
+{%- assign wg_item = include.item -%}
+{%- if wg_item.song -%}
+  {%- include worship-guide/song.html item=wg_item n=include.n mode=include.mode -%}
+{%- elsif wg_item.catechism -%}
+  {%- include worship-guide/catechism.html item=wg_item n=include.n mode=include.mode section=include.section -%}
+{%- elsif wg_item.creed -%}
+  {%- include worship-guide/creed.html item=wg_item n=include.n mode=include.mode -%}
+{%- elsif wg_item.prayer -%}
+  {%- include worship-guide/prayer.html item=wg_item n=include.n mode=include.mode -%}
+{%- elsif wg_item.communion -%}
+  {%- include worship-guide/communion.html item=wg_item n=include.n mode=include.mode -%}
+{%- elsif wg_item.sermon -%}
+  {%- include worship-guide/sermon.html item=wg_item n=include.n mode=include.mode -%}
+{%- elsif wg_item.custom -%}
+  {%- include worship-guide/custom.html item=wg_item n=include.n mode=include.mode -%}
+{%- elsif wg_item.include -%}
+  {%- if include.mode == "toc" -%}
+    {{ wg_item.title | default: wg_item.include | escape }}
+  {%- else -%}
+<section class="wg-block" id="t{{ include.n }}">{% include {{ wg_item.include }} item=wg_item %}</section>
+  {%- endif -%}
+{%- else -%}
+  {%- if include.mode == "toc" -%}<span class="wg-fill">[unknown item]</span>{%- else -%}
+<section class="wg-block" id="t{{ include.n }}"><h3 class="wg-title"><span class="wg-fill">[unknown item: {{ wg_item | jsonify | escape }}]</span></h3></section>
+  {%- endif -%}
+{%- endif -%}
