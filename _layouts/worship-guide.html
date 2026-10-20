@@ -25,7 +25,7 @@ layout: default
       <h2 class="wg-section">{{ section.name | escape }}</h2>
       {%- for item in section.items -%}
         {%- assign n = n | plus: 1 %}
-      {% include worship-guide/item.html item=item n=n section=section mode="body" %}
+      {% include worship-guide/item.html item=item n=n section=section sunday=guide.sunday mode="body" %}
       {%- endfor -%}
       {%- endfor %}
       {% include worship-guide/resources.html guide=guide %}

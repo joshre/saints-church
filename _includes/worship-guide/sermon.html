@@ -5,5 +5,15 @@
 <section class="wg-block" id="t{{ include.n }}">
   <h3 class="wg-title">{{ wg_copy.sermon }}</h3>
   <div class="wg-big">{{ include.item.sermon | escape }}</div>
+  {%- comment %}noon a week later, so a DST change can't land the date on Saturday{% endcomment -%}
+  {%- assign wg_next_at = include.sunday | date: "%s" | plus: 648000 -%}
+  {%- assign wg_next_day = wg_next_at | date: "%Y-%m-%d" -%}
+  {%- assign wg_next_text = site.data.sermon_schedule[wg_next_day] -%}
+  {%- if wg_next_text %}
+  <div class="wg-next">
+    <span class="wg-next-label">{{ wg_copy.next_sunday }} · {{ wg_next_at | date: "%b %-d" }}</span>
+    <span class="wg-next-title">{{ wg_next_text | escape }}</span>
+  </div>
+  {%- endif %}
 </section>
 {%- endif -%}

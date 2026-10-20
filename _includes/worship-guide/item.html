@@ -10,7 +10,7 @@
 {%- elsif wg_item.communion -%}
   {%- include worship-guide/communion.html item=wg_item n=include.n mode=include.mode -%}
 {%- elsif wg_item.sermon -%}
-  {%- include worship-guide/sermon.html item=wg_item n=include.n mode=include.mode -%}
+  {%- include worship-guide/sermon.html item=wg_item n=include.n sunday=include.sunday mode=include.mode -%}
 {%- elsif wg_item.custom -%}
   {%- include worship-guide/custom.html item=wg_item n=include.n mode=include.mode -%}
 {%- elsif wg_item.include -%}

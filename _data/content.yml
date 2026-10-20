@@ -346,6 +346,7 @@ worship_guide:
   question: "Question"
   prayer: "Prayer"
   sermon: "Sermon"
+  next_sunday: "Next Sunday"
   resources_button: "Resources"
   resources_list: "Catechism · Sermons · Giving · Playlists"
 

@@ -202,6 +202,28 @@
   text-wrap: balance;
 }
 
+.wg-next {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 32px;
+  padding-top: 14px;
+  border-top: 0.5px solid var(--wg-ink);
+}
+
+.wg-next-label {
+  color: var(--wg-ink-2);
+  font: 400 10px/14px var(--font-grotesk-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.wg-next-title {
+  font: 700 26px/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
 .wg-stanza {
   position: relative;
   font-size: 16.32px;
