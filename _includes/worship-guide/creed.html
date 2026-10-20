@@ -1,0 +1,13 @@
+{%- assign wg_creed = site.data.creeds[include.item.creed] -%}
+{%- if include.mode == "toc" -%}
+  {%- if wg_creed -%}{{ wg_creed.title | escape }}{%- else -%}<span class="wg-fill">[creed: {{ include.item.creed | escape }}]</span>{%- endif -%}
+{%- else -%}
+<section class="wg-block" id="t{{ include.n }}">
+  {%- if wg_creed %}
+  <h3 class="wg-title">{{ wg_creed.title | escape }}</h3>
+  <p class="wg-said">{{ wg_creed.text | escape }}</p>
+  {%- else %}
+  <h3 class="wg-title"><span class="wg-fill">[creed: {{ include.item.creed | escape }}]</span></h3>
+  {%- endif %}
+</section>
+{%- endif -%}

@@ -1,0 +1,10 @@
+{%- if include.mode == "toc" -%}
+Prayer, {{ include.item.prayer | escape }}
+{%- else -%}
+<section class="wg-block" id="t{{ include.n }}">
+  <div class="wg-head">
+    <h3 class="wg-title">Prayer</h3>
+    <div class="wg-meta">{{ include.item.prayer | escape }}</div>
+  </div>
+</section>
+{%- endif -%}

@@ -1,0 +1,45 @@
+{%- assign wg_guide = include.guide -%}
+{%- assign wg_sermon = "" -%}
+{%- for wg_section in wg_guide.sections -%}
+  {%- for wg_it in wg_section.items -%}
+    {%- if wg_it.sermon and wg_sermon == "" -%}{%- assign wg_sermon = wg_it.sermon | strip -%}{%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- assign wg_book = wg_sermon -%}
+{%- assign wg_verse = "" -%}
+{%- if wg_sermon != "" -%}
+  {%- assign wg_words = wg_sermon | split: " " -%}
+  {%- assign wg_last = wg_words | last -%}
+  {%- assign wg_first_char = wg_last | slice: 0 -%}
+  {%- if wg_words.size > 1 and "0123456789" contains wg_first_char -%}
+    {%- assign wg_verse = wg_last -%}
+    {%- assign wg_book = wg_words | pop | join: " " -%}
+  {%- endif -%}
+{%- else -%}
+  {%- assign wg_book = wg_guide.sunday | date: "%B" -%}
+  {%- assign wg_verse = wg_guide.sunday | date: "%-d" -%}
+{%- endif -%}
+<header class="wg-cover">
+  <div class="wg-cover-top">
+    <span class="wg-wordmark" role="img" aria-label="Saints Church">{% include logo.html class="block size-full" %}</span>
+    <span class="wg-date">{{ wg_guide.sunday | date: "%m.%d.%y" }}</span>
+  </div>
+  <div class="wg-hero">
+    <div class="wg-hero-book" style="--wg-chars: {{ wg_book.size }}">{{ wg_book | escape }}</div>
+    {%- if wg_verse != "" %}
+    <div class="wg-hero-verse" style="--wg-chars: {{ wg_verse.size }}">{{ wg_verse | escape }}</div>
+    {%- endif %}
+  </div>
+  <nav class="wg-toc" aria-label="Order of service">
+    {%- assign wg_n = 0 -%}
+    {%- for wg_section in wg_guide.sections %}
+    <div>
+      <div class="wg-toc-label">{{ wg_section.name | escape }}</div>
+      {%- for wg_it in wg_section.items -%}
+        {%- assign wg_n = wg_n | plus: 1 %}
+      <a class="wg-toc-row" href="#t{{ wg_n }}">{% include worship-guide/item.html item=wg_it n=wg_n section=wg_section mode="toc" %}</a>
+      {%- endfor %}
+    </div>
+    {%- endfor %}
+  </nav>
+</header>

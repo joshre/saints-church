@@ -1,0 +1,7 @@
+{%- if include.mode == "toc" -%}
+{{ include.item.communion | escape }}
+{%- else -%}
+<section class="wg-block" id="t{{ include.n }}">
+  <h3 class="wg-title">{{ include.item.communion | escape }}</h3>
+</section>
+{%- endif -%}

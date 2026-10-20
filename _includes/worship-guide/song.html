@@ -1,0 +1,32 @@
+{%- assign wg_song = site.data.songs[include.item.song] -%}
+{%- if include.mode == "toc" -%}
+  {%- if wg_song -%}{{ wg_song.title | escape }}{%- else -%}<span class="wg-fill">[song: {{ include.item.song | escape }}]</span>{%- endif -%}
+{%- else -%}
+{%- capture wg_nl %}
+{% endcapture -%}
+{%- assign wg_blank = wg_nl | append: wg_nl -%}
+<section class="wg-block" id="t{{ include.n }}">
+  {%- if wg_song %}
+  <div class="wg-head">
+    <h3 class="wg-title">{{ wg_song.title | escape }}</h3>
+    <div class="wg-meta">{% if wg_song.writers %}{{ wg_song.writers | escape }}{% else %}<span class="wg-fill">[writers]</span>{% endif %}</div>
+  </div>
+  {%- for wg_stanza in wg_song.stanzas -%}
+    {%- assign wg_subs = wg_stanza.lines | strip | split: wg_blank -%}
+    {%- for wg_sub in wg_subs %}
+  <div class="wg-stanza{% if wg_stanza.refrain %} wg-refrain{% endif %}">
+      {%- assign wg_lines = wg_sub | strip | split: wg_nl -%}
+      {%- for wg_line in wg_lines %}
+    {% include worship-guide/line.html text=wg_line %}
+      {%- endfor %}
+  </div>
+    {%- endfor -%}
+  {%- endfor -%}
+  {%- if wg_song.copyright %}
+  <div class="wg-meta">{{ wg_song.copyright | escape }}</div>
+  {%- endif -%}
+  {%- else %}
+  <h3 class="wg-title"><span class="wg-fill">[song: {{ include.item.song | escape }}]</span></h3>
+  {%- endif %}
+</section>
+{%- endif -%}
