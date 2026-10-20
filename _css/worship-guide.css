@@ -5,18 +5,10 @@
   --wg-accent: var(--color-saints-500);
   --wg-link: var(--color-saints-700);
   --wg-link-hover: var(--color-saints-800);
-  --wg-card: white;
-  --wg-page: var(--color-stone-100);
   --wg-stanza-gap: 24px;
   --wg-item-gap: 48px;
 
-  min-height: 100dvh;
-  background: var(--wg-card);
-
-  @media (width > 700px) {
-    padding: 56px 16px;
-    background: var(--wg-page);
-  }
+  --wg-gutter: max(24px, (100% - 672px) / 2);
 
   @media (prefers-color-scheme: dark) {
     --wg-ink: var(--color-saints-white);
@@ -25,25 +17,13 @@
     --wg-accent: var(--color-saints-300);
     --wg-link: var(--color-saints-300);
     --wg-link-hover: var(--color-saints-200);
-    --wg-card: var(--color-saints-black);
-    --wg-page: var(--color-saints-950);
   }
 }
 
 .wg-card {
-  max-width: 460px;
-  margin: 0 auto;
-  overflow: hidden;
-  background: var(--wg-card);
   color: var(--wg-ink);
   font-family: var(--font-guardian);
   font-kerning: normal;
-
-  @media (width > 700px) {
-    @apply squircle rounded-3xl;
-
-    box-shadow: var(--card-shadow-soft);
-  }
 }
 
 .wg :where(h1, h2, h3, h4, p, strong, b) {
@@ -52,7 +32,7 @@
 
 .wg-cover {
   container-type: inline-size;
-  padding: 28px 24px 24px;
+  padding: 28px var(--wg-gutter) 24px;
   background: var(--color-wallpaper);
   color: var(--color-saints-white);
 
@@ -69,20 +49,9 @@
   border-bottom: 0.5px solid var(--wg-cover-rule);
 }
 
-.wg-wordmark {
-  display: block;
-  flex: none;
-  height: 15px;
-  aspect-ratio: 690 / 89;
-
-  svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-}
-
+.wg-label,
 .wg-date {
+  margin: 0;
   font: 500 8.5px/12px var(--font-grotesk-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -138,7 +107,7 @@
 }
 
 .wg-body {
-  padding: 0 24px 56px;
+  padding: 0 var(--wg-gutter) 56px;
 }
 
 .wg-section {

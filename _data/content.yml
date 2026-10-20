@@ -341,6 +341,7 @@ resources:
     description: "Additional resources and documents will be added here soon."
 
 worship_guide:
+  title: "Worship Guide"
   order_of_service: "Order of service"
   catechism: "Catechism"
   question: "Question"
