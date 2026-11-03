@@ -95,7 +95,7 @@ function scalar(value: string): string {
 }
 
 const LABEL =
-  /^(verse|chorus|refrain|bridge|pre-?chorus|tag|intro|outro|ending|interlude|vamp)\b\s*(\d+)?\s*:?\s*$/i;
+  /^(verse|chorus|refrain|bridge|pre-?chorus|tag|intro|outro|ending|interlude|vamp|turnaround|instrumental|breakdown|hook|coda|misc)\b\s*(\d+)?\s*(\(?x\d+\)?)?\s*:?\s*$/i;
 
 function parseLyrics(text: string): Stanza[] {
   const stanzas: Stanza[] = [];
@@ -235,6 +235,13 @@ function catechismWarning(item: PlanItem): string | undefined {
   return `catechism ${item.catechism_number}: PCO asks "${asked}", _data/catechism.yml has "${entry?.question ?? 'no such question'}"`;
 }
 
+function required<T>(value: T | null | undefined, item: PlanItem, field: string): T {
+  if (value === undefined || value === null) {
+    throw new Error(`plan item ${item.sequence} (${item.title}) has no ${field}`);
+  }
+  return value;
+}
+
 function buildNew(planFile: string, lyricsDir: string | undefined, force: boolean): void {
   const plan = loadYaml<Plan>(planFile);
   const guideFile = path.join(GUIDES_DIR, `${plan.date}.md`);
@@ -268,7 +275,9 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
 
     switch (item.kind) {
       case 'catechism': {
-        section.items.push({ catechism: item.catechism_number as number });
+        section.items.push({
+          catechism: required(item.catechism_number, item, 'catechism_number'),
+        });
         const warning = catechismWarning(item);
         if (warning) warnings.push(warning);
         break;
@@ -292,7 +301,7 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
         section.items.push({ sermon: item.sermon_text ?? '' });
         break;
       case 'song': {
-        const song = item.song as PlanSong;
+        const song = required(item.song, item, 'song');
         const existing = findSong(songs, song);
         if (existing) {
           section.items.push({ song: existing });

@@ -40,7 +40,7 @@ To add a week, build it from that Sunday's Planning Center plan:
 1. Export the plan with `pco sunday-plan <date> --json > plan.json` ([pco-cli](https://github.com/joshre/pco-cli)).
 2. Run `yarn worship-guide new plan.json`. It writes `_worship_guides/<date>.md`, reuses songs already in `_data/songs/` (matched by CCLI number, then title), and creates a song file for any new song whose lyrics are in Planning Center. `Verse 1` and `Chorus` labels in the lyrics become stanza numbers and refrains.
 3. A song with no lyrics anywhere is listed as missing. Save its lyrics as `<slug>.txt`, with blank lines between stanzas and the same labels, and run step 2 again with `--lyrics-dir <folder> --force`.
-4. `yarn worship-guide print <date>` prints the print guide's `guide-data` JSON from the same files.
+4. `yarn -s worship-guide print <date>` prints the print guide's `guide-data` JSON from the same files.
 
 A song file holds `title`, `writers`, optional `copyright` and `ccli`, and its stanzas, each pasted as-is (a blank line inside a stanza starts a new block).
 
