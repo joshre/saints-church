@@ -53,7 +53,8 @@ type GuideItem =
   | { prayer: string }
   | { communion: string }
   | { sermon: string }
-  | { custom: { title: string; meta?: string } };
+  | { custom: { title: string; meta?: string } }
+  | { include: string; title?: string };
 
 interface GuideSection {
   name: string;
@@ -156,6 +157,7 @@ function findSong(songs: Map<string, SongFile>, song: PlanSong): string | undefi
   }
   const keys = [normalize(song.title), normalize(withoutParenthetical(song.title))];
   for (const [slug, file] of songs) {
+    if (song.ccli_number && file.ccli && file.ccli !== song.ccli_number) continue;
     if (
       keys.includes(normalize(file.title)) ||
       keys.includes(normalize(withoutParenthetical(file.title)))
@@ -308,7 +310,8 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
           report.push(`${existing}: existing`);
           break;
         }
-        const slug = slugify(song.title);
+        const base = slugify(song.title);
+        const slug = songs.has(base) ? `${base}-${song.ccli_number ?? item.sequence}` : base;
         const fromDir = lyricsDir ? path.join(lyricsDir, `${slug}.txt`) : undefined;
         let source: string | undefined;
         let lyrics = song.lyrics;
@@ -398,7 +401,8 @@ function printData(date: string): void {
         return [{ type: 'prayer', ref: item.prayer.replace(/^psalms?\s+/i, '') }];
       if ('communion' in item) return [{ type: 'communion', title: item.communion }];
       if ('sermon' in item) return [{ type: 'sermon', text: item.sermon }];
-      console.error(`warning: the print guide has no custom item; left out "${item.custom.title}"`);
+      const label = 'custom' in item ? item.custom.title : (item.title ?? item.include);
+      console.error(`warning: the print guide has no item for "${label}"; left it out`);
       return [];
     }),
   }));
