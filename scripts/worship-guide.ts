@@ -1,15 +1,4 @@
 #!/usr/bin/env npx tsx
-/**
- * Build a Sunday's worship guide from a Planning Center plan, or print the
- * Claude Design guide-data JSON for a week that already has a guide.
- *
- * Usage:
- *   npx tsx scripts/worship-guide.ts new <plan.json> [--lyrics-dir DIR] [--force]
- *   npx tsx scripts/worship-guide.ts print <YYYY-MM-DD>
- *
- * <plan.json> is the output of `pco sunday-plan <date> --json` (joshre/pco-cli).
- */
-
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import yaml from 'js-yaml';
@@ -68,7 +57,7 @@ type GuideItem =
 
 interface GuideSection {
   name: string;
-  catechism_answer?: string;
+  catechism_answer?: 'kids';
   items: GuideItem[];
 }
 
@@ -176,13 +165,33 @@ function findSong(songs: Map<string, SongFile>, song: PlanSong): string | undefi
   return undefined;
 }
 
-function longDate(date: string): string {
+function longDate(date: string, weekday = false): string {
   return new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', {
+    ...(weekday ? { weekday: 'long' } : {}),
     month: 'long',
     day: 'numeric',
     year: 'numeric',
     timeZone: 'UTC',
   });
+}
+
+interface CatechismEntry {
+  number: number;
+  question: string;
+  answer: string;
+  kids_answer: string;
+}
+
+let catechismCache: CatechismEntry[] | undefined;
+function loadCatechism(): CatechismEntry[] {
+  catechismCache ??= loadYaml<CatechismEntry[]>(path.join(ROOT, '_data', 'catechism.yml'));
+  return catechismCache;
+}
+
+let creedsCache: Record<string, { title: string; text: string }> | undefined;
+function loadCreeds(): Record<string, { title: string; text: string }> {
+  creedsCache ??= loadYaml(path.join(ROOT, '_data', 'creeds.yml'));
+  return creedsCache;
 }
 
 function guideItemYaml(item: GuideItem): string[] {
@@ -214,20 +223,14 @@ function guideYaml(date: string, sections: GuideSection[]): string {
 }
 
 function creedKey(title: string): string | undefined {
-  const creeds = loadYaml<Record<string, { title: string }>>(
-    path.join(ROOT, '_data', 'creeds.yml'),
-  );
   const wanted = normalize(title);
-  return Object.keys(creeds).find((key) => wanted.includes(key.replace(/s$/, '')));
+  return Object.keys(loadCreeds()).find((key) => wanted.includes(key.replace(/s$/, '')));
 }
 
 function catechismWarning(item: PlanItem): string | undefined {
   const asked = item.description?.match(/^Q:\s*(.+)$/m)?.[1];
   if (!asked) return undefined;
-  const catechism = loadYaml<{ number: number; question: string }[]>(
-    path.join(ROOT, '_data', 'catechism.yml'),
-  );
-  const entry = catechism.find((q) => q.number === item.catechism_number);
+  const entry = loadCatechism().find((q) => q.number === item.catechism_number);
   if (entry && normalize(entry.question) === normalize(asked)) return undefined;
   return `catechism ${item.catechism_number}: PCO asks "${asked}", _data/catechism.yml has "${entry?.question ?? 'no such question'}"`;
 }
@@ -341,12 +344,8 @@ function printData(date: string): void {
   const source = fs.readFileSync(path.join(GUIDES_DIR, `${date}.md`), 'utf8');
   const guide = yaml.load(source.split(/^---$/m)[1]) as Guide;
   const songs = loadSongs();
-  const catechism = loadYaml<
-    { number: number; question: string; answer: string; kids_answer: string }[]
-  >(path.join(ROOT, '_data', 'catechism.yml'));
-  const creeds = loadYaml<Record<string, { title: string; text: string }>>(
-    path.join(ROOT, '_data', 'creeds.yml'),
-  );
+  const catechism = loadCatechism();
+  const creeds = loadCreeds();
   const content = loadYaml<{ worship_guide: { resources_list: string } }>(
     path.join(ROOT, '_data', 'content.yml'),
   );
@@ -397,15 +396,8 @@ function printData(date: string): void {
 
   if (missing.length > 0) throw new Error(`no lyrics on file for: ${missing.join(', ')}`);
 
-  const day = new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
   const data = {
-    dateLabel: day,
+    dateLabel: longDate(date, true),
     resourcesUrl: `${config.url.replace(/^https?:\/\//, '')}/resources`,
     resourcesList: content.worship_guide.resources_list.split(' · '),
     parts,
