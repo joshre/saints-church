@@ -32,14 +32,11 @@
   </div>
   <nav class="wg-toc" aria-label="{{ site.data.content.worship_guide.order_of_service }}">
     {%- assign wg_n = 0 -%}
-    {%- for wg_section in wg_guide.sections %}
-    <div>
-      <div class="wg-toc-label">{{ wg_section.name | escape }}</div>
+    {%- for wg_section in wg_guide.sections -%}
       {%- for wg_it in wg_section.items -%}
         {%- assign wg_n = wg_n | plus: 1 %}
-      <a class="wg-toc-row" href="#t{{ wg_n }}">{% include worship-guide/item.html item=wg_it n=wg_n section=wg_section mode="toc" %}</a>
-      {%- endfor %}
-    </div>
+    <a class="wg-toc-row" href="#t{{ wg_n }}">{% include worship-guide/item.html item=wg_it n=wg_n section=wg_section mode="toc" %}</a>
+      {%- endfor -%}
     {%- endfor %}
   </nav>
 </header>

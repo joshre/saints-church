@@ -21,8 +21,7 @@ layout: default
     {% include worship-guide/cover.html guide=guide %}
     <div class="wg-body">
       {%- assign n = 0 -%}
-      {%- for section in guide.sections %}
-      <h2 class="wg-section">{{ section.name | escape }}</h2>
+      {%- for section in guide.sections -%}
       {%- for item in section.items -%}
         {%- assign n = n | plus: 1 %}
       {% include worship-guide/item.html item=item n=n section=section sunday=guide.sunday mode="body" %}
