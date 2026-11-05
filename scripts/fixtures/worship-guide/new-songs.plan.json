@@ -1,0 +1,73 @@
+{
+  "date": "2099-01-04",
+  "plan_id": "00000001",
+  "service_type_id": "1670014",
+  "dates_label": "January 4, 2099",
+  "items": [
+    {
+      "sequence": 1,
+      "kind": "header",
+      "title": "Family Church",
+      "description": null
+    },
+    {
+      "sequence": 2,
+      "kind": "song",
+      "title": "A New Test Song",
+      "description": null,
+      "song": {
+        "title": "A New Test Song",
+        "author": "Ann Writer and Bob Writer, Cy Writer",
+        "copyright": "© 2099 Test Music (licensing boilerplate)",
+        "ccli_number": 1000001,
+        "lyrics": "Verse 1\nFirst line of the verse\nSecond line of the verse\n\nChorus\nThe chorus line\n\nVerse 2\nThird line here"
+      }
+    },
+    {
+      "sequence": 3,
+      "kind": "song",
+      "title": "How Great Thou Art",
+      "description": null,
+      "song": {
+        "title": "How Great Thou Art",
+        "author": "Test Arranger",
+        "copyright": "© 2099 Test Music (licensing boilerplate)",
+        "ccli_number": 1000002,
+        "lyrics": "Verse 1\nA different song that shares a title"
+      }
+    },
+    {
+      "sequence": 4,
+      "kind": "song",
+      "title": "Labels Only",
+      "description": null,
+      "song": {
+        "title": "Labels Only",
+        "author": null,
+        "copyright": "© 2099 Test Music (licensing boilerplate)",
+        "ccli_number": null,
+        "lyrics": "Verse 1\n\nChorus\n"
+      }
+    },
+    {
+      "sequence": 5,
+      "kind": "header",
+      "title": "Adult Church",
+      "description": null
+    },
+    {
+      "sequence": 6,
+      "kind": "prayer",
+      "title": "Prayer",
+      "description": null,
+      "prayer_ref": null
+    },
+    {
+      "sequence": 7,
+      "kind": "sermon",
+      "title": "Sermon",
+      "description": null,
+      "sermon_text": null
+    }
+  ]
+}

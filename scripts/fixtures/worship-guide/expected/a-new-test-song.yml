@@ -1,0 +1,15 @@
+---
+title: "A New Test Song"
+writers: "Ann Writer, Bob Writer, Cy Writer"
+ccli: 1000001
+stanzas:
+  - number: 1
+    lines: |
+      First line of the verse
+      Second line of the verse
+  - refrain: true
+    lines: |
+      The chorus line
+  - number: 2
+    lines: |
+      Third line here
