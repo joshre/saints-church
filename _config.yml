@@ -121,10 +121,3 @@ defaults:
       type: "worship_guides"
     values:
       layout: "worship-guide"
-      noindex: true
-      sitemap: false
-  - scope:
-      path: "worship-guide.html"
-    values:
-      noindex: true
-      sitemap: false
