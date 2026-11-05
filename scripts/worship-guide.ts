@@ -124,10 +124,18 @@ function parseLyrics(text: string): Stanza[] {
   return stanzas;
 }
 
+function writerList(author: string): string {
+  return author
+    .split(/,\s*(?:and\s+)?|\s+and\s+/)
+    .map((name) => name.trim())
+    .filter(Boolean)
+    .join(', ');
+}
+
+// the guide prints no copyright line; PCO's strings are licensing boilerplate
 function songYaml(song: PlanSong, stanzas: Stanza[]): string {
   const out = ['---', `title: ${JSON.stringify(song.title)}`];
-  if (song.author) out.push(`writers: ${JSON.stringify(song.author)}`);
-  if (song.copyright) out.push(`copyright: ${JSON.stringify(song.copyright)}`);
+  if (song.author) out.push(`writers: ${JSON.stringify(writerList(song.author))}`);
   if (song.ccli_number) out.push(`ccli: ${song.ccli_number}`);
   out.push('stanzas:');
   for (const stanza of stanzas) {
