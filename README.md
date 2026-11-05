@@ -35,11 +35,14 @@ Page copy lives in `_data/content.yml` instead of scattered through the template
 
 Each Sunday's guide is a front-matter-only file in `_worship_guides/`, named for the date (`2026-10-25.md`). It lists the sections and their items by reference, so the lyrics, creed and catechism text live once in `_data/` and get reused every week. `/worship-guide/` always shows the current Sunday's guide, and `/worship-guide/2026-10-25/` shows that week's.
 
-To add a week:
+To add a week, build it from that Sunday's Planning Center plan:
 
-1. Copy last week's file and rename it to the new Sunday's date.
-2. Change `title`, `description` and `sunday`, then swap the items.
-3. Add any song that isn't in `_data/songs/` yet as `_data/songs/<slug>.yml`, with each stanza pasted as-is (a blank line inside a stanza starts a new block).
+1. Export the plan with `pco sunday-plan <date> --json > plan.json` ([pco-cli](https://github.com/joshre/pco-cli)).
+2. Run `yarn worship-guide new plan.json`. It writes `_worship_guides/<date>.md`, reuses songs already in `_data/songs/` (matched by CCLI number, then title), and creates a song file for any new song whose lyrics are in Planning Center. `Verse 1` and `Chorus` labels in the lyrics become stanza numbers and refrains.
+3. A song with no lyrics anywhere is listed as missing. Save its lyrics as `<slug>.txt`, with blank lines between stanzas and the same labels, and run step 2 again with `--lyrics-dir <folder> --force`.
+4. `yarn -s worship-guide print <date>` prints the print guide's `guide-data` JSON from the same files.
+
+A song file holds `title`, `writers`, optional `copyright` and `ccli`, and its stanzas, each pasted as-is (a blank line inside a stanza starts a new block).
 
 The sermon schedule lives in `_data/sermon_schedule.yml` (Sunday date to sermon text). When next Sunday is on it, the guide ends the sermon with a "Next Sunday" line, so keep it a few weeks ahead.
 

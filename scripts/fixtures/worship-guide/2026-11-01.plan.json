@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-01",
+  "plan_id": "91449411",
+  "service_type_id": "1670014",
+  "dates_label": "November 1, 2026",
+  "items": [
+    {
+      "sequence": 1,
+      "kind": "header",
+      "title": "Family Church",
+      "description": null
+    },
+    {
+      "sequence": 2,
+      "kind": "catechism",
+      "title": "Catechism #44",
+      "description": "Q: What is baptism?\nA: Baptism is the washing of water in the name of the Father, Son, and Holy Spirit.",
+      "catechism_number": 44
+    },
+    {
+      "sequence": 3,
+      "kind": "creed",
+      "title": "Apostle's Creed",
+      "description": null
+    },
+    {
+      "sequence": 4,
+      "kind": "song",
+      "title": "Run and Run (Christ Is All My Righteousness)",
+      "description": null,
+      "song": {
+        "title": "Run and Run (Christ Is All My Righteousness)",
+        "author": "Matt Boswell",
+        "copyright": null,
+        "ccli_number": null,
+        "lyrics": null
+      }
+    },
+    {
+      "sequence": 5,
+      "kind": "song",
+      "title": "In Christ Alone",
+      "description": null,
+      "song": {
+        "title": "In Christ Alone",
+        "author": "Keith Getty and Stuart Townend",
+        "copyright": "2001 Thankyou Music",
+        "ccli_number": 3350395,
+        "lyrics": "Verse 1\nIn Christ alone my hope is found,\nHe is my light, my strength, my song;\nThis Cornerstone, this solid Ground,\nFirm through the fiercest drought and storm.\nWhat heights of love, what depths of peace,\nWhen fears are stilled, when strivings cease!\nMy Comforter, my All in All,\nHere in the love of Christ I stand.\n\nVerse 2\nIn Christ alone! - who took on flesh,\nFullness of God in helpless babe.\nThis gift of love and righteousness,\nScorned by the ones He came to save:\nTill on that cross as Jesus died,\nThe wrath of God was satisfied –\nFor every sin on Him was laid;\nHere in the death of Christ I live.\n\nVerse 3\nThere in the ground His body lay,\nLight of the world by darkness slain:\nThen bursting forth in glorious day\nUp from the grave He rose again!\nAnd as He stands in victory\nSin’s curse has lost its grip on me,\nFor I am His and He is mine –\nBought with the precious blood of Christ.\n\nVerse 4\nNo guilt in life, no fear in death,\nThis is the power of Christ in me;\nFrom life’s first cry to final breath,\nJesus commands my destiny.\nNo power of hell, no scheme of man,\nCan ever pluck me from His hand:\nTill He returns or calls me home,\nHere in the power of Christ I’ll stand."
+      }
+    },
+    {
+      "sequence": 6,
+      "kind": "header",
+      "title": "Intermission",
+      "description": null
+    },
+    {
+      "sequence": 7,
+      "kind": "other",
+      "title": "Sunday Morning Playlist",
+      "description": null
+    },
+    {
+      "sequence": 8,
+      "kind": "header",
+      "title": "Adult Church",
+      "description": null
+    },
+    {
+      "sequence": 9,
+      "kind": "prayer",
+      "title": "Prayer",
+      "description": "Psalm 24",
+      "prayer_ref": "Psalm 24"
+    },
+    {
+      "sequence": 10,
+      "kind": "communion",
+      "title": "Communion",
+      "description": null
+    },
+    {
+      "sequence": 11,
+      "kind": "song",
+      "title": "Living Hope",
+      "description": null,
+      "song": {
+        "title": "Living Hope",
+        "author": "Brian Johnson and Phil Wickham",
+        "copyright": " Bethel Music Publishing and Remaining portion is unaffiliated",
+        "ccli_number": 7106807,
+        "lyrics": "Verse 1\nHow great the chasm that lay between us\nHow high the mountain I could not climb\nIn desperation, I turned to heaven\nAnd spoke Your name into the night\nThen through the darkness Your loving kindness\nTore through the shadows of my soul\nThe work is finished, the end is written\nJesus Christ, my living hope\n\nVerse 2\nWho could imagine so great a mercy?\nWhat heart could fathom such boundless grace?\nThe God of ages stepped down from glory\nTo wear my sin and bear my shame\nThe cross has spoken, I am forgiven\nThe king of kings calls me His own\nBeautiful savior, I'm Yours forever\nJesus Christ, my living hope\n\nChorus\nHallelujah, praise the One who set me free\nHallelujah, death has lost its grip on me\nYou have broken every chain\nThere's salvation in Your name\nJesus Christ, my living hope\n\nVerse 3\nThen came the morning that sealed the promise\nYour buried body began to breathe\nOut of the silence, the roaring lion\nDeclared the grave has no claim on me\n\nTag\nJesus, Yours is the victory\n\nEnding\nJesus Christ, my living hope"
+      }
+    },
+    {
+      "sequence": 12,
+      "kind": "sermon",
+      "title": "Sermon",
+      "description": "Genesis 17",
+      "sermon_text": "Genesis 17"
+    },
+    {
+      "sequence": 13,
+      "kind": "song",
+      "title": "Who Else",
+      "description": null,
+      "song": {
+        "title": "Who Else",
+        "author": "Abbie Gamboa, Josiah Funderburk, and Zac Rowe",
+        "copyright": "2023 Gateway Music Global Publishing (Admin. by Music Services, Inc.) and Remaining portion is unaffiliated",
+        "ccli_number": 7223119,
+        "lyrics": "VERSE 1\nI am an instrument of exaltation\nAnd I was born to lift Your name above all names\nYou hear the melody of all creation\nBut there's a song of praise that only I can bring\n\nCHORUS\nWho else is worthy? Who else is worthy?\nThere is no one, only You, Jesus\nWho else is worthy? Who else is worthy?\nThere is no one, only You, Jesus\n\nVERSE 2\nYou are the infinite God of the ages\nYet You chose to make my heart Your dwelling place\nYou healed my brokenness, showed me Your glory\nSo I have songs of thanks not even angels sing\n\nBRIDGE 1\nLamb of God, anointed one\nWho was and is and is to come\nSeated on the throne above\nHoly, holy\nRighteous One who shed His blood\nYou proved to us the Father's love\nJesus Christ, be lifted up\nHoly, holy\n\nBRIDGE 2\nLamb of God, anointed one\nWho was and is and is to come\nSeated on the throne above\nHoly, holy\nRighteous One who shed His blood\nYou proved to us the Father's love\nJesus Christ, be lifted up\n\nTAG\nThere is no one, only You, Jesus\nThere is no one, only You, Jesus"
+      }
+    }
+  ]
+}

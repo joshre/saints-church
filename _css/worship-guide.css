@@ -79,16 +79,7 @@
 .wg-toc {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   padding-top: 40px;
-}
-
-.wg-toc-label {
-  padding-bottom: 5px;
-  color: var(--wg-cover-2);
-  font: 500 10px/14px var(--font-grotesk-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .wg-toc-row {
@@ -110,25 +101,14 @@
   padding: 0 var(--wg-gutter) 56px;
 }
 
-.wg-section {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin: 56px 0 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--wg-ink);
-  font: 700 26px/30px var(--font-display);
-  letter-spacing: -0.02em;
-}
-
 .wg-block {
   position: relative;
   margin-top: var(--wg-item-gap);
   scroll-margin-top: 24px;
 }
 
-.wg-section + .wg-block {
-  margin-top: 28px;
+.wg-body > .wg-block:first-child {
+  margin-top: 56px;
 }
 
 .wg-title {
