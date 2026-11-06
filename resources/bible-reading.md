@@ -55,7 +55,7 @@ This symbolic literature reveals God's ultimate victory through vivid images and
 
 ## So How Should I Study the Bible?
 
-**SOAP - Scripture | Observation | Application | Prayer**
+**SOAP: Scripture · Observation · Application · Prayer**
 
 ### Scripture
 
@@ -79,4 +79,4 @@ What are you going to do about what you just read?
 
 Scripture Fed. Spirit Led. Worship Based Prayer. Praying through the Lord's prayer (Matt 6:9-13) in whatever text you are reading.
 
-> **Reverence**: With an open Bible, the beginning point in prayer is to ask, "Who is God?" and "What does He reveal about Himself in this passage?" This sparks worship (reverence) in alignment with the focus, *"Our Father in heaven, hallowed be your name."*
+> **Reverence**: With an open Bible, the beginning point in prayer is to ask, "Who is God?" and "What does He reveal about Himself in this passage?" This sparks worship (reverence) in alignment with the focus, *Our Father in heaven, hallowed be your name.*
