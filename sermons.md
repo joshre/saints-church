@@ -22,8 +22,8 @@ permalink: /sermons/
       </p>
     </div>
 
-    <div class="child pb-1.5 [--delay:0.1s]">
-      {% include subscribe-menu.html %}
+    <div class="child pb-1.5 [--delay:0.1s] max-lg:flex max-lg:basis-full">
+      {% include subscribe-menu.html align="left-below-lg" %}
     </div>
   </div>
 

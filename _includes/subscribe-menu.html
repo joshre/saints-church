@@ -1,5 +1,10 @@
-{%- comment -%}Sermon feed dropdown. theme: "dark" (over the sermon hero) or "light" (default).{%- endcomment -%}
+{%- comment -%}Sermon feed dropdown. theme: "dark" (over the sermon hero) or "light" (default). align: "right" (default) or "left-below-lg" when the button sits on the left until lg.{%- endcomment -%}
 {% assign menu_theme = include.theme | default: "light" %}
+{% if include.align == "left-below-lg" %}
+  {% assign panel_position = "left-0 lg:right-0 lg:left-auto" %}
+{% else %}
+  {% assign panel_position = "right-0" %}
+{% endif %}
 {% if menu_theme == "dark" %}
   {% assign summary_classes = "h-10 px-4 text-sm bg-white/10 text-white ring-1 ring-white/20 hover:bg-white/15" %}
 {% else %}
@@ -19,7 +24,7 @@
     </svg>
   </summary>
 
-  <div class="page-content-card absolute top-full right-0 z-30 mt-2.5 w-72 p-2 text-left">
+  <div class="page-content-card absolute top-full {{ panel_position }} z-30 mt-2.5 w-72 p-2 text-left">
     <p class="text-2xs px-3 pt-2 pb-2.5 font-display font-bold tracking-eyebrow text-stone-400 uppercase dark:text-stone-500">Sermon feed</p>
 
     {% assign platforms = "apple|spotify|overcast|youtube|rss" | split: "|" %}
