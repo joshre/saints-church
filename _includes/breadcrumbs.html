@@ -1,4 +1,14 @@
 <!-- Auto-generated Breadcrumbs from URL -->
+{%- comment -%}theme: "dark" (default, over the sermon hero) or "light" (on the cream resource pages).{%- endcomment -%}
+{% if include.theme == "light" %}
+  {% assign crumb_list_classes = "text-stone-500 dark:text-stone-400" %}
+  {% assign crumb_separator_classes = "text-stone-300 dark:text-stone-600" %}
+  {% assign crumb_link_classes = "hover:text-stone-900 dark:hover:text-white" %}
+{% else %}
+  {% assign crumb_list_classes = "text-white/50 dark:text-stone-400" %}
+  {% assign crumb_separator_classes = "text-white/30 dark:text-stone-600" %}
+  {% assign crumb_link_classes = "dark:hover:text-saints-400 hover:text-white" %}
+{% endif %}
 {% assign crumbs = page.url | split: '/' %}
 {% assign crumb_count = 0 %}
 {% for c in crumbs %}{% if c != '' %}{% assign crumb_count = crumb_count | plus: 1 %}{% endif %}{% endfor %}
@@ -7,7 +17,7 @@
 {% comment %}Only show visible breadcrumbs for 3+ level deep pages{% endcomment %}
 {% if crumb_count > 2 %}
 <nav aria-label="Breadcrumb" class="mb-8">
-  <ol class="flex flex-wrap items-center gap-2 text-sm text-white/50 dark:text-stone-400">
+  <ol class="flex flex-wrap items-center gap-2 text-sm {{ crumb_list_classes }}">
     {% assign path = '' %}
     {% assign first_visible = true %}
     {% for crumb in crumbs %}
@@ -20,8 +30,8 @@
         {% if crumb == 'prayer-gatherings' %}{% assign crumb_title = 'Prayer Gatherings' %}{% endif %}
 
         <li class="flex items-center gap-2">
-          {% unless first_visible %}<span class="text-white/30 dark:text-stone-600">/</span>{% endunless %}
-          <a href="{{ path }}/" class="dark:hover:text-saints-400 transition-colors hover:text-white">{{ crumb_title }}</a>
+          {% unless first_visible %}<span class="{{ crumb_separator_classes }}">/</span>{% endunless %}
+          <a href="{{ path }}/" class="transition-colors {{ crumb_link_classes }}">{{ crumb_title }}</a>
         </li>
         {% assign first_visible = false %}
       {% endif %}
