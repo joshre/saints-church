@@ -264,6 +264,7 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
   const report: string[] = [];
   const warnings: string[] = [];
   const missing: string[] = [];
+  const blank: string[] = [];
   let section: GuideSection | null = null;
   let skipping = false;
 
@@ -303,12 +304,14 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
       }
       case 'prayer':
         section.items.push({ prayer: item.prayer_ref ?? '' });
+        if (!item.prayer_ref) blank.push('prayer (no psalm reference in PCO)');
         break;
       case 'communion':
         section.items.push({ communion: 'The Lord’s Supper' });
         break;
       case 'sermon':
         section.items.push({ sermon: item.sermon_text ?? '' });
+        if (!item.sermon_text) blank.push('sermon (no passage in PCO)');
         break;
       case 'song': {
         const song = required(item.song, item, 'song');
@@ -322,20 +325,20 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
         const slug = songs.has(base) ? `${base}-${song.ccli_number ?? item.sequence}` : base;
         const fromDir = lyricsDir ? path.join(lyricsDir, `${slug}.txt`) : undefined;
         let source: string | undefined;
-        let lyrics = song.lyrics;
-        if (lyrics) source = 'PCO';
+        let stanzas = song.lyrics ? parseLyrics(song.lyrics) : [];
+        if (stanzas.length > 0) source = 'PCO';
         else if (fromDir && fs.existsSync(fromDir)) {
-          lyrics = fs.readFileSync(fromDir, 'utf8');
+          stanzas = parseLyrics(fs.readFileSync(fromDir, 'utf8'));
           source = `lyrics store (${path.basename(fromDir)})`;
         }
         section.items.push({ song: slug });
-        if (!lyrics) {
+        if (stanzas.length === 0) {
           missing.push(slug);
           report.push(`${slug}: MISSING lyrics for "${song.title}"`);
           break;
         }
         const file = path.join(SONGS_DIR, `${slug}.yml`);
-        fs.writeFileSync(file, songYaml(song, parseLyrics(lyrics)));
+        fs.writeFileSync(file, songYaml(song, stanzas));
         songs.set(slug, loadYaml<SongFile>(file));
         report.push(`${slug}: new from ${source} (${path.relative(ROOT, file)})`);
         break;
@@ -354,10 +357,9 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
   console.log(`Wrote ${path.relative(ROOT, guideFile)} from PCO plan ${plan.plan_id}`);
   for (const line of report) console.log(`  song ${line}`);
   for (const line of warnings) console.log(`  warning: ${line}`);
-  if (missing.length > 0) {
-    console.log(`Missing lyrics: ${missing.join(', ')}`);
-    process.exitCode = 2;
-  }
+  if (missing.length > 0) console.log(`Missing lyrics: ${missing.join(', ')}`);
+  if (blank.length > 0) console.log(`Left blank: ${blank.join(', ')}`);
+  if (missing.length > 0 || blank.length > 0) process.exitCode = 2;
 }
 
 function printData(date: string): void {
@@ -377,7 +379,7 @@ function printData(date: string): void {
     items: section.items.flatMap((item) => {
       if ('song' in item) {
         const song = songs.get(item.song);
-        if (!song) {
+        if (!song?.stanzas || song.stanzas.length === 0) {
           missing.push(item.song);
           return [];
         }
