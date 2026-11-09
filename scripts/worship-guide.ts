@@ -325,14 +325,13 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
         const slug = songs.has(base) ? `${base}-${song.ccli_number ?? item.sequence}` : base;
         const fromDir = lyricsDir ? path.join(lyricsDir, `${slug}.txt`) : undefined;
         let source: string | undefined;
-        let lyrics = song.lyrics;
-        if (lyrics) source = 'PCO';
+        let stanzas = song.lyrics ? parseLyrics(song.lyrics) : [];
+        if (stanzas.length > 0) source = 'PCO';
         else if (fromDir && fs.existsSync(fromDir)) {
-          lyrics = fs.readFileSync(fromDir, 'utf8');
+          stanzas = parseLyrics(fs.readFileSync(fromDir, 'utf8'));
           source = `lyrics store (${path.basename(fromDir)})`;
         }
         section.items.push({ song: slug });
-        const stanzas = lyrics ? parseLyrics(lyrics) : [];
         if (stanzas.length === 0) {
           missing.push(slug);
           report.push(`${slug}: MISSING lyrics for "${song.title}"`);

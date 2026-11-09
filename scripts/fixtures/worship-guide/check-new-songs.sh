@@ -27,5 +27,11 @@ if npx --no-install tsx scripts/worship-guide.ts print 2099-01-04 >/dev/null 2>p
 fi
 grep -q 'no lyrics on file for: labels-only' print.err || { echo "print did not name the missing song"; cat print.err; fail=1; }
 
+mkdir lyrics
+printf 'Verse 1\nSaved line one\nSaved line two\n' >lyrics/labels-only.txt
+npx --no-install tsx scripts/worship-guide.ts new "$HERE/new-songs.plan.json" --lyrics-dir lyrics --force >rerun.out || true
+grep -q 'labels-only: new from lyrics store' rerun.out || { echo "rerun ignored lyrics/labels-only.txt"; cat rerun.out; fail=1; }
+grep -q 'Saved line one' _data/songs/labels-only.yml 2>/dev/null || { echo "labels-only.yml missing the saved lyrics"; fail=1; }
+
 [ "$fail" -eq 0 ] && echo "worship-guide new-songs check: ok"
 exit "$fail"
