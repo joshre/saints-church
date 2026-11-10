@@ -1,0 +1,35 @@
+---
+title: "Come O Sinner"
+writers: "Jordan Kauflin"
+ccli: 7138115
+stanzas:
+  - number: 1
+    lines: |
+      Come, O sinner, come and see
+      Christ the Lord upon a tree
+      See the crown of thorns adorn the King
+      Who labors to breathe in agony
+      Come, O sinner, come and see
+      What our God became to set us free
+  - number: 2
+    lines: |
+      Come, O sinner, come and mourn
+      For He calls your sin His own
+      Do you feel the weight of justice served?
+      He suffers the wrath that you deserve
+      Come, O sinner, come and mourn
+      For He bears the curse for all you’ve done
+  - refrain: true
+    lines: |
+      Oh the wonder of this awesome scene
+      Where our Savior bleeds
+      Oh the power of the love of God
+      Come and stand in awe
+  - number: 3
+    lines: |
+      Come, O sinner, come rejoice
+      Mercy fills this place of scorn
+      For He dies to save His enemies
+      That all who draw near may know His peace
+      Come, O sinner, come rejoice
+      Through the death of Christ death is destroyed
