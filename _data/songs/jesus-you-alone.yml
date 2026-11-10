@@ -58,14 +58,16 @@ stanzas:
       You’ll come again
       In Your glory oh
       Jesus You alone
-  - lines: |
+  - refrain: true
+    lines: |
       Holy
       I can’t help but sing
       Holy
       How my heart cries out
       Holy
       Jesus You alone
-  - lines: |
+  - refrain: true
+    lines: |
       Worthy
       I lift my voice and sing
       Worthy
