@@ -367,7 +367,7 @@
   font: 500 18px/24px var(--font-guardian);
   text-decoration: none;
 
-  svg {
+  .wg-resource-chevron {
     flex: none;
     width: 16px;
     height: 16px;
@@ -381,7 +381,7 @@
     text-decoration-thickness: 1px;
     text-underline-offset: 4px;
 
-    svg {
+    .wg-resource-chevron {
       color: var(--wg-ink);
       transform: translateX(2px);
     }
