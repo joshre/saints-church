@@ -348,7 +348,17 @@ worship_guide:
   prayer: "Prayer"
   sermon: "Sermon"
   next_sunday: "Next Sunday"
-  resources_button: "Resources"
+  resources_title: "Resources"
+  resources_all: "All resources"
+  resources_links:
+    - label: "Catechism"
+      url: "/resources/#catechism"
+    - label: "Sermons"
+      url: "/sermons/"
+    - label: "Giving"
+      url: "/resources/#giving"
+    - label: "Playlists"
+      url: "/resources/#music"
   resources_list: "Catechism · Sermons · Giving · Playlists"
 
 reformed_baptist_knoxville:

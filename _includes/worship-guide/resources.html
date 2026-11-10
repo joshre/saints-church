@@ -1,8 +1,17 @@
 {%- assign wg_copy = site.data.content.worship_guide -%}
+{%- assign wg_sunday = include.guide.sunday | date: "%Y-%m-%d" -%}
 <div class="wg-resources">
-  <a class="wg-button" href="/resources/" onclick="window.plausible&&plausible('Resources',{props:{source:'worship-guide',sunday:'{{ include.guide.sunday | date: "%Y-%m-%d" }}'}})">
-    <span>{{ wg_copy.resources_button }}</span>
+  <h2 class="wg-resources-title">{{ wg_copy.resources_title }}</h2>
+  <nav class="wg-resource-rows" aria-label="{{ wg_copy.resources_title }}">
+    {%- for link in wg_copy.resources_links %}
+    <a class="wg-resource-row" href="{{ link.url }}" onclick="window.plausible&&plausible('Resources',{props:{source:'worship-guide',sunday:'{{ wg_sunday }}',link:'{{ link.label }}'}})">
+      <span>{{ link.label }}</span>
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5l4.5 4.5L6 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    {%- endfor %}
+  </nav>
+  <a class="wg-button" href="/resources/" onclick="window.plausible&&plausible('Resources',{props:{source:'worship-guide',sunday:'{{ wg_sunday }}',link:'All'}})">
+    <span>{{ wg_copy.resources_all }}</span>
     <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
-  <div class="wg-resource-list">{{ wg_copy.resources_list }}</div>
 </div>
