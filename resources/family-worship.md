@@ -74,9 +74,9 @@ Sing a chorus or song of worship music with your family. This is not your auditi
 
 > **A Note to Husbands Who Feel Discouraged, Unequipped, or Unsure**
 >
-> If you are a husband, God has equipped you to do this, because he gave you your wife and children. You can lead this for your family and your family needs you to lead this. It's time to give it your best shot and try.
+> If you are a husband, God has equipped you to do this, because He gave you your wife and children. You can lead this for your family and your family needs you to lead this. It's time to give it your best shot and try.
 >
-> Since God has blessed you with the people in your life you can, by faith lead with expectation knowing that the Lord will meet you in these moments. Expect God to use His word, not because you are super amazing, but because He is faithful. So be obedient to His word (Deut 6:4-7) and he will be faithful to use you and your efforts.
+> Since God has blessed you with the people in your life you can, by faith lead with expectation knowing that the Lord will meet you in these moments. Expect God to use His word, not because you are super amazing, but because He is faithful. So be obedient to His word (Deut 6:4-7) and He will be faithful to use you and your efforts.
 
 <!-- -->
 

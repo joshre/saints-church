@@ -1,6 +1,6 @@
 ---
 layout: resource
-title: "Reading the Bible for All It's Worth"
+title: "Reading the Bible for All It’s Worth"
 description: "A guide to understanding different genres of Scripture and how to study the Bible effectively. Resources for Saints Church members."
 permalink: /resources/bible-reading/
 ---

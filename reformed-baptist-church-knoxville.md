@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Reformed Baptist Church in Knoxville, TN"
-description: "Saints Church is a Reformed Baptist church in Knoxville, TN holding to the 1689 London Baptist Confession. Expository preaching, weekly Lord's Supper, and family-integrated worship. Sundays 9:30 AM."
+description: "Saints Church is a Reformed Baptist church in Knoxville, TN holding to the 1689 London Baptist Confession. Expository preaching, weekly Lord’s Supper, and family-integrated worship. Sundays 9:30 AM."
 permalink: /reformed-baptist-church-knoxville/
 data_key: reformed_baptist_knoxville
 content_width: wide
