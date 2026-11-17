@@ -29,7 +29,7 @@ permalink: /sermons/
 
   {% if latest_sermon %}
     {% capture latest_blurb %}{% include sermon-blurb.html post=latest_sermon %}{% endcapture %}
-    <section aria-labelledby="latest-sermon" class="mt-14 border-t border-stone-900/10 pt-7 dark:border-white/10">
+    <section aria-labelledby="latest-sermon" class="relative mt-14 border-t border-stone-900/10 pt-7 dark:border-white/10">
       <p class="text-saints-600 dark:text-saints-400 text-2xs font-display font-bold tracking-eyebrow uppercase">{{ site.data.content.sermons.latest_label }}</p>
       <h2 id="latest-sermon" class="mt-3.5 font-display text-4xl leading-tight font-bold tracking-tight text-stone-900 dark:text-white">
         {{ latest_sermon.title | escape }}
@@ -38,7 +38,7 @@ permalink: /sermons/
         <p class="mt-3.5 max-w-prose text-lg text-pretty text-stone-700 dark:text-stone-300">{{ latest_blurb }}</p>
       {% endif %}
       <div class="mt-6 flex flex-wrap items-center gap-4">
-        <a href="{{ latest_sermon.url }}" class="inline-flex h-11 items-center gap-2.5 rounded-lg bg-stone-900 px-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-stone-800 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-100">
+        <a href="{{ latest_sermon.url }}" class="inline-flex h-11 items-center gap-2.5 rounded-lg bg-stone-900 px-5 text-sm font-medium text-white transition-colors duration-200 after:absolute after:inset-0 hover:bg-stone-800 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-100">
           <svg viewBox="0 0 24 24" aria-hidden="true" class="size-3.5">
             <path d="M8 4.5 19 12 8 19.5Z" fill="currentColor"></path>
           </svg>
