@@ -139,6 +139,12 @@
   }
 }
 
+@keyframes worship-guide-panel-in {
+  from {
+    transform: translateY(calc(100% + 1.5rem));
+  }
+}
+
 @keyframes scale-in {
   0% {
     opacity: 0;

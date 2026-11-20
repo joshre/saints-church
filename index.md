@@ -5,6 +5,7 @@ description: "Saints Church, Knoxville TN—Bible-centered, Reformed Baptist. Ex
 ---
 
 <main itemscope itemtype="https://schema.org/WebPage" tabindex="-1" id="main-content">
+  {% include worship-guide-banner.html %}
   {% include header.html %}
 
   <article>

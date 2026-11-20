@@ -342,6 +342,8 @@ resources:
 
 worship_guide:
   title: "Worship Guide"
+  open_guide: "Open guide"
+  dismiss_panel: "Dismiss worship guide"
   order_of_service: "Order of service"
   catechism: "Catechism"
   question: "Question"

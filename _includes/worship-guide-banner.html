@@ -1,0 +1,13 @@
+{% assign worship_guide = site.data.content.worship_guide %}
+{% assign worship_guide_url = '/worship-guide/' | relative_url %}
+<aside id="worship-guide-banner" hidden aria-labelledby="worship-guide-panel-title" class="border-saints-600 bg-saints-800 text-saints-white fixed inset-x-0 bottom-0 z-40 max-h-[calc(100dvh-1rem)] overflow-y-auto rounded-t-2xl border px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl motion-safe:animate-[worship-guide-panel-in_360ms_var(--ease-smooth)_both] sm:right-6 sm:bottom-6 sm:left-auto sm:w-88 sm:rounded-2xl">
+  <div class="mb-3 flex items-center justify-between gap-3">
+    <h2 id="worship-guide-panel-title" class="font-guardian text-2xl font-medium tracking-tight">{{ worship_guide.title }}</h2>
+    <button type="button" data-dismiss-worship-guide aria-label="{{ worship_guide.dismiss_panel }}" class="text-saints-100 focus-visible:outline-saints-200 grid size-11 shrink-0 cursor-pointer place-items-center rounded-lg hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2">
+      {% include icon.html name="x-mark" type="micro" class="size-5" %}
+    </button>
+  </div>
+  <a href="{{ worship_guide_url }}" class="bg-saints-white text-saints-950 hover:bg-saints-100 focus-visible:outline-saints-200 flex min-h-11 items-center justify-center rounded-lg px-4 py-2 text-center text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2">
+    {{ worship_guide.open_guide }}
+  </a>
+</aside>
