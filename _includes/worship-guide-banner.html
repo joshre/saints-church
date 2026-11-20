@@ -1,0 +1,8 @@
+{% assign worship_guide = site.data.content.worship_guide %}
+{% assign worship_guide_url = '/worship-guide/' | relative_url %}
+<div id="worship-guide-banner" hidden class="border-y border-stone-200 bg-stone-100 dark:border-white/10 dark:bg-stone-900">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-2 sm:justify-center lg:px-8">
+    <p class="text-sm font-semibold text-stone-900 dark:text-white">{{ worship_guide.title }}</p>
+    {% include button.html text=worship_guide.open_guide href=worship_guide_url %}
+  </div>
+</div>

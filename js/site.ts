@@ -7,8 +7,10 @@ import { initDisclosureMenus } from './menu';
 import { initMobileNav } from './nav';
 import { initSermonArchive } from './sermons';
 import { initTranscriptionEnhancements } from './transcription';
+import { initWorshipGuideBanner } from './worship-guide-banner';
 
 function initAll(): void {
+  initWorshipGuideBanner();
   initScrollAnimations();
   initMobileNav();
   initDisclosureMenus();
