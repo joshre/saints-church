@@ -1,0 +1,30 @@
+---
+title: "Blessed Assurance"
+writers: "Chris Brown, Mack Brock"
+ccli: 7011451
+stanzas:
+  - number: 1
+    lines: |
+      Blessed assurance Jesus is mine
+      Oh what a foretaste of glory divine
+      Heir of salvation purchase of God
+      Born of His Spirit washed in His blood
+  - number: 2
+    lines: |
+      Perfect submission all is at rest
+      I in my Savior am happy and blessed
+      Watching and waiting looking above
+      Filled with His goodness lost in His love
+  - refrain: true
+    lines: |
+      This is my story this is my song
+      Praising my Savior all the day long
+      This is my story this is my song
+      Praising my Savior all the day long
+  - lines: |
+      Oh what a Savior
+      Wonderful Jesus
+  - lines: |
+      Death could not hold You
+      You are victorious
+      Praise to the risen King
