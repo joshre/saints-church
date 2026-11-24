@@ -1,0 +1,35 @@
+---
+title: "Amazing Grace (My Chains Are Gone)"
+writers: "John Newton, Chris Tomlin, Louie Giglio"
+ccli: 4768151
+stanzas:
+  - number: 1
+    lines: |
+      Amazing grace how sweet the sound
+      That saved a wretch like me
+      I once was lost, but now am found
+      Was blind but now I see
+  - number: 2
+    lines: |
+      ’Twas grace that taught my heart to fear
+      And grace my fears relieved
+      How precious did that grace appear
+      The hour I first believed
+  - refrain: true
+    lines: |
+      My chains are gone, I’ve been set free
+      My God my Savior has ransomed me
+      And like a flood His mercy reigns
+      Unending love amazing grace
+  - number: 3
+    lines: |
+      The Lord has promised good to me
+      His word my hope secures
+      He will my shield and portion be
+      As long as life endures
+  - number: 4
+    lines: |
+      The earth shall soon dissolve like snow
+      The sun forbear to shine
+      But God who called me here below
+      Will be forever mine
