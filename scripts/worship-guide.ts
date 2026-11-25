@@ -237,6 +237,12 @@ function creedKey(title: string): string | undefined {
   return Object.keys(loadCreeds()).find((key) => wanted.includes(key.replace(/s$/, '')));
 }
 
+// pco can carry a prayer topic line beside the psalm, or the word "Psalm" with no number yet
+function psalmRef(description: string | null | undefined): string | undefined {
+  const verses = description?.match(/\bpsalms?\s+(\d+(?:\s*:\s*\d+(?:\s*[-–]\s*\d+)?)?)/i)?.[1];
+  return verses ? `Psalm ${verses.replace(/\s+/g, '').replace('-', '–')}` : undefined;
+}
+
 function catechismWarning(item: PlanItem): string | undefined {
   const asked = item.description?.match(/^Q:\s*(.+)$/m)?.[1];
   if (!asked) return undefined;
@@ -302,10 +308,12 @@ function buildNew(planFile: string, lyricsDir: string | undefined, force: boolea
           );
         break;
       }
-      case 'prayer':
-        section.items.push({ prayer: item.prayer_ref ?? '' });
-        if (!item.prayer_ref) blank.push('prayer (no psalm reference in PCO)');
+      case 'prayer': {
+        const ref = psalmRef(item.prayer_ref);
+        section.items.push({ prayer: ref ?? '' });
+        if (!ref) blank.push('prayer (no psalm reference in PCO)');
         break;
+      }
       case 'communion':
         section.items.push({ communion: 'The Lord’s Supper' });
         break;
